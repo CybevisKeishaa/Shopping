@@ -4,10 +4,57 @@
  */
 package dal;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Brand;
+
 /**
  *
- * @author admin
+ * @author DINH SON
  */
-public class BrandDBContext {
+public class BrandDBContext extends DBContext {
+
+    public Brand getBrandFindById(int bid) {
+        String sql = "Select * from Brand WHERE brand_id=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, bid);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Brand b = new Brand();
+                b.setBrand_id(rs.getInt(1));
+                b.setName(rs.getString(2));
+                return b;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+
+    }
     
+
+    public List<Brand> getAll() {
+        List<Brand> list = new ArrayList<>();
+        String sql = "Select * from Brand";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Brand b = new Brand();
+                b.setBrand_id(rs.getInt(1));
+                b.setName(rs.getString(2));
+                list.add(b);
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+
+    }
+
 }
