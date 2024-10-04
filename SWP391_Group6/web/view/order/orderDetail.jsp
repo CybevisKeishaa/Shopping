@@ -101,14 +101,14 @@
                 <p><strong>Mã đơn:</strong> ${requestScope.order.order_id}</p>
                 <p><strong>Ngày tạo:</strong> ${requestScope.order.create_at}</p>
                 <p><strong>Tổng tiền:</strong> ${requestScope.order.total_price} VND</p>
-                <p><strong>Trạng thái:</strong> ${requestScope.order.status}</p>
-                <c:if test="${requestScope.order.status == 'Shipping  ' || requestScope.order.status == 'Completed '}">
+                <p><strong>Trạng thái:</strong> ${requestScope.order.status.status_name}</p>
+                <c:if test="${requestScope.order.status.status_name == 'Shipping  ' || requestScope.order.status.status_name == 'Completed '}">
                     <p><strong>Phương thức vận chuyển:</strong> ${requestScope.order.shipping_method}</p>
                 </c:if>
 
                 <!-- Buttons for updating or canceling the order -->
                 <div class="order-actions">
-                    <c:if test="${requestScope.order.status != 'Pending   '}">
+                    <c:if test="${requestScope.order.status.status_name != 'Pending   '}">
                         <form action="UpdateOrder" method="post" onsubmit="return confirmReceived();">
                             <input type="hidden" name="order_id" value="${order.order_id}">
                             <button type="submit" class="btn btn-primary">Giao hàng thành công</button>
@@ -118,7 +118,7 @@
                         <input type="hidden" name="order_id" value="${order.order_id}">
                         <!-- Nút hủy đơn hàng sẽ bị mờ nếu trạng thái là 'shipping' hoặc 'completed' -->
                         <button type="submit" class="btn btn-danger" 
-                                <c:if test="${requestScope.order.status == 'Shipping  ' || requestScope.order.status == 'Completed '}">disabled</c:if>>Hủy đơn hàng</button>
+                                <c:if test="${requestScope.order.status.status_name == 'Shipping  ' || requestScope.order.status.status_name == 'Completed '}">disabled</c:if>>Hủy đơn hàng</button>
                         </form>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
                                     </form>
 
                                     <!-- Điều kiện hiển thị nút Feedback -->
-                                    <c:if test="${requestScope.order.status == 'Completed '}">
+                                    <c:if test="${requestScope.order.status.status_name == 'Completed '}">
                                         <form action="FeedbackProduct" method="get">
                                             <input type="hidden" name="product_id" value="${product.product_id}">
                                             <button type="submit" class="btn btn-secondary btn-sm">Feedback</button>

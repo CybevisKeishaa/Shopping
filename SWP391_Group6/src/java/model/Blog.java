@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -15,27 +16,8 @@ public class Blog {
     private String content;
     private Date date;
     private Employee employee;
-    private Product product;
-    private Image image;
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-    
-    
-    
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
+    private String status;
+    private ArrayList<Image> image = new ArrayList<>();
 
     public int getBlog_id() {
         return blog_id;
@@ -77,14 +59,28 @@ public class Blog {
         this.date = date;
     }
 
-    
-
-    public Product getProduct() {
-        return product;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public ArrayList<Image> getImage() {
+        return image;
+    }
+
+    public void setImage(ArrayList<Image> image) {
+        this.image = image;
     }
 
 }

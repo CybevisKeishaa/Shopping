@@ -1,6 +1,7 @@
 package model;
 
 
+import model.Status_Order;
 import java.util.ArrayList;
 
 import java.util.Date;
@@ -13,7 +14,7 @@ public class Order {
     private Customer_User customer;
     private int total_price;
     private Date create_at;
-    private String status;
+    private Status_Order status;
     private String payment_method;
     private String shipping_method;
     private ArrayList<OrderDetail> orderDetails = new ArrayList<>();
@@ -50,11 +51,11 @@ public class Order {
         this.create_at = create_at;
     }
 
-    public String getStatus() {
+    public Status_Order getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status_Order status) {
         this.status = status;
     }
 
@@ -81,7 +82,7 @@ public class Order {
     public void setOrderDetails(ArrayList<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
     }
-    
+
     public String getFirstProductName() {
         return firstProductName;
     }
@@ -93,7 +94,7 @@ public class Order {
     public int getNumberOfOtherProducts() {
         return numberOfOtherProducts;
     }
-
+    
     public void setNumberOfOtherProducts(int numberOfOtherProducts) {
         this.numberOfOtherProducts = numberOfOtherProducts;
     }

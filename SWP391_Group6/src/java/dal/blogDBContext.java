@@ -39,10 +39,12 @@ public class BlogDBContext extends DBContext<Blog> {
                 b.setTitle(rs.getString("title"));
                 b.setShortContent(rs.getString("shortContent"));
 
+                ArrayList<Image> imgs = new ArrayList<>();
                 Image i = new Image();
                 i.setImg_url(rs.getString("img_url"));
-
-                b.setImage(i);
+                imgs.add(i);
+                
+                b.setImage(imgs);
 
                 blogs.add(b);
 

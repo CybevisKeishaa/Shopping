@@ -10,9 +10,9 @@ public class Image {
 
     private int img_id;
     private String img_url;
-    private Product product;
     private Feedback feedback;
-    private ArrayList<Slider> slides = new ArrayList<>();
+    private ArrayList<Product> product = new ArrayList<>();
+    private Slider slider;
     private ArrayList<Blog> blog = new ArrayList<>();
 
     public Image() {
@@ -39,14 +39,6 @@ public class Image {
         this.img_url = img_url;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public Feedback getFeedback() {
         return feedback;
     }
@@ -55,12 +47,20 @@ public class Image {
         this.feedback = feedback;
     }
 
-    public ArrayList<Slider> getSlides() {
-        return slides;
+    public ArrayList<Product> getProduct() {
+        return product;
     }
 
-    public void setSlides(ArrayList<Slider> slides) {
-        this.slides = slides;
+    public void setProduct(ArrayList<Product> product) {
+        this.product = product;
+    }
+
+    public Slider getSlider() {
+        return slider;
+    }
+
+    public void setSlider(Slider slider) {
+        this.slider = slider;
     }
 
     public ArrayList<Blog> getBlog() {
@@ -72,3 +72,4 @@ public class Image {
     }
 
 }
+

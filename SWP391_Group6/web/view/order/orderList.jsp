@@ -83,7 +83,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="section-title">
-                            <h2>My Orders</h2> <!-- Giữ style tiêu đề của bạn -->
+                            <h2>Đơn hàng</h2> <!-- Giữ style tiêu đề của bạn -->
                         </div>
                     </div>
                 </div>
@@ -96,38 +96,38 @@
                                         <!-- Bảng hiển thị đơn hàng -->
                                         <form method="GET" action="order" class="form-inline">
                                             <div class="form-group mb-2">
-                                                <label for="startDate">Start Date:</label>
+                                                <label for="startDate">Từ:</label>
                                                 <input type="date" class="form-control form-control-sm ml-2" id="startDate" name="startDate" value="${startDate}">
                                             </div>
 
                                             <div class="form-group mb-2 ml-3">
-                                                <label for="endDate">End Date:</label>
+                                                <label for="endDate">Đến:</label>
                                                 <input type="date" class="form-control form-control-sm ml-2" id="endDate" name="endDate" value="${endDate}">
                                             </div>
 
                                             <div class="form-group mb-2 ml-3">
-                                                <label for="sortColumn">Sort By:</label>
+                                                <label for="sortColumn">Sắp xếp:</label>
                                                 <select id="sortColumn" class="form-control form-control-sm ml-2" name="sortColumn">
-                                                    <option value="created_at" ${sortColumn == 'created_at' ? 'selected' : ''}>Order Date</option>
-                                                    <option value="total" ${sortColumn == 'total' ? 'selected' : ''}>Total Price</option>
+                                                    <option value="created_at" ${sortColumn == 'created_at' ? 'selected' : ''}>Ngày đặt</option>
+                                                    <option value="total" ${sortColumn == 'total' ? 'selected' : ''}>Tổng tiền</option>
                                                 </select>
                                             </div>
 
                                             <div class="form-group mb-2 ml-3">
-                                                <label for="sortOrder">Order:</label>
+                                                <label for="sortOrder">Thứ tự:</label>
                                                 <select id="sortOrder" class="form-control form-control-sm ml-2" name="sortOrder">
-                                                    <option value="ASC" ${sortOrder == 'ASC' ? 'selected' : ''}>Ascending</option>
-                                                    <option value="DESC" ${sortOrder == 'DESC' ? 'selected' : ''}>Descending</option>
+                                                    <option value="ASC" ${sortOrder == 'ASC' ? 'selected' : ''}>Tăng dần</option>
+                                                    <option value="DESC" ${sortOrder == 'DESC' ? 'selected' : ''}>Giảm dần</option>
                                                 </select>
                                             </div>
 
                                             <!-- Nút Reset -->
                                             <div class="form-group mb-2 ml-3">
-                                                <a href="order" class="btn btn-secondary btn-sm">Reset</a> <!-- Điều hướng về trang không có param -->
+                                                <a href="order" class="btn btn-secondary btn-sm">Đặt lại</a> <!-- Điều hướng về trang không có param -->
                                             </div>
 
                                             <div class="form-group mb-2 ml-3">
-                                                <input type="submit" class="btn btn-primary btn-sm" value="Filter and Sort">
+                                                <input type="submit" class="btn btn-primary btn-sm" value="Tìm kiếm">
                                             </div>
                                         </form>
 
@@ -139,11 +139,11 @@
                                         <table class="table table-bordered table-striped"> <!-- Dùng style bảng của Bootstrap -->
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Order ID</th>
-                                                    <th scope="col">Products</th>
-                                                    <th scope="col">Total Price</th>
-                                                    <th scope="col">Order Date</th>
-                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Mã đơn</th>
+                                                    <th scope="col">Sản phẩm</th>
+                                                    <th scope="col">Tổng tiền</th>
+                                                    <th scope="col">Ngày đặt</th>
+                                                    <th scope="col">Trạng thái</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -161,7 +161,7 @@
                                                             </td> 
                                                             <td>${order.total_price} $</td> <!-- Tổng giá trị đơn hàng -->
                                                         <td>${order.create_at}</td> <!-- Ngày đặt hàng -->
-                                                        <td>${order.status}</td> <!-- Trạng thái đơn hàng -->
+                                                        <td>${order.status.status_name}</td> <!-- Trạng thái đơn hàng -->
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>

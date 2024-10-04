@@ -23,7 +23,6 @@ public class Customer_User {
     private Role role;
     private Cart cart;
     private String avatar;
-    private String display_name;
     private ArrayList<Address> address;
     private ArrayList<Order> orders;
     private boolean gender;
@@ -132,14 +131,6 @@ public class Customer_User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-    }
-
-    public String getDisplay_name() {
-        return display_name;
-    }
-
-    public void setDisplay_name(String display_name) {
-        this.display_name = display_name;
     }
 
     public ArrayList<Address> getAddress() {

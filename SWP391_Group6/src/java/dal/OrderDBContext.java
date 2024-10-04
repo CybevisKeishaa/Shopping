@@ -15,6 +15,7 @@ import model.Customer_User;
 import model.Gender;
 import model.Image;
 import model.Product;
+import model.Status_Order;
 
 /**
  *
@@ -49,8 +50,13 @@ public class OrderDBContext extends DBContext<Order> {
                 Order o = new Order();
                 o.setOrder_id(rs.getInt("order_id"));
                 o.setCreate_at(rs.getDate("orderedDate"));
-                o.setTotal_price(rs.getInt("totalCost"));  // Assuming total price is a BigDecimal
-                o.setStatus(rs.getString("status"));
+                o.setTotal_price(rs.getInt("totalCost"));
+
+                Status_Order so = new Status_Order();
+                so.setStatus_name(rs.getString("status"));
+
+                o.setStatus(so);
+
                 o.setFirstProductName(rs.getString("firstProductName"));
                 o.setNumberOfOtherProducts(rs.getInt("productCount"));
 
@@ -165,7 +171,10 @@ public class OrderDBContext extends DBContext<Order> {
                 o.setOrder_id(rs.getInt("order_id"));
                 o.setCreate_at(rs.getDate("orderedDate"));
                 o.setTotal_price(rs.getInt("totalCost"));
-                o.setStatus(rs.getString("status"));
+                Status_Order so = new Status_Order();
+                so.setStatus_name(rs.getString("status"));
+
+                o.setStatus(so);
                 o.setFirstProductName(rs.getString("firstProductName"));
                 o.setNumberOfOtherProducts(rs.getInt("productCount"));
 
@@ -204,7 +213,10 @@ public class OrderDBContext extends DBContext<Order> {
                 o.setOrder_id(rs.getInt("order_id"));
                 o.setCreate_at(rs.getDate("created_at"));
                 o.setTotal_price(rs.getInt("total"));
-                o.setStatus(rs.getString("status"));
+                Status_Order so = new Status_Order();
+                so.setStatus_name(rs.getString("status"));
+
+                o.setStatus(so);
                 o.setShipping_method(rs.getString("shipping_method"));
 
                 // Lấy thông tin khách hàng
@@ -238,16 +250,15 @@ public class OrderDBContext extends DBContext<Order> {
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT p.product_id, p.name AS product_name, g.name AS gender_name, od.quantity, od.price_at_order, \n"
-                    + "       (od.quantity * od.price_at_order) AS total_cost, img.img_url AS product_image\n"
-                    + "FROM [OrderDetail] od\n"
-                    + "LEFT JOIN [Product] p ON od.product_id = p.product_id\n"
-                    + "LEFT JOIN Product_Gender pg ON pg.product_id = p.product_id\n"
-                    + "LEFT JOIN Gender g ON g.gender_id = pg.gender_id\n"
-                    + "LEFT JOIN [Order] o ON o.order_id = od.order_id\n"
-                    + "LEFT JOIN Product_Image pi ON pi.product_id = p.product_id\n"
-                    + "LEFT JOIN Image img ON img.img_id = pi.img_id\n"
-                    + "WHERE od.order_id = ? AND o.cus_id = ?;";
+            String sql = "SELECT p.product_id, p.name AS product_name, g.name AS gender_name, od.quantity, od.price_at_order, (od.quantity * od.price_at_order) AS total_cost, img.img_url AS product_image \n"
+                    + "FROM [OrderDetail] od \n"
+                    + "LEFT JOIN [Product] p ON od.product_id = p.product_id \n"
+                    + "LEFT JOIN Product_Gender pg ON pg.product_id = p.product_id \n"
+                    + "LEFT JOIN Gender g ON g.gender_id = pg.gender_id \n"
+                    + "LEFT JOIN [Order] o ON o.order_id = od.order_id \n"
+                    + "LEFT JOIN Product_Image pi ON pi.product_id = p.product_id \n"
+                    + "LEFT JOIN Image img ON img.img_id = pi.img_id \n"
+                    + "WHERE od.order_id = ? AND o.cus_id = ? and img.img_url like 'product%';";
 
             stm = connect.prepareStatement(sql);
             stm.setInt(1, orderId);
@@ -265,14 +276,14 @@ public class OrderDBContext extends DBContext<Order> {
                 // Lấy giới tính sản phẩm
                 ArrayList<Gender> genders = new ArrayList<>();
                 Gender g = new Gender();
-                g.setName(rs.getString("gender_name"));  // Lấy giá trị từ ResultSet
+                g.setName(rs.getString("gender_name"));
                 genders.add(g);
                 product.setGender(genders);
 
                 // Lấy hình ảnh sản phẩm
                 ArrayList<Image> imgs = new ArrayList<>();
                 Image i = new Image();
-                i.setImg_url(rs.getString("product_image"));  // Lấy URL hình ảnh từ ResultSet
+                i.setImg_url(rs.getString("product_image"));
                 imgs.add(i);
                 product.setImg(imgs);
 
@@ -305,20 +316,20 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     public void updateOrderStatus(int orderID, int statusID) {
-        PreparedStatement stm = null;       
+        PreparedStatement stm = null;
         try {
-            connect.setAutoCommit(false);         
+            connect.setAutoCommit(false);
             String sql = "UPDATE dbo.[Order] SET status_id = ? WHERE order_id = ?;";
 
             stm = connect.prepareStatement(sql);
-           
-            stm.setInt(1, statusID);  
-            stm.setInt(2, orderID);  
+
+            stm.setInt(1, statusID);
+            stm.setInt(2, orderID);
 
             stm.executeUpdate();
-            
+
         } catch (SQLException ex) {
-            
+
             if (connect != null) {
                 try {
                     connect.rollback();
@@ -330,7 +341,7 @@ public class OrderDBContext extends DBContext<Order> {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                
+
                 if (connect != null) {
                     connect.setAutoCommit(true);
                     connect.close();
