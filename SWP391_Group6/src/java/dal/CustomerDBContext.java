@@ -13,7 +13,9 @@ import java.util.logging.Logger;
 import model.Customer_User;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import model.Cart;
+import model.Feature;
 import model.PasswordResetToken;
 import model.Role;
 
@@ -49,14 +51,13 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                     + "           ,[password]\n"
                     + "           ,[email]\n"
                     + "           ,[c_phone]\n"
-                    + "           ,[display_name]\n"
                     + "           ,[status]\n"
                     + "           ,[role_id]\n"
                     + "           ,[gender]\n"
                     + "           ,[username]\n"
                     + "           ,[birth_date]\n"
                     + "           ,[verification_code])\n"
-                    + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Chuẩn bị câu lệnh SQL chèn
             stm_insert = connect.prepareStatement(sql_insert_cus);
@@ -65,13 +66,13 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             stm_insert.setString(3, customer.getPassword());               // password
             stm_insert.setString(4, customer.getEmail());                  // email
             stm_insert.setString(5, customer.getC_phone());                // c_phone 
-            stm_insert.setString(6, customer.getDisplay_name());           // display_name
-            stm_insert.setBoolean(7, false);                                // status (giả sử là active - true)
-            stm_insert.setInt(8, customer.getRole().getRole_id());         // role_id
-            stm_insert.setInt(9, customer.isGender() ? 1 : 0);
-            stm_insert.setString(10, customer.getUsername());
-            stm_insert.setDate(11, customer.getDob());                     // dob (ngày sinh)
-            stm_insert.setString(12, customer.getVerificationCode());
+            //           stm_insert.setString(6, customer.getDisplay_name());           // display_name
+            stm_insert.setBoolean(6, false);                                // status (giả sử là active - true)
+            stm_insert.setInt(7, customer.getRole().getRole_id());         // role_id
+            stm_insert.setInt(8, customer.isGender() ? 1 : 0);
+            stm_insert.setString(9, customer.getUsername());
+            stm_insert.setDate(10, customer.getDob());                     // dob (ngày sinh)
+            stm_insert.setString(11, customer.getVerificationCode());
 
             // Thực thi câu lệnh chèn
             stm_insert.executeUpdate();
@@ -205,37 +206,53 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
     // Lấy thông tin tài khoản khách hàng bằng email và mật khẩu
     public Customer_User getCustomerAccountByEmail(String email, String password) {
-        String sql = """
-                     SELECT cus_id, name_cus, email, status, avartar, role_id, cart_id
-                     FROM Customer 
-                     WHERE email = ? AND [password] = ?""";
+        String sql = "SELECT c.cus_id, c.name_cus, c.email, c.status, c.avartar, r.role_id, f.f_url "
+                + "FROM Customer c "
+                + "LEFT JOIN Role_Customer rc ON c.cus_id = rc.cus_id "
+                + "LEFT JOIN Role r ON rc.role_id = r.role_id "
+                + "LEFT JOIN Role_Fearture rf ON r.role_id = rf.role_id "
+                + "LEFT JOIN Fearture f ON rf.f_id = f.f_id "
+                + "WHERE c.email = ? AND c.[password] = ?;";
 
         try (PreparedStatement stm = connect.prepareStatement(sql)) {
             stm.setString(1, email);
             stm.setString(2, password);
             try (ResultSet rs = stm.executeQuery()) {
-                if (rs.next()) {
-                    Customer_User customer = new Customer_User();
-                    customer.setCus_id(rs.getInt("cus_id"));
-                    customer.setName_cus(rs.getString("name_cus"));
-                    customer.setEmail(rs.getString("email"));
-                    customer.setStatus(rs.getBoolean("status"));
-                    customer.setAvatar(rs.getString("avartar"));
+                Customer_User customer = null;
+                Role r = null;
+                ArrayList<Feature> features = new ArrayList<>();
 
-                    Role role = new Role();
-                    role.setRole_id(rs.getInt("role_id"));
-                    customer.setRole(role);
+                while (rs.next()) {
+                    if (customer == null) {
+                        customer = new Customer_User();
+                        customer.setCus_id(rs.getInt("cus_id"));
+                        customer.setName_cus(rs.getString("name_cus"));
+                        customer.setEmail(rs.getString("email"));
+                        customer.setStatus(rs.getBoolean("status"));
+                        customer.setAvatar(rs.getString("avartar"));
 
-                    return customer;
+                        r = new Role();
+                        r.setRole_id(rs.getInt("role_id"));
+                        customer.setRole(r);
+                    }
+
+                    Feature f = new Feature();
+                    f.setF_url(rs.getString("f_url"));
+                    features.add(f);
                 }
+
+                if (r != null) {
+                    r.setFeatures(features);
+                }
+
+                return customer;
             }
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy thông tin tài khoản", ex);
         }
         return null;
     }
-
-    // Đổi mật khẩu khách hàng
+        // Đổi mật khẩu khách hàng
     public boolean changePassword(int cus_id, String newPassword) {
         String sql = "UPDATE Customer SET password = ? WHERE cus_id = ?";
         boolean updated = false;

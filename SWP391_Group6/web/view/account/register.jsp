@@ -188,14 +188,7 @@
 
                     </td>
                 </tr>
-
-                <tr>
-                    <td><label for="displayname">Tên hiển thị:</label></td>
-                    <td>
-                        <input type="text" id="displayname" name="displayname" placeholder="Tên hiển thị"
-                               value="<%= request.getParameter("displayname") != null ? request.getParameter("displayname") : "" %>" required>
-                    </td>
-                </tr>
+               
 
                 <tr>
                     <td><label for="username">Username:</label></td>

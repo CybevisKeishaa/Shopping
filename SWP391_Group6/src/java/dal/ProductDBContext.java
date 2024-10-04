@@ -124,15 +124,16 @@ public class ProductDBContext extends DBContext<Product> {
         ArrayList<Product> products = new ArrayList<>();
 
         try {
-            String sql = "SELECT p.product_id, p.name, p.price, p.stock, p.status, \n"
-                    + "       (SELECT TOP 1 i.img_url \n"
-                    + "        FROM Product_Image pi \n"
-                    + "        JOIN Image i ON pi.img_id = i.img_id \n"
-                    + "        WHERE pi.product_id = p.product_id \n"
+            String sql = "SELECT p.product_id, p.name, p.price, g.name AS gname, p.stock, p.status, d.name AS dname, d.discount_amount,\n"
+                    + "       (SELECT TOP 1 i.img_url\n"
+                    + "        FROM Product_Image pi\n"
+                    + "        JOIN Image i ON pi.img_id = i.img_id\n"
+                    + "        WHERE pi.product_id = p.product_id\n"
                     + "        ORDER BY i.img_id ASC) AS img_url\n"
                     + "FROM Product p\n"
                     + "JOIN Product_Gender pg ON p.product_id = pg.product_id\n"
                     + "JOIN Gender g ON pg.gender_id = g.gender_id\n"
+                    + "LEFT JOIN Discount d ON p.discount_id = d.discount_id\n"
                     + "WHERE g.name = 'Male';";
 
             stm = connect.prepareStatement(sql);
@@ -145,18 +146,19 @@ public class ProductDBContext extends DBContext<Product> {
                 p.setPrice(rs.getInt("price"));
 
                 ArrayList<Gender> genders = new ArrayList<>();
-                Gender g = new Gender();
-                g.setGender_id(rs.getInt("gender_id"));
-                g.setName(rs.getString("gname"));
-                genders.add(g);
-
-                p.setGender(genders);
+//                Gender g = new Gender();
+//                g.setGender_id(rs.getInt("gender_id"));
+//                g.setName(rs.getString("gname"));
+//                genders.add(g);
+//
+//                p.setGender(genders);
 
                 ArrayList<Image> images = new ArrayList<>();
                 Image i = new Image();
                 i.setImg_url(rs.getString("img_url"));
                 images.add(i);
                 p.setImg(images);
+                p.setStock(rs.getInt("stock"));
 
                 products.add(p);
             }
@@ -167,10 +169,14 @@ public class ProductDBContext extends DBContext<Product> {
 
         return products;
     }
-    
-    
-    
 
+    public static void main(String[] args) {
+        ProductDBContext db = new ProductDBContext();
+        ArrayList<Product> p = db.getProductByGender();
+        System.out.println(p.size());
+    }
+    
+    
     public int getTotalProduct() {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM Product";
@@ -281,7 +287,7 @@ public class ProductDBContext extends DBContext<Product> {
             st.setInt(1, bid);
             st.setInt(2, pid);
             ResultSet rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getInt(1);
             }
         } catch (Exception e) {
@@ -345,10 +351,5 @@ public class ProductDBContext extends DBContext<Product> {
         }
         return -1;
     }
-
-    
-
-
-
 
 }

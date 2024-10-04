@@ -1,5 +1,23 @@
 // Owl Carousel JS //
+$(document).ready(function(){
+  $('.hero-slider').owlCarousel({
+      items: 1,                // Số lượng slide hiển thị một lần
+      loop: true,              // Cho phép lặp lại slider
+      autoplay: true,          // Kích hoạt tự động trượt
+      autoplayTimeout: 5000,   // Thời gian chờ giữa các lần trượt (5 giây)
+      autoplayHoverPause: true,// Tạm dừng khi di chuột lên slider
+      nav: false,              // Tắt các nút điều hướng prev/next
+      dots: true,              // Hiển thị các dấu chấm bên dưới slider
+      smartSpeed: 800,         // Tốc độ chuyển đổi giữa các slide (800ms)
+      animateOut: 'fadeOut',   // Hiệu ứng chuyển đổi khi slide biến mất
+      animateIn: 'fadeIn'      // Hiệu ứng chuyển đổi khi slide xuất hiện
+  });
+});
+
+
+
 ! function(a, b, c, d) {
+    
     function e(b, c) {
         this.settings = null, this.options = a.extend({}, e.Defaults, c), this.$element = a(b), this.drag = a.extend({}, m), this.state = a.extend({}, n), this.e = a.extend({}, o), this._plugins = {}, this._supress = {}, this._current = null, this._speed = null, this._coordinates = [], this._breakpoint = null, this._width = null, this._items = [], this._clones = [], this._mergers = [], this._invalidated = {}, this._pipe = [], a.each(e.Plugins, a.proxy(function(a, b) {
             this._plugins[a[0].toLowerCase() + a.slice(1)] = new b(this)

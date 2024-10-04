@@ -47,7 +47,7 @@ public class VerificationEmail extends HttpServlet {
             boolean isVerified = db.verifyCustomer(verificationCode);
 
             if (isVerified) {
-                response.sendRedirect("homepage");
+                response.sendRedirect("login");
             } else {
                 request.setAttribute("errorMessage", "Invalid verification link.");
                 request.getRequestDispatcher("verification-failed.jsp").forward(request, response);

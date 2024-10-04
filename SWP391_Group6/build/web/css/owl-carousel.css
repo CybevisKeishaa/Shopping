@@ -32,6 +32,13 @@
 	margin-top: 10px; }
 
 .owl-theme .owl-dots {
+   
+    position: absolute;
+    bottom: 20px; /* Điều chỉnh giá trị này để thay đổi khoảng cách từ chân ảnh */
+    left: 50%;
+    transform: translateX(-50%);
+
+
 	text-align: center;
 	-webkit-tap-highlight-color: transparent; }
 .owl-theme .owl-dots .owl-dot {

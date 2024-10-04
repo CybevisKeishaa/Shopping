@@ -30,21 +30,7 @@ import model.Slider;
 
 public class HomePageServlet extends HttpServlet {
    
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-========
-public class blogList extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    
+   
     
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -54,11 +40,14 @@ public class blogList extends HttpServlet {
             BlogDBContext blogdb = new BlogDBContext();
             SliderDBContext sliderdb = new SliderDBContext();
             ProductDBContext productdb = new ProductDBContext();
+            
                        
             ArrayList<Slider> sliders = sliderdb.getSliderForHomepage();
             ArrayList<Blog> blogs = blogdb.getBlogForHomepage();
             ArrayList<Product> products = productdb.getDiscountProductForHomepage();
             ArrayList<Product> newProducts = productdb.getNewestProductForHomepage();
+            ArrayList<Product> maleProducts = productdb.getProductByGender();
+            
             
             request.setAttribute("newProducts", newProducts);
             request.setAttribute("products", products);

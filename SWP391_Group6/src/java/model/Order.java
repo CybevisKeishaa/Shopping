@@ -1,15 +1,17 @@
 package model;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 
 import java.util.Date;
 
 public class Order {
 
+    private String firstProductName;  
+    private int numberOfOtherProducts;
     private int order_id;
     private Customer_User customer;
-    private BigDecimal total_price;
+    private int total_price;
     private Date create_at;
     private String status;
     private String payment_method;
@@ -32,13 +34,11 @@ public class Order {
         this.customer = customer;
     }
 
-    
-
-    public BigDecimal getTotal_price() {
+    public int getTotal_price() {
         return total_price;
     }
 
-    public void setTotal_price(BigDecimal total_price) {
+    public void setTotal_price(int total_price) {
         this.total_price = total_price;
     }
 
@@ -81,5 +81,22 @@ public class Order {
     public void setOrderDetails(ArrayList<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
     }
+    
+    public String getFirstProductName() {
+        return firstProductName;
+    }
 
+    public void setFirstProductName(String firstProductName) {
+        this.firstProductName = firstProductName;
+    }
+
+    public int getNumberOfOtherProducts() {
+        return numberOfOtherProducts;
+    }
+
+    public void setNumberOfOtherProducts(int numberOfOtherProducts) {
+        this.numberOfOtherProducts = numberOfOtherProducts;
+    }
 }
+
+
