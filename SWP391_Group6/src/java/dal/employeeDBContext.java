@@ -6,7 +6,14 @@ package dal;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import model.Brand;
+import model.Capacity;
 import model.Employee;
+import model.Gender;
+import model.Image;
+import model.Product;
 
 /**
  *
@@ -14,6 +21,70 @@ import model.Employee;
  */
 public class employeeDBContext extends DBContext {
     //lấy ra employee theo ID
+    public List<Product> getListProductByEmployeeId(int id, int pageNumber, int pageSize) {
+        String sql = "SELECT p.* \n"
+                + "FROM Employee e \n"
+                + "INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "WHERE e.emp_id = ? \n"
+                + "ORDER BY p.product_id \n"
+                + "OFFSET ? ROWS \n"
+                + "FETCH NEXT ? ROWS ONLY;";
+        List<Product> pList = new ArrayList<>();
+        BrandDBContext br = new BrandDBContext();
+        CapacityDBContext cap = new CapacityDBContext();
+        GenderDBContext gen = new GenderDBContext();
+        ImageDBContext image = new ImageDBContext();
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            int offset = (pageNumber - 1) * pageSize;
+            st.setInt(1, id);
+            st.setInt(2, offset);
+            st.setInt(3, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                Brand b = br.getBrandFindById(rs.getInt(1));
+                Capacity c = cap.getCapacityFindById(rs.getInt(1));
+                Gender g = gen.getGenderFindById(rs.getInt(1));
+                Image ig = image.getImageById(rs.getInt(1));
+                p.setProduct_id(rs.getInt("product_id"));
+                p.setName(rs.getString("name"));
+                p.setDate(rs.getDate("date"));
+                p.setPrice(rs.getInt("price"));
+
+                p.setBrand(b);
+
+                pList.add(p);
+            }
+            return pList;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    public int totalListProductByEmployeeId(int id){
+        String sql= "SELECT COUNT(*) \n"
+                + "FROM Employee e \n"
+                + "INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "WHERE e.emp_id = ? \n";
+                int bid = -1;
+
+        try{
+             PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                bid = rs.getInt(1);
+            }
+            return bid;
+        }catch(Exception e){
+            
+        }
+        return -1;
+    }
     public Employee getEmployeeByIdForBlog(int id) {
         
         String sql = "SELECT * FROM Employee where emp_id=?"; //câu lệnh lấy ra employee theo ID
