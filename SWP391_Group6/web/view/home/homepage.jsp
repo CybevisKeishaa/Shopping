@@ -228,17 +228,17 @@
                                         <div class="navbar-collapse">	
                                             <div class="nav-inner">	
                                                 <ul class="nav main-menu menu navbar-nav">
-                                                    <li class="active"><a href="homepage">Trang chủ</a></li>
-                                                    <li><a href="productList">Sản phẩm</a></li>												
+                                                    <li class="active"><a href="${pageContext.request.contextPath}/homepage">Trang chủ</a></li>
+                                                    <li><a href="${pageContext.request.contextPath}/productList">Sản phẩm</a><span class="new">New</span></li>												
 
-                                                    <li><a href="#">Đơn hàng<i class="ti-angle-down"></i><span class="new">New</span></a>
+                                                    <li><a href="#">Đơn hàng<i class="ti-angle-down"></i></a>
                                                         <ul class="dropdown">
                                                             <li><a href="cart.html">Giỏ hàng</a></li>
-                                                            <li><a href="account/order">Đơn hàng</a></li>
+                                                            <li><a href="${pageContext.request.contextPath}/account/order">Đơn hàng</a></li>
                                                         </ul>
                                                     </li>
 
-                                                    <li><a href="blogList">Bài viết</a></li>
+                                                    <li><a href="${pageContext.request.contextPath}/blogList">Bài viết</a></li>
 
                                                     <li><a href="contact.html">Liên hệ</a></li>
                                                 </ul>
@@ -309,7 +309,7 @@
                                 <div class="content">
                                     <h4>${blog.title}</h4>
                                     <p>${blog.shortContent}</p>
-                                    <a href="${banner.link}">Discover Now</a>
+                                    <a href="blogDetail?id=${blog.blog_id}">Discover Now</a>
                                 </div>
                             </div>
                         </div>
@@ -345,7 +345,7 @@
                                             <div class="col-xl-3 col-lg-4 col-md-4 col-12">
                                                 <div class="single-product">
                                                     <div class="product-img">
-                                                        <a href="product-details.html">
+                                                        <a href="product/detail?product_id=${product.product_id}">
                                                             <img class="default-img" src="img/${product.img[0].img_url}" alt="#">
                                                             <img class="hover-img" src="img/${product.img[0].img_url}" alt="#">
                                                             <span class="price-dec">${product.discount.amount}% OFF</span>
@@ -1751,7 +1751,7 @@
                                 <div class="content">
                                     <p>${product.name}</p>
                                     <h3>${product.discount.name} <br> Up to<span> ${product.discount.amount}%</span></h3>
-                                    <a href="#">Shop Now</a>
+                                    <a href="product/detail?product_id=${product.product_id}">Shop Now</a>
                                 </div>
                             </div>
                         </div>   

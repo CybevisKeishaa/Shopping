@@ -83,7 +83,7 @@
             }
         </script>
     </head>
-    <jsp:include page="/Demo_Template/BasePage/header.html"/> <br>
+    <jsp:include page="/Demo_Template/BasePage/Header.jsp"/> <br>
     <body class="js">
         <!-- Order Details Section -->
         <div class="container">
@@ -183,7 +183,7 @@
             </div>
 
         </div>
-        <jsp:include page="/Demo_Template/BasePage/endpage.html" />
+        <jsp:include page="/Demo_Template/BasePage/Footer.jsp" />
 
         <!-- JS Files -->
         <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>

@@ -41,6 +41,7 @@ public class ProductDBContext extends DBContext<Product> {
 
             while (rs.next()) {
                 Product p = new Product();
+                p.setProduct_id(rs.getInt("product_id"));
                 p.setName(rs.getString("name"));
                 p.setPrice(rs.getInt("price"));
 
@@ -89,6 +90,7 @@ public class ProductDBContext extends DBContext<Product> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
+                p.setProduct_id(rs.getInt("product_id"));
                 p.setName(rs.getString("name"));
                 p.setPrice(rs.getInt("price"));
 

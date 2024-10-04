@@ -5,9 +5,28 @@
 <html lang="zxx">
     <head>
         <style>
+            /* Chỉnh sửa kích thước của nice-select khi sử dụng form-control-sm */
+            .form-inline .form-group select.form-control-sm {
+                height: 28px !important;    /* Điều chỉnh chiều cao */
+                font-size: 0.85rem !important; /* Điều chỉnh kích thước font */
+                padding: 2px 10px !important; /* Điều chỉnh padding để ô nhỏ hơn */
+                width: auto !important;     /* Điều chỉnh chiều rộng tự động phù hợp với nội dung */
+                margin-top: 12px !important;
+            }
+
+            /* Nếu nice-select đang được áp dụng */
+            .nice-select.form-control-sm {
+                height: 35px !important;
+                font-size: 0.85rem !important;
+                line-height: 35px !important; /* Đảm bảo chữ căn giữa dọc theo chiều cao */
+                padding: 0 8px !important;
+                width: 100px !important; /* Chiều rộng tự động để phù hợp nội dung */
+                margin-top: 12px !important;
+            }
+
             .form-inline .form-group select.form-control-sm{
                 height: 30px !important;    /* Điều chỉnh chiều cao */
-                font-size: 2px !important; /* Điều chỉnh kích thước font */
+                font-size: 12px !important; /* Điều chỉnh kích thước font */
                 padding: 2px 8px !important; /* Điều chỉnh padding */
                 width: auto !important;     /* Điều chỉnh chiều rộng để phù hợp nội dung */
             }
@@ -74,7 +93,7 @@
     </head>
 
     <body class="js">
-        <jsp:include page="/Demo_Template/BasePage/header.html"/>
+        <jsp:include page="/Demo_Template/BasePage/Header.jsp"/>
         <!-- Preloader và các thành phần khác của bạn không thay đổi -->
 
         <!-- Start Product Area -->
@@ -123,7 +142,7 @@
 
                                             <!-- Nút Reset -->
                                             <div class="form-group mb-2 ml-3">
-                                                <a href="order" class="btn btn-secondary btn-sm">Đặt lại</a> <!-- Điều hướng về trang không có param -->
+                                                <a href="order" class="btn btn-secondary btn-sm">Đặt lại</a> 
                                             </div>
 
                                             <div class="form-group mb-2 ml-3">
@@ -151,7 +170,7 @@
                                                 <c:forEach var="order" items="${requestScope.orders}">
                                                     <tr>
                                                         <td>
-                                                            <a href="order/detail?orderId=${order.order_id}">
+                                                            <a href="${pageContext.request.contextPath}/account/order/detail?orderId=${order.order_id}">
                                                                 ${order.order_id}
                                                             </a>
                                                         </td>
@@ -170,7 +189,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <!-- Pagination -->
                             <div class="container">
                                 <div class="pagination-container d-flex justify-content-center">
@@ -207,7 +226,7 @@
             </div>
         </div>
 
-        <jsp:include page="/Demo_Template/BasePage/endpage.html" />
+        <jsp:include page="/Demo_Template/BasePage/Footer.jsp" />
         <!-- JS Files -->
         <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
