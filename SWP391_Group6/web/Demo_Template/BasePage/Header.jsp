@@ -79,8 +79,8 @@
                                 <ul class="list-main">
                                     <li><i class="ti-location-pin"></i> Đại Học FPT Hà Nội</li>
 
-                                    <li><i class="ti-user"></i> <a href="customer_profile">Tài khoản</a></li>
-                                    <li><i class="ti-power-off"></i><a href="login">Đăng nhập</a></li>
+                                    <li><i class="ti-user"></i> <a href="${pageContext.request.contextPath}/customer_profile">Tài khoản</a></li>
+                                    <li><i class="ti-power-off"></i><a href="${pageContext.request.contextPath}/login">Đăng nhập</a></li>
                                 </ul>
                             </div>
                             <!-- End Top Right -->
@@ -136,7 +136,7 @@
                                     <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
                                 </div>
                                 <div class="sinlge-bar">
-                                    <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                                    <a href="${pageContext.request.contextPath}/customer_profile" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
                                 </div>
                                 <div class="sinlge-bar shopping">
                                     <a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
@@ -219,34 +219,34 @@
         <!--/ End Header -->
 
         <!-- Jquery -->
-        <script src="../js/jquery.min.js"></script>
-        <script src="../js/jquery-migrate-3.0.0.js"></script>
-        <script src="../js/jquery-ui.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.0.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery-ui.min.js"></script>
         <!-- Popper JS -->
-        <script src="../js/popper.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/popper.min.js"></script>
         <!-- Bootstrap JS -->
-        <script src="../js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
         <!-- Slicknav JS -->
-        <script src="../js/slicknav.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/slicknav.min.js"></script>
         <!-- Owl Carousel JS -->
-        <script src="../js/owl-carousel.js"></script>
+        <script src="${pageContext.request.contextPath}/js/owl-carousel.js"></script>
         <!-- Magnific Popup JS -->
-        <script src="../js/magnific-popup.js"></script>
+        <script src="${pageContext.request.contextPath}/js/magnific-popup.js"></script>
         <!-- Waypoints JS -->
-        <script src="../js/waypoints.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/waypoints.min.js"></script>
         <!-- Countdown JS -->
-        <script src="../js/finalcountdown.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/finalcountdown.min.js"></script>
         <!-- Nice Select JS -->
-        <script src="../js/nicesellect.js"></script>
+        <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
         <!-- Flex Slider JS -->
-        <script src="../js/flex-slider.js"></script>
+        <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
         <!-- ScrollUp JS -->
-        <script src="../js/scrollup.js"></script>
+        <script src="${pageContext.request.contextPath}/js/scrollup.js"></script>
         <!-- Onepage Nav JS -->
-        <script src="../js/onepage-nav.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/onepage-nav.min.js"></script>
         <!-- Easing JS -->
-        <script src="../js/easing.js"></script>
+        <script src="${pageContext.request.contextPath}/js/easing.js"></script>
         <!-- Active JS -->
-        <script src="../js/active.js"></script>
+        <script src="${pageContext.request.contextPath}/js/active.js"></script>
     </body>
 </html>

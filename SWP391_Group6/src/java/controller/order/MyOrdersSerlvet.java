@@ -40,50 +40,7 @@ public class MyOrdersSerlvet extends BaseRequiredCustomerAuthenticationControlle
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-//        // Lấy tham số phân trang
-//        String pageStr = request.getParameter("page");
-//        int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
-//
-//        // Lấy tham số lọc (startDate và endDate)
-//        String startDateStr = request.getParameter("startDate");
-//        String endDateStr = request.getParameter("endDate");
-//        Date startDate = null;
-//        Date endDate = null;
-//
-//        try {
-//            if (startDateStr != null && !startDateStr.isEmpty()) {
-//                startDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDateStr);
-//            }
-//            if (endDateStr != null && !endDateStr.isEmpty()) {
-//                endDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDateStr);
-//            }
-//        } catch (java.text.ParseException ex) {
-//            Logger.getLogger(MyOrdersSerlvet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        // Lấy tham số sắp xếp (sortColumn và sortOrder)
-//        String sortColumn = request.getParameter("sortColumn") != null ? request.getParameter("sortColumn") : "created_at";
-//        String sortOrder = request.getParameter("sortOrder") != null ? request.getParameter("sortOrder") : "DESC";
-//
-//        OrderDBContext db = new OrderDBContext();
-//        int totalOrder = db.getTotalOrderWithFilter(1, startDate, endDate);
-//        ArrayList<Order> orders = db.getOrdersWithPaginationAndFilter(1, pageNumber, PAGE_SIZE, startDate, endDate, sortColumn, sortOrder);  // Lấy danh sách đơn hàng với phân trang, lọc, sắp xếp
-//
-//        // Tính tổng số trang
-//        int totalPages = (int) Math.ceil(totalOrder / (double) PAGE_SIZE);
-//
-//        // Thiết lập thuộc tính cho request để chuyển sang JSP
-//        request.setAttribute("currentPage", pageNumber);
-//        request.setAttribute("totalPages", totalPages);
-//        request.setAttribute("orders", orders);
-//        request.setAttribute("startDate", startDateStr);
-//        request.setAttribute("endDate", endDateStr);
-//        request.setAttribute("sortColumn", sortColumn);
-//        request.setAttribute("sortOrder", sortOrder);
-//        // Trả lại giá trị sortOrder
-//
-//        // Điều hướng đến trang JSP
-//        request.getRequestDispatcher("../view/order/orderList.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

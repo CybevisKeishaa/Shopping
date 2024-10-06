@@ -109,7 +109,7 @@
                 <!-- Buttons for updating or canceling the order -->
                 <div class="order-actions">
                     <c:if test="${requestScope.order.status.status_name != 'Pending   '}">
-                        <form action="UpdateOrder" method="post" onsubmit="return confirmReceived();">
+                        <form action="update" method="post" onsubmit="return confirmReceived();">
                             <input type="hidden" name="order_id" value="${order.order_id}">
                             <button type="submit" class="btn btn-primary">Giao hàng thành công</button>
                         </form>
@@ -133,7 +133,7 @@
                 <p><strong>Địa chỉ:</strong> ${requestScope.order.customer.address[0].city}, ${requestScope.order.customer.address[0].district}, ${requestScope.order.customer.address[0].ward},${requestScope.order.customer.address[0].street} </p>
             </div>
 
-            <!-- Ordered Products Section -->
+            
             <!-- Ordered Products Section -->
             <div class="ordered-products">
                 <h2>Ordered Products</h2>
@@ -170,8 +170,9 @@
 
                                     <!-- Điều kiện hiển thị nút Feedback -->
                                     <c:if test="${requestScope.order.status.status_name == 'Completed '}">
-                                        <form action="FeedbackProduct" method="get">
-                                            <input type="hidden" name="product_id" value="${product.product_id}">
+                                        <form action="../feedback" method="GET">
+                                            <input type="hidden" name="product_id" value="${product.product_id}">                                            
+                                            <input type="hidden" name="product_name" value="${product.name}">                                          
                                             <button type="submit" class="btn btn-secondary btn-sm">Feedback</button>
                                         </form>
                                     </c:if>

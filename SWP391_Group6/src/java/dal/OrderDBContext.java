@@ -250,15 +250,17 @@ public class OrderDBContext extends DBContext<Order> {
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT p.product_id, p.name AS product_name, g.name AS gender_name, od.quantity, od.price_at_order, (od.quantity * od.price_at_order) AS total_cost, img.img_url AS product_image \n"
-                    + "FROM [OrderDetail] od \n"
-                    + "LEFT JOIN [Product] p ON od.product_id = p.product_id \n"
-                    + "LEFT JOIN Product_Gender pg ON pg.product_id = p.product_id \n"
-                    + "LEFT JOIN Gender g ON g.gender_id = pg.gender_id \n"
-                    + "LEFT JOIN [Order] o ON o.order_id = od.order_id \n"
-                    + "LEFT JOIN Product_Image pi ON pi.product_id = p.product_id \n"
-                    + "LEFT JOIN Image img ON img.img_id = pi.img_id \n"
-                    + "WHERE od.order_id = ? AND o.cus_id = ? and img.img_url like 'product%';";
+            String sql = "SELECT p.product_id, p.name AS product_name, g.name AS gender_name, od.quantity, od.price_at_order, \n"
+                    + "       (od.quantity * od.price_at_order) AS total_cost, MIN(img.img_url) AS product_image\n"
+                    + "FROM [OrderDetail] od\n"
+                    + "LEFT JOIN [Product] p ON od.product_id = p.product_id\n"
+                    + "LEFT JOIN Product_Gender pg ON pg.product_id = p.product_id\n"
+                    + "LEFT JOIN Gender g ON g.gender_id = pg.gender_id\n"
+                    + "LEFT JOIN [Order] o ON o.order_id = od.order_id\n"
+                    + "LEFT JOIN Product_Image pi ON pi.product_id = p.product_id\n"
+                    + "LEFT JOIN Image img ON img.img_id = pi.img_id\n"
+                    + "WHERE od.order_id = ? AND o.cus_id = ? \n"
+                    + "GROUP BY p.product_id, p.name, g.name, od.quantity, od.price_at_order";
 
             stm = connect.prepareStatement(sql);
             stm.setInt(1, orderId);
@@ -355,10 +357,5 @@ public class OrderDBContext extends DBContext<Order> {
         }
     }
 
-    public static void main(String[] args) {
-        OrderDBContext db = new OrderDBContext();
-        Order o = db.getOrderByOrderID(23, 1);
-        System.out.println(o);
-    }
 
 }

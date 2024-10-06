@@ -182,7 +182,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
     // Lấy thông tin tài khoản khách hàng bằng email và mật khẩu
     public Customer_User getCustomerAccountByEmail(String email, String password) {
-        String sql = "SELECT c.cus_id, c.name_cus, c.email, c.status, c.avartar, r.role_id, f.f_url "
+        String sql = "SELECT c.cus_id, c.c_phone, c.name_cus, c.email, c.status, c.avartar, r.role_id, f.f_url "
                 + "FROM Customer c "
                 + "LEFT JOIN Role_Customer rc ON c.cus_id = rc.cus_id "
                 + "LEFT JOIN Role r ON rc.role_id = r.role_id "
@@ -206,6 +206,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                         customer.setEmail(rs.getString("email"));
                         customer.setStatus(rs.getBoolean("status"));
                         customer.setAvatar(rs.getString("avartar"));
+                        customer.setC_phone(rs.getString("c_phone"));
 
                         r = new Role();
                         r.setRole_id(rs.getInt("role_id"));

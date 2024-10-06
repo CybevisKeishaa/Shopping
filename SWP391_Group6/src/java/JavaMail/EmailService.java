@@ -45,7 +45,7 @@ public class EmailService implements IJavaMail {
             String htmlContent = "<html>"
                     + "<body>"
                     + "<p>" + messageContent + "</p>"
-                    + "<p>Click the button below to verify your account:</p>"
+                    + "<p>Click the button below to direct:</p>"
                     + "<a href='" + verificationLink + "' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;'>Verify Account</a>"
                     + "</body>"
                     + "</html>";
