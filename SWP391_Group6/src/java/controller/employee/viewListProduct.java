@@ -56,26 +56,26 @@ public class viewListProduct extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-        private static final int PAGE_SIZE = 6;
+    private static final int PAGE_SIZE = 6;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Object object = request.getSession().getAttribute("employee");
-                    String pageStr = request.getParameter("page");
-            int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
+        String pageStr = request.getParameter("page");
+        int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
 
-        Employee e=null;
-        if(object!=null){
-            e=(Employee)object;
+        Employee e = null;
+        if (object != null) {
+            e = (Employee) object;
         }
         productListDBContext pd = new productListDBContext();
-        List<Product> list=pd.getListProductByEmployeeId(e.getEmp_id(), pageNumber, PAGE_SIZE);
-                    int totalProducts = pd.totalListProductByEmployeeId(e.getEmp_id());
-            int totalPages = (int) Math.ceil(totalProducts / (double) PAGE_SIZE);
+        List<Product> list = pd.getListProductByEmployeeId(e.getEmp_id(), pageNumber, PAGE_SIZE);
+        int totalProducts = pd.totalListProductByEmployeeId(e.getEmp_id());
+        int totalPages = (int) Math.ceil(totalProducts / (double) PAGE_SIZE);
         request.setAttribute("currentPage", pageNumber);
-            request.setAttribute("totalPages", totalPages);
-            request.setAttribute("data", list);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("data", list);
         request.getRequestDispatcher("view/employee/viewListProduct.jsp").forward(request, response);
     }
 
