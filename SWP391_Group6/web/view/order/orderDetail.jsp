@@ -172,7 +172,7 @@
                                     <c:if test="${requestScope.order.status.status_name == 'Completed '}">
                                         <form action="../feedback" method="GET">
                                             <input type="hidden" name="product_id" value="${product.product_id}">                                            
-                                            <input type="hidden" name="product_name" value="${product.name}">                                          
+                                            <input type="hidden" name="product_name" value="${product.name}">  
                                             <button type="submit" class="btn btn-secondary btn-sm">Feedback</button>
                                         </form>
                                     </c:if>

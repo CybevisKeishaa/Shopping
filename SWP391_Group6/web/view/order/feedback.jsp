@@ -142,11 +142,11 @@
                     </div>
                     <form action="feedback" method="POST" enctype="multipart/form-data" class="feedback-form">
                         <!-- Thông tin liên hệ -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="product">Sản phẩm</label>
                             <input type="text" class="form-control" id="product" name="productName" 
                                    value="<%= request.getAttribute("productName") != null ? request.getAttribute("productName") : "" %>" required>
-                        </div>
+                                </div>
                         <input type="hidden" id="productID" name="productID" 
                                value="<%= request.getAttribute("productID") != null ? request.getAttribute("productID") : "" %>">
 
@@ -183,7 +183,7 @@
                             <label for="rating" class="mr-2">Đánh giá:</label>
                             <div class="star-rating">
 
-                                <!--  //                              <input type="number" name="rating" min="1" max="5" required>-->
+                                
 
                                 <input type="radio" id="5-stars" name="starrr" value= "5" required />
                                 <label for="5-stars" class="star">&#9733;</label>

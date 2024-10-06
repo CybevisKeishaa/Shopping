@@ -45,7 +45,7 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
         String email = user.getEmail();
 
         String contextPath = request.getContextPath(); // Lấy context path của ứng dụng
-        String verificationLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/account/feedback";
+        String verificationLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/account/feedback?orderID="+orderID;
         IJavaMail mailService = new EmailService();
         boolean emailSent = mailService.send(email, "Thank you", "Cảm ơn quý khách đã sử dụng sản phẩm của chúng tôi, hãy để lại đánh giá để chúng tôi có thể nâng cao trải nghiệm dịch vụ của bạn cho những lần tiếp theo", verificationLink);
 

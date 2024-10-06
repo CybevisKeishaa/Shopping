@@ -5,19 +5,13 @@
 package controller.feedback;
 
 import controller.auth.BaseRequiredCustomerAuthenticationController;
-import dal.CustomerDBContext;
 import dal.FeedbackDBContext;
-import dal.ProductDBContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Customer_User;
-import model.Product;
-import java.sql.*;
 
 /**
  *
@@ -50,8 +44,8 @@ public class FeedbackServlet extends BaseRequiredCustomerAuthenticationControlle
 
         String productName = request.getParameter("product_name");
         String productID = request.getParameter("product_id");
-        request.setAttribute("productID", productID);
-        request.setAttribute("productName", productName);
+            request.setAttribute("productID", productID);
+            request.setAttribute("productName", productName);
         request.getRequestDispatcher("../view/order/feedback.jsp").forward(request, response);
 
     }
@@ -68,7 +62,7 @@ public class FeedbackServlet extends BaseRequiredCustomerAuthenticationControlle
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
         java.util.Date utilDate = new java.util.Date();
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); 
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
         String name = request.getParameter("name");
         String gender = request.getParameter("gender");
@@ -81,9 +75,9 @@ public class FeedbackServlet extends BaseRequiredCustomerAuthenticationControlle
 
         FeedbackDBContext db = new FeedbackDBContext();
         db.insertFeedbackFromCustomer(user.getCus_id(), productID, rating, sqlDate, feedback, phone);
-        response.getWriter().print("Thank you for your feedback");
+        request.getRequestDispatcher("../view/notice/ThanksForBuy.jsp").forward(request, response);
 
-   }
+    }
 
     /**
      * Returns a short description of the servlet.
