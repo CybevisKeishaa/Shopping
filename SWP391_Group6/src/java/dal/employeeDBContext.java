@@ -6,6 +6,7 @@ package dal;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 import model.Brand;
@@ -14,12 +15,16 @@ import model.Employee;
 import model.Gender;
 import model.Image;
 import model.Product;
+=======
+import model.Employee_User;
+>>>>>>> main
 
 /**
  *
  * @author admin
  */
 public class employeeDBContext extends DBContext {
+<<<<<<< HEAD
     //lấy ra employee theo ID
     public List<Product> getListProductByEmployeeId(int id, int pageNumber, int pageSize) {
         String sql = "SELECT p.* \n"
@@ -73,10 +78,20 @@ public class employeeDBContext extends DBContext {
 
         try{
              PreparedStatement st = connect.prepareStatement(sql);
+=======
+
+    public Employee_User getEmployeeByIdForBlog(int id) {
+        String sql = "SELECT * FROM Employee where emp_id=?";
+        
+
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+>>>>>>> main
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
+<<<<<<< HEAD
                 bid = rs.getInt(1);
             }
             return bid;
@@ -95,6 +110,9 @@ public class employeeDBContext extends DBContext {
             // lấy ra id và tên employee
             if (rs.next()) {
                 Employee e = new Employee();
+=======
+                Employee_User e = new Employee_User();
+>>>>>>> main
                 e.setEmp_id(id);
                 e.setName_emp(rs.getString(2));
                  return e;
@@ -110,7 +128,11 @@ public class employeeDBContext extends DBContext {
 
     public static void main(String[] args) {
         employeeDBContext eDb = new employeeDBContext();
+<<<<<<< HEAD
         Employee e = eDb.getEmployeeByIdForBlog(1);
+=======
+        Employee_User e = eDb.getEmployeeByIdForBlog(1);
+>>>>>>> main
         System.out.println(e.getName_emp());
     }
 }

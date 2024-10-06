@@ -4,6 +4,7 @@
  */
 package blogController;
 
+<<<<<<< HEAD
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -11,12 +12,26 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+=======
+import dal.BlogDBContext;
+import java.io.IOException;
+import java.io.PrintWriter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Blog;
+>>>>>>> main
 
 /**
  *
  * @author admin
  */
+<<<<<<< HEAD
 @WebServlet(name = "blogSearch", urlPatterns = {"/blogSearch"})
+=======
+>>>>>>> main
 public class blogSearch extends HttpServlet {
 
     /**
@@ -36,7 +51,11 @@ public class blogSearch extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
+<<<<<<< HEAD
             out.println("<title>Servlet blogSearch</title>");            
+=======
+            out.println("<title>Servlet blogSearch</title>");
+>>>>>>> main
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet blogSearch at " + request.getContextPath() + "</h1>");
@@ -54,10 +73,34 @@ public class blogSearch extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+<<<<<<< HEAD
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+=======
+    private static final int PAGE_SIZE = 6;
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String search = request.getParameter("search");
+        if (search.isEmpty()) {
+            response.sendRedirect("blogList");
+        } else {
+            String pageStr = request.getParameter("page");
+            int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
+            BlogDBContext blogDB = new BlogDBContext();
+            List<Blog> list = blogDB.getAllSearchByTittle(search,pageNumber, PAGE_SIZE);
+            int totalProducts = blogDB.getTotalBlogsBySearch(search);
+            int totalPages = (int) Math.ceil(totalProducts / (double) PAGE_SIZE);
+            request.setAttribute("search", search);
+            request.setAttribute("currentPage", pageNumber);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("data", list);
+            request.getRequestDispatcher("view/blog/blogSearch.jsp").forward(request, response);
+        }
+>>>>>>> main
     }
 
     /**

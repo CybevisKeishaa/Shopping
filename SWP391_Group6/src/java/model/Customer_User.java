@@ -5,13 +5,16 @@
 package model;
 
 import java.util.ArrayList;
+import java.sql.*;
 
 /**
  *
  * @author KEISHA
  */
 public class Customer_User {
+
     private int cus_id;
+    private String username;
     private String name_cus;
     private String email;
     private String password;
@@ -23,6 +26,41 @@ public class Customer_User {
     private String display_name;
     private ArrayList<Address> address;
     private ArrayList<Order> orders;
+    private Gender gender;
+    private Date dob;
+    private String verificationCode;
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 
     public int getCus_id() {
         return cus_id;
@@ -120,6 +158,4 @@ public class Customer_User {
         this.orders = orders;
     }
 
-    
-    
 }

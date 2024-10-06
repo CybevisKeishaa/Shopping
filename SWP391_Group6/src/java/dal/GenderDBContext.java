@@ -16,6 +16,7 @@ import model.Gender;
  * @author DINH SON
  */
 public class GenderDBContext extends DBContext {
+<<<<<<< HEAD
     public Gender getGenderFindById(int gid) {
         String sql = "Select * from Gender WHERE gender_id=?";
         try {
@@ -49,6 +50,13 @@ public class GenderDBContext extends DBContext {
         return null;
 
     }
+=======
+    
+       
+        
+    
+     
+>>>>>>> main
     
     
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author KEISHA
  */
-class Capacity {
+public class Capacity {
 
     private int capacity_id;
     private int value;

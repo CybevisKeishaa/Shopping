@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author KEISHA
  */
-class Gender {
+public class Gender {
 
     private int gender_id;
     private String name;

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -12,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Customer_User;
 import java.sql.*;
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +23,18 @@ import model.Cart;
 import model.Order;
 import model.PasswordResetToken;
 import model.Role;
+=======
+>>>>>>> main
 
 /**
  *
  * @author KEISHA
  */
+<<<<<<< HEAD
 public class CustomerDBContext extends DBContext {
+=======
+public class CustomerDBContext extends DBContext<Customer_User> {
+>>>>>>> main
 
     public void insertCustomer(Customer_User customer) throws SQLException {
         PreparedStatement stm_insert = null;
@@ -55,10 +65,17 @@ public class CustomerDBContext extends DBContext {
                     + "           ,[display_name]\n"
                     + "           ,[status]\n"
                     + "           ,[role_id]\n"
+<<<<<<< HEAD
                     + "           ,[gender]\n"
                     + "           ,[username]\n"
                     + "           ,[birth_date]\n"
                     + "           ,[verification_code])\n"
+=======
+                    + "           ,[gender_id]\n"
+                    + "           ,[username]\n"
+                    + "           ,[birth_date]\n" 
+                    + "           ,[verification_code])\n" 
+>>>>>>> main
                     + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Chuẩn bị câu lệnh SQL chèn
@@ -67,11 +84,19 @@ public class CustomerDBContext extends DBContext {
             stm_insert.setString(2, customer.getName_cus());               // name_cus
             stm_insert.setString(3, customer.getPassword());               // password
             stm_insert.setString(4, customer.getEmail());                  // email
+<<<<<<< HEAD
             stm_insert.setString(5, customer.getC_phone());                // c_phone 
             stm_insert.setString(6, customer.getUsername());           // display_name
             stm_insert.setBoolean(7, false);                                // status (giả sử là active - true)
             stm_insert.setInt(8, customer.getRole().getRole_id());         // role_id
             stm_insert.setInt(9, customer.isGender() ? 1 : 0);
+=======
+            stm_insert.setInt(5, customer.getC_phone());                // c_phone 
+            stm_insert.setString(6, customer.getDisplay_name());           // display_name
+            stm_insert.setBoolean(7, false);                                // status (giả sử là active - true)
+            stm_insert.setInt(8, customer.getRole().getRole_id());         // role_id
+            stm_insert.setInt(9, customer.getGender().getGender_id());     // gender_id
+>>>>>>> main
             stm_insert.setString(10, customer.getUsername());
             stm_insert.setDate(11, customer.getDob());                     // dob (ngày sinh)
             stm_insert.setString(12, customer.getVerificationCode());
@@ -195,7 +220,11 @@ public class CustomerDBContext extends DBContext {
             stm = connect.prepareStatement(sql);
             stm.setString(1, verificationCode);
             int rowsUpdated = stm.executeUpdate();
+<<<<<<< HEAD
             return rowsUpdated > 0;
+=======
+            return rowsUpdated > 0;  
+>>>>>>> main
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
@@ -206,6 +235,7 @@ public class CustomerDBContext extends DBContext {
         }
     }
 
+<<<<<<< HEAD
     // Lấy thông tin tài khoản khách hàng bằng email và mật khẩu
     public Customer_User getCustomerAccountByEmail(String email, String password) {
         String sql = """
@@ -648,4 +678,6 @@ public class CustomerDBContext extends DBContext {
         CustomerDBContext cdb = new CustomerDBContext();
         System.out.println(cdb.getAllListByProductidEmployeeIdName("o", 2, 1, 1, 3).size());
     }
+=======
+>>>>>>> main
 }

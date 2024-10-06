@@ -13,14 +13,18 @@ import java.util.logging.Logger;
  *
  * @author KEISHA
  */
+
 public abstract class DBContext<T> {
+
 
     protected Connection connect;
 
     public DBContext() {
         try {
+
             String username = "Keishaa";
             String password = "123";
+
             String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=SWP391;encrypt=true;trustservercertificate=true;";
 
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

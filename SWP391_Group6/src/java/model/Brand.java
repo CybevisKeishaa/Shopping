@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author KEISHA
  */
-class Brand {
+public class Brand {
 
     private int brand_id;
     private String name;

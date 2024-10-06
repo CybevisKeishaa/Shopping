@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author KEISHA
  */
-class Image {
+public class Image {
     private int img_id;
     private String img_url;
     private Product product;
@@ -65,6 +65,4 @@ class Image {
     public void setBlog(ArrayList<Blog> blog) {
         this.blog = blog;
     }
-    
-    
 }

@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author KEISHA
  */
-class Feedback {
+public class Feedback {
     private int fb_id;
     private Date date;
     private String content;

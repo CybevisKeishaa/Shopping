@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author KEISHA
  */
-class Blog {
+public class Blog {
     private int blog_id;
     private String title;
     private String shortContent;
@@ -18,6 +18,15 @@ class Blog {
     private Date date;
     private Employee_User employee;
     private Product product;
+    private Image image;
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
 
     public int getBlog_id() {
         return blog_id;

@@ -13,11 +13,11 @@ import java.util.Date;
  * @author KEISHA
  */
 
-class Discount {
+public class Discount {
 
     private int discount_id;
     private String name;
-    private BigDecimal amount;
+    private int amount;
     private Date start;
     private Date end;
     private ArrayList<Product> products;
@@ -38,14 +38,15 @@ class Discount {
         this.name = name;
     }
 
-    public BigDecimal getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
+    
     
 
     

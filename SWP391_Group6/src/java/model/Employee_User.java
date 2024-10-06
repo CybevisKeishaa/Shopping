@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author KEISHA
  */
-class Employee_User {
+public class Employee_User {
     private int emp_id;
     private String name_emp;
     private String password;

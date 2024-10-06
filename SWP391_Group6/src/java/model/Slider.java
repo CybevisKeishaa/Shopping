@@ -14,6 +14,15 @@ public class Slider {
     private String description;
     private Employee_User employee;
     private Product product;
+    private Image image;
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
 
     public int getSlider_id() {
         return slider_id;

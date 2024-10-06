@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+>>>>>>> main
 package dal;
 
 import java.sql.PreparedStatement;
@@ -7,7 +14,10 @@ import java.util.List;
 import model.Blog;
 import model.Brand;
 import model.Capacity;
+<<<<<<< HEAD
 import model.Discount;
+=======
+>>>>>>> main
 import model.Gender;
 import model.Image;
 import model.Product;
@@ -20,10 +30,17 @@ public class productListDBContext extends DBContext {
 
     public List<Product> getAll(int pageNumber, int pageSize) {
         List<Product> pList = new ArrayList<>();
+<<<<<<< HEAD
         BrandDBContext br = new BrandDBContext();
         CapacityDBContext cap = new CapacityDBContext();
         GenderDBContext gen = new GenderDBContext();
         ImageDBContext image = new ImageDBContext();
+=======
+        
+        
+        GenderDBContext gen = new GenderDBContext();
+        
+>>>>>>> main
         String sql = "SELECT * FROM Product Order By product_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
@@ -33,17 +50,30 @@ public class productListDBContext extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
+<<<<<<< HEAD
                 Brand b = br.getBrandFindById(rs.getInt(1));
                 Capacity c = cap.getCapacityFindById(rs.getInt(1));
                 Gender g = gen.getGenderFindById(rs.getInt(1));
                 Image ig = image.getImageById(rs.getInt(1));
+=======
+
+                
+                
+>>>>>>> main
                 p.setProduct_id(rs.getInt("product_id"));
                 p.setName(rs.getString("name"));
                 p.setDate(rs.getDate("date"));
                 p.setPrice(rs.getInt("price"));
+<<<<<<< HEAD
 
                 p.setBrand(b);
 
+=======
+                
+                
+              
+            
+>>>>>>> main
                 pList.add(p);
             }
             return pList;
@@ -54,6 +84,7 @@ public class productListDBContext extends DBContext {
 
     }
 
+<<<<<<< HEAD
     public List<Product> getAllByCapIdGeid(int cacpid, int geid, int pageNumber, int pageSize) {
         String sql = "select p.* from Product p inner join Product_Capacity pc on p.product_id=pc.product_id inner join Product_Gender pg on p.product_id=pg.product_id   where pc.cap_id=? and pg.gender_id=? Order By p.product_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         List<Product> pList = new ArrayList<>();
@@ -449,6 +480,8 @@ public class productListDBContext extends DBContext {
         return count;
     }
 
+=======
+>>>>>>> main
     public int getTotalProduct() {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM Product";
@@ -516,6 +549,7 @@ public class productListDBContext extends DBContext {
         return count;
     }
 
+<<<<<<< HEAD
     public Product getByProductId(int id) {
         String sql = "SELECT * FROM Product where product_id=?";
         try {
@@ -759,6 +793,16 @@ public class productListDBContext extends DBContext {
 //        System.out.println(pd.getProductByEmployeeId(2).size());
 //        System.out.println(pd.getListProductByEmployeeId(2, 1, 2).size());
         System.out.println(pd.getAllListByEidPid(2, 1, 1).size());
+=======
+    public static void main(String[] args) {
+        productListDBContext pd = new productListDBContext();
+        List<Product> p = pd.getAllSearchByTittle("c",1, 10);
+        for (Product x : p) {
+            System.out.println(x.getProduct_id());
+        }
+        System.out.println(pd.getTotalProduct());
+        
+>>>>>>> main
     }
 
 }

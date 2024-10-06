@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Product {
     private int product_id;
     private String name;
-    private BigDecimal price;
+    private int price;
     private Date date;
     private int stock;
     private Discount discount;
@@ -45,13 +45,15 @@ public class Product {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(int price) {
         this.price = price;
     }
+
+    
 
     public Date getDate() {
         return date;

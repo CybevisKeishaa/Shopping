@@ -10,11 +10,11 @@ import java.math.BigDecimal;
  *
  * @author KEISHA
  */
-class Item {
+public class Item {
     private int item_id;
     private Product product;
     private Cart cart;
-    private BigDecimal price_at_cart;
+    private int price_at_cart;
     private Brand brand;
     private Gender gender;
     private Capacity capacity;
@@ -45,13 +45,15 @@ class Item {
         this.cart = cart;
     }
 
-    public BigDecimal getPrice_at_cart() {
+    public int getPrice_at_cart() {
         return price_at_cart;
     }
 
-    public void setPrice_at_cart(BigDecimal price_at_cart) {
+    public void setPrice_at_cart(int price_at_cart) {
         this.price_at_cart = price_at_cart;
     }
+
+    
 
     public Brand getBrand() {
         return brand;

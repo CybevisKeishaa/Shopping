@@ -10,10 +10,10 @@ import java.math.BigDecimal;
  *
  * @author KEISHA
  */
-class OrderDetail {
+public class OrderDetail {
     private int detail_id;
     private Product product;
-    private BigDecimal price_at_order;
+    private int price_at_order;
     private int quantity;
     private Gender gender;
     private Brand brand;
@@ -36,13 +36,15 @@ class OrderDetail {
         this.product = product;
     }
 
-    public BigDecimal getPrice_at_order() {
+    public int getPrice_at_order() {
         return price_at_order;
     }
 
-    public void setPrice_at_order(BigDecimal price_at_order) {
+    public void setPrice_at_order(int price_at_order) {
         this.price_at_order = price_at_order;
     }
+
+    
 
     public int getQuantity() {
         return quantity;
