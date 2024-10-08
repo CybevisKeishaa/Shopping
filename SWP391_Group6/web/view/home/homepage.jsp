@@ -133,7 +133,7 @@
                         <div class="col-lg-2 col-md-2 col-12">
                             <!-- Logo -->
                             <div class="logo">
-                                <a href="homepage"><img src="${pageContext.request.contextPath}/img/logo.png" alt="logo"></a>
+                                <a href="${pageContext.request.contextPath}/homepage"><img src="${pageContext.request.contextPath}/img/logo.png" alt="logo"></a>
                             </div>
                             <!--/ End Logo -->
                             <!-- Search Form -->
@@ -219,7 +219,7 @@
                     <div class="cat-nav-head">
                         <div class="row">
                             <div class="col-lg-3">
-                                
+
                             </div>
                             <div class="col-lg-9 col-12">
                                 <div class="menu-area">
@@ -240,7 +240,7 @@
 
                                                     <li><a href="${pageContext.request.contextPath}/blogList">Bài viết</a></li>
 
-                                                    <li><a href="contact.html">Liên hệ</a></li>
+                                                    <li><a href="${pageContext.request.contextPath}/homepage/feedback">Đánh giá</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -2193,7 +2193,7 @@
                             <!-- Single Widget -->
                             <div class="single-footer about">
                                 <div class="logo">
-                                    <a href="index.html"><img src="img/logo.png" alt="#"></a>
+                                    <a href="${pageContext.request.contextPath}/homepage"><img src="${pageContext.request.contextPath}/img/logo.png" alt="logo"></a>
                                 </div>
                                 <p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
                                 <p class="call">Giải đáp thắc mắc? Call us 24/7<span><a href="tel:123456789">+84 354 995 144</a></span></p>

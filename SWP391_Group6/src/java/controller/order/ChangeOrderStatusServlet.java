@@ -39,13 +39,14 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        int orderID = Integer.parseInt(request.getParameter("order_id"));
+        String  orderIDRaw= request.getParameter("order_id");
+        int orderID = Integer.parseInt(orderIDRaw);
         OrderDBContext db = new OrderDBContext();
         db.updateOrderStatus(orderID, 4);
         String email = user.getEmail();
 
         String contextPath = request.getContextPath(); // Lấy context path của ứng dụng
-        String verificationLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/account/feedback?orderID="+orderID;
+        String verificationLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/account/feedback?oid="+orderIDRaw;
         IJavaMail mailService = new EmailService();
         boolean emailSent = mailService.send(email, "Thank you", "Cảm ơn quý khách đã sử dụng sản phẩm của chúng tôi, hãy để lại đánh giá để chúng tôi có thể nâng cao trải nghiệm dịch vụ của bạn cho những lần tiếp theo", verificationLink);
 

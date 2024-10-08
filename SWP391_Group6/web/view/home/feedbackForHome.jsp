@@ -163,62 +163,34 @@
                 <div class="col-md-8">
                     <div class="col-12">
                         <div class="section-title">
-                            <h2>Feedback</h2> <!-- Giữ style tiêu đề của bạn -->
+                            <h2>Feedback Homepage</h2> <!-- Giữ style tiêu đề của bạn -->
                         </div>
                     </div>
-                    <form action="feedback" method="POST" class="feedback-form">
+                    <form action="${pageContext.request.contextPath}/homepage/feedback" method="POST" class="feedback-form">
                         <!-- Thông tin liên hệ -->
                         <div class="form-group">
-
-                            <c:choose>
-                                <c:when test="${not empty requestScope.ps}">
-                                    <div class="form-group">
-                                        <label for="product">Chọn sản phẩm trong đơn hàng</label>
-                                        <select class="product-select form-control" id="product" name="productID" required>
-                                            <c:forEach var="product" items="${requestScope.ps}">
-                                                <option value="${product.product_id}">${product.name}</option>
-                                            </c:forEach>
-                                        </select>
-
-                                        
-
-
-                                    </div>
-                                </c:when>
-
-                                <c:otherwise>
-                                    <input type="hidden" name="productID" value="${productID}" />
-                                    <div class="form-group">
-                                        <label for="productName">Sản phẩm:</label>
-                                        <input type="text" class="product-select form-control" id="productName" name="productName" value="${productName}" readonly>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-
                             <div class="form-group">
                                 <label for="name">Họ và tên:</label>
-                                <input type="text" class="form-control" id="name" name="name" 
-                                       value="${sessionScope.customer.name_cus != null ? sessionScope.customer.name_cus : ''}" required>
+                                <input type="text" class="form-control" id="name" name="name" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="gender">Giới tính:</label>
-                                <select class="gender-select form-control" id="gender" name="gender" required>
-                                    <option value="0" ${sessionScope.user.gender != null && sessionScope.user.gender == 0 ? 'selected' : ''}>Nam</option>
-                                    <option value="1" ${sessionScope.user.gender != null && sessionScope.user.gender == 1 ? 'selected' : ''}>Nữ</option>
+                                <select class="gender-select form-control" id="gender" name="gender" required>                                    
+                                    <option value="0">Nam</option>
+                                    <option value="1">Nữ</option>
+
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="email">Email:</label>
-                                <input type="email" class="form-control" id="email" name="email" 
-                                       value="${sessionScope.customer.email != null ? sessionScope.customer.email : ''}" required>
+                                <input type="email" class="form-control" id="email" name="email" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="mobile">Số điện thoại:</label>
-                                <input type="text" class="form-control" id="mobile" name="mobile" 
-                                       value="${sessionScope.customer.c_phone != null ? sessionScope.customer.c_phone : ''}" required>
+                                <input type="text" class="form-control" id="mobile" name="mobile" required>
                             </div>
 
 
@@ -267,14 +239,12 @@
 
                             <div class="form-row">
                                 <div class="col-md-12 text-center" style="color: red;">
-                                    <%
-                                        String errorMessage = (String) request.getAttribute("errorMessage");
-                                        if (errorMessage != null) {
-                                            out.println(errorMessage);
-                                        }
-                                    %>
+                                    <c:if test="${not empty errorMessage}">
+                                        ${errorMessage}
+                                    </c:if>
                                 </div>
                             </div>
+
                             <!-- Nút gửi -->
                             <!-- Đảm bảo sử dụng lớp btn-sm để giảm kích thước button -->
                             <button type="submit" class="btn btn-primary btn-sm">Gửi phản hồi</button>

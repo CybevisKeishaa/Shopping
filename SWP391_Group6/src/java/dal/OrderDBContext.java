@@ -359,7 +359,7 @@ public class OrderDBContext extends DBContext<Order> {
     
     public static void main(String[] args) {
         OrderDBContext db = new OrderDBContext();
-        ArrayList<Product> products = db.getProductsByOrderAndCustomer(17, 1);
+        ArrayList<Product> products = db.getProductsByOrderAndCustomer(25, 1);
         System.out.println(products.size());
     }
 

@@ -95,7 +95,7 @@
                         <div class="col-lg-2 col-md-2 col-12">
                             <!-- Logo -->
                             <div class="logo">
-                                <a href="homepage"><img src="${pageContext.request.contextPath}/img/logo.png" alt="logo"></a>
+                                <a href="${pageContext.request.contextPath}/homepage"><img src="${pageContext.request.contextPath}/img/logo.png" alt="logo"></a>
                             </div>
                             <!--/ End Logo -->
                             <!-- Search Form -->
@@ -201,8 +201,7 @@
                                                     </li>
 
                                                     <li><a href="${pageContext.request.contextPath}/blogList">Bài viết</a></li>
-
-                                                    <li><a href="contact.html">Liên hệ</a></li>
+                                                   <li><a href="${pageContext.request.contextPath}/homepage/feedback">Đánh giá</a></li>
                                                 </ul>
                                             </div>
                                         </div>

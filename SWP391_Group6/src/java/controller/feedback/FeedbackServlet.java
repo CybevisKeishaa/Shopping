@@ -6,18 +6,20 @@ package controller.feedback;
 
 import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.FeedbackDBContext;
+import dal.OrderDBContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import model.Customer_User;
+import model.Product;
 
 /**
  *
  * @author KEISHA
  */
-@MultipartConfig
 public class FeedbackServlet extends BaseRequiredCustomerAuthenticationController {
 
     /**
@@ -44,10 +46,21 @@ public class FeedbackServlet extends BaseRequiredCustomerAuthenticationControlle
 
         String productName = request.getParameter("product_name");
         String productID = request.getParameter("product_id");
+        String orderIDRaw = request.getParameter("oid");
+        int cusID = user.getCus_id();
+
+        if (orderIDRaw != null && !orderIDRaw.isEmpty()) {
+            int orderID = Integer.parseInt(orderIDRaw);
+            OrderDBContext db = new OrderDBContext();
+            ArrayList<Product> productssssss = db.getProductsByOrderAndCustomer(orderID, cusID);
+            request.setAttribute("ps", productssssss);
+            request.getRequestDispatcher("../view/order/feedback.jsp").forward(request, response);
+        } else {
             request.setAttribute("productID", productID);
             request.setAttribute("productName", productName);
-        request.getRequestDispatcher("../view/order/feedback.jsp").forward(request, response);
+            request.getRequestDispatcher("../view/order/feedback.jsp").forward(request, response);
 
+        }
     }
 
     /**
@@ -74,8 +87,8 @@ public class FeedbackServlet extends BaseRequiredCustomerAuthenticationControlle
         int productID = Integer.parseInt(request.getParameter("productID"));
 
         FeedbackDBContext db = new FeedbackDBContext();
-        db.insertFeedbackFromCustomer(user.getCus_id(), productID, rating, sqlDate, feedback, phone);
-        request.getRequestDispatcher("../view/notice/ThanksForBuy.jsp").forward(request, response);
+        db.insertFeedbackFromCustomer(user.getCus_id(), productID, rating, sqlDate, feedback, phone, email);
+        request.getRequestDispatcher("../view/notice/ThanksForFeedback.jsp").forward(request, response);
 
     }
 
