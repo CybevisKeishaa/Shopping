@@ -78,6 +78,26 @@
         <servlet-name>HomeFeedbackServlet</servlet-name>
         <servlet-class>controller.home.HomeFeedbackServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MyOrdersServlet</servlet-name>
+        <servlet-class>controller.order.MyOrdersSerlvet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderDetailServlet</servlet-name>
+        <servlet-class>controller.order.OrderDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FeedbackServlet</servlet-name>
+        <servlet-class>controller.feedback.FeedbackServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeOrderStatusServlet</servlet-name>
+        <servlet-class>controller.order.ChangeOrderStatusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addToCart</servlet-name>
+        <servlet-class>controller.cart.addToCartServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>productSearch</servlet-name>
         <url-pattern>/productSearch</url-pattern>
@@ -205,6 +225,26 @@
     <servlet-mapping>
         <servlet-name>HomeFeedbackServlet</servlet-name>
         <url-pattern>/homepage/feedback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyOrdersServlet</servlet-name>
+        <url-pattern>/account/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderDetailServlet</servlet-name>
+        <url-pattern>/account/order/detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedbackServlet</servlet-name>
+        <url-pattern>/account/feedback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeOrderStatusServlet</servlet-name>
+        <url-pattern>/account/order/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addToCart</servlet-name>
+        <url-pattern>/cart/item/add</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/home/homepage.jsp</welcome-file>
