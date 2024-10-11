@@ -78,6 +78,10 @@
         <servlet-name>HomeFeedbackServlet</servlet-name>
         <servlet-class>controller.home.HomeFeedbackServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>xyz</servlet-name>
+        <servlet-class>controller.product.xyz</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>productSearch</servlet-name>
         <url-pattern>/productSearch</url-pattern>
@@ -205,6 +209,10 @@
     <servlet-mapping>
         <servlet-name>HomeFeedbackServlet</servlet-name>
         <url-pattern>/homepage/feedback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>xyz</servlet-name>
+        <url-pattern>/xyz</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/home/homepage.jsp</welcome-file>
