@@ -2,10 +2,12 @@ package model;
 
 import java.util.ArrayList;
 
+
 /**
  *
  * @author KEISHA
  */
+
 public class Capacity {
 
     private int capacity_id;

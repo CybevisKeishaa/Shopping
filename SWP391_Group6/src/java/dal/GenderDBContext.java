@@ -4,16 +4,14 @@
  */
 package dal;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import model.Gender;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import model.Gender;
 
 /**
  *
- * @author DINH SON
+ * @author KEISHA
  */
 public class GenderDBContext extends DBContext {
     public Gender getGenderFindById(int gid) {

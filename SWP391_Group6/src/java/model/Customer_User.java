@@ -23,7 +23,6 @@ public class Customer_User {
     private Role role;
     private Cart cart;
     private String avatar;
-    private String display_name;
     private ArrayList<Address> address;
     private ArrayList<Order> orders;
     private boolean gender;

@@ -295,7 +295,7 @@
                                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                                                     <div class="single-product">
                                                         <div class="product-img">
-                                                            <a href="productDetail?id=${i.product_id}">
+                                                            <a href="product/detail?product_id=">
                                                                 <img class="default-img" src="images/productImages/1.jpg" alt="#">
                                                                 <img class="hover-img" src="images/productImages/1.jpg" alt="#">
                                                             </a>
@@ -307,7 +307,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-content">
-                                                            <h3><a href="productDetail?id=${i.product_id}">${i.name}</a></h3>
+                                                            <h3><a href="product/detail">${i.name}</a></h3>
                                                             <div class="product-price">
                                                                 <span>${i.price}</span>
                                                             </div>
@@ -375,7 +375,7 @@
                         <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-img">
-                                <a href="product-details.html">
+                                <a href="product/detail?id=">
                                     <img class="default-img" src="images/productImages/1.jpg" alt="#">
                                     <img class="hover-img" src="images/productImages/1.jpg" alt="#">
                                     <span class="out-of-stock">Hot</span>
@@ -388,7 +388,7 @@
                                 </div>
                             </div>
                             <div class="product-content">
-                                <h3><a href="product-details.html">Black Sunglass For Women</a></h3>
+                                <h3><a href="product/detail?id=">Black Sunglass For Women</a></h3>
                                 <div class="product-price">
                                     <span class="old">$60.00</span>
                                     <span>$50.00</span>
@@ -399,7 +399,7 @@
                         <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-img">
-                                <a href="product-details.html">
+                                <a href="product/detail?id=">
                                     <img class="default-img" src="images/productImages/1.jpg" alt="#">
                                     <img class="hover-img" src="images/productImages/1.jpg" alt="#">
                                 </a>
@@ -411,7 +411,7 @@
                                 </div>
                             </div>
                             <div class="product-content">
-                                <h3><a href="product-details.html">Women Hot Collection</a></h3>
+                                <h3><a href="product/detail?id=">Women Hot Collection</a></h3>
                                 <div class="product-price">
                                     <span>$50.00</span>
                                 </div>
@@ -421,7 +421,7 @@
                         <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-img">
-                                <a href="product-details.html">
+                                <a href="product/detail?id=">
                                     <img class="default-img" src="images/productImages/1.jpg" alt="#">
                                     <img class="hover-img" src="images/productImages/1.jpg" alt="#">
                                     <span class="new">New</span>
@@ -434,7 +434,7 @@
                                 </div>
                             </div>
                             <div class="product-content">
-                                <h3><a href="product-details.html">Awesome Pink Show</a></h3>
+                                <h3><a href="product/detail?id=">Awesome Pink Show</a></h3>
                                 <div class="product-price">
                                     <span>$50.00</span>
                                 </div>
@@ -444,7 +444,7 @@
                         <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-img">
-                                <a href="product-details.html">
+                                <a href="product/detail?id=">
                                     <img class="default-img" src="images/productImages/1.jpg" alt="#">
                                     <img class="hover-img" src="images/productImages/1.jpg" alt="#">
                                 </a>
@@ -456,7 +456,7 @@
                                 </div>
                             </div>
                             <div class="product-content">
-                                <h3><a href="product-details.html">Awesome Bags Collection</a></h3>
+                                <h3><a href="product/detail?id=">Awesome Bags Collection</a></h3>
                                 <div class="product-price">
                                     <span>$50.00</span>
                                 </div>

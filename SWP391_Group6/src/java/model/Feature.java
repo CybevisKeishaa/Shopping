@@ -3,6 +3,7 @@ package model;
 
 
 public class Feature {
+
     private int feature_id;
     private String feature_name;
     private String f_url;
@@ -40,4 +41,6 @@ public class Feature {
         this.role = role;
     }
     
+    
+
 }

@@ -63,8 +63,8 @@ public class productDetail extends HttpServlet {
             throws ServletException, IOException {
         String pageStr = request.getParameter("page");
         int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
-        String id = request.getParameter("id");
-        productListDBContext pDb = new productListDBContext();
+        String id = request.getParameter("product_id");
+        ProductDBContext pDb = new ProductDBContext();
         Product p = pDb.getByProductId(Integer.parseInt(id));
         int bid = pDb.brandIdbyproductId(Integer.parseInt(id));
         List<Product> pList = pDb.getListProductByBrandId(bid, Integer.parseInt(id), pageNumber, PAGE_SIZE);

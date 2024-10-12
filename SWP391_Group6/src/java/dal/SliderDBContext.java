@@ -4,7 +4,6 @@
  */
 package dal;
 
-
 import model.Image;
 import java.util.ArrayList;
 import model.Slider;

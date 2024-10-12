@@ -6,10 +6,12 @@ public class Role {
 
     private int role_id;
     private String role_name;
-    private ArrayList<Feature> features;
-    private ArrayList<Employee_User> emp_users;
-    private ArrayList<Customer_User> cus_users;
+    private ArrayList<Feature> features = new ArrayList<>();
+    private ArrayList<Employee> emp_users = new ArrayList<>();
+    private ArrayList<Customer_User> cus_users = new ArrayList<>();
 
+    
+    
     public int getRole_id() {
         return role_id;
     }
@@ -34,11 +36,11 @@ public class Role {
         this.features = features;
     }
 
-    public ArrayList<Employee_User> getEmp_users() {
+    public ArrayList<Employee> getEmp_users() {
         return emp_users;
     }
 
-    public void setEmp_users(ArrayList<Employee_User> emp_users) {
+    public void setEmp_users(ArrayList<Employee> emp_users) {
         this.emp_users = emp_users;
     }
 
@@ -49,6 +51,7 @@ public class Role {
     public void setCus_users(ArrayList<Customer_User> cus_users) {
         this.cus_users = cus_users;
     }
+
     
 
 }

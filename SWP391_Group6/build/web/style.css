@@ -5043,3 +5043,117 @@ Version:1.0
         End Footer CSS
 ===============================*/
 
+/*=============================
+        Start Change Password
+===============================*/
+/* Styling for the change_password container */
+.change_password {
+    width: 80%; /* Make the div wider */
+    max-width: 700px; /* Limit maximum width */
+    margin: 0 auto; /* Center the div horizontally */
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: center; /* Center text inside the div */
+}
+
+.change_password h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.change_password label {
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.change_password input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.change_password-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.change_password-actions input[type="submit"],
+.change_password-actions a {
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.change_password-actions input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.change_password-actions input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.change_password-actions a {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    display: inline-block;
+}
+
+.change_password-actions a:hover {
+    background-color: #e0e0e0;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.message.error {
+    color: red;
+}
+
+.message.success {
+    color: green;
+}
+
+.password-requirements {
+    background-color: #f9f9f9; /* Màu nền nhạt */
+    border: 1px solid #ccc; /* Đường viền */
+    padding: 20px; /* Khoảng cách bên trong */
+    margin-top: 20px; /* Khoảng cách bên trên */
+}
+
+.requirements-list {
+    list-style-type: none; /* Bỏ dấu chấm mặc định */
+    padding-left: 0; /* Bỏ khoảng cách bên trái */
+}
+
+.requirements-list li {
+    margin-bottom: 10px; /* Khoảng cách giữa các mục */
+    text-align: left; /* Căn trái cho các mục */
+    padding-left: 20px; /* Khoảng cách bên trái cho gạch đầu dòng */
+    position: relative; /* Để có thể sử dụng pseudo-element */
+}
+
+.requirements-list li::before {
+    content: "–"; /* Thêm gạch đầu dòng */
+    position: absolute; /* Đặt vị trí tuyệt đối */
+    left: 0; /* Đặt gạch đầu dòng ở bên trái */
+}
+
+/*=============================
+        End Change Password
+===============================*/
+

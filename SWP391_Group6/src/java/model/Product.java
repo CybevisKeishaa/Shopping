@@ -1,10 +1,10 @@
 package model;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class Product {
+
     private int product_id;
     private String name;
     private int price;
@@ -13,13 +13,13 @@ public class Product {
     private Discount discount;
     private Brand brand;
     private boolean status;
-    private ArrayList<Capacity> capacity;
-    private ArrayList<Gender> gender;
-    private Employee_User emp;
-    private ArrayList<Image> img;
-    private ArrayList<Feedback> fb;
-    private ArrayList<Item> items;
-    private ArrayList<OrderDetail> orders;
+    private ArrayList<Capacity> capacity = new ArrayList<>();
+    private ArrayList<Gender> gender = new ArrayList<>();
+    private Employee emp;
+    private ArrayList<Image> img = new ArrayList<>();
+    private ArrayList<Feedback> fb = new ArrayList<>();
+    private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<OrderDetail> orders = new ArrayList<>();
 
     public int getProduct_id() {
         return product_id;
@@ -103,11 +103,11 @@ public class Product {
         this.gender = gender;
     }
 
-    public Employee_User getEmp() {
+    public Employee getEmp() {
         return emp;
     }
 
-    public void setEmp(Employee_User emp) {
+    public void setEmp(Employee emp) {
         this.emp = emp;
     }
 

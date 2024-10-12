@@ -41,7 +41,7 @@ public class HomeFeedbackServlet extends HttpServlet {
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
-        // L?y c�c tham s? t? y�u c?u
+        // Lấy các tham số từ yêu cầu
         String name = request.getParameter("name");
         String gender = request.getParameter("gender");
         String email = request.getParameter("email");
@@ -49,21 +49,21 @@ public class HomeFeedbackServlet extends HttpServlet {
         String feedback = request.getParameter("feedback");
         String ratingParam = request.getParameter("starrr");
 
-        // Ki?m tra gi� tr? d?u v�o
+        // Kiểm tra giá trị đầu vào
         if (!isValidName(name)) {
-            request.setAttribute("errorMessage", "T�n kh�ng du?c ch?a k� t? d?c bi?t.");
+            request.setAttribute("errorMessage", "Tên không được chứa ký tự đặc biệt.");
             request.getRequestDispatcher("../view/home/feedbackForHome.jsp").forward(request, response);
             return;
         }
 
         if (!isValidEmail(email)) {
-            request.setAttribute("errorMessage", "�?a ch? email kh�ng h?p l?.");
+            request.setAttribute("errorMessage", "Địa chỉ email không hợp lệ.");
             request.getRequestDispatcher("../view/home/feedbackForHome.jsp").forward(request, response);
             return;
         }
 
         if (!isValidPhone(phone)) {
-            request.setAttribute("errorMessage", "S? di?n tho?i kh�ng h?p l?.");
+            request.setAttribute("errorMessage", "Số điện thoại không hợp lệ.");
             request.getRequestDispatcher("../view/home/feedbackForHome.jsp").forward(request, response);
             return;
         }
@@ -80,7 +80,7 @@ public class HomeFeedbackServlet extends HttpServlet {
 
 
     private boolean isValidName(String name) {
-        String nameRegex = "^[a-zA-Z�-?\\s]+$"; 
+        String nameRegex = "^[a-zA-ZÀ-ỹ\\s]+$"; 
         return Pattern.matches(nameRegex, name);
     }
 

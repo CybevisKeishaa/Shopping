@@ -87,7 +87,6 @@ public class RegisterServlet extends HttpServlet {
         String raw_date = request.getParameter("dob");
         Date dob = Date.valueOf(raw_date);
         String phone = request.getParameter("phone");
-        String displayname = request.getParameter("displayname");
         String email = request.getParameter("email");
 
         // Kiểm tra mật khẩu và nhập lại mật khẩu có khớp không
@@ -142,7 +141,7 @@ public class RegisterServlet extends HttpServlet {
 
             // Tạo đối tượng Customer_User từ thông tin đăng ký
             Customer_User cus = new Customer_User();
-            cus.setDisplay_name(displayname);
+            
             cus.setName_cus(fullname);
             cus.setEmail(email);
             cus.setC_phone(phone);

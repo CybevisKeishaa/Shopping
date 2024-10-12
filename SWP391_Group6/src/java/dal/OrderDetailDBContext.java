@@ -64,7 +64,6 @@ public class OrderDetailDBContext extends DBContext {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
-
             }
 
         } catch (SQLException ex) {

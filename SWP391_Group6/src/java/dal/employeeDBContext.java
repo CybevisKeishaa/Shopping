@@ -96,10 +96,10 @@ public class employeeDBContext extends DBContext {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
-                Employee_User e = new Employee_User();
+                Employee e = new Employee();
                 e.setEmp_id(id);
                 e.setName_emp(rs.getString(2));
-                 return e;
+                return e;
 
             }
 
@@ -172,7 +172,7 @@ public class employeeDBContext extends DBContext {
 
     public static void main(String[] args) {
         employeeDBContext eDb = new employeeDBContext();
-        Employee_User e = eDb.getEmployeeByIdForBlog(1);
-        System.out.println(e.getName_emp());
+        Employee e = eDb.getEmployeeByEmailAndPassword("munhoang00@gmail.com", "123456");
+        System.out.println(e.getRole());
     }
 }

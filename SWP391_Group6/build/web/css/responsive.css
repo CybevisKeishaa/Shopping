@@ -1455,7 +1455,9 @@ Version:1.0
 .shop .nice-select {
 	width: 100%;
 
+
 	display: block;
+
 
 	margin-top: 4px;
 }
@@ -1476,7 +1478,9 @@ Version:1.0
 	display: block;
 	display: inline-block;
 
+
 	display: block;
+
 
 }
 .shop .view-mode li a {

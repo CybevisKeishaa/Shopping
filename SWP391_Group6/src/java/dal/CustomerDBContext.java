@@ -33,49 +33,24 @@ public class CustomerDBContext extends DBContext<Customer_User> {
         try {
             // Tắt chế độ tự commit
             connect.setAutoCommit(false);
-
-            // Câu lệnh SQL để lấy cus_id lớn nhất hiện tại
-            String sql_get_max_cus_id = "SELECT MAX(cus_id) AS max_cus_id FROM [dbo].[Customer]";
-            stm_query = connect.prepareStatement(sql_get_max_cus_id);
-            ResultSet rs = stm_query.executeQuery();
-            int new_cus_id = 1;
-
-            // Nếu có giá trị cus_id lớn nhất, tăng lên 1 để tạo cus_id mới
-            if (rs.next() && rs.getInt("max_cus_id") > 0) {
-                new_cus_id = rs.getInt("max_cus_id") + 1;
-            }
-            customer.setCus_id(new_cus_id); // Đặt giá trị cus_id mới cho đối tượng customer
-
             // Câu lệnh SQL để chèn thông tin vào bảng Customer
-            String sql_insert_cus = "INSERT INTO [dbo].[Customer]\n"
-                    + "           ([cus_id]\n"
-                    + "           ,[name_cus]\n"
-                    + "           ,[password]\n"
-                    + "           ,[email]\n"
-                    + "           ,[c_phone]\n"
-                    + "           ,[display_name]\n"
-                    + "           ,[status]\n"
-                    + "           ,[role_id]\n"
-                    + "           ,[gender_id]\n"
-                    + "           ,[username]\n"
-                    + "           ,[birth_date]\n"
-                    + "           ,[verification_code])\n"
-                    + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql_insert_cus = "INSERT INTO [dbo].[Customer] "
+                    + "(name_cus, password, email, c_phone, status, role_id, gender, username, birth_date, verification_code) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Chuẩn bị câu lệnh SQL chèn
             stm_insert = connect.prepareStatement(sql_insert_cus);
-            stm_insert.setInt(1, customer.getCus_id()); // cus_id
-            stm_insert.setString(2, customer.getName_cus()); // name_cus
-            stm_insert.setString(3, customer.getPassword()); // password
-            stm_insert.setString(4, customer.getEmail()); // email
-            stm_insert.setInt(5, customer.getC_phone()); // c_phone
-            stm_insert.setString(6, customer.getDisplay_name()); // display_name
-            stm_insert.setBoolean(7, false); // status (giả sử là active - true)
-            stm_insert.setInt(8, customer.getRole().getRole_id()); // role_id
-            stm_insert.setInt(9, customer.getGender().getGender_id()); // gender_id
-            stm_insert.setString(10, customer.getUsername());
-            stm_insert.setDate(11, customer.getDob()); // dob (ngày sinh)
-            stm_insert.setString(12, customer.getVerificationCode());
+            stm_insert.setString(1, customer.getName_cus());               // name_cus
+            stm_insert.setString(2, customer.getPassword());               // password
+            stm_insert.setString(3, customer.getEmail());                  // email
+            stm_insert.setString(4, customer.getC_phone());                // c_phone 
+            //           stm_insert.setString(6, customer.getDisplay_name());           // display_name
+            stm_insert.setBoolean(5, false);                                // status (giả sử là active - true)
+            stm_insert.setInt(6, customer.getRole().getRole_id());         // role_id
+            stm_insert.setInt(7, customer.isGender() ? 1 : 0);
+            stm_insert.setString(8, customer.getUsername());
+            stm_insert.setDate(9, customer.getDob());                     // dob (ngày sinh)
+            stm_insert.setString(10, customer.getVerificationCode());
 
             // Thực thi câu lệnh chèn
             stm_insert.executeUpdate();
@@ -309,8 +284,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE,
-                    "Lỗi khi lấy thông tin khách hàng theo ID", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy thông tin khách hàng theo ID", ex);
         }
         return null;
     }
@@ -332,8 +306,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE,
-                    "Lỗi khi lấy thông tin khách hàng theo email", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy thông tin khách hàng theo email", ex);
         }
         return null;
     }
@@ -348,8 +321,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             stm.setTimestamp(3, Timestamp.valueOf(expirationTime));
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi tạo token đặt lại mật khẩu",
-                    ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi tạo token đặt lại mật khẩu", ex);
         }
     }
 

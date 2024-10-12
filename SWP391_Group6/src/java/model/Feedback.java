@@ -2,11 +2,13 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Date;
+
 /**
  *
  * @author KEISHA
  */
 public class Feedback {
+
     private int fb_id;
     private Date date;
     private String content;
@@ -63,6 +65,8 @@ public class Feedback {
         this.customer = customer;
     }
 
+    
+    
     public ArrayList<Image> getImages() {
         return images;
     }

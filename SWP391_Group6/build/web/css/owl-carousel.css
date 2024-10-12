@@ -34,7 +34,7 @@
 .owl-theme .owl-dots {
    
     position: absolute;
-    bottom: 20px; /* �i?u ch?nh gi� tr? n�y d? thay d?i kho?ng c�ch t? ch�n ?nh */
+    bottom: 20px; /* Điều chỉnh giá trị này để thay đổi khoảng cách từ chân ảnh */
     left: 50%;
     transform: translateX(-50%);
 

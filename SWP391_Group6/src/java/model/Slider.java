@@ -1,10 +1,11 @@
 package model;
 
 public class Slider {
+
     private int slider_id;
     private String title;
     private String description;
-    private Employee_User employee;
+    private Employee employee;
     private Product product;
     private Image image;
 
@@ -40,11 +41,11 @@ public class Slider {
         this.description = description;
     }
 
-    public Employee_User getEmployee() {
+    public Employee getEmployee() {
         return employee;
     }
 
-    public void setEmployee(Employee_User employee) {
+    public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 

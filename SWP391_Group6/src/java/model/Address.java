@@ -1,6 +1,7 @@
 package model;
 
 public class Address {
+
     private int a_id;
     private String a_phone;
     private String city;
@@ -34,14 +35,6 @@ public class Address {
         this.a_id = a_id;
     }
 
-    public int getA_phone() {
-        return a_phone;
-    }
-
-    public void setA_phone(int a_phone) {
-        this.a_phone = a_phone;
-    }
-
     public String getCity() {
         return city;
     }
@@ -73,5 +66,12 @@ public class Address {
     public void setCustomer(Customer_User customer) {
         this.customer = customer;
     }
-    
+
+    public String getA_phone() {
+        return a_phone;
+    }
+
+    public void setA_phone(String a_phone) {
+        this.a_phone = a_phone;
+    }
 }

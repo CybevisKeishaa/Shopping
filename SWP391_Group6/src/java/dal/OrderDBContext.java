@@ -37,16 +37,16 @@ public class OrderDBContext extends DBContext<Order> {
                 + "WHERE o.cus_id = ? "
                 + "GROUP BY o.order_id, o.created_at, o.total, so.status "
                 + "ORDER BY o.created_at DESC "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";  // Ph�n trang v?i OFFSET v� FETCH
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";  // Phân trang với OFFSET và FETCH
 
         try {
             PreparedStatement stm = connect.prepareStatement(sql);
 
-            // Thi?t l?p c�c tham s? truy v?n
+            // Thiết lập các tham số truy vấn
             stm.setInt(1, customerID);
             int offset = (pageNumber - 1) * pageSize;
-            stm.setInt(2, offset);    // �?t OFFSET
-            stm.setInt(3, pageSize);  // �?t FETCH NEXT
+            stm.setInt(2, offset);    // Đặt OFFSET
+            stm.setInt(3, pageSize);  // Đặt FETCH NEXT
 
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -81,7 +81,8 @@ public class OrderDBContext extends DBContext<Order> {
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, cus_id);
-			ResultSet rs = st.executeQuery();
+
+            ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);
             }
@@ -92,13 +93,12 @@ public class OrderDBContext extends DBContext<Order> {
         }
         return count;
     }
-            
 
     public int getTotalOrderWithFilter(int customerID, Date startDate, Date endDate) {
         int totalOrder = 0;
         String sql = "SELECT COUNT(*) AS totalOrder FROM [dbo].[Order] o WHERE o.cus_id = ?";
 
-        // Th�m di?u ki?n l?c theo ng�y n?u c�
+        // Thêm điều kiện lọc theo ngày nếu có
         if (startDate != null && endDate != null) {
             sql += " AND o.created_at BETWEEN ? AND ?";
         }
@@ -108,7 +108,7 @@ public class OrderDBContext extends DBContext<Order> {
             stm.setInt(1, customerID);
             int paramIndex = 2;
 
-            // N?u c� di?u ki?n l?c theo ng�y, d?t gi� tr? cho c�c tham s?
+            // Nếu có điều kiện lọc theo ngày, đặt giá trị cho các tham số
             if (startDate != null && endDate != null) {
                 stm.setDate(paramIndex++, new java.sql.Date(startDate.getTime()));
                 stm.setDate(paramIndex++, new java.sql.Date(endDate.getTime()));
@@ -147,13 +147,13 @@ public class OrderDBContext extends DBContext<Order> {
         }
 
         sql += "GROUP BY o.order_id, o.created_at, o.total, so.status "
-                + "ORDER BY " + sortColumn + " " + sortOrder + " " // Th? t? s?p x?p
+                + "ORDER BY " + sortColumn + " " + sortOrder + " " // Thứ tự sắp xếp
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             PreparedStatement stm = connect.prepareStatement(sql);
 
-            // Ki?m tra vi?c thi?t l?p tham s?
+            // Kiểm tra việc thiết lập tham số
             System.out.println("Query: " + sql);
 
             stm.setInt(1, customerID);
@@ -181,7 +181,7 @@ public class OrderDBContext extends DBContext<Order> {
                 o.setFirstProductName(rs.getString("firstProductName"));
                 o.setNumberOfOtherProducts(rs.getInt("productCount"));
 
-                // Ki?m tra d? li?u tr? v?
+                // Kiểm tra dữ liệu trả về
                 System.out.println("Order: " + o.getOrder_id() + ", " + o.getFirstProductName());
 
                 orders.add(o);
@@ -222,14 +222,14 @@ public class OrderDBContext extends DBContext<Order> {
                 o.setStatus(so);
                 o.setShipping_method(rs.getString("shipping_method"));
 
-                // L?y th�ng tin kh�ch h�ng
+                // Lấy thông tin khách hàng
                 Customer_User c = new Customer_User();
                 c.setName_cus(rs.getString("name_cus"));
                 c.setGender(rs.getBoolean("gender"));
                 c.setEmail(rs.getString("email"));
                 c.setC_phone(rs.getString("c_phone"));
 
-                // L?y th�ng tin d?a ch?
+                // Lấy thông tin địa chỉ
                 ArrayList<Address> addres = new ArrayList<>();
                 Address address = new Address();
                 address.setCity(rs.getString("city"));
@@ -312,29 +312,29 @@ public ArrayList<Order> getListOrderByEmployeeIdProductId(int pid, int eid) {
             while (rs.next()) {
                 Product product = new Product();
 
-                // L?y th�ng tin s?n ph?m
+                // Lấy thông tin sản phẩm
                 product.setProduct_id(rs.getInt("product_id"));
                 product.setName(rs.getString("product_name"));
 
-                // L?y gi?i t�nh s?n ph?m
+                // Lấy giới tính sản phẩm
                 ArrayList<Gender> genders = new ArrayList<>();
                 Gender g = new Gender();
                 g.setName(rs.getString("gender_name"));
                 genders.add(g);
                 product.setGender(genders);
 
-                // L?y h�nh ?nh s?n ph?m
+                // Lấy hình ảnh sản phẩm
                 ArrayList<Image> imgs = new ArrayList<>();
                 Image i = new Image();
                 i.setImg_url(rs.getString("product_image"));
                 imgs.add(i);
                 product.setImg(imgs);
 
-                // L?y c�c th�ng tin kh�c
+                // Lấy các thông tin khác
                 product.setStock(rs.getInt("quantity"));
                 product.setPrice(rs.getInt("price_at_order"));
 
-                // Th�m s?n ph?m v�o danh s�ch
+                // Thêm sản phẩm vào danh sách
                 products.add(product);
             }
 

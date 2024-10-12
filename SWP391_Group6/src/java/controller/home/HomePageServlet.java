@@ -40,6 +40,7 @@ public class HomePageServlet extends HttpServlet {
             BlogDBContext blogdb = new BlogDBContext();
             SliderDBContext sliderdb = new SliderDBContext();
             ProductDBContext productdb = new ProductDBContext();
+            
                        
             ArrayList<Slider> sliders = sliderdb.getSliderForHomepage();
             ArrayList<Blog> blogs = blogdb.getBlogForHomepage();

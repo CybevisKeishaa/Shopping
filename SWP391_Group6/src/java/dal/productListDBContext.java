@@ -560,7 +560,7 @@ public class productListDBContext extends DBContext {
             st.setInt(1, bid);
             st.setInt(2, pid);
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
+            if(rs.next()){
                 return rs.getInt(1);
             }
         } catch (Exception e) {

@@ -1,16 +1,16 @@
 // Owl Carousel JS //
 $(document).ready(function(){
   $('.hero-slider').owlCarousel({
-      items: 1,                // S? lu?ng slide hi?n th? m?t l?n
-      loop: true,              // Cho ph�p l?p l?i slider
-      autoplay: true,          // K�ch ho?t t? d?ng tru?t
-      autoplayTimeout: 5000,   // Th?i gian ch? gi?a c�c l?n tru?t (5 gi�y)
-      autoplayHoverPause: true,// T?m d?ng khi di chu?t l�n slider
-      nav: false,              // T?t c�c n�t di?u hu?ng prev/next
-      dots: true,              // Hi?n th? c�c d?u ch?m b�n du?i slider
-      smartSpeed: 800,         // T?c d? chuy?n d?i gi?a c�c slide (800ms)
-      animateOut: 'fadeOut',   // Hi?u ?ng chuy?n d?i khi slide bi?n m?t
-      animateIn: 'fadeIn'      // Hi?u ?ng chuy?n d?i khi slide xu?t hi?n
+      items: 1,                // Số lượng slide hiển thị một lần
+      loop: true,              // Cho phép lặp lại slider
+      autoplay: true,          // Kích hoạt tự động trượt
+      autoplayTimeout: 5000,   // Thời gian chờ giữa các lần trượt (5 giây)
+      autoplayHoverPause: true,// Tạm dừng khi di chuột lên slider
+      nav: false,              // Tắt các nút điều hướng prev/next
+      dots: true,              // Hiển thị các dấu chấm bên dưới slider
+      smartSpeed: 800,         // Tốc độ chuyển đổi giữa các slide (800ms)
+      animateOut: 'fadeOut',   // Hiệu ứng chuyển đổi khi slide biến mất
+      animateIn: 'fadeIn'      // Hiệu ứng chuyển đổi khi slide xuất hiện
   });
 });
 

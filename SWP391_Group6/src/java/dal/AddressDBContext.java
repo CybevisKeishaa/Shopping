@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 public class AddressDBContext extends DBContext<Address> {
 
-    // L?y danh s�ch d?a ch? c?a kh�ch h�ng theo ID
+    // Lấy danh sách địa chỉ của khách hàng theo ID
     public ArrayList<Address> getAddressByCustomerId(int cus_id) {
         ArrayList<Address> addresses = new ArrayList<>();
         String sql = "SELECT a_id, city, a_phone, district, ward, street, detail FROM Address WHERE cus_id = ?";
@@ -30,12 +30,12 @@ public class AddressDBContext extends DBContext<Address> {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(AddressDBContext.class.getName()).log(Level.SEVERE, "L?i khi l?y danh s�ch d?a ch? c?a kh�ch h�ng", ex);
+            Logger.getLogger(AddressDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy danh sách địa chỉ của khách hàng", ex);
         }
         return addresses;
     }
 
-    // C?p nh?t d?a ch?
+    // Cập nhật địa chỉ
     public void updateAddress(Address address) {
         String sql = "UPDATE Address SET a_phone = ?, city = ?, district = ?, ward = ?, street = ?, detail = ? WHERE a_id = ?";
 
@@ -50,7 +50,7 @@ public class AddressDBContext extends DBContext<Address> {
 
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(AddressDBContext.class.getName()).log(Level.SEVERE, "L?i khi c?p nh?t d?a ch?", ex);
+            Logger.getLogger(AddressDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi cập nhật địa chỉ", ex);
         }
     }
 }
