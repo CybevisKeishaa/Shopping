@@ -25,7 +25,7 @@ public class CartDBContext extends DBContext<Cart> {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            String sql = "SELECT TOP 3 c.cart_id, i.item_id, cu.cus_id, cu.name_cus AS customer_name, p.product_id, p.name AS product_name, p.price AS product_price, i.quanity AS quantity, (p.price * i.quanity) AS total_cost, MIN(img.img_url) AS product_image "
+            String sql = "SELECT c.cart_id, i.item_id, cu.cus_id, cu.name_cus AS customer_name, p.product_id, p.name AS product_name, p.price AS product_price, i.quanity AS quantity, (p.price * i.quanity) AS total_cost, MIN(img.img_url) AS product_image "
                     + "FROM Cart c "
                     + "JOIN Customer cu ON c.cus_id = cu.cus_id "
                     + "JOIN Item i ON c.cart_id = i.cart_id "
@@ -86,7 +86,7 @@ public class CartDBContext extends DBContext<Cart> {
         return cart;
     }
 
-    public void deleteAQuantity(int itemID) {
+    public void minusAQuantity(int itemID) {
         PreparedStatement stm = null;
         try {
             String sql = "UPDATE Item SET quanity = quanity - 1 WHERE item_id = ? AND quanity > 0";
@@ -106,7 +106,7 @@ public class CartDBContext extends DBContext<Cart> {
         }
     }
 
-    public void addAQuantity(int itemID) {
+    public void plusAQuantity(int itemID) {
         PreparedStatement stm = null;
         try {
             String sql = "UPDATE Item SET quanity = quanity + 1 WHERE item_id = ?";
@@ -155,13 +155,38 @@ public class CartDBContext extends DBContext<Cart> {
             try {
                 if (rs != null) {
                     rs.close();
-                }if (stm != null) {
+                }
+                if (stm != null) {
                     stm.close();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(CartDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public void deleteAnItem(int itemID) {
+        PreparedStatement stm = null;
+        try {
+            String sql = "DELETE FROM Item \n"
+                    + "WHERE item_id = ?;";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, itemID);
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CartDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CartDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     public static void main(String[] args) {
