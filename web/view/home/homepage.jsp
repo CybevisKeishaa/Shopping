@@ -177,32 +177,44 @@
                                     <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
                                 </div>
                                 <div class="sinlge-bar shopping">
-                                    <a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">${cart.items.size()}</span></a>
-                                    <!-- Shopping Item -->
+                                    <a href="#" class="single-icon"><i class="ti-bag"></i> 
+                                        <span class="total-count">
+                                            <c:choose>
+                                                <c:when test="${cart.items.size() >= 5}">  5+  </c:when>
+                                                <c:otherwise> ${cart.items.size()}  </c:otherwise>
+                                            </c:choose>     
+                                        </span></a>
+                                    <!-- Shopping Item -->  
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
                                             <span>${cart.items.size()} Sản phẩm</span>
                                             <a href="#">Xem giỏ hàng</a>
                                         </div>
                                         <ul class="shopping-list">
-                                            <c:if test="${not empty cart}">
-                                                <c:set var="totalPrice" value="0" />
-                                                <c:forEach var="item" items="${cart.items}">
-                                                    <li>
-                                                        <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
+                                            <c:choose>
+                                                <c:when test="${not empty cart.items}">
+                                                    <c:set var="totalPrice" value="0" />
+                                                    <c:set var="count" value="0" />
+                                                    <c:forEach var="item" items="${cart.items}">
+                                                        <c:if test="${count < 4}">
+                                                            <li>                                                                
+                                                                <a href="cart/item/delete?comm=del&itemID=${item.item_id}" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
+                                                                <a class="cart-img" href="#"><img src="${pageContext.request.contextPath}/img/${item.product.img[0].img_url}" alt="#"></a>
+                                                                <h4><a href="product/detail?product_id=${item.product.product_id}">${item.product.name}</a></h4>
+                                                                <p class="quantity">${item.quantity}x - <span class="amount">${item.product.price} VND</span></p>
 
-                                                        <a class="cart-img" href="#"><img src="${pageContext.request.contextPath}/img/${item.product.img[0].img_url}" alt="#"></a>
-                                                        <h4><a href="product/detail?product_id=${item.product.product_id}">${item.product.name}</a></h4>
-                                                        <p class="quantity">${item.quantity}x - <span class="amount">${item.product.price} VND</span></p>
-                                                    </li>
-                                                    <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.product.price)}"/>
-                                                </c:forEach>
-                                            </c:if>
-                                            <c:if test="${empty cart}">
-                                                <li>Giỏ hàng của bạn đang trống</li>
-                                                </c:if>
-
+                                                            </li>
+                                                            <c:set var="count" value="${count + 1}" />
+                                                        </c:if>
+                                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.product.price)}"/>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <li>Giỏ hàng của bạn đang trống</li>
+                                                    </c:otherwise>
+                                                </c:choose>
                                         </ul>
+
                                         <div class="bottom">
                                             <div class="total">
                                                 <span>Tổng hóa đơn</span>
@@ -381,159 +393,159 @@
                                         </c:forEach>
                                     </div>
                                 </div>
-
+                                <br><br><br><br>
                                 <!--End JSP -->                                   
 
 
 
-                                
 
 
 
-        <div class="row">
-            <div class="col-12">
-                <div class="section-title">
-                    <h2>Newest Product</h2>
-                </div>
-            </div>
-        </div>
 
-        <!-- Start Midium Banner  -->
-        <section class="midium-banner">
-            <div class="container">
-                <div class="row">
-                    <c:forEach var="product" items="${newProducts}">
-                        <!-- Single Banner  -->
-                        <div class="col-lg-6 col-md-6 col-12">
-                            <div class="single-banner">
-                                <img src="img/${product.img[0].img_url}">
-                                <div class="content">
-                                    <p>${product.name}</p>
-                                    <h3>${product.discount.name} <br> Up to<span> ${product.discount.amount}%</span></h3>
-                                    <a href="product/detail?product_id=${product.product_id}">Shop Now</a>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="section-title">
+                                            <h2>Newest Product</h2>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>   
-                    </c:forEach>
-                </div>
-            </div>
-        </section> <br><br><br><br>
 
-        
+                                <!-- Start Midium Banner  -->
+                                <section class="midium-banner">
+                                    <div class="container">
+                                        <div class="row">
+                                            <c:forEach var="product" items="${newProducts}">
+                                                <!-- Single Banner  -->
+                                                <div class="col-lg-6 col-md-6 col-12">
+                                                    <div class="single-banner">
+                                                        <img src="img/${product.img[0].img_url}">
+                                                        <div class="content">
+                                                            <p>${product.name}</p>
+                                                            <h3>${product.discount.name} <br> Up to<span> ${product.discount.amount}%</span></h3>
+                                                            <a href="product/detail?product_id=${product.product_id}">Shop Now</a>
+                                                        </div>
+                                                    </div>
+                                                </div>   
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </section> <br><br><br><br>
 
-        <!-- Start Footer Area -->
-        <footer class="footer">
-            <!-- Footer Top -->
-            <div class="footer-top section">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-5 col-md-6 col-12">
-                            <!-- Single Widget -->
-                            <div class="single-footer about">
-                                <div class="logo">
-                                    <a href="${pageContext.request.contextPath}/homepage"><img src="${pageContext.request.contextPath}/img/logo.png" alt="logo"></a>
-                                </div>
-                                <p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
-                                <p class="call">Giải đáp thắc mắc? Call us 24/7<span><a href="tel:123456789">+84 354 995 144</a></span></p>
-                            </div>
-                            <!-- End Single Widget -->
-                        </div>
-                        <div class="col-lg-2 col-md-6 col-12">
-                            
-                        </div>
-                        <div class="col-lg-2 col-md-6 col-12">
-                            <!-- Single Widget -->
-                            <div class="single-footer links">
-                                <h4>Customer Service</h4>
-                                <ul>
-                                    <li><a href="#">Payment Methods</a></li>
-                                    <li><a href="#">Money-back</a></li>
-                                    <li><a href="#">Returns</a></li>
-                                    <li><a href="#">Shipping</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                </ul>
-                            </div>
-                            <!-- End Single Widget -->
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <!-- Single Widget -->
-                            <div class="single-footer social">
-                                <h4>Get In Tuch</h4>
-                                <!-- Single Widget -->
-                                <div class="contact">
-                                    <ul>
-                                        <li>Đại học FPT Hà Nội</li>
-                                        <li>49 Mục Uyên - Thạch Thất</li>
-                                        <li>group6@gmail.com</li>
-                                        <li>+84 354 995 144</li>
-                                    </ul>
-                                </div>
-                                <!-- End Single Widget -->
-                                <ul>
-                                    <li><a href="https://www.facebook.com/Cybevis.Keisha"><i class="ti-facebook"></i></a></li>
-                                    <li><a href="https://www.instagram.com/iam._.nongg/"><i class="ti-twitter"></i></a></li>
-                                    <li><a href="https://www.youtube.com/watch?v=bfxJZk4SGpA&list=RDbfxJZk4SGpA&start_radio=1"><i class="ti-flickr"></i></a></li>
-                                    <li><a href="https://www.youtube.com/watch?v=ZjjmqHW7MgQ&list=RDZjjmqHW7MgQ&start_radio=1&rv=bfxJZk4SGpA"><i class="ti-instagram"></i></a></li>
-                                </ul>
-                            </div>
-                            <!-- End Single Widget -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End Footer Top -->
-            <div class="copyright">
-                <div class="container">
-                    <div class="inner">
-                        <div class="row">
-                            <div class="col-lg-6 col-12">
-                                <div class="left">
-                                    <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-12">
-                                <div class="right">
-                                    <img src="img/payments.png" alt="#">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- /End Footer Area -->
 
-        <!-- Jquery -->
-        <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.0.js"></script>
-        <script src="${pageContext.request.contextPath}/js/jquery-ui.min.js"></script>
-        <!-- Popper JS -->
-        <script src="${pageContext.request.contextPath}/js/popper.min.js"></script>
-        <!-- Bootstrap JS -->
-        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-        <!-- Color JS -->
-        <!--<script src="${pageContext.request.contextPath}/js/colors.js"></script>-->
-        <!-- Slicknav JS -->
-        <script src="${pageContext.request.contextPath}/js/slicknav.min.js"></script>
-        <!-- Owl Carousel JS -->
-        <script src="${pageContext.request.contextPath}/js/owl-carousel.js"></script>
-        <!-- Magnific Popup JS -->
-        <script src="${pageContext.request.contextPath}/js/magnific-popup.js"></script>
-        <!-- Waypoints JS -->
-        <script src="${pageContext.request.contextPath}/js/waypoints.min.js"></script>
-        <!-- Countdown JS -->
-        <script src="${pageContext.request.contextPath}/js/finalcountdown.min.js"></script>
-        <!-- Nice Select JS -->
-        <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
-        <!-- Flex Slider JS -->
-        <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
-        <!-- ScrollUp JS -->
-        <script src="${pageContext.request.contextPath}/js/scrollup.js"></script>
-        <!-- Onepage Nav JS -->
-        <script src="${pageContext.request.contextPath}/js/onepage-nav.min.js"></script>
-        <!-- Easing JS -->
-        <script src="${pageContext.request.contextPath}/js/easing.js"></script>
-        <!-- Active JS -->
-        <script src="${pageContext.request.contextPath}/js/active.js"></script>
-    </body>
-</html>
+
+                                <!-- Start Footer Area -->
+                                <footer class="footer">
+                                    <!-- Footer Top -->
+                                    <div class="footer-top section">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-lg-5 col-md-6 col-12">
+                                                    <!-- Single Widget -->
+                                                    <div class="single-footer about">
+                                                        <div class="logo">
+                                                            <a href="${pageContext.request.contextPath}/homepage"><img src="${pageContext.request.contextPath}/img/logo.png" alt="logo"></a>
+                                                        </div>
+                                                        <p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
+                                                        <p class="call">Giải đáp thắc mắc? Call us 24/7<span><a href="tel:123456789">+84 354 995 144</a></span></p>
+                                                    </div>
+                                                    <!-- End Single Widget -->
+                                                </div>
+                                                <div class="col-lg-2 col-md-6 col-12">
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-6 col-12">
+                                                    <!-- Single Widget -->
+                                                    <div class="single-footer links">
+                                                        <h4>Customer Service</h4>
+                                                        <ul>
+                                                            <li><a href="#">Payment Methods</a></li>
+                                                            <li><a href="#">Money-back</a></li>
+                                                            <li><a href="#">Returns</a></li>
+                                                            <li><a href="#">Shipping</a></li>
+                                                            <li><a href="#">Privacy Policy</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- End Single Widget -->
+                                                </div>
+                                                <div class="col-lg-3 col-md-6 col-12">
+                                                    <!-- Single Widget -->
+                                                    <div class="single-footer social">
+                                                        <h4>Get In Tuch</h4>
+                                                        <!-- Single Widget -->
+                                                        <div class="contact">
+                                                            <ul>
+                                                                <li>Đại học FPT Hà Nội</li>
+                                                                <li>49 Mục Uyên - Thạch Thất</li>
+                                                                <li>group6@gmail.com</li>
+                                                                <li>+84 354 995 144</li>
+                                                            </ul>
+                                                        </div>
+                                                        <!-- End Single Widget -->
+                                                        <ul>
+                                                            <li><a href="https://www.facebook.com/Cybevis.Keisha"><i class="ti-facebook"></i></a></li>
+                                                            <li><a href="https://www.instagram.com/iam._.nongg/"><i class="ti-twitter"></i></a></li>
+                                                            <li><a href="https://www.youtube.com/watch?v=bfxJZk4SGpA&list=RDbfxJZk4SGpA&start_radio=1"><i class="ti-flickr"></i></a></li>
+                                                            <li><a href="https://www.youtube.com/watch?v=ZjjmqHW7MgQ&list=RDZjjmqHW7MgQ&start_radio=1&rv=bfxJZk4SGpA"><i class="ti-instagram"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- End Single Widget -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Footer Top -->
+                                    <div class="copyright">
+                                        <div class="container">
+                                            <div class="inner">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-12">
+                                                        <div class="left">
+                                                            <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-12">
+                                                        <div class="right">
+                                                            <img src="img/payments.png" alt="#">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </footer>
+                                <!-- /End Footer Area -->
+
+                                <!-- Jquery -->
+                                <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+                                <script src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.0.js"></script>
+                                <script src="${pageContext.request.contextPath}/js/jquery-ui.min.js"></script>
+                                <!-- Popper JS -->
+                                <script src="${pageContext.request.contextPath}/js/popper.min.js"></script>
+                                <!-- Bootstrap JS -->
+                                <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+                                <!-- Color JS -->
+                                <!--<script src="${pageContext.request.contextPath}/js/colors.js"></script>-->
+                                <!-- Slicknav JS -->
+                                <script src="${pageContext.request.contextPath}/js/slicknav.min.js"></script>
+                                <!-- Owl Carousel JS -->
+                                <script src="${pageContext.request.contextPath}/js/owl-carousel.js"></script>
+                                <!-- Magnific Popup JS -->
+                                <script src="${pageContext.request.contextPath}/js/magnific-popup.js"></script>
+                                <!-- Waypoints JS -->
+                                <script src="${pageContext.request.contextPath}/js/waypoints.min.js"></script>
+                                <!-- Countdown JS -->
+                                <script src="${pageContext.request.contextPath}/js/finalcountdown.min.js"></script>
+                                <!-- Nice Select JS -->
+                                <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
+                                <!-- Flex Slider JS -->
+                                <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
+                                <!-- ScrollUp JS -->
+                                <script src="${pageContext.request.contextPath}/js/scrollup.js"></script>
+                                <!-- Onepage Nav JS -->
+                                <script src="${pageContext.request.contextPath}/js/onepage-nav.min.js"></script>
+                                <!-- Easing JS -->
+                                <script src="${pageContext.request.contextPath}/js/easing.js"></script>
+                                <!-- Active JS -->
+                                <script src="${pageContext.request.contextPath}/js/active.js"></script>
+                                </body>
+                                </html>
