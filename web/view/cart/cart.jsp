@@ -10,7 +10,7 @@
         <title>Giỏ hàng của bạn</title>
 
         <style>
-            .btn-primary {
+            .btn-secondary {
                 background-color: #333 !important; /* Nền màu đen */
                 color: white !important; /* Màu chữ trắng */
                 border: 0px solid #00FF00 !important; /* Viền màu xanh lá cây */
@@ -19,11 +19,56 @@
                 transition: background-color 0.3s, color 0.3s !important;
             }
 
-            .btn-primary:hover {
+            .btn-secondary:hover {
                 color: #111 !important;
                 background-color: #e0a800 !important;
                 border-color: #d39e00 !important;
             }
+            
+            .btn-primary {
+                padding: 18.15px 50px !important; /* Padding tùy chỉnh */
+            }
+            h3 {
+                font-size: 24px;
+                margin-top: 20px !important;
+            }
+            .order-info, .receiver-info, .ordered-products {
+                margin-bottom: 30px;
+                padding: 20px;
+                border: 1px solid #ddd;
+                background-color: #f9f9f9;
+            }
+            table {
+                width: 100%;
+                margin-top: 20px;
+                border-collapse: collapse;
+            }
+            table th, table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: center;
+            }
+            table th {
+                background-color: #f2f2f2;
+            }
+            .order-actions button {
+                margin-right: 10px;
+            }
+            .order-actions form {
+                display: inline-block;
+            }
+            .order-actions button, .ordered-products button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 8px 12px;
+                cursor: pointer;
+            }
+            .order-actions button:hover, .ordered-products button:hover {
+                background-color: #0056b3;
+                margin-bottom: 10px;
+            }
+            
 
 
         </style>
@@ -92,9 +137,9 @@
                                 </tfoot>
                             </table>
                             <div class="text-right">
-                                <button type="submit" class="btn btn-primary">Update Cart</button>
+                                <button type="submit" class="btn btn-secondary">Update Cart</button>
                                 <a href="${pageContext.request.contextPath}/productList" class="btn btn-success">More Products</a>
-                                <a href="checkout.jsp" class="btn btn-warning">Check Out</a>
+                                <a href="${pageContext.request.contextPath}/cart/checkout" class="btn btn-warning">Check Out</a>
                             </div>
                         </form>
                     </c:if>
@@ -106,44 +151,27 @@
 
                 <!-- Sidebar -->
                 <div class="col-md-4">
-                    <div class="sidebar-widget">
-                        <h3>Search Products</h3>
-                        <form action="searchProduct" method="get">
-                            <input type="text" name="query" class="form-control" placeholder="Search for products...">
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </form>
-                    </div>
+                <div class="sidebar">
+                    <h3 class="feedback-title">Tìm kiếm sản phẩm</h3>
+                    <form action="${pageContext.request.contextPath}/productSearch">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="search" placeholder="Tìm kiếm sản phẩm">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
+                    </form>
 
-                    <div class="sidebar-widget">
-                        <h3>Categories</h3>
-                        <ul class="list-unstyled">
-                            <c:forEach var="category" items="${categories}">
-                                <li><a href="category.jsp?category_id=${category.id}">${category.name}</a></li>
-                                </c:forEach>
-                        </ul>
-                    </div>
+                    <h3 class="feedback-title">Danh mục sản phẩm</h3>
+                    <ul>
+                        <li><a href="/category/perfume">Nước hoa</a></li>
+                        <li><a href="/category/skincare">Chăm sóc da</a></li>
+                        <li><a href="/category/makeup">Trang điểm</a></li>
+                    </ul>
 
-                    <div class="sidebar-widget">
-                        <h3>Latest Products</h3>
-                        <ul class="list-unstyled">
-                            <c:forEach var="product" items="${latestProducts}">
-                                <li>
-                                    <a href="productDetail.jsp?product_id=${product.product_id}">
-                                        <img src="${pageContext.request.contextPath}/img/${product.img[0].img_url}" alt="${product.name}" style="width: 50px; height: 50px;">
-                                        ${product.name} - <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="VND"/>
-                                    </a>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </div>
-
-                    <div class="sidebar-widget">
-                        <h3>Contact Us</h3>
-                        <p>Email: contact@example.com</p>
-                        <p>Phone: 0123456789</p>
-                        <p>Address: 123 Example Street, City, Country</p>
-                    </div>
+                    <h3 class="feedback-title">Liên hệ</h3>
+                    <p>Email: Group6@gmail.com</p>
+                    <p>Điện thoại: 0354995144</p>
                 </div>
+            </div>
             </div>
         </div>
 
