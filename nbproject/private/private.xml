@@ -34,37 +34,6 @@
             <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/searchEmployee.jsp</file>
             <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/userList.jsp</file>
         </group>
-        <group>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/BlogDBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/css/bootstrap.css</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/AddressDBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/employeeList.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Customer_User.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/blog/blogDetail.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/controller/admin/homepage.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Status_Order.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Feature.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Item.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Image.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Employee.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/controller/account/RegisterServlet.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/userDetails.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Order.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/blog/blogList.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/OrderDetail.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/CustomerDBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/Homepage.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/controller/admin/userDetails.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/RoleDBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/employeeDetails.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/searchList.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/ProductDBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Address.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Role.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/DBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/WEB-INF/web.xml</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/searchEmployee.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/userList.jsp</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
