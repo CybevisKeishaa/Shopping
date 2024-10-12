@@ -6,21 +6,21 @@
             .flex-container {
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: center; /* C?n gi?a cï¿½c ph?n t? */
+                justify-content: center; /* C?n gi?a các ph?n t? */
                 margin: 0 auto; /* C?n gi?a container */
-                max-width: 1200px; /* ??t gi?i h?n chi?u r?ng cho container ?? n?i dung khï¿½ng tr?i r?ng toï¿½n b? mï¿½n hï¿½nh */
-                gap: 20px; /* Kho?ng cï¿½ch gi?a cï¿½c ph?n t? */
+                max-width: 1200px; /* ??t gi?i h?n chi?u r?ng cho container ?? n?i dung không tr?i r?ng toàn b? màn hình */
+                gap: 20px; /* Kho?ng cách gi?a các ph?n t? */
             }
 
             .flex-item {
-                flex: 0 1 calc(48% - 10px); /* M?i ph?n t? chi?m kho?ng 48% chi?u r?ng, tr? kho?ng cï¿½ch gi?a chï¿½ng */
-                box-sizing: border-box; /* ??m b?o padding vï¿½ margin khï¿½ng ?nh h??ng ??n kï¿½ch th??c */
-                margin-bottom: 20px; /* Kho?ng cï¿½ch gi?a cï¿½c hï¿½ng */
+                flex: 0 1 calc(48% - 10px); /* M?i ph?n t? chi?m kho?ng 48% chi?u r?ng, tr? kho?ng cách gi?a chúng */
+                box-sizing: border-box; /* ??m b?o padding và margin không ?nh h??ng ??n kích th??c */
+                margin-bottom: 20px; /* Kho?ng cách gi?a các hàng */
             }
 
             @media (max-width: 768px) {
                 .flex-item {
-                    flex: 0 1 100%; /* Trï¿½n mï¿½n hï¿½nh nh? h?n, m?i ph?n t? chi?m 100% chi?u r?ng */
+                    flex: 0 1 100%; /* Trên màn hình nh? h?n, m?i ph?n t? chi?m 100% chi?u r?ng */
                 }
             }
               .pagination-container {
@@ -314,12 +314,12 @@
      <div class="container">
     <div class="pagination-container d-flex justify-content-center">
         <div class="pagination">
-            <!-- Hi?n th? ra nï¿½t m?i tï¿½n quay l?i -->
+            <!-- Previous Button -->
             <c:if test="${currentPage > 1}">
                 <a href="blogList?page=${currentPage - 1}" class="prev">&lt;</a>
             </c:if>
 
-            <!-- Hi?n th? ra t?ng s? trang -->
+            <!-- Page Numbers -->
             <c:forEach var="i" begin="1" end="${totalPages}">
                 <c:choose>
                     <c:when test="${i == currentPage}">
@@ -424,7 +424,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-12">
                                 <div class="left">
-                                    <p>Copyright ï¿½ 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
+                                    <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-12">

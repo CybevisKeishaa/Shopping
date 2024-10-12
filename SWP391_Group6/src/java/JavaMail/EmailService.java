@@ -57,7 +57,7 @@ public class EmailService implements IJavaMail {
             Transport.send(message);
             return true;
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 

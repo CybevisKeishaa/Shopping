@@ -4,7 +4,7 @@
  */
 package blogController;
 
-import dal.blogDBContext;
+import dal.BlogDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ import model.Blog;
  *
  * @author admin
  */
-public class blogList extends HttpServlet {
+public class BlogList extends HttpServlet {
 
    private static final int PAGE_SIZE = 6;
     /**
@@ -64,7 +64,7 @@ public class blogList extends HttpServlet {
 
         int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1; // Nếu có số trang thì dùng, nếu không thì mặc định là trang 1.
 
-        blogDBContext blogDB = new blogDBContext(); // Tạo đối tượng để kết nối và thao tác với cơ sở dữ liệu Blog.
+        BlogDBContext blogDB = new BlogDBContext(); // Tạo đối tượng để kết nối và thao tác với cơ sở dữ liệu Blog.
 
         List<Blog> list = blogDB.getAll(pageNumber, PAGE_SIZE); // Lấy danh sách blog theo trang và số lượng blog trên mỗi trang.
 

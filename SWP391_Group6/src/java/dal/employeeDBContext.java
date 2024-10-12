@@ -9,18 +9,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Brand;
 import model.Capacity;
 import model.Gender;
 import model.Image;
 import model.Product;
-import model.Employee_User;
+import model.Employee;
+import model.Feature;
+import model.Role;
 
 /**
  *
  * @author admin
  */
-public class employeeDBContext extends DBContext {
+public class EmployeeDBContext extends DBContext {
+
     //lấy ra employee theo ID
     public List<Product> getListProductByEmployeeId(int id, int pageNumber, int pageSize) {
         String sql = "SELECT p.* \n"
@@ -64,30 +69,31 @@ public class employeeDBContext extends DBContext {
         }
         return null;
     }
+
     public int totalListProductByEmployeeId(int id) {
-        String sql = "SELECT COUNT(*) " +
-                     "FROM Employee e " +
-                     "INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id " +
-                     "INNER JOIN Product p ON p.product_id = ep.product_id " +
-                     "WHERE e.emp_id = ?";
+        String sql = "SELECT COUNT(*) "
+                + "FROM Employee e "
+                + "INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id "
+                + "INNER JOIN Product p ON p.product_id = ep.product_id "
+                + "WHERE e.emp_id = ?";
         int bid = -1;
-    
+
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, id);  // Set the employee id parameter
             ResultSet rs = st.executeQuery();  // Execute the query
-    
+
             if (rs.next()) {  // Retrieve the count result
                 bid = rs.getInt(1);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    
+
         return bid;
     }
-    
-    public Employee_User getEmployeeByIdForBlog(int id) {
+
+    public Employee getEmployeeByIdForBlog(int id) {
         String sql = "SELECT * FROM Employee where emp_id=?";
 
         try {
@@ -153,7 +159,7 @@ public class employeeDBContext extends DBContext {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(employeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (rs != null) {
@@ -163,7 +169,7 @@ public class employeeDBContext extends DBContext {
                     stm.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(employeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -171,7 +177,7 @@ public class employeeDBContext extends DBContext {
     }
 
     public static void main(String[] args) {
-        employeeDBContext eDb = new employeeDBContext();
+        EmployeeDBContext eDb = new EmployeeDBContext();
         Employee e = eDb.getEmployeeByEmailAndPassword("munhoang00@gmail.com", "123456");
         System.out.println(e.getRole());
     }

@@ -20,7 +20,7 @@ import model.Employee;
  *
  * @author admin
  */
-public class viewOrderList extends HttpServlet {
+public class ViewOrderList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

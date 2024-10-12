@@ -277,9 +277,8 @@
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#man" role="tab">Man</a></li>
                                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#women" role="tab">Woman</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kids" role="tab">Kids</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#accessories" role="tab">Accessories</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#essential" role="tab">Essential</a></li>
+                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kids" role="tab">Unisex</a></li>
+                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#essential" role="tab">Capacity</a></li>
                                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#prices" role="tab">Prices</a></li>
                                 </ul>
                                 <!--/ End Tab Nav -->
@@ -572,7 +571,7 @@
                                                     <div class="row">
                                                         <div class="col-lg-6 col-12">
                                                             <div class="left">
-                                                                <p>Copyright ï¿½ 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
+                                                                <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6 col-12">

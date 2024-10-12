@@ -208,30 +208,30 @@
         <!-- StyleSheet -->
 
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
         <!-- Magnific Popup -->
-        <link rel="stylesheet" href="css/magnific-popup.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/magnific-popup.min.css">
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="css/font-awesome.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.css">
         <!-- Fancybox -->
-        <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery.fancybox.min.css">
         <!-- Themify Icons -->
-        <link rel="stylesheet" href="css/themify-icons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/themify-icons.css">
         <!-- Nice Select CSS -->
-        <link rel="stylesheet" href="css/niceselect.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/niceselect.css">
         <!-- Animate CSS -->
-        <link rel="stylesheet" href="css/animate.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
         <!-- Flex Slider CSS -->
-        <link rel="stylesheet" href="css/flex-slider.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/flex-slider.min.css">
         <!-- Owl Carousel -->
-        <link rel="stylesheet" href="css/owl-carousel.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl-carousel.css">
         <!-- Slicknav -->
-        <link rel="stylesheet" href="css/slicknav.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/slicknav.min.css">
 
         <!-- Eshop StyleSheet -->
-        <link rel="stylesheet" href="css/reset.css">
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="css/responsive.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
 
 
 
@@ -358,7 +358,7 @@
                 <div class="product-container">
                     <!-- Image Section -->
                     <div class="image-section">
-                        <img src="images/test.jpg" alt="Product Image" />
+                        <img src="${pageContext.request.contextPath}/images/test.jpg" alt="Product Image" />
                     </div>
 
                     <!-- Product Info Section -->
@@ -404,7 +404,7 @@
                     <div class="other-products-list">
                         <c:forEach var="i" items="${requestScope.list}">
                             <div class="other-product-item">
-                                <img src="images/test.jpg" alt="Other Product 1" />
+                                <img src="${pageContext.request.contextPath}/images/test.jpg" alt="Other Product 1" />
                                 <p>${i.price}</p>
                             </div>
                         </c:forEach>
@@ -553,7 +553,7 @@
                                                         <div class="row">
                                                             <div class="col-lg-6 col-12">
                                                                 <div class="left">
-                                                                    <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
+                                                                    <p>Copyright  2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-6 col-12">
@@ -569,36 +569,36 @@
                                         <!-- /End Footer Area -->
 
                                         <!-- Jquery -->
-                                        <script src="js/jquery.min.js"></script>
-                                        <script src="js/jquery-migrate-3.0.0.js"></script>
-                                        <script src="js/jquery-ui.min.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.0.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/jquery-ui.min.js"></script>
                                         <!-- Popper JS -->
-                                        <script src="js/popper.min.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/popper.min.js"></script>
                                         <!-- Bootstrap JS -->
-                                        <script src="js/bootstrap.min.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
                                         <!-- Color JS -->
-                                        <script src="js/colors.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/colors.js"></script>
                                         <!-- Slicknav JS -->
-                                        <script src="js/slicknav.min.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/slicknav.min.js"></script>
                                         <!-- Owl Carousel JS -->
-                                        <script src="js/owl-carousel.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/owl-carousel.js"></script>
                                         <!-- Magnific Popup JS -->
-                                        <script src="js/magnific-popup.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/magnific-popup.js"></script>
                                         <!-- Waypoints JS -->
-                                        <script src="js/waypoints.min.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/waypoints.min.js"></script>
                                         <!-- Countdown JS -->
-                                        <script src="js/finalcountdown.min.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/finalcountdown.min.js"></script>
                                         <!-- Nice Select JS -->
-                                        <script src="js/nicesellect.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
                                         <!-- Flex Slider JS -->
-                                        <script src="js/flex-slider.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
                                         <!-- ScrollUp JS -->
-                                        <script src="js/scrollup.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/scrollup.js"></script>
                                         <!-- Onepage Nav JS -->
-                                        <script src="js/onepage-nav.min.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/onepage-nav.min.js"></script>
                                         <!-- Easing JS -->
-                                        <script src="js/easing.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/easing.js"></script>
                                         <!-- Active JS -->
-                                        <script src="js/active.js"></script>
+                                        <script src="${pageContext.request.contextPath}/js/active.js"></script>
                                         </body>
                                         </html>

@@ -19,7 +19,7 @@ import model.Blog;
  *
  * @author DINH SON
  */
-public class blogDetail extends HttpServlet {
+public class BlogDetail extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
