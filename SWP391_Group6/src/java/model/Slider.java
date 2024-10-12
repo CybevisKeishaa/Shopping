@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-/**
- *
- * @author KEISHA
- */
 public class Slider {
     private int slider_id;
     private String title;
@@ -56,8 +48,6 @@ public class Slider {
         this.employee = employee;
     }
 
-    
-
     public Product getProduct() {
         return product;
     }
@@ -65,6 +55,5 @@ public class Slider {
     public void setProduct(Product product) {
         this.product = product;
     }
-    
-    
+
 }

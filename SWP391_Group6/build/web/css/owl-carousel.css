@@ -32,6 +32,13 @@
 	margin-top: 10px; }
 
 .owl-theme .owl-dots {
+   
+    position: absolute;
+    bottom: 20px; /* Ði?u ch?nh giá tr? này d? thay d?i kho?ng cách t? chân ?nh */
+    left: 50%;
+    transform: translateX(-50%);
+
+
 	text-align: center;
 	-webkit-tap-highlight-color: transparent; }
 .owl-theme .owl-dots .owl-dot {

@@ -81,7 +81,9 @@ public class RegisterServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String re_password = request.getParameter("repassword");
-        int gender = Integer.parseInt(request.getParameter("gender"));
+        Integer genderValue = Integer.parseInt(request.getParameter("gender"));
+        Boolean gender = (genderValue == 1);
+
         String raw_date = request.getParameter("dob");
         Date dob = Date.valueOf(raw_date);
         String phone = request.getParameter("phone");
@@ -91,7 +93,7 @@ public class RegisterServlet extends HttpServlet {
         // Kiểm tra mật khẩu và nhập lại mật khẩu có khớp không
         if (!password.equals(re_password)) {
             request.setAttribute("errorMessage", "Passwords do not match!");
-            request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
             return;
         }
 
@@ -100,41 +102,41 @@ public class RegisterServlet extends HttpServlet {
         try {
             if (db.isEmailExists(email)) {
                 request.setAttribute("errorMessage", "Email already exists!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             // Kiểm tra xem username có bị trùng không
             if (db.isUsernameExists(username)) {
                 request.setAttribute("errorMessage", "Username already exists!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             if (db.isPhoneExists(phone)) {
                 request.setAttribute("errorMessage", "Phone number already exists!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             // Kiểm tra username và fullname không chứa ký tự đặc biệt
             if (!isValidString(fullname)) {
                 request.setAttribute("errorMessage", "Fullname contains invalid characters!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             // Kiểm tra độ dài mật khẩu
             if (!isValidPassword(password)) {
                 request.setAttribute("errorMessage", "Password must be at least 6 characters long!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             // Kiểm tra số điện thoại
             if (!isValidPhoneNumber(phone)) {
                 request.setAttribute("errorMessage", "Phone number must contain only digits!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
@@ -143,15 +145,11 @@ public class RegisterServlet extends HttpServlet {
             cus.setDisplay_name(displayname);
             cus.setName_cus(fullname);
             cus.setEmail(email);
-            cus.setC_phone(Integer.parseInt(phone));  
+            cus.setC_phone(phone);
             cus.setPassword(password);
             cus.setUsername(username);
             cus.setDob(dob);
-
-            // Đặt giới tính
-            Gender g = new Gender();
-            g.setGender_id(gender);
-            cus.setGender(g);
+            cus.setGender(gender);
 
             // Đặt vai trò
             Role r = new Role();
@@ -165,7 +163,8 @@ public class RegisterServlet extends HttpServlet {
             db.insertCustomer(cus);
 
             // Gửi email xác thực
-            String verificationLink = "http://localhost:9999/SWP391_Group6/VerificationActive?code=" + verificationCode;
+            String contextPath = request.getContextPath(); // Lấy context path của ứng dụng
+            String verificationLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/VerificationActive?code=" + verificationCode;
             IJavaMail mailService = new EmailService();
             boolean emailSent = mailService.send(email, "Account Verification", "Please verify your account.", verificationLink);
 

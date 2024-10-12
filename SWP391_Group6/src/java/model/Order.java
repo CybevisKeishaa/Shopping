@@ -1,26 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-import java.math.BigDecimal;
+
+import model.Status_Order;
 import java.util.ArrayList;
 
 import java.util.Date;
-/**
- *
- * @author KEISHA
- */
+
 public class Order {
+
+    private String firstProductName;  
+    private int numberOfOtherProducts;
     private int order_id;
     private Customer_User customer;
-    private BigDecimal total_price;
+    private int total_price;
     private Date create_at;
-    private String status;
+    private Status_Order status;
     private String payment_method;
     private String shipping_method;
-    private ArrayList<OrderDetail> orderDetails;
+    private ArrayList<OrderDetail> orderDetails = new ArrayList<>();
 
     public int getOrder_id() {
         return order_id;
@@ -38,11 +35,11 @@ public class Order {
         this.customer = customer;
     }
 
-    public BigDecimal getTotal_price() {
+    public int getTotal_price() {
         return total_price;
     }
 
-    public void setTotal_price(BigDecimal total_price) {
+    public void setTotal_price(int total_price) {
         this.total_price = total_price;
     }
 
@@ -54,11 +51,11 @@ public class Order {
         this.create_at = create_at;
     }
 
-    public String getStatus() {
+    public Status_Order getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status_Order status) {
         this.status = status;
     }
 
@@ -85,6 +82,22 @@ public class Order {
     public void setOrderDetails(ArrayList<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
     }
+
+    public String getFirstProductName() {
+        return firstProductName;
+    }
+
+    public void setFirstProductName(String firstProductName) {
+        this.firstProductName = firstProductName;
+    }
+
+    public int getNumberOfOtherProducts() {
+        return numberOfOtherProducts;
+    }
     
-    
+    public void setNumberOfOtherProducts(int numberOfOtherProducts) {
+        this.numberOfOtherProducts = numberOfOtherProducts;
+    }
 }
+
+

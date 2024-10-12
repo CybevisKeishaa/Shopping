@@ -314,20 +314,12 @@
      <div class="container">
     <div class="pagination-container d-flex justify-content-center">
         <div class="pagination">
-<<<<<<< HEAD
-            <!-- Hi?n th? ra nút m?i tên quay l?i -->
-=======
             <!-- Previous Button -->
->>>>>>> main
             <c:if test="${currentPage > 1}">
                 <a href="blogList?page=${currentPage - 1}" class="prev">&lt;</a>
             </c:if>
 
-<<<<<<< HEAD
-            <!-- Hi?n th? ra t?ng s? trang -->
-=======
             <!-- Page Numbers -->
->>>>>>> main
             <c:forEach var="i" begin="1" end="${totalPages}">
                 <c:choose>
                     <c:when test="${i == currentPage}">

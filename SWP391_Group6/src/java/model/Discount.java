@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.math.BigDecimal;
@@ -12,7 +8,6 @@ import java.util.Date;
  *
  * @author KEISHA
  */
-
 public class Discount {
 
     private int discount_id;
@@ -20,7 +15,7 @@ public class Discount {
     private int amount;
     private Date start;
     private Date end;
-    private ArrayList<Product> products;
+    private ArrayList<Product> products = new ArrayList<>();
 
     public int getDiscount_id() {
         return discount_id;
@@ -45,11 +40,6 @@ public class Discount {
     public void setAmount(int amount) {
         this.amount = amount;
     }
-
-    
-    
-
-    
 
     public Date getStart() {
         return start;

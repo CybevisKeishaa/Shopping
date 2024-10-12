@@ -16,11 +16,10 @@ import model.Gender;
  * @author DINH SON
  */
 public class GenderDBContext extends DBContext {
-<<<<<<< HEAD
     public Gender getGenderFindById(int gid) {
         String sql = "Select * from Gender WHERE gender_id=?";
         try {
-            PreparedStatement st = connection.prepareStatement(sql);
+            PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, gid);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -37,7 +36,7 @@ public class GenderDBContext extends DBContext {
         List<Gender> list = new ArrayList<>();
         String sql = "Select * from Gender";
         try {
-            PreparedStatement st = connection.prepareStatement(sql);
+            PreparedStatement st = connect.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Gender g = new Gender(rs.getInt(1), rs.getString(2));
@@ -50,13 +49,4 @@ public class GenderDBContext extends DBContext {
         return null;
 
     }
-=======
-    
-       
-        
-    
-     
->>>>>>> main
-    
-    
 }

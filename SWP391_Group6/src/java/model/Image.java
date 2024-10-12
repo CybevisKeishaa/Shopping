@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.util.ArrayList;
@@ -11,12 +7,21 @@ import java.util.ArrayList;
  * @author KEISHA
  */
 public class Image {
+
     private int img_id;
     private String img_url;
-    private Product product;
     private Feedback feedback;
-    private ArrayList<Slider> slides;
-    private ArrayList<Blog> blog;
+    private ArrayList<Product> product = new ArrayList<>();
+    private Slider slider;
+    private ArrayList<Blog> blog = new ArrayList<>();
+
+    public Image() {
+    }
+
+    public Image(int img_id, String img_url) {
+        this.img_id = img_id;
+        this.img_url = img_url;
+    }
 
     public int getImg_id() {
         return img_id;
@@ -34,14 +39,6 @@ public class Image {
         this.img_url = img_url;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public Feedback getFeedback() {
         return feedback;
     }
@@ -50,12 +47,20 @@ public class Image {
         this.feedback = feedback;
     }
 
-    public ArrayList<Slider> getSlides() {
-        return slides;
+    public ArrayList<Product> getProduct() {
+        return product;
     }
 
-    public void setSlides(ArrayList<Slider> slides) {
-        this.slides = slides;
+    public void setProduct(ArrayList<Product> product) {
+        this.product = product;
+    }
+
+    public Slider getSlider() {
+        return slider;
+    }
+
+    public void setSlider(Slider slider) {
+        this.slider = slider;
     }
 
     public ArrayList<Blog> getBlog() {
@@ -65,4 +70,6 @@ public class Image {
     public void setBlog(ArrayList<Blog> blog) {
         this.blog = blog;
     }
+
 }
+

@@ -18,7 +18,7 @@ public class Customer_User {
     private String name_cus;
     private String email;
     private String password;
-    private int c_phone;
+    private String c_phone;
     private boolean status;
     private Role role;
     private Cart cart;
@@ -26,7 +26,7 @@ public class Customer_User {
     private String display_name;
     private ArrayList<Address> address;
     private ArrayList<Order> orders;
-    private Gender gender;
+    private boolean gender;
     private Date dob;
     private String verificationCode;
 
@@ -54,11 +54,11 @@ public class Customer_User {
         this.username = username;
     }
 
-    public Gender getGender() {
+    public boolean isGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 
@@ -94,11 +94,11 @@ public class Customer_User {
         this.password = password;
     }
 
-    public int getC_phone() {
+    public String getC_phone() {
         return c_phone;
     }
 
-    public void setC_phone(int c_phone) {
+    public void setC_phone(String c_phone) {
         this.c_phone = c_phone;
     }
 
@@ -132,14 +132,6 @@ public class Customer_User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-    }
-
-    public String getDisplay_name() {
-        return display_name;
-    }
-
-    public void setDisplay_name(String display_name) {
-        this.display_name = display_name;
     }
 
     public ArrayList<Address> getAddress() {

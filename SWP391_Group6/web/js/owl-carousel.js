@@ -1,5 +1,23 @@
 // Owl Carousel JS //
+$(document).ready(function(){
+  $('.hero-slider').owlCarousel({
+      items: 1,                // S? lu?ng slide hi?n th? m?t l?n
+      loop: true,              // Cho phép l?p l?i slider
+      autoplay: true,          // Kích ho?t t? d?ng tru?t
+      autoplayTimeout: 5000,   // Th?i gian ch? gi?a các l?n tru?t (5 giây)
+      autoplayHoverPause: true,// T?m d?ng khi di chu?t lên slider
+      nav: false,              // T?t các nút di?u hu?ng prev/next
+      dots: true,              // Hi?n th? các d?u ch?m bên du?i slider
+      smartSpeed: 800,         // T?c d? chuy?n d?i gi?a các slide (800ms)
+      animateOut: 'fadeOut',   // Hi?u ?ng chuy?n d?i khi slide bi?n m?t
+      animateIn: 'fadeIn'      // Hi?u ?ng chuy?n d?i khi slide xu?t hi?n
+  });
+});
+
+
+
 ! function(a, b, c, d) {
+    
     function e(b, c) {
         this.settings = null, this.options = a.extend({}, e.Defaults, c), this.$element = a(b), this.drag = a.extend({}, m), this.state = a.extend({}, n), this.e = a.extend({}, o), this._plugins = {}, this._supress = {}, this._current = null, this._speed = null, this._coordinates = [], this._breakpoint = null, this._width = null, this._items = [], this._clones = [], this._mergers = [], this._invalidated = {}, this._pipe = [], a.each(e.Plugins, a.proxy(function(a, b) {
             this._plugins[a[0].toLowerCase() + a.slice(1)] = new b(this)

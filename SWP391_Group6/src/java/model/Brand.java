@@ -14,7 +14,7 @@ public class Brand {
 
     private int brand_id;
     private String name;
-    private ArrayList<Product> products;
+    private ArrayList<Product> products = new ArrayList<>();
 
     public int getBrand_id() {
         return brand_id;

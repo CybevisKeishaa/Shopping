@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author KEISHA
- */
 public class Product {
     private int product_id;
     private String name;
@@ -150,5 +142,5 @@ public class Product {
     public void setOrders(ArrayList<OrderDetail> orders) {
         this.orders = orders;
     }
-    
+
 }

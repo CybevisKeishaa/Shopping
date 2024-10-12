@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> main
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -15,26 +12,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Customer_User;
 import java.sql.*;
-<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cart;
+import model.Feature;
 import model.Order;
 import model.PasswordResetToken;
 import model.Role;
-=======
->>>>>>> main
 
 /**
  *
  * @author KEISHA
  */
-<<<<<<< HEAD
-public class CustomerDBContext extends DBContext {
-=======
 public class CustomerDBContext extends DBContext<Customer_User> {
->>>>>>> main
 
     public void insertCustomer(Customer_User customer) throws SQLException {
         PreparedStatement stm_insert = null;
@@ -53,7 +44,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             if (rs.next() && rs.getInt("max_cus_id") > 0) {
                 new_cus_id = rs.getInt("max_cus_id") + 1;
             }
-            customer.setCus_id(new_cus_id);  // Đặt giá trị cus_id mới cho đối tượng customer
+            customer.setCus_id(new_cus_id); // Đặt giá trị cus_id mới cho đối tượng customer
 
             // Câu lệnh SQL để chèn thông tin vào bảng Customer
             String sql_insert_cus = "INSERT INTO [dbo].[Customer]\n"
@@ -65,40 +56,25 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                     + "           ,[display_name]\n"
                     + "           ,[status]\n"
                     + "           ,[role_id]\n"
-<<<<<<< HEAD
-                    + "           ,[gender]\n"
+                    + "           ,[gender_id]\n"
                     + "           ,[username]\n"
                     + "           ,[birth_date]\n"
                     + "           ,[verification_code])\n"
-=======
-                    + "           ,[gender_id]\n"
-                    + "           ,[username]\n"
-                    + "           ,[birth_date]\n" 
-                    + "           ,[verification_code])\n" 
->>>>>>> main
                     + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Chuẩn bị câu lệnh SQL chèn
             stm_insert = connect.prepareStatement(sql_insert_cus);
-            stm_insert.setInt(1, customer.getCus_id());                       // cus_id
-            stm_insert.setString(2, customer.getName_cus());               // name_cus
-            stm_insert.setString(3, customer.getPassword());               // password
-            stm_insert.setString(4, customer.getEmail());                  // email
-<<<<<<< HEAD
-            stm_insert.setString(5, customer.getC_phone());                // c_phone 
-            stm_insert.setString(6, customer.getUsername());           // display_name
-            stm_insert.setBoolean(7, false);                                // status (giả sử là active - true)
-            stm_insert.setInt(8, customer.getRole().getRole_id());         // role_id
-            stm_insert.setInt(9, customer.isGender() ? 1 : 0);
-=======
-            stm_insert.setInt(5, customer.getC_phone());                // c_phone 
-            stm_insert.setString(6, customer.getDisplay_name());           // display_name
-            stm_insert.setBoolean(7, false);                                // status (giả sử là active - true)
-            stm_insert.setInt(8, customer.getRole().getRole_id());         // role_id
-            stm_insert.setInt(9, customer.getGender().getGender_id());     // gender_id
->>>>>>> main
+            stm_insert.setInt(1, customer.getCus_id()); // cus_id
+            stm_insert.setString(2, customer.getName_cus()); // name_cus
+            stm_insert.setString(3, customer.getPassword()); // password
+            stm_insert.setString(4, customer.getEmail()); // email
+            stm_insert.setInt(5, customer.getC_phone()); // c_phone
+            stm_insert.setString(6, customer.getDisplay_name()); // display_name
+            stm_insert.setBoolean(7, false); // status (giả sử là active - true)
+            stm_insert.setInt(8, customer.getRole().getRole_id()); // role_id
+            stm_insert.setInt(9, customer.getGender().getGender_id()); // gender_id
             stm_insert.setString(10, customer.getUsername());
-            stm_insert.setDate(11, customer.getDob());                     // dob (ngày sinh)
+            stm_insert.setDate(11, customer.getDob()); // dob (ngày sinh)
             stm_insert.setString(12, customer.getVerificationCode());
 
             // Thực thi câu lệnh chèn
@@ -108,13 +84,13 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             connect.commit();
         } catch (SQLException ex) {
             // In ra lỗi chi tiết để dễ dàng debug
-//            System.err.println("SQL Error: " + ex.getMessage());
+            // System.err.println("SQL Error: " + ex.getMessage());
 
             if (connect != null) {
                 try {
                     connect.rollback();
                 } catch (SQLException ex1) {
-//                    System.err.println("Rollback Error: " + ex1.getMessage());
+                    // System.err.println("Rollback Error: " + ex1.getMessage());
                 }
             }
 
@@ -220,11 +196,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             stm = connect.prepareStatement(sql);
             stm.setString(1, verificationCode);
             int rowsUpdated = stm.executeUpdate();
-<<<<<<< HEAD
             return rowsUpdated > 0;
-=======
-            return rowsUpdated > 0;  
->>>>>>> main
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
@@ -235,13 +207,12 @@ public class CustomerDBContext extends DBContext<Customer_User> {
         }
     }
 
-<<<<<<< HEAD
     // Lấy thông tin tài khoản khách hàng bằng email và mật khẩu
     public Customer_User getCustomerAccountByEmail(String email, String password) {
         String sql = """
-                     SELECT cus_id, name_cus, email, status, avartar, role_id, cart_id
-                     FROM Customer 
-                     WHERE email = ? AND [password] = ?""";
+                SELECT cus_id, name_cus, email, status, avartar, role_id, cart_id
+                FROM Customer
+                WHERE email = ? AND [password] = ?""";
 
         try (PreparedStatement stm = connect.prepareStatement(sql)) {
             stm.setString(1, email);
@@ -263,12 +234,14 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy thông tin tài khoản", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy thông tin tài khoản",
+                    ex);
         }
         return null;
     }
 
     // Đổi mật khẩu khách hàng
+
     public boolean changePassword(int cus_id, String newPassword) {
         String sql = "UPDATE Customer SET password = ? WHERE cus_id = ?";
         boolean updated = false;
@@ -286,9 +259,9 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
     public void updateCustomer(Customer_User customer) {
         String sql = """
-                     UPDATE Customer 
-                     SET name_cus = ?, gender = ?, c_phone = ?, avartar = ?
-                     WHERE cus_id = ?""";
+                UPDATE Customer
+                SET name_cus = ?, gender = ?, c_phone = ?, avartar = ?
+                WHERE cus_id = ?""";
 
         try (PreparedStatement stm = connect.prepareStatement(sql)) {
             stm.setString(1, customer.getName_cus());
@@ -299,7 +272,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi cập nhật thông tin khách hàng", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE,
+                    "Lỗi khi cập nhật thông tin khách hàng", ex);
         }
     }
 
@@ -335,7 +309,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy thông tin khách hàng theo ID", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE,
+                    "Lỗi khi lấy thông tin khách hàng theo ID", ex);
         }
         return null;
     }
@@ -357,7 +332,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy thông tin khách hàng theo email", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE,
+                    "Lỗi khi lấy thông tin khách hàng theo email", ex);
         }
         return null;
     }
@@ -372,7 +348,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             stm.setTimestamp(3, Timestamp.valueOf(expirationTime));
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi tạo token đặt lại mật khẩu", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi tạo token đặt lại mật khẩu",
+                    ex);
         }
     }
 
@@ -531,7 +508,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
         return -1;
     }
 
-    public List<Customer_User> getAllListByProductidEmployeeIdName(String name, int eid, int pid, int pageNumber, int pageSize) {
+    public List<Customer_User> getAllListByProductidEmployeeIdName(String name, int eid, int pid, int pageNumber,
+            int pageSize) {
         String sql = "SELECT *\n"
                 + "              FROM Employee e \n"
                 + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
@@ -570,7 +548,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
         return null;
     }
 
-    public List<Customer_User> getAllListByProductidEmployeeIdDate(Date date, int eid, int pid, int pageNumber, int pageSize) {
+    public List<Customer_User> getAllListByProductidEmployeeIdDate(Date date, int eid, int pid, int pageNumber,
+            int pageSize) {
         String sql = "SELECT *\n"
                 + "              FROM Employee e \n"
                 + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
@@ -608,8 +587,9 @@ public class CustomerDBContext extends DBContext<Customer_User> {
         }
         return null;
     }
-    public int gettotalByProductidEmployeeIdtotal(float total, int eid, int pid){
-        String sql="SELECT *\n"
+
+    public int gettotalByProductidEmployeeIdtotal(float total, int eid, int pid) {
+        String sql = "SELECT *\n"
                 + "              FROM Employee e \n"
                 + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
                 + "              INNER JOIN Product p ON p.product_id = ep.product_id \n"
@@ -617,7 +597,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 + "             INNER JOIN [Order] o on od.detail_id=o.order_id\n"
                 + "               INNER JOIN Customer c on c.cus_id=o.cus_id\n"
                 + "               WHERE e.emp_id =? and p.product_id=? and o.total=? ";
-         int c = -1;
+        int c = -1;
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, eid);
@@ -635,7 +615,9 @@ public class CustomerDBContext extends DBContext<Customer_User> {
         }
         return -1;
     }
-    public List<Customer_User> getAllListByProductidEmployeeIdtotal(float total, int eid, int pid, int pageNumber, int pageSize) {
+
+    public List<Customer_User> getAllListByProductidEmployeeIdtotal(float total, int eid, int pid, int pageNumber,
+            int pageSize) {
         String sql = "SELECT *\n"
                 + "              FROM Employee e \n"
                 + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
@@ -678,6 +660,4 @@ public class CustomerDBContext extends DBContext<Customer_User> {
         CustomerDBContext cdb = new CustomerDBContext();
         System.out.println(cdb.getAllListByProductidEmployeeIdName("o", 2, 1, 1, 3).size());
     }
-=======
->>>>>>> main
 }

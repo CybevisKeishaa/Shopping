@@ -41,9 +41,17 @@ public class EmailService implements IJavaMail {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(sendTo));
             message.setSubject(topic);
 
-            // Gửi email chứa link xác thực
-            String fullMessageContent = messageContent + "\nClick the link below to verify your account:\n" + verificationLink;
-            message.setText(fullMessageContent);
+            // Tạo nội dung HTML với button chứa liên kết
+            String htmlContent = "<html>"
+                    + "<body>"
+                    + "<p>" + messageContent + "</p>"
+                    + "<p>Click the button below to direct:</p>"
+                    + "<a href='" + verificationLink + "' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;'>Verify Account</a>"
+                    + "</body>"
+                    + "</html>";
+
+            // Đặt nội dung email là HTML
+            message.setContent(htmlContent, "text/html; charset=utf-8");
 
             // Send message
             Transport.send(message);

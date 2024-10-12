@@ -5,6 +5,7 @@
 package product_controller;
 
 import dal.productListDBContext;
+import dal.ProductDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -74,7 +75,7 @@ public class productDetail extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("list", pList);
         request.setAttribute("data", p);
-        request.getRequestDispatcher("view/viewProductList/productDetail.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/viewProductList/productDetail.jsp").forward(request, response);
     }
 
     /**
@@ -88,7 +89,7 @@ public class productDetail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+            doGet(request, response);
     }
 
     /**

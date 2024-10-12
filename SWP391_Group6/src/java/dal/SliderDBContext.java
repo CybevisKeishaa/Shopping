@@ -11,28 +11,25 @@ import model.Slider;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import model.Product;
 
 /**
  *
  * @author KEISHA
  */
-
 public class SliderDBContext extends DBContext<Slider> {
 
-    
-    
     public ArrayList<Slider> getSliderForHomepage() {
 
         PreparedStatement stm = null;
         ArrayList<Slider> sliders = new ArrayList<>();
         try {
-            String sql = "SELECT TOP 2 s.slide_id, s.tiltle, s.[description], i.img_url, p.product_id, p.name \n"
-                    + "FROM Slider s \n"
-                    + "JOIN Slider_IMG si ON si.slide_id = s.slide_id \n"
-                    + "JOIN Image i ON i.img_id = si.img_id \n"
-                    + "LEFT JOIN Product_Image pi ON pi.img_id = i.img_id \n"
-                    + "LEFT JOIN Product p ON p.product_id = pi.product_id;";
+            String sql = "SELECT TOP 3 s.slide_id, s.tiltle, s.[description] , i.img_url, p.product_id, s.[status]\n"
+                    + "FROM Slider s\n"
+                    + "JOIN Image i ON i.img_id = s.img_id\n"
+                    + "LEFT JOIN Product_Image pi ON pi.img_id = i.img_id\n"
+                    + "LEFT JOIN Product p ON p.product_id = pi.product_id\n"
+                    + "where s.[status] = 1 ";
 
             stm = connect.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -42,10 +39,14 @@ public class SliderDBContext extends DBContext<Slider> {
                 s.setSlider_id(rs.getInt("slide_id"));
                 s.setTitle(rs.getString("tiltle"));
                 s.setDescription(rs.getString("description"));
+
+                Product p = new Product();
+                p.setProduct_id(rs.getInt("product_id"));
                 
+                s.setProduct(p);
                 Image i = new Image();
                 i.setImg_url(rs.getString("img_url"));
-                
+
                 s.setImage(i);
                 sliders.add(s);
             }
@@ -55,6 +56,5 @@ public class SliderDBContext extends DBContext<Slider> {
         }
         return sliders;
     }
-
 
 }

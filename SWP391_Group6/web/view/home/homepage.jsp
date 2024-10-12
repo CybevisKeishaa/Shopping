@@ -129,8 +129,8 @@
                                 <ul class="list-main">
                                     <li><i class="ti-location-pin"></i> Đại Học FPT Hà Nội</li>
 
-                                    <li><i class="ti-user"></i> <a href="#">My account</a></li>
-                                    <li><i class="ti-power-off"></i><a href="login.html#">Login</a></li>
+                                    <li><i class="ti-user"></i> <a href="customer_profile">Tài khoản</a></li>
+                                    <li><i class="ti-power-off"></i><a href="login">Đăng nhập</a></li>
                                 </ul>
                             </div>
                             <!-- End Top Right -->
@@ -145,7 +145,7 @@
                         <div class="col-lg-2 col-md-2 col-12">
                             <!-- Logo -->
                             <div class="logo">
-                                <a href="index.html"><img src="img/logo.png" alt="logo"></a>
+                                <a href="${pageContext.request.contextPath}/homepage"><img src="${pageContext.request.contextPath}/img/logo.png" alt="logo"></a>
                             </div>
                             <!--/ End Logo -->
                             <!-- Search Form -->
@@ -168,12 +168,12 @@
                                 <div class="search-bar">
                                     <select>
                                         <option selected="selected">All Category</option>
-                                        <option>Man</option>
-                                        <option>Woman</option>
+                                        <option>Nam</option>
+                                        <option>Nữ</option>
                                         <option>Unisex</option>
                                     </select>
-                                    <form>
-                                        <input name="search" placeholder="Search Products Here....." type="search">
+                                    <form action="productSearch">
+                                        <input name="search" placeholder="Tìm kiếm....." type="search">
                                         <button class="btnn"><i class="ti-search"></i></button>
                                     </form>
                                 </div>
@@ -193,26 +193,26 @@
                                     <!-- Shopping Item -->
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
-                                            <span>2 Items</span>
-                                            <a href="#">View Cart</a>
+                                            <span>2 Sản phẩm</span>
+                                            <a href="#">Xem giỏ hàng</a>
                                         </div>
                                         <ul class="shopping-list">
                                             <li>
                                                 <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                                <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
+                                                <a class="cart-img" href="#"><img src="${pageContext.request.contextPath}/https://via.placeholder.com/70x70" alt="#"></a>
                                                 <h4><a href="#">Dior Sauvage</a></h4>
                                                 <p class="quantity">1x - <span class="amount">2.800.000 VND</span></p>
                                             </li>
                                             <li>
                                                 <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                                <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
+                                                <a class="cart-img" href="#"><img src="${pageContext.request.contextPath}/https://via.placeholder.com/70x70" alt="#"></a>
                                                 <h4><a href="#">Channel</a></h4>
                                                 <p class="quantity">1x - <span class="amount">2.000.000 VND</span></p>
                                             </li>
                                         </ul>
                                         <div class="bottom">
                                             <div class="total">
-                                                <span>Total</span>
+                                                <span>Tổng hóa đơn</span>
                                                 <span class="total-amount">4.800.000 VND</span>
                                             </div>
                                             <a href="checkout.html" class="btn animate">Checkout</a>
@@ -231,58 +231,7 @@
                     <div class="cat-nav-head">
                         <div class="row">
                             <div class="col-lg-3">
-                                <div class="all-category">
-                                    <h3 class="cat-heading"><i class="fa fa-bars" aria-hidden="true"></i>CATEGORIES</h3>
-                                    <ul class="main-category">
 
-                                        <!--                                        <li class="main-mega"><a href="#">best selling <i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                                                                    <ul class="mega-menu">
-                                                                                        <li class="single-menu">
-                                                                                            <a href="#" class="title-link">Shop men's</a>
-                                                                                            <div class="image">
-                                                                                                <img src="https://via.placeholder.com/225x155" alt="#">
-                                                                                            </div>
-                                                                                            <div class="inner-link">
-                                                                                                <a href="#">Dior Sauvage</a>
-                                                                                                <a href="#">Creed Aventus</a>
-                                                                                                <a href="#">Valentino Uomo</a>
-                                        
-                                                                                            </div>
-                                                                                        </li>
-                                                                                        <li class="single-menu">
-                                                                                            <a href="#" class="title-link">Shop woman's</a>
-                                                                                            <div class="image">
-                                                                                                <img src="https://via.placeholder.com/225x155" alt="#">
-                                                                                            </div>
-                                                                                            <div class="inner-link">
-                                                                                                <a href="#">YSL Yves Saint Laurent</a>
-                                                                                                <a href="#">Prada Paradoxe</a>
-                                                                                                <a href="#">Kenzo Flower</a>
-                                        
-                                                                                            </div>
-                                                                                        </li>
-                                                                                        <li class="single-menu">
-                                                                                            <a href="#" class="title-link">Shop unisex's</a>
-                                                                                            <div class="image">
-                                                                                                <img src="https://via.placeholder.com/225x155" alt="#">
-                                                                                            </div>
-                                                                                            <div class="inner-link">
-                                                                                                <a href="#">Le Labo Another 13</a>
-                                                                                                <a href="#">Moschino Toy 2</a>
-                                                                                                <a href="#">Maison Martin Margiela Replica</a>
-                                        
-                                                                                            </div>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </li>-->
-                                        <li><a href="#">Best Seller</a></li>
-                                        <li><a href="#">newest</a></li>
-                                        <li><a href="#">top offers</a></li>																																			<li><a href="#">man’s product</a></li>
-                                        <li><a href="#">ladies</a></li>
-                                        <li><a href="#">for man</a></li>
-                                        <li><a href="#">unisex</a></li>
-                                    </ul>
-                                </div>
                             </div>
                             <div class="col-lg-9 col-12">
                                 <div class="menu-area">
@@ -291,19 +240,19 @@
                                         <div class="navbar-collapse">	
                                             <div class="nav-inner">	
                                                 <ul class="nav main-menu menu navbar-nav">
-                                                    <li class="active"><a href="#">Home</a></li>
-                                                    <li><a href="#">Product</a></li>												
+                                                    <li class="active"><a href="${pageContext.request.contextPath}/homepage">Trang chủ</a></li>
+                                                    <li><a href="${pageContext.request.contextPath}/productList">Sản phẩm</a><span class="new">New</span></li>												
 
-                                                    <li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
+                                                    <li><a href="#">Đơn hàng<i class="ti-angle-down"></i></a>
                                                         <ul class="dropdown">
-                                                            <li><a href="cart.html">Cart</a></li>
-                                                            <li><a href="checkout.html">Checkout</a></li>
+                                                            <li><a href="cart.html">Giỏ hàng</a></li>
+                                                            <li><a href="${pageContext.request.contextPath}/account/order">Đơn hàng</a></li>
                                                         </ul>
                                                     </li>
 
-                                                    <li><a href="#">Blog</a></li>
+                                                    <li><a href="${pageContext.request.contextPath}/blogList">Bài viết</a></li>
 
-                                                    <li><a href="contact.html">Contact Us</a></li>
+                                                    <li><a href="${pageContext.request.contextPath}/homepage/feedback">Đánh giá</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -320,7 +269,7 @@
         <!--/ End Header -->
 
         <!-- Slider Area -->
-        <section class="hero-slider">
+        <section class="hero-slider owl-carousel owl-theme">
             <!-- Sử dụng JSTL để lặp qua danh sách sliders -->
             <c:forEach var="slider" items="${sliders}">
                 <!-- Single Slider -->
@@ -336,7 +285,7 @@
                                                 <!-- Hiển thị mô tả từ cơ sở dữ liệu -->
                                                 <p>${slider.description}</p>
                                                 <div class="button">
-                                                    <a href="#" class="btn">Xem thêm</a>
+                                                    <a href="product/detail?product_id=${slider.product.product_id}" class="btn">Xem thêm</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -349,6 +298,7 @@
                 <!--/ End Single Slider -->
             </c:forEach>
         </section><br><br><br><br>
+
         <!--/ End Slider Area -->
 
         <div class="col-12">
@@ -367,11 +317,11 @@
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="eshop-single-banner">
                                 <!-- Đảm bảo đường dẫn ảnh là từ đối tượng banner -->
-                                <img src="img/${blog.image.img_url}" alt="Banner Image">
+                                <img src="img/${blog.image[0].img_url}" alt="Banner Image">
                                 <div class="content">
                                     <h4>${blog.title}</h4>
                                     <p>${blog.shortContent}</p>
-                                    <a href="${banner.link}">Discover Now</a>
+                                    <a href="blogDetail?id=${blog.blog_id}">Discover Now</a>
                                 </div>
                             </div>
                         </div>
@@ -407,7 +357,7 @@
                                             <div class="col-xl-3 col-lg-4 col-md-4 col-12">
                                                 <div class="single-product">
                                                     <div class="product-img">
-                                                        <a href="product-details.html">
+                                                        <a href="product/detail?product_id=${product.product_id}">
                                                             <img class="default-img" src="img/${product.img[0].img_url}" alt="#">
                                                             <img class="hover-img" src="img/${product.img[0].img_url}" alt="#">
                                                             <span class="price-dec">${product.discount.amount}% OFF</span>
@@ -415,8 +365,7 @@
                                                         <div class="button-head">
                                                             <div class="product-action">
                                                                 <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                                                <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-                                                                <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
+
                                                             </div>
                                                             <div class="product-action-2">
                                                                 <a title="Add to cart" href="#">Add to cart</a>
@@ -1814,7 +1763,7 @@
                                 <div class="content">
                                     <p>${product.name}</p>
                                     <h3>${product.discount.name} <br> Up to<span> ${product.discount.amount}%</span></h3>
-                                    <a href="#">Shop Now</a>
+                                    <a href="product/detail?product_id=${product.product_id}">Shop Now</a>
                                 </div>
                             </div>
                         </div>   
@@ -1826,64 +1775,64 @@
         <!-- End Midium Banner -->
 
         <!-- Start Most Popular -->
-        <div class="product-area most-popular section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="section-title">
-                            <h2>Hot Item</h2>
+        <!--        <div class="product-area most-popular section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title">
+                                    <h2>Hot Item</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="owl-carousel popular-slider">
+                                     Sử dụng JSTL forEach để lặp qua danh sách sản phẩm 
+        <c:forEach var="product" items="${productsss}">
+             Single Product 
+            <div class="single-product">
+                <div class="product-img">
+                    <a href="product-details.html?id=${product.id}">
+                        <img class="default-img" src="${product.defaultImgUrl}" alt="${product.name}">
+                        <img class="hover-img" src="${product.hoverImgUrl}" alt="${product.name}">
+                        <span class="${product.label}">${product.labelText}</span>
+                    </a>
+                    <div class="button-head">
+                        <div class="product-action">
+                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#">
+                                <i class=" ti-eye"></i><span>Quick Shop</span>
+                            </a>
+                            <a title="Wishlist" href="#">
+                                <i class=" ti-heart "></i><span>Add to Wishlist</span>
+                            </a>
+                            <a title="Compare" href="#">
+                                <i class="ti-bar-chart-alt"></i><span>Add to Compare</span>
+                            </a>
+                        </div>
+                        <div class="product-action-2">
+                            <a title="Add to cart" href="#">Add to cart</a>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="owl-carousel popular-slider">
-                            <!-- Sử dụng JSTL forEach để lặp qua danh sách sản phẩm -->
-                            <c:forEach var="product" items="${productsss}">
-                                <!-- Single Product -->
-                                <div class="single-product">
-                                    <div class="product-img">
-                                        <a href="product-details.html?id=${product.id}">
-                                            <img class="default-img" src="${product.defaultImgUrl}" alt="${product.name}">
-                                            <img class="hover-img" src="${product.hoverImgUrl}" alt="${product.name}">
-                                            <span class="${product.label}">${product.labelText}</span>
-                                        </a>
-                                        <div class="button-head">
-                                            <div class="product-action">
-                                                <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#">
-                                                    <i class=" ti-eye"></i><span>Quick Shop</span>
-                                                </a>
-                                                <a title="Wishlist" href="#">
-                                                    <i class=" ti-heart "></i><span>Add to Wishlist</span>
-                                                </a>
-                                                <a title="Compare" href="#">
-                                                    <i class="ti-bar-chart-alt"></i><span>Add to Compare</span>
-                                                </a>
-                                            </div>
-                                            <div class="product-action-2">
-                                                <a title="Add to cart" href="#">Add to cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <h3><a href="product-details.html?id=${product.id}">${product.name}</a></h3>
-                                        <div class="product-price">
-                                            <span class="old">${product.oldPrice != null ? '$' + product.oldPrice : ''}</span>
-                                            <span>${'$' + product.price}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End Single Product -->
-                            </c:forEach>
-                        </div>
+                <div class="product-content">
+                    <h3><a href="product-details.html?id=${product.id}">${product.name}</a></h3>
+                    <div class="product-price">
+                        <span class="old">${product.oldPrice != null ? '$' + product.oldPrice : ''}</span>
+                        <span>${'$' + product.price}</span>
                     </div>
                 </div>
             </div>
-        </div>
+             End Single Product 
+        </c:forEach>
+    </div>
+</div>
+</div>
+</div>
+</div>-->
 
 
-        
-        
+
+
         <!--
         
                 <section class="section free-version-banner">
@@ -2256,7 +2205,7 @@
                             <!-- Single Widget -->
                             <div class="single-footer about">
                                 <div class="logo">
-                                    <a href="index.html"><img src="img/logo.png" alt="#"></a>
+                                    <a href="${pageContext.request.contextPath}/homepage"><img src="${pageContext.request.contextPath}/img/logo.png" alt="logo"></a>
                                 </div>
                                 <p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
                                 <p class="call">Giải đáp thắc mắc? Call us 24/7<span><a href="tel:123456789">+84 354 995 144</a></span></p>
@@ -2342,36 +2291,36 @@
         <!-- /End Footer Area -->
 
         <!-- Jquery -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/jquery-migrate-3.0.0.js"></script>
-        <script src="js/jquery-ui.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.0.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery-ui.min.js"></script>
         <!-- Popper JS -->
-        <script src="js/popper.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/popper.min.js"></script>
         <!-- Bootstrap JS -->
-        <script src="js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
         <!-- Color JS -->
-        <script src="js/colors.js"></script>
+        <!--<script src="${pageContext.request.contextPath}/js/colors.js"></script>-->
         <!-- Slicknav JS -->
-        <script src="js/slicknav.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/slicknav.min.js"></script>
         <!-- Owl Carousel JS -->
-        <script src="js/owl-carousel.js"></script>
+        <script src="${pageContext.request.contextPath}/js/owl-carousel.js"></script>
         <!-- Magnific Popup JS -->
-        <script src="js/magnific-popup.js"></script>
+        <script src="${pageContext.request.contextPath}/js/magnific-popup.js"></script>
         <!-- Waypoints JS -->
-        <script src="js/waypoints.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/waypoints.min.js"></script>
         <!-- Countdown JS -->
-        <script src="js/finalcountdown.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/finalcountdown.min.js"></script>
         <!-- Nice Select JS -->
-        <script src="js/nicesellect.js"></script>
+        <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
         <!-- Flex Slider JS -->
-        <script src="js/flex-slider.js"></script>
+        <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
         <!-- ScrollUp JS -->
-        <script src="js/scrollup.js"></script>
+        <script src="${pageContext.request.contextPath}/js/scrollup.js"></script>
         <!-- Onepage Nav JS -->
-        <script src="js/onepage-nav.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/onepage-nav.min.js"></script>
         <!-- Easing JS -->
-        <script src="js/easing.js"></script>
+        <script src="${pageContext.request.contextPath}/js/easing.js"></script>
         <!-- Active JS -->
-        <script src="js/active.js"></script>
+        <script src="${pageContext.request.contextPath}/js/active.js"></script>
     </body>
 </html>

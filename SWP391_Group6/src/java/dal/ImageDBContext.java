@@ -19,7 +19,7 @@ public class ImageDBContext extends DBContext {
     public Image getImageById (int igid) throws SQLException {
         String sql = "select * from Image where img_id=?";
         try {
-            PreparedStatement st = connection.prepareStatement(sql);
+            PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, igid);
             ResultSet rs = st.executeQuery();
              while (rs.next()) {
@@ -39,7 +39,7 @@ public class ImageDBContext extends DBContext {
             List<Image> list = new ArrayList<>();
             String sql="select * from Image";
              try {
-            PreparedStatement st = connection.prepareStatement(sql);
+            PreparedStatement st = connect.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Image ig = new Image(rs.getInt(1), rs.getString(2));

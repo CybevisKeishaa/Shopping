@@ -159,11 +159,7 @@
                                         <option>mobile</option>
                                         <option>kid?s item</option>
                                     </select>
-<<<<<<< HEAD
-                                    <form>
-=======
                                     <form action="productSearch">
->>>>>>> main
                                         <input name="search" placeholder="Search Products Here....." type="search">
                                         <button class="btnn"><i class="ti-search"></i></button>
                                     </form>
@@ -231,13 +227,8 @@
                                         <div class="navbar-collapse">	
                                             <div class="nav-inner">	
                                                 <ul class="nav main-menu menu navbar-nav">
-<<<<<<< HEAD
-                                                    <li class="active"><a href="#">Home</a></li>
-                                                    <li><a href="#">Product</a></li>												
-=======
                                                     <li ><a href="#">Home</a></li>
                                                     <li class="active"><a href="#">Product</a></li>												
->>>>>>> main
                                                     <li><a href="#">Service</a></li>
                                                     <li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
                                                         <ul class="dropdown">
@@ -286,14 +277,9 @@
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#man" role="tab">Man</a></li>
                                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#women" role="tab">Woman</a></li>
-<<<<<<< HEAD
                                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kids" role="tab">Kids</a></li>
                                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#accessories" role="tab">Accessories</a></li>
                                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#essential" role="tab">Essential</a></li>
-=======
-                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kids" role="tab">Unisex</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#essential" role="tab">Capacity</a></li>
->>>>>>> main
                                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#prices" role="tab">Prices</a></li>
                                 </ul>
                                 <!--/ End Tab Nav -->
@@ -309,11 +295,7 @@
                                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                                                     <div class="single-product">
                                                         <div class="product-img">
-<<<<<<< HEAD
                                                             <a href="productDetail?id=${i.product_id}">
-=======
-                                                            <a href="product-details.html">
->>>>>>> main
                                                                 <img class="default-img" src="images/productImages/1.jpg" alt="#">
                                                                 <img class="hover-img" src="images/productImages/1.jpg" alt="#">
                                                             </a>
@@ -325,11 +307,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-content">
-<<<<<<< HEAD
                                                             <h3><a href="productDetail?id=${i.product_id}">${i.name}</a></h3>
-=======
-                                                            <h3><a href="product-details.html">${i.name}</a></h3>
->>>>>>> main
                                                             <div class="product-price">
                                                                 <span>${i.price}</span>
                                                             </div>
@@ -379,42 +357,7 @@
     </div>
     <!-- End Product Area -->
 
-<<<<<<< HEAD
-    <!-- Start Midium Banner  -->
-    <section class="midium-banner">
-        <div class="container">
-            <div class="row">
-                <!-- Single Banner  -->
-                <div class="col-lg-6 col-md-6 col-12">
-                    <div class="single-banner">
-                        <img src="https://via.placeholder.com/600x370" alt="#">
-                        <div class="content">
-                            <p>Man's Collectons</p>
-                            <h3>Man's items <br>Up to<span> 50%</span></h3>
-                            <a href="#">Shop Now</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- /End Single Banner  -->
-                <!-- Single Banner  -->
-                <div class="col-lg-6 col-md-6 col-12">
-                    <div class="single-banner">
-                        <img src="https://via.placeholder.com/600x370" alt="#">
-                        <div class="content">
-                            <p>shoes women</p>
-                            <h3>mid season <br> up to <span>70%</span></h3>
-                            <a href="#" class="btn">Shop Now</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- /End Single Banner  -->
-            </div>
-        </div>
-    </section>
-    <!-- End Midium Banner -->
-=======
    
->>>>>>> main
 
     <!-- Start Most Popular -->
     <div class="product-area most-popular section">
@@ -433,25 +376,12 @@
                         <div class="single-product">
                             <div class="product-img">
                                 <a href="product-details.html">
-<<<<<<< HEAD
-                                    <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
-                                    <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
-                                    <span class="out-of-stock">Hot</span>
-                                </a>
-                                <div class="button-head">
-                                    <div class="product-action">
-                                        <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                        <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-                                        <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
-                                    </div>
-=======
                                     <img class="default-img" src="images/productImages/1.jpg" alt="#">
                                     <img class="hover-img" src="images/productImages/1.jpg" alt="#">
                                     <span class="out-of-stock">Hot</span>
                                 </a>
                                 <div class="button-head">
                                     
->>>>>>> main
                                     <div class="product-action-2">
                                         <a title="Add to cart" href="#">Add to cart</a>
                                     </div>
@@ -470,23 +400,11 @@
                         <div class="single-product">
                             <div class="product-img">
                                 <a href="product-details.html">
-<<<<<<< HEAD
-                                    <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
-                                    <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
-                                </a>
-                                <div class="button-head">
-                                    <div class="product-action">
-                                        <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                        <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-                                        <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
-                                    </div>
-=======
                                     <img class="default-img" src="images/productImages/1.jpg" alt="#">
                                     <img class="hover-img" src="images/productImages/1.jpg" alt="#">
                                 </a>
                                 <div class="button-head">
                                     
->>>>>>> main
                                     <div class="product-action-2">
                                         <a title="Add to cart" href="#">Add to cart</a>
                                     </div>
@@ -504,25 +422,12 @@
                         <div class="single-product">
                             <div class="product-img">
                                 <a href="product-details.html">
-<<<<<<< HEAD
-                                    <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
-                                    <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
-                                    <span class="new">New</span>
-                                </a>
-                                <div class="button-head">
-                                    <div class="product-action">
-                                        <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                        <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-                                        <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
-                                    </div>
-=======
                                     <img class="default-img" src="images/productImages/1.jpg" alt="#">
                                     <img class="hover-img" src="images/productImages/1.jpg" alt="#">
                                     <span class="new">New</span>
                                 </a>
                                 <div class="button-head">
                                    
->>>>>>> main
                                     <div class="product-action-2">
                                         <a title="Add to cart" href="#">Add to cart</a>
                                     </div>
@@ -540,23 +445,11 @@
                         <div class="single-product">
                             <div class="product-img">
                                 <a href="product-details.html">
-<<<<<<< HEAD
-                                    <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
-                                    <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
-                                </a>
-                                <div class="button-head">
-                                    <div class="product-action">
-                                        <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                        <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-                                        <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
-                                    </div>
-=======
                                     <img class="default-img" src="images/productImages/1.jpg" alt="#">
                                     <img class="hover-img" src="images/productImages/1.jpg" alt="#">
                                 </a>
                                 <div class="button-head">
                                  
->>>>>>> main
                                     <div class="product-action-2">
                                         <a title="Add to cart" href="#">Add to cart</a>
                                     </div>
@@ -679,7 +572,7 @@
                                                     <div class="row">
                                                         <div class="col-lg-6 col-12">
                                                             <div class="left">
-                                                                <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
+                                                                <p>Copyright ï¿½ 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6 col-12">

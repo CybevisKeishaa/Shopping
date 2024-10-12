@@ -4,7 +4,6 @@
  */
 package blogController;
 
-<<<<<<< HEAD
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -12,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-=======
 import dal.BlogDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,16 +20,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Blog;
->>>>>>> main
 
 /**
  *
  * @author admin
  */
-<<<<<<< HEAD
 @WebServlet(name = "blogSearch", urlPatterns = {"/blogSearch"})
-=======
->>>>>>> main
 public class blogSearch extends HttpServlet {
 
     /**
@@ -51,11 +45,7 @@ public class blogSearch extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-<<<<<<< HEAD
-            out.println("<title>Servlet blogSearch</title>");            
-=======
             out.println("<title>Servlet blogSearch</title>");
->>>>>>> main
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet blogSearch at " + request.getContextPath() + "</h1>");
@@ -73,12 +63,6 @@ public class blogSearch extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-<<<<<<< HEAD
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-=======
     private static final int PAGE_SIZE = 6;
 
     @Override
@@ -100,7 +84,6 @@ public class blogSearch extends HttpServlet {
             request.setAttribute("data", list);
             request.getRequestDispatcher("view/blog/blogSearch.jsp").forward(request, response);
         }
->>>>>>> main
     }
 
     /**

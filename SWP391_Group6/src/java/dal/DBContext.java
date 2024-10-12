@@ -35,6 +35,17 @@ public abstract class DBContext<T> {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    private final DBConnProfile publicConn = new DBConnProfile("son", "Son@123@", "jdbc:sqlserver://103.252.92.181\\SQLEXPRESS:1433;databaseName=swp-son;encrypt=true;trustservercertificate=true;");
 
- 
+    protected class DBConnProfile {
+        protected String username;
+        protected String password;
+        protected String url;
+        
+        protected DBConnProfile(String username, String password, String url) {
+            this.username = username;
+            this.password = password;
+            this.url = url;
+        }
+    }
 }
