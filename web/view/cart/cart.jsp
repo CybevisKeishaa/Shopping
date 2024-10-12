@@ -1,132 +1,197 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Cart Details</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Kết nối file CSS nếu có -->
-    <script>
-        // JavaScript để cập nhật tổng chi phí khi thay đổi số lượng sản phẩm
-        function updateTotal(productId, price) {
-            let quantity = document.getElementById('quantity-' + productId).value;
-            let totalCost = price * quantity;
-            document.getElementById('total-cost-' + productId).innerText = '$' + totalCost.toFixed(2);
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Giỏ hàng của bạn</title>
 
-            // Update tổng giá trị đơn hàng
-            let totalOrderPrice = 0;
-            document.querySelectorAll('.total-cost').forEach(function(element) {
-                totalOrderPrice += parseFloat(element.innerText.replace('$', ''));
-            });
-            document.getElementById('total-order-price').innerText = '$' + totalOrderPrice.toFixed(2);
-        }
-    </script>
-</head>
-<body>
-    <div class="container">
-        <!-- Sidebar với hộp tìm kiếm, danh mục sản phẩm và thông tin liên hệ -->
-        <div class="sidebar">
-            <div class="product-search">
-                <h3>Search Products</h3>
-                <form action="productSearch" method="GET">
-                    <input type="text" name="query" placeholder="Search for products..." />
-                    <button type="submit">Search</button>
-                </form>
-            </div>
+        <style>
+            .btn-primary {
+                background-color: #333 !important; /* Nền màu đen */
+                color: white !important; /* Màu chữ trắng */
+                border: 0px solid #00FF00 !important; /* Viền màu xanh lá cây */
+                padding: 18.15px 50px !important; /* Padding tùy chỉnh */
+                text-transform: uppercase !important; /* Chữ in hoa */
+                transition: background-color 0.3s, color 0.3s !important;
+            }
 
-            <div class="product-categories">
-                <h3>Product Categories</h3>
-                <ul>
-                    <li><a href="#">Fragrances</a></li>
-                    <li><a href="#">Skincare</a></li>
-                    <li><a href="#">Makeup</a></li>
-                </ul>
-            </div>
+            .btn-primary:hover {
+                color: #111 !important;
+                background-color: #e0a800 !important;
+                border-color: #d39e00 !important;
+            }
 
-            <div class="latest-products">
-                <h3>Latest Products</h3>
-                <ul>
-                    <li><a href="#">Dior Sauvage</a></li>
-                    <li><a href="#">Chanel No.5</a></li>
-                    <li><a href="#">Gucci Bloom</a></li>
-                </ul>
-            </div>
 
-            <div class="static-contacts">
-                <h3>Contact Us</h3>
-                <p>Email: support@example.com</p>
-                <p>Phone: +1 234 567 890</p>
-                <p><a href="#">Terms and Conditions</a></p>
+        </style>
+
+
+    </head>
+    <body>
+
+        <!-- Include Header -->
+        <jsp:include page="/Demo_Template/BasePage/Header.jsp"/> <br><br><br>
+
+        <div class="container">
+            <div class="row">
+                <!-- Main content: Cart Details -->
+                <div class="col-md-8">
+                    <div class="section-title">
+                        <h2>Thông tin đặt hàng</h2> 
+                    </div>
+                    <c:if test="${not empty cart.items}">
+                        <form id="cartForm" action="updateCart" method="post">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+
+                                        <th>Title</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total Cost</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:set var="totalPrice" value="0"/>
+                                    <c:forEach var="item" items="${cart.items}">
+                                        <tr>                        
+                                            <td>${item.product.name}</td>
+                                            <td><fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND"/></td>
+                                            <td>
+                                                <input type="number" name="quantity" value="${item.quantity}" min="1" onchange="updateTotal(${item.product.product_id}, this.value)" />
+                                            </td>
+
+
+                                            <td>
+                                                <span id="total_cost_${item.product.product_id}">
+                                                    <fmt:formatNumber value="${item.quantity * item.product.price}" type="currency" currencySymbol="VND"/>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a href="../cart/item/delete?comm=del&itemID=${item.item_id}" class="btn btn-danger">
+                                                    <i class="fa fa-remove"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.product.price)}"/>  
+                                    </c:forEach>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-right"><strong>Total Order Price:</strong></td>
+                                        <td colspan="3">
+                                            <span id="total_order_price">
+                                                <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">Update Cart</button>
+                                <a href="${pageContext.request.contextPath}/productList" class="btn btn-success">More Products</a>
+                                <a href="checkout.jsp" class="btn btn-warning">Check Out</a>
+                            </div>
+                        </form>
+                    </c:if>
+                    <c:if test="${empty cart.items}">
+                        <p>Your cart is currently empty.</p>
+                        <a href="productsList.jsp" class="btn btn-success">Choose Products</a>
+                    </c:if>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-md-4">
+                    <div class="sidebar-widget">
+                        <h3>Search Products</h3>
+                        <form action="searchProduct" method="get">
+                            <input type="text" name="query" class="form-control" placeholder="Search for products...">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+
+                    <div class="sidebar-widget">
+                        <h3>Categories</h3>
+                        <ul class="list-unstyled">
+                            <c:forEach var="category" items="${categories}">
+                                <li><a href="category.jsp?category_id=${category.id}">${category.name}</a></li>
+                                </c:forEach>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-widget">
+                        <h3>Latest Products</h3>
+                        <ul class="list-unstyled">
+                            <c:forEach var="product" items="${latestProducts}">
+                                <li>
+                                    <a href="productDetail.jsp?product_id=${product.product_id}">
+                                        <img src="${pageContext.request.contextPath}/img/${product.img[0].img_url}" alt="${product.name}" style="width: 50px; height: 50px;">
+                                        ${product.name} - <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="VND"/>
+                                    </a>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-widget">
+                        <h3>Contact Us</h3>
+                        <p>Email: contact@example.com</p>
+                        <p>Phone: 0123456789</p>
+                        <p>Address: 123 Example Street, City, Country</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Main content: Danh sách sản phẩm trong giỏ hàng và thông tin người nhận -->
-        <div class="main-content">
-            <h2>Your Shopping Cart</h2>
-            <form action="updateCart" method="POST">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product ID</th>
-                            <th>Title</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total Cost</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="item" items="${cartItems}">
-                            <tr>
-                                <td>${item.id}</td>
-                                <td>${item.title}</td>
-                                <td>$${item.price}</td>
-                                <td>
-                                    <input type="number" id="quantity-${item.id}" name="quantity-${item.id}" value="${item.quantity}" min="1" 
-                                           onchange="updateTotal(${item.id}, ${item.price})" />
-                                </td>
-                                <td class="total-cost" id="total-cost-${item.id}">$${item.price * item.quantity}</td>
-                                <td><a href="removeProduct?id=${item.id}" class="delete-icon">Delete</a></td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
+        <!-- Include Footer -->
+        <br><br><br>
 
-                <div class="total-order-price">
-                    <strong>Total Order Price:</strong> <span id="total-order-price">$${totalOrderPrice}</span>
-                </div>
+        <script>
+            function updateTotal(productId, quantity) {
+                console.log("Product ID: ", productId);
+                console.log("Quantity: ", quantity);
 
-                <!-- Thông tin người nhận -->
-                <div class="receiver-info">
-                    <h3>Receiver Information</h3>
-                    <label for="fullName">Full Name:</label>
-                    <input type="text" id="fullName" name="fullName" value="${user.fullName}" required /><br>
+                const quantityInput = document.querySelector(`input[name="quantity"]`);
+                const row = quantityInput.closest('tr');
 
-                    <label for="gender">Gender:</label>
-                    <select id="gender" name="gender" required>
-                        <option value="Male" ${user.gender == 'Male' ? 'selected' : ''}>Male</option>
-                        <option value="Female" ${user.gender == 'Female' ? 'selected' : ''}>Female</option>
-                    </select><br>
+                let priceText = row.querySelector('td:nth-child(2)').innerText;
+                priceText = priceText.replace(/\./g, '').replace(',', '.').replace(/[^0-9.]/g, '');
 
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="${user.email}" required /><br>
+                const price = parseFloat(priceText);
 
-                    <label for="phone">Mobile:</label>
-                    <input type="tel" id="phone" name="phone" value="${user.phone}" required /><br>
+                updateTotalOrderPrice();
+            }
 
-                    <label for="address">Address:</label>
-                    <input type="text" id="address" name="address" value="${user.address}" required /><br>
+            function updateTotalOrderPrice() {
+                let totalOrderPrice = 0;
 
-                    <label for="notes">Notes:</label>
-                    <textarea id="notes" name="notes" placeholder="Additional notes...">${user.notes}</textarea><br>
-                </div>
+                document.querySelectorAll('tr').forEach(function (row) {
+                    const quantityInput = row.querySelector('input[type="number"]');                   
+                    if (quantityInput) {
+                        const quantity = parseFloat(quantityInput.value);
 
-                <!-- Nút hành động cho giỏ hàng -->
-                <div class="cart-actions">
-                    <button type="button" onclick="window.location.href='productList.jsp'">Choose More Products</button>
-                    <button type="submit" formaction="checkout.jsp">Check Out</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</body>
+                        let priceText = row.querySelector('td:nth-child(2)').innerText;
+                        priceText = priceText.replace(/\./g, '').replace(',', '.').replace(/[^0-9.]/g, '');
+
+                        const price = parseFloat(priceText);
+
+                        totalOrderPrice += price * quantity;
+                    }
+                });
+
+                document.querySelector('#total_order_price').innerText = new Intl.NumberFormat('de-DE').format(totalOrderPrice) + " VND";
+            }
+        </script>
+        <jsp:include page="/Demo_Template/BasePage/Footer.jsp" />
+
+        <!-- Include JS files -->
+        <script src="${pageContext.request.contextPath}/a/asset/js/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/bootstrap.min.js"></script>
+
+
+    </body>
 </html>
