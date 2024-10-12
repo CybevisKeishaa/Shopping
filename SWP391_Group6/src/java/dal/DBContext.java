@@ -14,6 +14,7 @@ public abstract class DBContext<T> {
 
     public DBContext() {
         try {
+            connect = publicConn.getConnection();
             String username = "Keishaa";
             String password = "123";
             String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=backup;encrypt=true;trustservercertificate=true;";
@@ -36,6 +37,10 @@ public abstract class DBContext<T> {
             this.username = username;
             this.password = password;
             this.url = url;
+        }
+        protected Connection getConnection() throws ClassNotFoundException, SQLException{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            return DriverManager.getConnection(url, username, password);
         }
     }
 }

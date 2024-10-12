@@ -8,6 +8,7 @@ import dal.BlogDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +19,9 @@ import model.Blog;
  *
  * @author admin
  */
+
+@WebServlet(name = "blogList", urlPatterns = {"/blogList"})
+
 public class BlogList extends HttpServlet {
 
    private static final int PAGE_SIZE = 6;
