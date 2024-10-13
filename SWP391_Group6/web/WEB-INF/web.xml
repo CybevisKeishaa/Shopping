@@ -2,23 +2,20 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>productSearch</servlet-name>
-        <servlet-class>product_controller.productSearch</servlet-class>
+        <servlet-class>controller.product.productSearch</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>productList</servlet-name>
-        <servlet-class>product_controller.productList</servlet-class>
+        <servlet-class>controller.product.productList</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>blogDetail</servlet-name>
-        <servlet-class>blogController.BlogDetail</servlet-class>
-    </servlet>
+
     <servlet>
         <servlet-name>blogList</servlet-name>
-        <servlet-class>blogController.BlogList</servlet-class>
+        <servlet-class>controller.blog.BlogList</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>blogSearch</servlet-name>
-        <servlet-class>blogController.BlogSearch</servlet-class>
+        <servlet-class>controller.blog.BlogSearch</servlet-class>
     </servlet>
     <!-- Servlets from second section -->
     <servlet>
@@ -32,7 +29,7 @@
     <!-- Mappings from first section -->
     <servlet>
         <servlet-name>productDetail</servlet-name>
-        <servlet-class>product_controller.productDetail</servlet-class>
+        <servlet-class>controller.product.productDetail</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>HomePageServlet</servlet-name>
@@ -69,10 +66,6 @@
     <servlet-mapping>
         <servlet-name>productList</servlet-name>
         <url-pattern>/productList</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>blogDetail</servlet-name>
-        <url-pattern>/blogDetail</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>blogList</servlet-name>

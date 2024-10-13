@@ -185,13 +185,16 @@ public class CustomerDBContext extends DBContext<Customer_User> {
     // Lấy thông tin tài khoản khách hàng bằng email và mật khẩu
     public Customer_User getCustomerAccountByEmail(String email, String password) {
         String sql = """
-                SELECT cus_id, name_cus, email, status, avartar, role_id, cart_id
-                FROM Customer
-                WHERE email = ? AND [password] = ?""";
+                SELECT *
+                FROM Customer c
+                Join Role r on r.role_id = c.role_id      
+                WHERE (email = ? or username = ?)  AND [password] = ?
+                     """;
 
         try (PreparedStatement stm = connect.prepareStatement(sql)) {
             stm.setString(1, email);
-            stm.setString(2, password);
+            stm.setString(2, email);
+            stm.setString(3, password);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
                     Customer_User customer = new Customer_User();
@@ -200,11 +203,11 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                     customer.setEmail(rs.getString("email"));
                     customer.setStatus(rs.getBoolean("status"));
                     customer.setAvatar(rs.getString("avartar"));
-
+                    // Set Role for user 
                     Role role = new Role();
                     role.setRole_id(rs.getInt("role_id"));
+                    role.setRole_name(rs.getString("role_name"));
                     customer.setRole(role);
-
                     return customer;
                 }
             }
@@ -216,7 +219,6 @@ public class CustomerDBContext extends DBContext<Customer_User> {
     }
 
     // Đổi mật khẩu khách hàng
-
     public boolean changePassword(int cus_id, String newPassword) {
         String sql = "UPDATE Customer SET password = ? WHERE cus_id = ?";
         boolean updated = false;

@@ -1,6 +1,5 @@
 package model;
 
-
 import model.Status_Order;
 import java.util.ArrayList;
 
@@ -8,15 +7,16 @@ import java.util.Date;
 
 public class Order {
 
-    private String firstProductName;  
-    private int numberOfOtherProducts;
     private int order_id;
+    private String firstProductName;
+    private int numberOfOtherProducts;
     private Customer_User customer;
     private int total_price;
     private Date create_at;
-    private Status_Order status;
     private String payment_method;
     private String shipping_method;
+    // Objects
+    private Status_Order status;
     private ArrayList<OrderDetail> orderDetails = new ArrayList<>();
 
     public int getOrder_id() {
@@ -94,10 +94,14 @@ public class Order {
     public int getNumberOfOtherProducts() {
         return numberOfOtherProducts;
     }
-    
+
     public void setNumberOfOtherProducts(int numberOfOtherProducts) {
         this.numberOfOtherProducts = numberOfOtherProducts;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" + "order_id=" + order_id + ", firstProductName=" + firstProductName + ", numberOfOtherProducts=" + numberOfOtherProducts + ", customer=" + customer + ", total_price=" + total_price + ", create_at=" + create_at + ", payment_method=" + payment_method + ", shipping_method=" + shipping_method + ", status=" + status + ", orderDetails=" + orderDetails + '}';
+    }
+    
 }
-
-

@@ -2,10 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package blogController;
+package controller.product;
 
-import dal.BlogDBContext;
-
+import dal.productListDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,13 +12,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Blog;
+import model.Product;
 
 /**
  *
  * @author DINH SON
  */
-public class BlogDetail extends HttpServlet {
+public class ProducList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +37,10 @@ public class BlogDetail extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet blogDetail</title>");
+            out.println("<title>Servlet product_list</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet blogDetail at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet product_list at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,19 +55,22 @@ public class BlogDetail extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private static final int PAGE_SIZE = 6;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String pageStr = request.getParameter("page");
+        int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
+        productListDBContext pDb = new productListDBContext();
+        List<Product> list = pDb.getAll(pageNumber, PAGE_SIZE);
+        int totalProducts = pDb.getTotalProduct();
+        int totalPages = (int) Math.ceil(totalProducts / (double) PAGE_SIZE);
+        request.setAttribute("currentPage", pageNumber);
+        request.setAttribute("totalPages", totalPages);
 
-        BlogDBContext blog = new BlogDBContext();
-        List<Blog> l = blog.getBlogTop3Date();
-        String a_raw = request.getParameter("id");
-        int a = Integer.parseInt(a_raw);
-        Blog c = blog.getContentByBlogId(a);
-        request.setAttribute("data", c);
-        request.setAttribute("l", l);
-        request.getRequestDispatcher("view/blog/blogDetail.jsp").forward(request, response);
-
+        request.setAttribute("data", list);
+        request.getRequestDispatcher("view/viewProductList/productList.jsp").forward(request, response);
     }
 
     /**
@@ -82,9 +84,7 @@ public class BlogDetail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         processRequest(request, response);
-
     }
 
     /**

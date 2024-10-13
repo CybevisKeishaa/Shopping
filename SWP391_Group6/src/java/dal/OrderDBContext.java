@@ -27,18 +27,78 @@ import model.Status_Order;
  */
 public class OrderDBContext extends DBContext<Order> {
 
+    // ========================== Get Many Orders Section =======================
+    public List<Order> getAllOrder(int pageNumber, int pageSize) {
+
+        ArrayList<Order> orders = new ArrayList<>();
+        // Phân trang với OFFSET và FETCH
+        String sql = """
+                    SELECT o.order_id, 
+                           o.created_at AS orderedDate, 
+                           o.total AS totalCost, 
+                           so.status, 
+                           MIN(p.name) AS firstProductName, 
+                           COUNT(od.product_id) AS productCount
+                    FROM [dbo].[Order] o
+                    JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id
+                    JOIN [dbo].[Product] p ON od.product_id = p.product_id
+                    JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id
+                    GROUP BY o.order_id, o.created_at, o.total, so.status
+                    ORDER BY o.created_at DESC
+                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                    """;
+
+        try {
+            PreparedStatement stm = connect.prepareStatement(sql);
+
+            // Thiết lập các tham số truy vấn
+            int offset = (pageNumber - 1) * pageSize;
+            stm.setInt(1, offset);    // Đặt OFFSET
+            stm.setInt(2, pageSize);  // Đặt FETCH NEXT
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrder_id(rs.getInt("order_id"));
+                o.setCreate_at(rs.getDate("orderedDate"));
+                o.setTotal_price(rs.getInt("totalCost"));
+
+                Status_Order so = new Status_Order();
+                so.setStatus_name(rs.getString("status"));
+
+                o.setStatus(so);
+                o.setFirstProductName(rs.getString("firstProductName"));
+                o.setNumberOfOtherProducts(rs.getInt("productCount"));
+
+                orders.add(o);
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orders;
+    }
+
     public ArrayList<Order> myOrders(int customerID, int pageNumber, int pageSize) {
         ArrayList<Order> orders = new ArrayList<>();
-        String sql = "SELECT o.order_id, o.created_at AS orderedDate, o.total AS totalCost, so.status, "
-                + "MIN(p.name) AS firstProductName, COUNT(od.product_id) AS productCount "
-                + "FROM [dbo].[Order] o "
-                + "JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id "
-                + "JOIN [dbo].[Product] p ON od.product_id = p.product_id "
-                + "JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id "
-                + "WHERE o.cus_id = ? "
-                + "GROUP BY o.order_id, o.created_at, o.total, so.status "
-                + "ORDER BY o.created_at DESC "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";  // Phân trang với OFFSET và FETCH
+        // Phân trang với OFFSET và FETCH
+        String sql = """
+                    SELECT o.order_id, 
+                           o.created_at AS orderedDate, 
+                           o.total AS totalCost, 
+                           so.status, 
+                           MIN(p.name) AS firstProductName, 
+                           COUNT(od.product_id) AS productCount
+                    FROM [dbo].[Order] o
+                    JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id
+                    JOIN [dbo].[Product] p ON od.product_id = p.product_id
+                    JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id
+                    WHERE o.cus_id = ?
+                    GROUP BY o.order_id, o.created_at, o.total, so.status
+                    ORDER BY o.created_at DESC
+                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                    """;
 
         try {
             PreparedStatement stm = connect.prepareStatement(sql);
@@ -74,6 +134,8 @@ public class OrderDBContext extends DBContext<Order> {
         return orders;
     }
 
+    // ========================== Get Single Orders Section =======================
+    
     public int getTotalOrderByCustomer(int cus_id) {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM [Order] o\n"
@@ -247,8 +309,8 @@ public class OrderDBContext extends DBContext<Order> {
         }
         return o;
     }
-    
-public ArrayList<Order> getListOrderByEmployeeIdProductId(int pid, int eid) {
+
+    public ArrayList<Order> getListOrderByEmployeeIdProductId(int pid, int eid) {
         String sql = "SELECT c.*,p.* ,o.*\n"
                 + "FROM Employee e \n"
                 + "INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
@@ -257,35 +319,33 @@ public ArrayList<Order> getListOrderByEmployeeIdProductId(int pid, int eid) {
                 + "INNER JOIN [Order] o on od.detail_id=o.order_id\n"
                 + "INNER JOIN Customer c on c.cus_id=o.cus_id\n"
                 + "WHERE e.emp_id = ? and p.product_id=?";
-        ArrayList<Order> list=new ArrayList<>();
-        try{
-              PreparedStatement st = connect.prepareStatement(sql);
+        ArrayList<Order> list = new ArrayList<>();
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, eid);
             st.setInt(2, pid);
-           
-         
+
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                Order o=new Order();
+            while (rs.next()) {
+                Order o = new Order();
                 o.setOrder_id(rs.getInt("order_id"));
-                Float f=rs.getFloat("total");
-                  o.setTotal_price(Math.round(f));
+                Float f = rs.getFloat("total");
+                o.setTotal_price(Math.round(f));
 //                  o.setStatus(status);
                 o.setCreate_at(rs.getDate("created_at"));
-                OrderDetailDBContext odb=new OrderDetailDBContext();
-                ArrayList<OrderDetail> odlist=odb.getListOrderDetailbyEidPid(eid, pid, rs.getInt("order_id"));
+                OrderDetailDBContext odb = new OrderDetailDBContext();
+                ArrayList<OrderDetail> odlist = odb.getListOrderDetailbyEidPid(eid, pid, rs.getInt("order_id"));
                 o.setOrderDetails(odlist);
-            list.add(o);
-                
-            
+                list.add(o);
+
             }
             return list;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return null;
     }
-    
+
     public ArrayList<Product> getProductsByOrderAndCustomer(int orderId, int customerId) {
         ArrayList<Product> products = new ArrayList<>();
         PreparedStatement stm = null;
@@ -398,12 +458,11 @@ public ArrayList<Order> getListOrderByEmployeeIdProductId(int pid, int eid) {
             }
         }
     }
-    
+
     public static void main(String[] args) {
         OrderDBContext db = new OrderDBContext();
         ArrayList<Product> products = db.getProductsByOrderAndCustomer(25, 1);
         System.out.println(products.size());
     }
-
 
 }

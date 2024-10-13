@@ -116,7 +116,7 @@ public class BlogDBContext extends DBContext<Blog> {
     }
 
     public Blog getContentByBlogId(int blogid) {
-        String sql = "select * from Blog where blog_id = ?";
+        String sql = "select Top 1 * from Blog where blog_id = ?";
         Blog b = new Blog();
         try {
             PreparedStatement st = connect.prepareStatement(sql);

@@ -29,10 +29,6 @@ public class LoginController extends HttpServlet {
 
         CustomerDBContext db = new CustomerDBContext();
         Customer_User customer = db.getCustomerAccountByEmail(email, password);
-
-        
-        
-        
         if (customer != null) {
             HttpSession session = request.getSession();
             session.setAttribute("customer", customer);

@@ -5,12 +5,13 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Dashboard | <c:out value="${!empty title ? title : ''}"/></title>
-        <link rel="shortcut icon" type="image/png" href="../assets/images/logos/seodashlogo.png" />
-        <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <c:set var="cPath" value="${pageContext.request.contextPath}/view/dashboard" scope="request" ></c:set>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Dashboard | <c:out value="${!empty title ? title : ''}"/></title>
+        <link rel="shortcut icon" type="image/png" href="${cPath}/assets/images/logos/seodashlogo.png" />
+        <link rel="stylesheet" href="${cPath}/assets/css/styles.min.css" />
     </head>
     <body>
         <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -20,8 +21,8 @@
                 <!-- Sidebar scroll-->
                 <div>
                     <div class="brand-logo d-flex align-items-center justify-content-between">
-                        <a href="./index.jsp" class="text-nowrap logo-img">
-                            <img src="../assets/images/logos/logo-light.svg" alt="" />
+                        <a href="./dashboard" class="text-nowrap logo-img">
+                            <img src="${cPath}/assets/images/logos/logo-light.svg" alt="" />
                         </a>
                         <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                             <i class="ti ti-x fs-8"></i>
@@ -35,7 +36,7 @@
                                 <span class="hide-menu">Home</span>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./index.jsp" aria-expanded="false">
+                                <a class="sidebar-link" href="./dashboard" aria-expanded="false">
                                     <span>
                                         <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
                                     </span>
@@ -43,7 +44,7 @@
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./index.jsp" aria-expanded="false">
+                                <a class="sidebar-link" href="./sale" aria-expanded="false">
                                     <span>
                                         <iconify-icon icon="solar:chat-round-money-bold-duotone" class="fs-6"></iconify-icon>
                                     </span>
@@ -52,6 +53,7 @@
                             </li>
                             <li class="nav-small-cap">
                             <iconify-icon icon="solar:round-arrow-down-bold" class='mt-auto fs-6'></iconify-icon>
+                            <!-- Dùng để code (Đừng Xoá) -->
                             <h3 class="d-inline">Viết Code</h3>
                             </li>
                             <li class="nav-small-cap">
@@ -127,7 +129,7 @@
                                        class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
                                 </div>
                                 <div class="unlimited-access-img">
-                                    <img src="../assets/images/backgrounds/rocket.png" alt="" class="img-fluid">
+                                    <img src="${cPath}/assets/images/backgrounds/rocket.png" alt="" class="img-fluid">
                                 </div>
                             </div>
                         </div>
@@ -160,7 +162,7 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                                        aria-expanded="false">
-                                        <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                                        <img src="${cPath}/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                                         <div class="message-body">
@@ -200,13 +202,13 @@
                 </div>        
             </div>        
         </div>
-        <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-        <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-        <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-        <script src="../assets/js/sidebarmenu.js"></script>
-        <script src="../assets/js/app.min.js"></script>
-        <script src="../assets/js/dashboard.js"></script>
+        <script src="${cPath}/assets/libs/jquery/dist/jquery.min.js"></script>
+        <script src="${cPath}/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="${cPath}/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+        <script src="${cPath}/assets/libs/simplebar/dist/simplebar.js"></script>
+        <script src="${cPath}/assets/js/sidebarmenu.js"></script>
+        <script src="${cPath}/assets/js/app.min.js"></script>
+        <script src="${cPath}/assets/js/dashboard.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
     </body>
 </html>

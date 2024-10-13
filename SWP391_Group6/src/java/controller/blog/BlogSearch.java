@@ -2,23 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package product_controller;
+package controller.blog;
 
-import dal.productListDBContext;
+
+import dal.BlogDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Product;
+import model.Blog;
 
 /**
  *
- * @author DINH SON
+ * @author admin
  */
-public class ProducList extends HttpServlet {
+@WebServlet(name = "blogSearch", urlPatterns = {"/blogSearch"})
+public class BlogSearch extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +40,10 @@ public class ProducList extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet product_list</title>");
+            out.println("<title>Servlet blogSearch</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet product_list at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet blogSearch at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,17 +63,22 @@ public class ProducList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String pageStr = request.getParameter("page");
-        int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
-        productListDBContext pDb = new productListDBContext();
-        List<Product> list = pDb.getAll(pageNumber, PAGE_SIZE);
-        int totalProducts = pDb.getTotalProduct();
-        int totalPages = (int) Math.ceil(totalProducts / (double) PAGE_SIZE);
-        request.setAttribute("currentPage", pageNumber);
-        request.setAttribute("totalPages", totalPages);
-
-        request.setAttribute("data", list);
-        request.getRequestDispatcher("view/viewProductList/productList.jsp").forward(request, response);
+        String search = request.getParameter("search");
+        if (search.isEmpty()) {
+            response.sendRedirect("blogList");
+        } else {
+            String pageStr = request.getParameter("page");
+            int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
+            BlogDBContext blogDB = new BlogDBContext();
+            List<Blog> list = blogDB.getAllSearchByTittle(search,pageNumber, PAGE_SIZE);
+            int totalProducts = blogDB.getTotalBlogsBySearch(search);
+            int totalPages = (int) Math.ceil(totalProducts / (double) PAGE_SIZE);
+            request.setAttribute("search", search);
+            request.setAttribute("currentPage", pageNumber);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("data", list);
+            request.getRequestDispatcher("view/blog/blogSearch.jsp").forward(request, response);
+        }
     }
 
     /**

@@ -19,7 +19,7 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body text-center">
-                    <img src="../assets/images/backgrounds/product-tip.png" alt="image" class="img-fluid" width="205">
+                    <img src="${cPath}/assets/images/backgrounds/product-tip.png" alt="image" class="img-fluid" width="205">
                     <h4 class="mt-7">Productivity Tips!</h4>
                     <p class="card-subtitle mt-2 mb-3">Duis at orci justo nulla in libero id leo
                         molestie sodales phasellus justo.</p>
@@ -166,11 +166,11 @@
             <div class="card overflow-hidden hover-img">
                 <div class="position-relative">
                     <a href="javascript:void(0)">
-                        <img src="../assets/images/blog/blog-img1.jpg" class="card-img-top" alt="matdash-img">
+                        <img src="${cPath}/assets/images/blog/blog-img1.jpg" class="card-img-top" alt="matdash-img">
                     </a>
                     <span class="badge text-bg-light text-dark fs-2 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">2
                         min Read</span>
-                    <img src="../assets/images/profile/user-3.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
+                    <img src="${cPath}/assets/images/profile/user-3.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
                 </div>
                 <div class="card-body p-4">
                     <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm  mt-3">Social</span>
@@ -195,11 +195,11 @@
             <div class="card overflow-hidden hover-img">
                 <div class="position-relative">
                     <a href="javascript:void(0)">
-                        <img src="../assets/images/blog/blog-img2.jpg" class="card-img-top" alt="matdash-img">
+                        <img src="${cPath}/assets/images/blog/blog-img2.jpg" class="card-img-top" alt="matdash-img">
                     </a>
                     <span class="badge text-bg-light text-dark fs-2 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">2
                         min Read</span>
-                    <img src="../assets/images/profile/user-2.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
+                    <img src="${cPath}/assets/images/profile/user-2.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
                 </div>
                 <div class="card-body p-4">
                     <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm  mt-3">Gadget</span>
@@ -224,11 +224,11 @@
             <div class="card overflow-hidden hover-img">
                 <div class="position-relative">
                     <a href="javascript:void(0)">
-                        <img src="../assets/images/blog/blog-img3.jpg" class="card-img-top" alt="matdash-img">
+                        <img src="${cPath}/assets/images/blog/blog-img3.jpg" class="card-img-top" alt="matdash-img">
                     </a>
                     <span class="badge text-bg-light text-dark fs-2 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">2
                         min Read</span>
-                    <img src="../assets/images/profile/user-3.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
+                    <img src="${cPath}/assets/images/profile/user-3.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
                 </div>
                 <div class="card-body p-4">
                     <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm  mt-3">Health</span>

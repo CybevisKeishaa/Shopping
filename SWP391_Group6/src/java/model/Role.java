@@ -3,7 +3,11 @@ package model;
 import java.util.ArrayList;
 
 public class Role {
-
+    public static final String CUSTOMER_ROLE = "Customer";
+        public static final String MARKETER_ROLE = "Marketer";
+    public static final String SALER_ROLE = "Saler";
+    public static final String ADMIN_ROLE = "Admin";
+    
     private int role_id;
     private String role_name;
     private ArrayList<Feature> features = new ArrayList<>();
