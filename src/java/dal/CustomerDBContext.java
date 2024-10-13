@@ -210,14 +210,15 @@ public class CustomerDBContext extends DBContext<Customer_User> {
     }
 
     // Lấy thông tin tài khoản khách hàng bằng email và mật khẩu
- public Customer_User getCustomerAccountByEmail(String email, String password) {
-        String sql = "SELECT c.cus_id, c.c_phone, c.name_cus, c.email, c.status, c.avartar, r.role_id, f.f_url "
-                + "FROM Customer c "
-                + "LEFT JOIN Role_Customer rc ON c.cus_id = rc.cus_id "
-                + "LEFT JOIN Role r ON rc.role_id = r.role_id "
-                + "LEFT JOIN Role_Fearture rf ON r.role_id = rf.role_id "
-                + "LEFT JOIN Fearture f ON rf.f_id = f.f_id "
-                + "WHERE c.email = ? AND c.[password] = ?;";
+    public Customer_User getCustomerAccountByEmail(String email, String password) {
+        String sql = "SELECT c.cus_id, c.c_phone, c.name_cus, c.email, c.status, c.avartar, r.role_id, f.f_url, ca.cart_id\n"
+                + "FROM Customer c\n"
+                + "LEFT JOIN Role_Customer rc ON c.cus_id = rc.cus_id\n"
+                + "LEFT JOIN Role r ON rc.role_id = r.role_id\n"
+                + "LEFT JOIN Role_Fearture rf ON r.role_id = rf.role_id\n"
+                + "LEFT JOIN Fearture f ON rf.f_id = f.f_id\n"
+                + "LEFT JOIN Cart ca ON c.cus_id = ca.cus_id\n"
+                + "WHERE c.email = ? AND c.[password] = ?";
 
         try (PreparedStatement stm = connect.prepareStatement(sql)) {
             stm.setString(1, email);
@@ -236,6 +237,9 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                         customer.setStatus(rs.getBoolean("status"));
                         customer.setAvatar(rs.getString("avartar"));
                         customer.setC_phone(rs.getString("c_phone"));
+                        Cart c = new Cart();
+                        c.setCart_id(rs.getInt("cart_id"));
+                        customer.setCart(c);
 
                         r = new Role();
                         r.setRole_id(rs.getInt("role_id"));
@@ -589,7 +593,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
         return c;
     }
 
-    public void updateUser(String cus_id, String status,String role) {
+    public void updateUser(String cus_id, String status, String role) {
         String sql = "UPDATE [dbo].[Customer]\n"
                 + "   SET\n"
                 + "   \n"
@@ -612,7 +616,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
     public static void main(String[] args) {
         CustomerDBContext l = new CustomerDBContext();
 
-        Customer_User c = l.getCustomerById(1);
+        Customer_User c = l.getCustomerAccountByEmail("shamt2004@gmail.com", "thang123");
         System.out.println(c.getName_cus());
 //        for (Customer_User x : c) {
 //            System.out.println(x.size);
