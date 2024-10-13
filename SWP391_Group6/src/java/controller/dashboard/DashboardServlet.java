@@ -4,6 +4,9 @@
  */
 package controller.dashboard;
 
+import controller.auth.AuthenticationServlet;
+import controller.auth.BaseRequiredCustomerAuthenticationController;
+import helper.AuthenticationHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,24 +14,24 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Customer_User;
 
 /**
  *
- * @author Thanh Binh
  */
 @WebServlet(name = "DashboardServlet", urlPatterns = {"/dashboard"})
-public class DashboardServlet extends HttpServlet {
+public class DashboardServlet extends AuthenticationServlet {
+
+    private static final String MAIN_PAGE = "/view/dashboard/html/index.jsp";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,Customer_User user)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        request.getRequestDispatcher("/view/dashboard/html/index.jsp").forward(request, response);
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
+        if (AuthenticationHelper.isAdmin(user)) {
+            request.getRequestDispatcher(MAIN_PAGE).forward(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+        }
     }
 
 }

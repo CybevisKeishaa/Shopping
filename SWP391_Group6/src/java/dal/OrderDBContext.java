@@ -4,6 +4,7 @@
  */
 package dal;
 
+import dal.combiner.OrderCombiner;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -58,18 +59,7 @@ public class OrderDBContext extends DBContext<Order> {
 
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Order o = new Order();
-                o.setOrder_id(rs.getInt("order_id"));
-                o.setCreate_at(rs.getDate("orderedDate"));
-                o.setTotal_price(rs.getInt("totalCost"));
-
-                Status_Order so = new Status_Order();
-                so.setStatus_name(rs.getString("status"));
-
-                o.setStatus(so);
-                o.setFirstProductName(rs.getString("firstProductName"));
-                o.setNumberOfOtherProducts(rs.getInt("productCount"));
-
+                Order o = OrderCombiner.toTableRow(rs);
                 orders.add(o);
             }
             rs.close();
@@ -111,19 +101,7 @@ public class OrderDBContext extends DBContext<Order> {
 
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Order o = new Order();
-                o.setOrder_id(rs.getInt("order_id"));
-                o.setCreate_at(rs.getDate("orderedDate"));
-                o.setTotal_price(rs.getInt("totalCost"));
-
-                Status_Order so = new Status_Order();
-                so.setStatus_name(rs.getString("status"));
-
-                o.setStatus(so);
-
-                o.setFirstProductName(rs.getString("firstProductName"));
-                o.setNumberOfOtherProducts(rs.getInt("productCount"));
-
+                Order o = OrderCombiner.toTableRow(rs);
                 orders.add(o);
             }
             rs.close();
@@ -135,7 +113,6 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     // ========================== Get Single Orders Section =======================
-    
     public int getTotalOrderByCustomer(int cus_id) {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM [Order] o\n"
@@ -235,7 +212,7 @@ public class OrderDBContext extends DBContext<Order> {
             while (rs.next()) {
                 Order o = new Order();
                 o.setOrder_id(rs.getInt("order_id"));
-                o.setCreate_at(rs.getDate("orderedDate"));
+                o.setCreate_at(rs.getTimestamp("orderedDate"));
                 o.setTotal_price(rs.getInt("totalCost"));
                 Status_Order so = new Status_Order();
                 so.setStatus_name(rs.getString("status"));
@@ -277,7 +254,7 @@ public class OrderDBContext extends DBContext<Order> {
 
             if (rs.next()) {
                 o.setOrder_id(rs.getInt("order_id"));
-                o.setCreate_at(rs.getDate("created_at"));
+                o.setCreate_at(rs.getTimestamp("created_at"));
                 o.setTotal_price(rs.getInt("total"));
                 Status_Order so = new Status_Order();
                 so.setStatus_name(rs.getString("status"));
@@ -332,7 +309,7 @@ public class OrderDBContext extends DBContext<Order> {
                 Float f = rs.getFloat("total");
                 o.setTotal_price(Math.round(f));
 //                  o.setStatus(status);
-                o.setCreate_at(rs.getDate("created_at"));
+                o.setCreate_at(rs.getTimestamp("created_at"));
                 OrderDetailDBContext odb = new OrderDetailDBContext();
                 ArrayList<OrderDetail> odlist = odb.getListOrderDetailbyEidPid(eid, pid, rs.getInt("order_id"));
                 o.setOrderDetails(odlist);
@@ -418,7 +395,7 @@ public class OrderDBContext extends DBContext<Order> {
         }
         return products;
     }
-
+    //=============== Data Change ===============
     public void updateOrderStatus(int orderID, int statusID) {
         PreparedStatement stm = null;
         try {

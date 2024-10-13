@@ -22,7 +22,7 @@ import model.Slider;
 
 /**
  *
- * @author Thanh Binh
+ * @author KEISHA
  */
 @WebServlet(urlPatterns = {"/homePage"})
 public class HomePageServlet extends HttpServlet {

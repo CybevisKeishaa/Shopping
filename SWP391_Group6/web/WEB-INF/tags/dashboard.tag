@@ -35,16 +35,18 @@
                                 <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
                                 <span class="hide-menu">Home</span>
                             </li>
+                            <c:if test="${role.equals('Admin')}">
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" href="${pageContext.request.contextPath}/dashboard" aria-expanded="false">
+                                        <span>
+                                            <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
+                                        </span>
+                                        <span class="hide-menu">Dashboard</span>
+                                    </a>
+                                </li>
+                            </c:if>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./dashboard" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="./sale" aria-expanded="false">
+                                <a class="sidebar-link" href="${pageContext.request.contextPath}/sale" aria-expanded="false">
                                     <span>
                                         <iconify-icon icon="solar:chat-round-money-bold-duotone" class="fs-6"></iconify-icon>
                                     </span>
@@ -61,7 +63,7 @@
                                 <span class="hide-menu">UI COMPONENTS</span>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./ui-buttons.jsp" aria-expanded="false">
+                                <a class="sidebar-link" href="${cPath}/html/ui-buttons.jsp" aria-expanded="false">
                                     <span>
                                         <iconify-icon icon="solar:layers-minimalistic-bold-duotone" class="fs-6"></iconify-icon>
                                     </span>
@@ -69,7 +71,7 @@
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./ui-alerts.jsp" aria-expanded="false">
+                                <a class="sidebar-link" href="${cPath}/html/ui-alerts.jsp" aria-expanded="false">
                                     <span>
                                         <iconify-icon icon="solar:danger-circle-bold-duotone" class="fs-6"></iconify-icon>
                                     </span>
@@ -77,7 +79,7 @@
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./ui-card.jsp" aria-expanded="false">
+                                <a class="sidebar-link" href="${cPath}/html/ui-card.jsp" aria-expanded="false">
                                     <span>
                                         <iconify-icon icon="solar:bookmark-square-minimalistic-bold-duotone" class="fs-6"></iconify-icon>
                                     </span>
@@ -85,7 +87,7 @@
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./ui-forms.jsp" aria-expanded="false">
+                                <a class="sidebar-link" href="${cPath}/html/ui-forms.jsp" aria-expanded="false">
                                     <span>
                                         <iconify-icon icon="solar:file-text-bold-duotone" class="fs-6"></iconify-icon>
                                     </span>
@@ -93,7 +95,7 @@
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./ui-typography.jsp" aria-expanded="false">
+                                <a class="sidebar-link" href="${cPath}/html/ui-typography.jsp" aria-expanded="false">
                                     <span>
                                         <iconify-icon icon="solar:text-field-focus-bold-duotone" class="fs-6"></iconify-icon>
                                     </span>
@@ -105,7 +107,7 @@
                             <span class="hide-menu">EXTRA</span>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./icon-tabler.jsp" aria-expanded="false">
+                                <a class="sidebar-link" href="${cPath}/html/icon-tabler.jsp" aria-expanded="false">
                                     <span>
                                         <iconify-icon icon="solar:sticker-smile-circle-2-bold-duotone" class="fs-6"></iconify-icon>
                                     </span>
@@ -113,7 +115,7 @@
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./sample-page.jsp" aria-expanded="false">
+                                <a class="sidebar-link" href="${cPath}/html/sample-page.jsp" aria-expanded="false">
                                     <span>
                                         <iconify-icon icon="solar:planet-3-bold-duotone" class="fs-6"></iconify-icon>
                                     </span>
@@ -178,7 +180,7 @@
                                                 <i class="ti ti-list-check fs-6"></i>
                                                 <p class="mb-0 fs-3">My Task</p>
                                             </a>
-                                            <a href="./authentication-login.jsp" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                            <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                                         </div>
                                     </div>
                                 </li>

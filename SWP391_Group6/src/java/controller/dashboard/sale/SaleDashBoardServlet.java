@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.dashboard;
+package controller.dashboard.sale;
 
+import controller.auth.AuthenticationServlet;
 import dal.OrderDBContext;
+import helper.AuthenticationHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,40 +22,30 @@ import model.Role;
 
 /**
  *
- * @author Thanh Binh
+ * @author KEISHA
  */
 @WebServlet(name = "SaleDashBoardServlet", urlPatterns = {"/sale"})
-public class SaleDashBoardServlet extends HttpServlet {
+public class SaleDashBoardServlet extends AuthenticationServlet {
 
     private static final String MAIN_PAGE = "/view/dashboard/html/sale.jsp";
-    private static final String LOGIN_PAGE = "./login";
 
     private static final int PAGE_SIZE = 10;//Default = 10
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         OrderDBContext odb = new OrderDBContext();
-        HttpSession session = request.getSession();
-        Customer_User currentCustomer = (Customer_User) session.getAttribute("customer");
-        // Account check
-        if (currentCustomer == null) {
-            response.sendRedirect(LOGIN_PAGE);
-            return;
-        }
-        // Role check
         List<Order> orders = null;
         int page = getPageIndex(request);
-        if (currentCustomer.getRole().getRole_name().equals(Role.SALER_ROLE)) {
-            orders = odb.myOrders(currentCustomer.getCus_id(), page, PAGE_SIZE);
+        if (AuthenticationHelper.isSaler(user)) {
+            orders = odb.myOrders(user.getCus_id(), page, PAGE_SIZE);
         }
-        if (currentCustomer.getRole().getRole_name().equals(Role.ADMIN_ROLE)) {
+        if (AuthenticationHelper.isAdmin(user)) {
             orders = odb.getAllOrder(page, PAGE_SIZE);
         }
         request.setAttribute("orders", orders);
-        request.getRequestDispatcher(MAIN_PAGE).forward(request, response);
-
+        request.getRequestDispatcher( MAIN_PAGE).forward(request, response);
     }
 
     private int getPageIndex(HttpServletRequest request) {

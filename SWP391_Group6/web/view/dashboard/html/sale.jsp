@@ -28,7 +28,6 @@
                                         <!-- Order ID -->
                                         <th scope="row" class="ps-0 fw-medium">
                                             ${order.order_id}                                        
-
                                         </th>
                                         <th scope="row" class="">
                                             ${order.firstProductName}                                        
@@ -55,7 +54,7 @@
 
                                         <!-- Actions -->
                                         <td class="text-end">
-                                            <a href="./sale/orderDetails?orderId=${order.order_id}" 
+                                            <a href="./sale/order-details?order-id=${order.order_id}" 
                                                class="btn btn-sm btn-primary">View</a>
                                         </td>
                                     </tr>

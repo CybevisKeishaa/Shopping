@@ -3,7 +3,7 @@ package model;
 import model.Status_Order;
 import java.util.ArrayList;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Order {
 
@@ -12,7 +12,7 @@ public class Order {
     private int numberOfOtherProducts;
     private Customer_User customer;
     private int total_price;
-    private Date create_at;
+    private Timestamp create_at;
     private String payment_method;
     private String shipping_method;
     // Objects
@@ -43,11 +43,11 @@ public class Order {
         this.total_price = total_price;
     }
 
-    public Date getCreate_at() {
+    public Timestamp getCreate_at() {
         return create_at;
     }
 
-    public void setCreate_at(Date create_at) {
+    public void setCreate_at(Timestamp create_at) {
         this.create_at = create_at;
     }
 
