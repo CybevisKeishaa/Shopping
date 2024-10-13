@@ -210,7 +210,7 @@
         <script src="${cPath}/assets/libs/simplebar/dist/simplebar.js"></script>
         <script src="${cPath}/assets/js/sidebarmenu.js"></script>
         <script src="${cPath}/assets/js/app.min.js"></script>
-        <script src="${cPath}/assets/js/dashboard.js"></script>
+        <div class="d-none" id="script-container"></div>
         <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
     </body>
 </html>

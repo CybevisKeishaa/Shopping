@@ -44,6 +44,7 @@
 
         <!-- Eshop StyleSheet -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
+                <link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
 

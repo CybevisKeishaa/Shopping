@@ -2,6 +2,20 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:dashboard>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title d-flex align-items-center gap-2 mb-4">
+                    Sales Overview
+                    <span>
+                        <iconify-icon icon="solar:question-circle-bold" class="fs-7 d-flex text-muted" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-success" data-bs-title="Traffic Overview"></iconify-icon>
+                    </span>
+                </h5>
+                <div id="traffic-overview" >
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
             <div class="card">
@@ -66,4 +80,19 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        var series = [
+            {
+                name: "Orders",
+                data: ${orderCount},
+            },
+        ]
+        document.addEventListener("DOMContentLoaded", function () {
+            let container = document.getElementById('script-container');
+            let scr = document.createElement("script")
+            scr.setAttribute('src', "${cPath}/assets/js/sales.js")
+            container.append(scr);
+        });
+    </script>
 </t:dashboard>

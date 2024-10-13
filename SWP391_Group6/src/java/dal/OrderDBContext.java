@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Order;
 import java.sql.*;
+import java.time.temporal.ChronoUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 import model.Address;
 import model.Customer_User;
 import model.Gender;
@@ -395,6 +397,46 @@ public class OrderDBContext extends DBContext<Order> {
         }
         return products;
     }
+
+    public List<Integer> getOrderCountByWeek() {
+        PreparedStatement stm = null;
+        ArrayList<Integer> list = new ArrayList<>();
+        String sql = """
+            SELECT COUNT(order_id) AS count, CAST(created_at AS DATE) AS date 
+            FROM [Order] 
+            WHERE CAST(created_at AS DATE) >= DATEADD(DAY, -7, GETDATE()) 
+            GROUP BY CAST(created_at AS DATE) 
+            ORDER BY date;
+        """;
+        try {
+
+            stm = connect.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+
+            // Initialize the list with zero counts for each day of the week.
+            for (int i = 0; i < 7; i++) {
+                list.add(0);  // Default values (in case some dates have no orders)
+            }
+
+            while (rs.next()) {
+                int count = rs.getInt("count");
+                Date date = rs.getDate("date");
+
+                // Calculate the index (0 = today, 1 = yesterday, etc.)
+                int index = (int) ChronoUnit.DAYS.between(date.toLocalDate(), LocalDate.now());
+
+                if (index >= 0 && index < 7) {
+                    list.set(index, count);
+                }
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
     //=============== Data Change ===============
     public void updateOrderStatus(int orderID, int statusID) {
         PreparedStatement stm = null;

@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.Customer_User;
 import model.Order;
@@ -43,9 +44,13 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
         }
         if (AuthenticationHelper.isAdmin(user)) {
             orders = odb.getAllOrder(page, PAGE_SIZE);
+
         }
+        List<Integer> orderCountByWeek = odb.getOrderCountByWeek();
+
         request.setAttribute("orders", orders);
-        request.getRequestDispatcher( MAIN_PAGE).forward(request, response);
+        request.setAttribute("orderCount", orderCountByWeek);
+        request.getRequestDispatcher(MAIN_PAGE).forward(request, response);
     }
 
     private int getPageIndex(HttpServletRequest request) {

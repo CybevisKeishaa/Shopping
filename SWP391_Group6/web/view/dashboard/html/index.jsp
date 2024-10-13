@@ -1,5 +1,7 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
-
 <t:dashboard>
     <div class="row">
         <div class="col-lg-8">
@@ -250,4 +252,13 @@
             </div>
         </div>
     </div>
+
 </t:dashboard>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let container = document.getElementById('script-container');
+        let scr = document.createElement("script")
+        scr.setAttribute('src', "${cPath}/assets/js/dashboard.js")
+        container.append(scr);
+    });
+</script>

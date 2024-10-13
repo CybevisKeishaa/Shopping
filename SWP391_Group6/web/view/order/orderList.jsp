@@ -4,79 +4,6 @@
 
 <!-- Preloader và các thành phần khác của bạn không thay đổi -->
 <t:mainview>
-    <style>
-        /* Chỉnh sửa kích thước của nice-select khi sử dụng form-control-sm */
-        .form-inline .form-group select.form-control-sm {
-            height: 28px !important;    /* Điều chỉnh chiều cao */
-            font-size: 0.85rem !important; /* Điều chỉnh kích thước font */
-            padding: 2px 10px !important; /* Điều chỉnh padding để ô nhỏ hơn */
-            width: auto !important;     /* Điều chỉnh chiều rộng tự động phù hợp với nội dung */
-            margin-top: 12px !important;
-        }
-
-        /* Nếu nice-select đang được áp dụng */
-        .nice-select.form-control-sm {
-            height: 35px !important;
-            font-size: 0.85rem !important;
-            line-height: 35px !important; /* Đảm bảo chữ căn giữa dọc theo chiều cao */
-            padding: 0 8px !important;
-            width: 100px !important; /* Chiều rộng tự động để phù hợp nội dung */
-            margin-top: 12px !important;
-        }
-
-        .form-inline .form-group select.form-control-sm{
-            height: 30px !important;    /* Điều chỉnh chiều cao */
-            font-size: 12px !important; /* Điều chỉnh kích thước font */
-            padding: 2px 8px !important; /* Điều chỉnh padding */
-            width: auto !important;     /* Điều chỉnh chiều rộng để phù hợp nội dung */
-        }
-        .form-inline .form-group input.form-control-sm {
-            height: 30px !important;    /* Điều chỉnh chiều cao */
-            font-size: 12px !important; /* Điều chỉnh kích thước font */
-            padding: 2px 8px !important; /* Điều chỉnh padding */
-            width: auto !important;     /* Điều chỉnh chiều rộng để phù hợp nội dung */
-        }
-
-        .btn-sm {
-            padding: 5px 10px !important; /* Điều chỉnh padding cho nút */
-            font-size: 12px !important;   /* Giảm kích thước font cho nút */
-        }
-        .pagination {
-            display: flex;
-            gap: 10px;
-        }
-
-        .pagination a, .pagination span {
-            display: inline-block;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            color: #007bff;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-
-        /* Active page styling */
-        .pagination .current-page {
-            background-color: #ff5722;
-            color: white;
-            border-color: #ff5722;
-        }
-
-        /* Previous and Next button styling */
-        .pagination .prev, .pagination .next {
-            font-weight: bold;
-            padding: 8px 12px;
-        }
-
-        /* Hover effect for page links */
-        .pagination a:hover {
-            background-color: #f0f0f0;
-            border-color: #ccc;
-        }
-        .cursor-pointer {
-            cursor: pointer;
-        }
-    </style>
     <!-- Start Product Area -->
     <div class="product-area section">
         <div class="container">
@@ -130,16 +57,10 @@
                                             <input type="submit" class="btn btn-primary btn-sm" value="Tìm kiếm">
                                         </div>
                                     </form>
-
-
-
-
-
-
                                     <table class="table table-bordered table-striped table-hover"> <!-- Dùng style bảng của Bootstrap -->
                                         <thead>
                                             <tr>
-                                                <th scope="col">Mã đơn</th>
+                                                <th scope="col-1">Mã đơn</th>
                                                 <th scope="col">Sản phẩm</th>
                                                 <th scope="col">Tổng tiền</th>
                                                 <th scope="col">Ngày đặt</th>
@@ -149,11 +70,13 @@
                                         <tbody>
                                             <!-- Vòng lặp qua các đơn hàng -->
                                             <c:forEach var="order" items="${requestScope.orders}">
-                                                <tr class="cursor-pointer">
+                                                <tr>
                                                     <td>
-                                                        <a href="${pageContext.request.contextPath}/account/order/detail?orderId=${order.order_id}">
-                                                            ${order.order_id}
-                                                        </a>
+                                                        <u>
+                                                            <a class="text-decoration-underline text-primary  " href="${pageContext.request.contextPath}/account/order/detail?orderId=${order.order_id}">
+                                                                ${order.order_id}
+                                                            </a>
+                                                        </u>
                                                     </td>
                                                     <td>
                                                         ${order.firstProductName} 

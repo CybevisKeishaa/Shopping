@@ -2,40 +2,7 @@
 <!DOCTYPE html>
 <html lang="zxx">
     <head>
-        <style>
-            .pagination {
-                display: flex;
-                gap: 10px;
-            }
-
-            .pagination a, .pagination span {
-                display: inline-block;
-                padding: 8px 12px;
-                border: 1px solid #ddd;
-                color: #007bff;
-                text-decoration: none;
-                border-radius: 4px;
-            }
-
-            /* Active page styling */
-            .pagination .current-page {
-                background-color: #ff5722;
-                color: white;
-                border-color: #ff5722;
-            }
-
-            /* Previous and Next button styling */
-            .pagination .prev, .pagination .next {
-                font-weight: bold;
-                padding: 8px 12px;
-            }
-
-            /* Hover effect for page links */
-            .pagination a:hover {
-                background-color: #f0f0f0;
-                border-color: #ccc;
-            }
-        </style>
+       
         <!-- Meta Tag -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
