@@ -15,13 +15,13 @@ public class Order {
     private int total_price;
     private Date create_at;
     private Status_Order status;
-    private String payment_method;
+    private Payment payment;
     private String shipping_method;
     private ArrayList<OrderDetail> orderDetails = new ArrayList<>();
     private int successOrders;
     private int cancelledOrders;
     private int pendingOrders;
-    private double totalRevenue;  // Thêm thuộc tính này
+    private double totalRevenue;  
     
     // Các getter và setter
     public double getTotalRevenue() {
@@ -97,13 +97,15 @@ public class Order {
         this.status = status;
     }
 
-    public String getPayment_method() {
-        return payment_method;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setPayment_method(String payment_method) {
-        this.payment_method = payment_method;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
+
+    
 
     public String getShipping_method() {
         return shipping_method;

@@ -211,14 +211,12 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
     // Lấy thông tin tài khoản khách hàng bằng email và mật khẩu
     public Customer_User getCustomerAccountByEmail(String email, String password) {
-        String sql = "SELECT c.cus_id, c.c_phone, c.name_cus, c.email, c.status, c.avartar, r.role_id, f.f_url, ca.cart_id\n"
-                + "FROM Customer c\n"
-                + "LEFT JOIN Role_Customer rc ON c.cus_id = rc.cus_id\n"
-                + "LEFT JOIN Role r ON rc.role_id = r.role_id\n"
-                + "LEFT JOIN Role_Fearture rf ON r.role_id = rf.role_id\n"
-                + "LEFT JOIN Fearture f ON rf.f_id = f.f_id\n"
-                + "LEFT JOIN Cart ca ON c.cus_id = ca.cus_id\n"
-                + "WHERE c.email = ? AND c.[password] = ?";
+        String sql = "SELECT c.cus_id, c.c_phone, c.name_cus, c.email, c.status, c.avartar, r.role_id, f.f_url, ca.cart_id FROM Customer c \n"
+                + "LEFT JOIN Role r on r.role_id = c.role_id\n"
+                + "LEFT JOIN Role_Fearture rf on rf.role_id = r.role_id\n"
+                + "LEFT JOIN Fearture f on f.f_id = rf.f_id\n"
+                + "LEFT JOIN Cart ca on c.cus_id = ca.cus_id\n"
+                + "WHERE email = ? and c.[password] = ?";
 
         try (PreparedStatement stm = connect.prepareStatement(sql)) {
             stm.setString(1, email);
