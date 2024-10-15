@@ -24,7 +24,7 @@
                 background-color: #e0a800 !important;
                 border-color: #d39e00 !important;
             }
-            
+
             .btn-primary {
                 padding: 18.15px 50px !important; /* Padding tùy chỉnh */
             }
@@ -68,7 +68,7 @@
                 background-color: #0056b3;
                 margin-bottom: 10px;
             }
-            
+
 
 
         </style>
@@ -88,7 +88,7 @@
                         <h2>Thông tin đặt hàng</h2> 
                     </div>
                     <c:if test="${not empty cart.items}">
-                        <form id="cartForm" action="updateCart" method="post">
+                        <form id="cartForm" action="list" method="post">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -107,12 +107,12 @@
                                             <td>${item.product.name}</td>
                                             <td><fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND"/></td>
                                             <td>
-                                                <input type="number" name="quantity" value="${item.quantity}" min="1" onchange="updateTotal(${item.product.product_id}, this.value)" />
+                                                <!-- Đặt tên input là mảng itemId[] và quantity[] -->
+                                                <input type="hidden" name="itemId[]" value="${item.item_id}" />
+                                                <input type="number" name="quantity[]" value="${item.quantity}" min="1" onchange="updateTotal(${item.item_id}, this.value)" />
                                             </td>
-
-
                                             <td>
-                                                <span id="total_cost_${item.product.product_id}">
+                                                <span id="total_cost_${item.item_id}">
                                                     <fmt:formatNumber value="${item.quantity * item.product.price}" type="currency" currencySymbol="VND"/>
                                                 </span>
                                             </td>
@@ -142,6 +142,8 @@
                                 <a href="${pageContext.request.contextPath}/cart/checkout" class="btn btn-warning">Check Out</a>
                             </div>
                         </form>
+
+
                     </c:if>
                     <c:if test="${empty cart.items}">
                         <p>Your cart is currently empty.</p>
@@ -151,27 +153,27 @@
 
                 <!-- Sidebar -->
                 <div class="col-md-4">
-                <div class="sidebar">
-                    <h3 class="feedback-title">Tìm kiếm sản phẩm</h3>
-                    <form action="${pageContext.request.contextPath}/productSearch">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="search" placeholder="Tìm kiếm sản phẩm">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
-                    </form>
+                    <div class="sidebar">
+                        <h3 class="feedback-title">Tìm kiếm sản phẩm</h3>
+                        <form action="${pageContext.request.contextPath}/productSearch">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="search" placeholder="Tìm kiếm sản phẩm">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
+                        </form>
 
-                    <h3 class="feedback-title">Danh mục sản phẩm</h3>
-                    <ul>
-                        <li><a href="/category/perfume">Nước hoa</a></li>
-                        <li><a href="/category/skincare">Chăm sóc da</a></li>
-                        <li><a href="/category/makeup">Trang điểm</a></li>
-                    </ul>
+                        <h3 class="feedback-title">Danh mục sản phẩm</h3>
+                        <ul>
+                            <li><a href="/category/perfume">Nước hoa</a></li>
+                            <li><a href="/category/skincare">Chăm sóc da</a></li>
+                            <li><a href="/category/makeup">Trang điểm</a></li>
+                        </ul>
 
-                    <h3 class="feedback-title">Liên hệ</h3>
-                    <p>Email: Group6@gmail.com</p>
-                    <p>Điện thoại: 0354995144</p>
+                        <h3 class="feedback-title">Liên hệ</h3>
+                        <p>Email: Group6@gmail.com</p>
+                        <p>Điện thoại: 0354995144</p>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
 
@@ -179,26 +181,32 @@
         <br><br><br>
 
         <script>
-            function updateTotal(productId, quantity) {
-                console.log("Product ID: ", productId);
-                console.log("Quantity: ", quantity);
+            function updateTotal(itemId, quantity) {
+                // Tìm hàng chứa sản phẩm đang được thay đổi số lượng
+                const row = document.querySelector(`input[value="${itemId}"]`).closest('tr');
 
-                const quantityInput = document.querySelector(`input[name="quantity"]`);
-                const row = quantityInput.closest('tr');
-
+                // Lấy giá của sản phẩm từ cột thứ hai (vị trí cột giá)
                 let priceText = row.querySelector('td:nth-child(2)').innerText;
                 priceText = priceText.replace(/\./g, '').replace(',', '.').replace(/[^0-9.]/g, '');
 
                 const price = parseFloat(priceText);
 
+                // Cập nhật tổng chi phí của sản phẩm (quantity * price)
+                const totalCost = price * quantity;
+
+                // Hiển thị tổng chi phí mới cho sản phẩm
+                row.querySelector(`#total_cost_${itemId}`).innerText = new Intl.NumberFormat('de-DE').format(totalCost) + " VND";
+
+                // Cập nhật tổng giá đơn hàng
                 updateTotalOrderPrice();
             }
 
             function updateTotalOrderPrice() {
                 let totalOrderPrice = 0;
 
+                // Lặp qua tất cả các hàng trong bảng và tính tổng đơn hàng
                 document.querySelectorAll('tr').forEach(function (row) {
-                    const quantityInput = row.querySelector('input[type="number"]');                   
+                    const quantityInput = row.querySelector('input[type="number"]');
                     if (quantityInput) {
                         const quantity = parseFloat(quantityInput.value);
 
@@ -207,18 +215,19 @@
 
                         const price = parseFloat(priceText);
 
+                        // Cộng tổng giá của từng sản phẩm vào tổng đơn hàng
                         totalOrderPrice += price * quantity;
                     }
                 });
 
+                // Hiển thị tổng giá đơn hàng mới
                 document.querySelector('#total_order_price').innerText = new Intl.NumberFormat('de-DE').format(totalOrderPrice) + " VND";
             }
+
         </script>
         <jsp:include page="/Demo_Template/BasePage/Footer.jsp" />
 
-        <!-- Include JS files -->
-        <script src="${pageContext.request.contextPath}/a/asset/js/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/a/asset/js/bootstrap.min.js"></script>
+        
 
 
     </body>
