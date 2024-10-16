@@ -15,12 +15,134 @@ import model.Capacity;
 import model.Discount;
 import model.Gender;
 import model.Image;
+import java.io.InputStream;
 
 /**
  *
  * @author KEISHA
  */
 public class ProductDBContext extends DBContext<Product> {
+
+    public ArrayList<Product> getAllByEid(int eid) {
+        PreparedStatement stm = null;
+        BrandDBContext br = new BrandDBContext();
+        CapacityDBContext cap = new CapacityDBContext();
+        GenderDBContext gen = new GenderDBContext();
+        ImageDBContext image = new ImageDBContext();
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT TOP (1000) [product_id]\n"
+                + "      ,[name]\n"
+                + "      ,[price]\n"
+                + "      ,[date]\n"
+                + "      ,[stock]\n"
+                + "      ,[discount_id]\n"
+                + "      ,[brand_id]\n"
+                + "      ,[status]\n"
+                + "      ,[emp_id]\n"
+                + "  FROM [swp-son].[dbo].[Product] where emp_id=?";
+        try {
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, eid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProduct_id(rs.getInt(1));
+                p.setName(rs.getString(2));
+                p.setPrice(rs.getInt(3));
+                p.setDate(rs.getDate(4));
+                p.setStock(rs.getInt(5));
+                DiscountDBContext db = new DiscountDBContext();
+                Discount d = db.getDiscountById(rs.getInt(6));
+                p.setDiscount(d);
+                BrandDBContext bd = new BrandDBContext();
+                Brand b = bd.getBrandFindById(rs.getInt(7));
+                p.setBrand(b);
+                p.setStatus(rs.getBoolean(8));
+                ArrayList<Capacity> c = cap.getCapacityByProductId(rs.getInt(1));
+                p.setCapacity(c);
+                ArrayList<Image> i=image.getByProductId(rs.getInt(1));
+                p.setImg(i);
+                list.add(p);
+            }
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public void insertProduct(String eid, String name, String price, String stock, String date, String dis, String brand, String image,String imgename) {
+        try {
+            connect.setAutoCommit(false);
+
+            String insertProduct = "INSERT INTO [dbo].[Product]\n"
+                    + "           ([name]\n"
+                    + "           ,[price]\n"
+                    + "           ,[date]\n"
+                    + "           ,[stock]\n"
+                    + "           ,[discount_id]\n"
+                    + "           ,[brand_id]\n"
+                    + "           ,[status]  "
+                    + ",[emp_id])\n"
+                    + "     VALUES\n"
+                    + "           (?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,1,?)";
+
+            PreparedStatement insertProductst = connect.prepareStatement(insertProduct, PreparedStatement.RETURN_GENERATED_KEYS);
+            insertProductst.setString(1, name);
+            insertProductst.setInt(2, Integer.parseInt(price));
+            insertProductst.setDate(3, Date.valueOf(date));
+            insertProductst.setInt(4, Integer.parseInt(stock));
+            insertProductst.setInt(5, Integer.parseInt(dis));
+            insertProductst.setInt(6, Integer.parseInt(brand));
+            insertProductst.setInt(7, Integer.parseInt(eid));
+            insertProductst.executeUpdate();
+
+// Lấy product_id vừa chèn từ khóa chính tự động tăng
+            ResultSet generatedKeys = insertProductst.getGeneratedKeys();
+            int productId = -1;
+            if (generatedKeys.next()) {
+                productId = generatedKeys.getInt(1);
+            }
+
+// Chèn image vào bảng Image
+            String insertImage = "INSERT INTO [dbo].[Image]\n"
+                    + "           ([img_url]\n"
+                    + "         ,[img_name])\n"
+                    + "     VALUES\n"
+                    + "           (?,?)";
+
+            PreparedStatement insertImagest = connect.prepareStatement(insertImage, PreparedStatement.RETURN_GENERATED_KEYS);
+            insertImagest.setString(1, image);
+            insertImagest.setString(2, imgename);
+            insertImagest.executeUpdate();
+            ResultSet rs1 = insertImagest.getGeneratedKeys();
+            int imageId = -1;
+            if (rs1.next()) {
+                imageId = rs1.getInt(1);
+            }
+            String insertImageProduct = "INSERT INTO [dbo].[Product_Image]\n"
+                    + "           ([product_id]\n"
+                    + "           ,[img_id])\n"
+                    + "     VALUES\n"
+                    + "           (?\n"
+                    + "           ,?)";
+            PreparedStatement insertImageProductst = connect.prepareStatement(insertImageProduct, PreparedStatement.RETURN_GENERATED_KEYS);
+            insertImageProductst.setInt(1, productId);
+            insertImageProductst.setInt(2, imageId);
+            insertImageProductst.executeUpdate();
+            connect.commit();
+            connect.setAutoCommit(true);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
     public ArrayList<Product> getDiscountProductForHomepage() {
 
@@ -174,11 +296,13 @@ public class ProductDBContext extends DBContext<Product> {
 
     public static void main(String[] args) {
         ProductDBContext db = new ProductDBContext();
-        ArrayList<Product> p = db.getProductByGender();
-        System.out.println(p.size());
+        ArrayList<Product> p = db.getAllByEid(2);
+        for(Product x:p){
+            System.out.println(x.getProduct_id());
+            System.out.println(x.getImg().size());
+        }
     }
-    
-    
+
     public int getTotalProduct() {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM Product";

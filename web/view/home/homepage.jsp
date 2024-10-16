@@ -259,6 +259,8 @@
                                                     <li><a href="${pageContext.request.contextPath}/blogList">Bài viết</a></li>
 
                                                     <li><a href="${pageContext.request.contextPath}/homepage/feedback">Đánh giá</a></li>
+                                                    <li><a href="employeeProductList">Bảng</a></li>
+
                                                 </ul>
                                             </div>
                                         </div>

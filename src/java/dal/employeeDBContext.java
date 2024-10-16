@@ -18,7 +18,30 @@ import model.Role;
  * @author admin
  */
 public class employeeDBContext extends DBContext {
+    public Employee getLoginEmployee(String username,String password){
+        String sql="SELECT * FROM Employee where email=? and password=?";
+         try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setString(1, username);
+            st.setString(2, password);
+            ResultSet rs = st.executeQuery();
 
+            if (rs.next()) {
+                Employee e = new Employee();
+                e.setEmp_id(rs.getInt(1));
+                e.setName_emp(rs.getString(2));
+                e.setPassword(rs.getString(3));
+
+                 return e;
+
+            }
+           
+
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
     public Employee getEmployeeByIdForBlog(int id) {
         String sql = "SELECT * FROM Employee where emp_id=?";
 
@@ -220,8 +243,7 @@ public class employeeDBContext extends DBContext {
     public static void main(String[] args) {
         employeeDBContext e = new employeeDBContext();
 
-        Employee em = e.getDetailsByEmpIds(1);
-        System.out.println(em.getName_emp());
+        System.out.println(e.getLoginEmployee("b@gmail.com", "aaa123").getEmp_id());
     }
 
 }

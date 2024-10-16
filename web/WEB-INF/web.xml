@@ -110,6 +110,14 @@
         <servlet-name>checkoutServlet</servlet-name>
         <servlet-class>controller.cart.checkoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>employeeProductList</servlet-name>
+        <servlet-class>controller.makerProduct.employeeProductList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>employeeAddProduct</servlet-name>
+        <servlet-class>controller.makerProduct.employeeAddProduct</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>productSearch</servlet-name>
         <url-pattern>/productSearch</url-pattern>
@@ -269,6 +277,14 @@
     <servlet-mapping>
         <servlet-name>checkoutServlet</servlet-name>
         <url-pattern>/cart/checkout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>employeeProductList</servlet-name>
+        <url-pattern>/employeeProductList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>employeeAddProduct</servlet-name>
+        <url-pattern>/employeeAddProduct</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/home/homepage.jsp</welcome-file>

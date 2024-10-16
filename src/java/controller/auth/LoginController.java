@@ -1,6 +1,7 @@
 package controller.auth;
 
 import dal.CustomerDBContext;
+import dal.employeeDBContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Customer_User;
+import model.Employee;
 
 public class LoginController extends HttpServlet {
 
@@ -29,13 +31,18 @@ public class LoginController extends HttpServlet {
 
         CustomerDBContext db = new CustomerDBContext();
         Customer_User customer = db.getCustomerAccountByEmail(email, password);
-
+         employeeDBContext eDb = new employeeDBContext();
+        Employee employee=eDb.getLoginEmployee(email, password);
         
         
         
         if (customer != null) {
             HttpSession session = request.getSession();
             session.setAttribute("customer", customer);
+            response.sendRedirect("homepage");
+            }else if(employee!=null){
+              HttpSession session = request.getSession();
+            session.setAttribute("employee", employee);
             response.sendRedirect("homepage");
         } else {
             HttpSession session = request.getSession();
