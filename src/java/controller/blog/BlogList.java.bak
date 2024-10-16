@@ -1,0 +1,57 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
+package controller.blog;
+
+import dal.BlogDBContext;
+import java.io.IOException;
+import java.io.PrintWriter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Blog;
+
+/**
+ *
+ * @author admin
+ */
+
+@WebServlet(name = "blogList", urlPatterns = {"/blogList"})
+public class BlogList extends HttpServlet {
+
+   private static final int PAGE_SIZE = 6;
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String pageStr = request.getParameter("page"); // L?y s? trang t? request (n?u c ).
+
+        int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1; // N?u c  s? trang th  d ng, n?u kh ng th  m?c d?nh l  trang 1.
+
+        BlogDBContext blogDB = new BlogDBContext(); // T?o d?i tu?ng d? k?t n?i v  thao t c v?i co s? d? li?u Blog.
+
+        List<Blog> list = blogDB.getAll(pageNumber, PAGE_SIZE); // L?y danh s ch blog theo trang v  s? lu?ng blog tr n m?i trang.
+
+        int totalProducts = blogDB.getTotalBlogs(); // L?y t?ng s? blog t? co s? d? li?u.
+
+        int totalPages = (int) Math.ceil(totalProducts / (double) PAGE_SIZE); // T nh t?ng s? trang c?n d ng d? hi?n th?.
+
+        request.setAttribute("currentPage", pageNumber); // G?i th ng tin trang hi?n t?i d?n giao di?n.
+
+        request.setAttribute("totalPages", totalPages); // G?i t?ng s? trang d?n giao di?n.
+
+        request.setAttribute("data", list); // G?i danh s ch blog d?n giao di?n.
+
+        request.getRequestDispatcher("view/blog/blogList.jsp").forward(request, response); // Chuy?n d?n trang blogList.jsp d? hi?n th? danh s ch blog.
+
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }
+
+}

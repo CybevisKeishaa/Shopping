@@ -1,8 +1,0 @@
-deploy.ant.properties.file=C:\\Users\\KEISHA\\AppData\\Roaming\\NetBeans\\17\\tomcat101.properties
-file.reference.jakarta.activation-2.0.1.jar=C:\\SWP391 Fall24\\swp391_FA24_main\\group06\\SWP391_Group6\\libs\\jakarta.activation-2.0.1.jar
-file.reference.jakarta.activation-2.0.1.jar-1=C:\\SWP391 Fall24\\swp391_FA24_main\\group06\\SWP391_Group6\\libs\\jakarta.activation-2.0.1.jar
-file.reference.jakarta.mail-2.0.1.jar=C:\\SWP391 Fall24\\swp391_FA24_main\\group06\\SWP391_Group6\\libs\\jakarta.mail-2.0.1.jar
-file.reference.jakarta.mail-2.0.1.jar-1=C:\\SWP391 Fall24\\swp391_FA24_main\\group06\\SWP391_Group6\\libs\\jakarta.mail-2.0.1.jar
-j2ee.server.home=C:/Program Files/Apache Software Foundation/Tomcat 10.1
-j2ee.server.instance=tomcat101:home=C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1
-user.properties.file=C:\\Users\\KEISHA\\AppData\\Roaming\\NetBeans\\17\\build.properties

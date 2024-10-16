@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author KEISHA
  */
-public class GenderDBContext extends DBContext<Gender>{
+public class GenderDBContext extends DBContext {
     public Gender getGenderFindById(int gid) {
         String sql = "Select * from Gender WHERE gender_id=?";
         try {
