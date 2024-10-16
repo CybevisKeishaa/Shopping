@@ -85,7 +85,7 @@
         var series = [
             {
                 name: "Orders",
-                data: ${orderCount},
+                data: ${orderCount}.reverse(),
             },
         ]
         document.addEventListener("DOMContentLoaded", function () {

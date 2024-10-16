@@ -44,10 +44,8 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
         }
         if (AuthenticationHelper.isAdmin(user)) {
             orders = odb.getAllOrder(page, PAGE_SIZE);
-
         }
         List<Integer> orderCountByWeek = odb.getOrderCountByWeek();
-
         request.setAttribute("orders", orders);
         request.setAttribute("orderCount", orderCountByWeek);
         request.getRequestDispatcher(MAIN_PAGE).forward(request, response);

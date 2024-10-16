@@ -24,8 +24,6 @@ public class OrderDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String id = request.getParameter("order-id");
-        
-        
     }
 
 }
