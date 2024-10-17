@@ -1,0 +1,101 @@
+/* Đặt kiểu cho phần tùy chọn đăng ký và quên mật khẩu */
+.login-options {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-options p {
+    margin: 5px 0;
+}
+
+.login-options a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-options a:hover {
+    text-decoration: underline;
+}
+
+/* Đặt kiểu chung cho body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Đặt kiểu cho container của form đăng nhập */
+.login-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+/* Tiêu đề login */
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Đặt kiểu cho các form group (mỗi hàng email/password) */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+/* Đặt kiểu cho nhãn của form */
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Đặt kiểu cho input (email, password) */
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Kiểu cho nút login */
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Hiệu ứng khi hover lên nút login */
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Đặt kiểu cho thông báo lỗi */
+.error-message {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+}
