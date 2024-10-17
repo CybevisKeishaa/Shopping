@@ -74,7 +74,7 @@ public class BlogDBContext extends DBContext<Blog> {
                 b.setShortContent(rs.getString(3));
                 b.setContent(rs.getString(4));
                 b.setDate(rs.getDate(5));
-                employeeDBContext eDB = new employeeDBContext();
+                EmployeeDBContext eDB = new EmployeeDBContext();
                 int id = rs.getInt(6);
                 Employee e = eDB.getEmployeeByIdForBlog(id);
                 b.setEmployee(e);
@@ -103,7 +103,7 @@ public class BlogDBContext extends DBContext<Blog> {
                 b.setShortContent(rs.getString(3));
                 b.setContent(rs.getString(4));
                 b.setDate(rs.getDate(5));
-                employeeDBContext eDB = new employeeDBContext();
+                EmployeeDBContext eDB = new EmployeeDBContext();
                 int id = rs.getInt(6);
                 Employee e = eDB.getEmployeeByIdForBlog(id);
                 b.setEmployee(e);
@@ -128,7 +128,7 @@ public class BlogDBContext extends DBContext<Blog> {
                 b.setBlog_id(rs.getInt(1));
                 b.setTitle(rs.getString(2));
                 b.setDate(rs.getDate(5));
-                employeeDBContext eDB = new employeeDBContext();
+                EmployeeDBContext eDB = new EmployeeDBContext();
                 int id = rs.getInt(6);
                 Employee e = eDB.getEmployeeByIdForBlog(id);
                 b.setEmployee(e);
@@ -164,7 +164,7 @@ public class BlogDBContext extends DBContext<Blog> {
                 b.setShortContent(rs.getString(3));
                 b.setContent(rs.getString(4));
                 b.setDate(rs.getDate(5));
-                employeeDBContext eDB = new employeeDBContext();
+                EmployeeDBContext eDB = new EmployeeDBContext();
                 int id = rs.getInt(6);
                 Employee e = eDB.getEmployeeByIdForBlog(id);
                 b.setEmployee(e);

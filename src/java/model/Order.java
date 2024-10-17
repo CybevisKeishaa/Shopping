@@ -2,21 +2,24 @@ package model;
 
 
 import model.Status_Order;
+import model.Payment;
 import java.util.ArrayList;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Order {
 
-    private String firstProductName;  
-    private int numberOfOtherProducts;
     private int order_id;
+    private String firstProductName;
+    private int numberOfOtherProducts;
     private Customer_User customer;
     private int total_price;
-    private Date create_at;
+    private Timestamp create_at;
+    private String payment_method;
     private Status_Order status;
     private Payment payment;
     private String shipping_method;
+    // Objects
     private ArrayList<OrderDetail> orderDetails = new ArrayList<>();
     private int successOrders;
     private int cancelledOrders;
@@ -81,11 +84,11 @@ public class Order {
         this.total_price = total_price;
     }
 
-    public Date getCreate_at() {
+    public Timestamp getCreate_at() {
         return create_at;
     }
 
-    public void setCreate_at(Date create_at) {
+    public void setCreate_at(Timestamp create_at) {
         this.create_at = create_at;
     }
 
@@ -134,10 +137,17 @@ public class Order {
     public int getNumberOfOtherProducts() {
         return numberOfOtherProducts;
     }
-    
+
     public void setNumberOfOtherProducts(int numberOfOtherProducts) {
         this.numberOfOtherProducts = numberOfOtherProducts;
     }
+
+    public String getPayment_method() {
+        return payment_method;
+    }
+
+    public void setPayment_method(String payment_method) {
+        this.payment_method = payment_method;
+    }
+    
 }
-
-

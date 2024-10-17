@@ -8,12 +8,14 @@ import model.Brand;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import model.Brand;
 
 /**
  *
- * @author KEISHA
+ * @author DINH SON
  */
-public class BrandDBContext extends DBContext<Brand>{
+public class BrandDBContext extends DBContext {
+
     public Brand getBrandFindById(int bid) {
         String sql = "Select * from Brand WHERE brand_id=?";
         try {
@@ -52,10 +54,5 @@ public class BrandDBContext extends DBContext<Brand>{
         }
         return null;
 
-    }
-    public static void main(String[] args){
-        BrandDBContext  b=new BrandDBContext();
-        List<Brand> l=b.getAll();
-        System.out.println(l.size());
     }
 }

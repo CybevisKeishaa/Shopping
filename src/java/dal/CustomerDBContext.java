@@ -5,21 +5,17 @@
  */
 package dal;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Customer_User;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Address;
-import model.Blog;
 import model.Cart;
-import model.Employee;
+import model.Customer_User;
 import model.Feature;
+import model.Order;
 import model.PasswordResetToken;
 import model.Role;
 
@@ -46,7 +42,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             if (rs.next() && rs.getInt("max_cus_id") > 0) {
                 new_cus_id = rs.getInt("max_cus_id") + 1;
             }
-            customer.setCus_id(new_cus_id);  // Đặt giá trị cus_id mới cho đối tượng customer
+            customer.setCus_id(new_cus_id); // Đặt giá trị cus_id mới cho đối tượng customer
 
             // Câu lệnh SQL để chèn thông tin vào bảng Customer
             String sql_insert_cus = "INSERT INTO [dbo].[Customer]\n"
@@ -66,17 +62,17 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
             // Chuẩn bị câu lệnh SQL chèn
             stm_insert = connect.prepareStatement(sql_insert_cus);
-            stm_insert.setInt(1, customer.getCus_id());                       // cus_id
-            stm_insert.setString(2, customer.getName_cus());               // name_cus
-            stm_insert.setString(3, customer.getPassword());               // password
-            stm_insert.setString(4, customer.getEmail());                  // email
-            stm_insert.setString(5, customer.getC_phone());                // c_phone 
-            stm_insert.setString(6, customer.getUsername());           // display_name
-            stm_insert.setBoolean(7, false);                                // status (giả sử là active - true)
-            stm_insert.setInt(8, customer.getRole().getRole_id());         // role_id
+            stm_insert.setInt(1, customer.getCus_id()); // cus_id
+            stm_insert.setString(2, customer.getName_cus()); // name_cus
+            stm_insert.setString(3, customer.getPassword()); // password
+            stm_insert.setString(4, customer.getEmail()); // email
+            stm_insert.setString(5, customer.getC_phone()); // c_phone
+            stm_insert.setString(6, customer.getUsername()); // display_name
+            stm_insert.setBoolean(7, false); // status (giả sử là active - true)
+            stm_insert.setInt(8, customer.getRole().getRole_id()); // role_id
             stm_insert.setInt(9, customer.isGender() ? 1 : 0);
             stm_insert.setString(10, customer.getUsername());
-            stm_insert.setDate(11, customer.getDob());                     // dob (ngày sinh)
+            stm_insert.setDate(11, customer.getDob()); // dob (ngày sinh)
             stm_insert.setString(12, customer.getVerificationCode());
 
             // Thực thi câu lệnh chèn
@@ -86,13 +82,13 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             connect.commit();
         } catch (SQLException ex) {
             // In ra lỗi chi tiết để dễ dàng debug
-//            System.err.println("SQL Error: " + ex.getMessage());
+            // System.err.println("SQL Error: " + ex.getMessage());
 
             if (connect != null) {
                 try {
                     connect.rollback();
                 } catch (SQLException ex1) {
-//                    System.err.println("Rollback Error: " + ex1.getMessage());
+                    // System.err.println("Rollback Error: " + ex1.getMessage());
                 }
             }
 
@@ -211,7 +207,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
     // Lấy thông tin tài khoản khách hàng bằng email và mật khẩu
     public Customer_User getCustomerAccountByEmail(String email, String password) {
-        String sql = "SELECT c.cus_id, c.c_phone, c.name_cus, c.email, c.status, c.avartar, r.role_id, f.f_url, ca.cart_id FROM Customer c \n"
+        String sql = "SELECT c.cus_id, c.c_phone, c.name_cus, c.email, c.status, c.avartar, r.role_id, f.f_url, ca.cart_id , r.* FROM Customer c \n"
                 + "LEFT JOIN Role r on r.role_id = c.role_id\n"
                 + "LEFT JOIN Role_Fearture rf on rf.role_id = r.role_id\n"
                 + "LEFT JOIN Fearture f on f.f_id = rf.f_id\n"
@@ -241,6 +237,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
                         r = new Role();
                         r.setRole_id(rs.getInt("role_id"));
+                        r.setRole_name(rs.getString("role_name"));
                         customer.setRole(r);
                     }
 
@@ -256,7 +253,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 return customer;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "L?i khi l?y th ng tin t i kho?n", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "L?i khi l?y th ng tin t i kho?n",
+                    ex);
         }
         return null;
     }
@@ -279,9 +277,9 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
     public void updateCustomer(Customer_User customer) {
         String sql = """
-                     UPDATE Customer 
-                     SET name_cus = ?, gender = ?, c_phone = ?, avartar = ?
-                     WHERE cus_id = ?""";
+                UPDATE Customer
+                SET name_cus = ?, gender = ?, c_phone = ?, avartar = ?
+                WHERE cus_id = ?""";
 
         try (PreparedStatement stm = connect.prepareStatement(sql)) {
             stm.setString(1, customer.getName_cus());
@@ -292,7 +290,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi cập nhật thông tin khách hàng", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE,
+                    "Lỗi khi cập nhật thông tin khách hàng", ex);
         }
     }
 
@@ -328,7 +327,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy thông tin khách hàng theo ID", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE,
+                    "Lỗi khi lấy thông tin khách hàng theo ID", ex);
         }
         return null;
     }
@@ -350,7 +350,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy thông tin khách hàng theo email", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE,
+                    "Lỗi khi lấy thông tin khách hàng theo email", ex);
         }
         return null;
     }
@@ -365,7 +366,8 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             stm.setTimestamp(3, Timestamp.valueOf(expirationTime));
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi tạo token đặt lại mật khẩu", ex);
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi tạo token đặt lại mật khẩu",
+                    ex);
         }
     }
 
@@ -475,7 +477,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 b.setGender(rs.getBoolean(9));
                 b.setStatus(rs.getBoolean(6));
                 int role_id = rs.getInt(8);
-                employeeDBContext eDB = new employeeDBContext();
+                EmployeeDBContext eDB = new EmployeeDBContext();
                 RoleDBContext rb = new RoleDBContext();
                 Role r = rb.getroleNameByRoleId(role_id);
                 b.setRole(r);
@@ -509,7 +511,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 b.setGender(rs.getBoolean(9));
                 b.setStatus(rs.getBoolean(6));
                 int role_id = rs.getInt(8);
-                employeeDBContext eDB = new employeeDBContext();
+                EmployeeDBContext eDB = new EmployeeDBContext();
                 RoleDBContext rb = new RoleDBContext();
                 Role r = rb.getroleNameByRoleId(role_id);
                 b.setRole(r);
@@ -543,7 +545,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 b.setGender(rs.getBoolean(9));
                 b.setStatus(rs.getBoolean(6));
                 int role_id = rs.getInt(8);
-                employeeDBContext eDB = new employeeDBContext();
+                EmployeeDBContext eDB = new EmployeeDBContext();
                 RoleDBContext rb = new RoleDBContext();
                 Role r = rb.getroleNameByRoleId(role_id);
                 b.setRole(r);
@@ -576,7 +578,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 c.setStatus(rs.getBoolean(6));
                 c.setUsername(rs.getString(10));
                 int role_id = rs.getInt(8);
-                employeeDBContext eDB = new employeeDBContext();
+                EmployeeDBContext eDB = new EmployeeDBContext();
                 RoleDBContext rb = new RoleDBContext();
                 Role r = rb.getroleNameByRoleId(role_id);
                 c.setRole(r);
@@ -616,8 +618,280 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
         Customer_User c = l.getCustomerAccountByEmail("shamt2004@gmail.com", "thang123");
         System.out.println(c.getName_cus());
-//        for (Customer_User x : c) {
-//            System.out.println(x.size);
-//        }
+        // for (Customer_User x : c) {
+        // System.out.println(x.size);
+        // }
     }
+
+    public List<Customer_User> getAllListByProductidEmployeeIdDate(Date date, int eid, int pid, int pageNumber,
+            int pageSize) {
+        String sql = "SELECT *\n"
+                + "              FROM Employee e \n"
+                + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "              INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "                INNER JOIN OrderDetail od on od.product_id=p.product_id\n"
+                + "             INNER JOIN [Order] o on od.detail_id=o.order_id\n"
+                + "               INNER JOIN Customer c on c.cus_id=o.cus_id\n"
+                + "               WHERE e.emp_id =? and p.product_id=? and o.created_at=?  ORDER BY c.cus_id\n"
+                + "                OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        List<Customer_User> list = new ArrayList<>();
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            int offset = (pageNumber - 1) * pageSize;
+            st.setInt(1, eid);
+            st.setInt(2, pid);
+            st.setDate(3, date);
+            st.setInt(4, offset);
+            st.setInt(5, pageSize);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Customer_User c = new Customer_User();
+                c.setCus_id(rs.getInt("cus_id"));
+                c.setName_cus(rs.getString("name_cus"));
+                ArrayList<Order> oList = new ArrayList<>();
+                OrderDBContext odb = new OrderDBContext();
+                oList = odb.getListOrderByEmployeeIdProductId(pid, eid);
+                c.setOrders(oList);
+                list.add(c);
+            }
+
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public List<Customer_User> getAllListByProductidEmployeeId(int eid, int pid, int pageNumber, int pageSize) {
+        String sql = "SELECT c.*,p.* ,o.*\n"
+                + "FROM Employee e \n"
+                + "INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "INNER JOIN OrderDetail od on od.product_id=p.product_id\n"
+                + "INNER JOIN [Order] o on od.detail_id=o.order_id\n"
+                + "INNER JOIN Customer c on c.cus_id=o.cus_id\n"
+                + "WHERE e.emp_id = ? and p.product_id=?\n"
+                + "ORDER BY c.cus_id\n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        List<Customer_User> list = new ArrayList<>();
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            int offset = (pageNumber - 1) * pageSize;
+            st.setInt(1, eid);
+            st.setInt(2, pid);
+            st.setInt(3, offset);
+            st.setInt(4, pageSize);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Customer_User c = new Customer_User();
+                c.setCus_id(rs.getInt("cus_id"));
+                c.setName_cus(rs.getString("name_cus"));
+                ArrayList<Order> oList = new ArrayList<>();
+                OrderDBContext odb = new OrderDBContext();
+                oList = odb.getListOrderByEmployeeIdProductId(pid, eid);
+                c.setOrders(oList);
+                list.add(c);
+            }
+
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public int getTotalCusByProductEmployeeid(Date date, int eid, int pid) {
+        String sql = "SELECT COUNT(*)\n"
+                + "              FROM Employee e \n"
+                + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "              INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "                INNER JOIN OrderDetail od on od.product_id=p.product_id\n"
+                + "             INNER JOIN [Order] o on od.detail_id=o.order_id\n"
+                + "               INNER JOIN Customer c on c.cus_id=o.cus_id\n"
+                + "               WHERE e.emp_id =? and p.product_id=? and o.created_at=? ";
+        int c = -1;
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, eid);
+            st.setInt(2, pid);
+            st.setDate(3, date);
+
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                c = rs.getInt(1);
+            }
+            return c;
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return -1;
+    }
+
+    public int getTotalCusByProductEmployeeidName(String name, int eid, int pid) {
+        String sql = "SELECT COUNT(*)\n"
+                + "              FROM Employee e \n"
+                + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "              INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "                INNER JOIN OrderDetail od on od.product_id=p.product_id\n"
+                + "             INNER JOIN [Order] o on od.detail_id=o.order_id\n"
+                + "               INNER JOIN Customer c on c.cus_id=o.cus_id\n"
+                + "               WHERE e.emp_id =? and p.product_id=? and c.name_cus like '%'+?+'%' ";
+        int c = -1;
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, eid);
+            st.setInt(2, pid);
+            st.setString(3, name);
+
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                c = rs.getInt(1);
+            }
+            return c;
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return -1;
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="getTotalCusByProductEmployeeid">
+    public int getTotalCusByProductEmployeeid(int eid, int pid) {
+        String sql = "SELECT Count(*)\n"
+                + "FROM Employee e \n"
+                + "INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "INNER JOIN OrderDetail od on od.product_id=p.product_id\n"
+                + "INNER JOIN [Order] o on od.detail_id=o.order_id\n"
+                + "INNER JOIN Customer c on c.cus_id=o.cus_id\n"
+                + "WHERE e.emp_id = ? and p.product_id=?\n";
+        int c = -1;
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, eid);
+            st.setInt(2, pid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                c = rs.getInt(1);
+            }
+            return c;
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return -1;
+    }
+    
+    public List<Customer_User> getAllListByProductidEmployeeIdName(String name, int eid, int pid, int pageNumber,
+            int pageSize) {
+        String sql = "SELECT *\n"
+                + "              FROM Employee e \n"
+                + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "              INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "                INNER JOIN OrderDetail od on od.product_id=p.product_id\n"
+                + "             INNER JOIN [Order] o on od.detail_id=o.order_id\n"
+                + "               INNER JOIN Customer c on c.cus_id=o.cus_id\n"
+                + "               WHERE e.emp_id =? and p.product_id=? and c.name_cus like '%'+?+'%'   ORDER BY c.cus_id\n"
+                + "                OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        List<Customer_User> list = new ArrayList<>();
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            int offset = (pageNumber - 1) * pageSize;
+            st.setInt(1, eid);
+            st.setInt(2, pid);
+            st.setString(3, name);
+            st.setInt(4, offset);
+            st.setInt(5, pageSize);
+            
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Customer_User c = new Customer_User();
+                c.setCus_id(rs.getInt("cus_id"));
+                c.setName_cus(rs.getString("name_cus"));
+                ArrayList<Order> oList = new ArrayList<>();
+                OrderDBContext odb = new OrderDBContext();
+                oList = odb.getListOrderByEmployeeIdProductId(pid, eid);
+                c.setOrders(oList);
+                list.add(c);
+            }
+            
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public int gettotalByProductidEmployeeIdtotal(float total, int eid, int pid) {
+        String sql = "SELECT *\n"
+                + "              FROM Employee e \n"
+                + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "              INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "                INNER JOIN OrderDetail od on od.product_id=p.product_id\n"
+                + "             INNER JOIN [Order] o on od.detail_id=o.order_id\n"
+                + "               INNER JOIN Customer c on c.cus_id=o.cus_id\n"
+                + "               WHERE e.emp_id =? and p.product_id=? and o.total=? ";
+        int c = -1;
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, eid);
+            st.setInt(2, pid);
+            st.setFloat(3, total);
+            
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                c = rs.getInt(1);
+            }
+            return c;
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return -1;
+    }
+    
+//</editor-fold>
+    public List<Customer_User> getAllListByProductidEmployeeIdtotal(float total, int eid, int pid, int pageNumber,
+            int pageSize) {
+        String sql = "SELECT *\n"
+                + "              FROM Employee e \n"
+                + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "              INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "                INNER JOIN OrderDetail od on od.product_id=p.product_id\n"
+                + "             INNER JOIN [Order] o on od.detail_id=o.order_id\n"
+                + "               INNER JOIN Customer c on c.cus_id=o.cus_id\n"
+                + "               WHERE e.emp_id =? and p.product_id=? and o.total=?  ORDER BY c.cus_id\n"
+                + "                OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        List<Customer_User> list = new ArrayList<>();
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            int offset = (pageNumber - 1) * pageSize;
+            st.setInt(1, eid);
+            st.setInt(2, pid);
+            st.setFloat(3, total);
+            st.setInt(4, offset);
+            st.setInt(5, pageSize);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Customer_User c = new Customer_User();
+                c.setCus_id(rs.getInt("cus_id"));
+                c.setName_cus(rs.getString("name_cus"));
+                ArrayList<Order> oList = new ArrayList<>();
+                OrderDBContext odb = new OrderDBContext();
+                oList = odb.getListOrderByEmployeeIdProductId(pid, eid);
+                c.setOrders(oList);
+                list.add(c);
+            }
+
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
 }

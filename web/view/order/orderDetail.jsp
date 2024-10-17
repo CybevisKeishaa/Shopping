@@ -6,28 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<!DOCTYPE html>
-<html lang="zxx">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name='copyright' content=''>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Order Details</title>
-
-        <!-- Include Bootstrap and custom styles -->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nicesellect.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/flex-slider.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl-carousel.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/slicknav.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
-
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags/" %>
+<t:mainview>
         <style>
             .container {
                 margin-top: 20px;
@@ -133,7 +113,7 @@
                 <p><strong>Địa chỉ:</strong> ${requestScope.order.customer.address[0].city}, ${requestScope.order.customer.address[0].district}, ${requestScope.order.customer.address[0].ward},${requestScope.order.customer.address[0].street} </p>
             </div>
 
-            
+
             <!-- Ordered Products Section -->
             <div class="ordered-products">
                 <h2>Ordered Products</h2>
@@ -184,16 +164,13 @@
             </div>
 
         </div>
-        <jsp:include page="/Demo_Template/BasePage/Footer.jsp" />
+        <script type="text/javascript">
+            function confirmReceived() {
+                return confirm("Bạn có chắc chắn muốn xác nhận đã nhận được hàng?");
+            }
 
-        <!-- JS Files -->
-        <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/scrollup.js"></script>
-        <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
-        <script src="${pageContext.request.contextPath}/js/owl-carousel.js"></script>
-        <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
-        <script src="${pageContext.request.contextPath}/js/slicknav.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/active.js"></script>
-    </body>
-</html>
+            function confirmCancel() {
+                return confirm("Bạn có chắc chắn hủy đơn hàng?");
+            }
+        </script>
+        </t:mainview>

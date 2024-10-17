@@ -2,17 +2,15 @@ package model;
 
 import java.util.ArrayList;
 
-
 /**
  *
  * @author KEISHA
  */
-
 public class Capacity {
 
     private int capacity_id;
     private int value;
-    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<Product> products;
 
     public Capacity() {
     }
@@ -22,9 +20,6 @@ public class Capacity {
         this.capacity_id = capacity_id;
         this.value = value;
     }
-    
-    
-
 
 
     public int getCapacity_id() {

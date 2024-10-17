@@ -6,7 +6,7 @@
 package controller.admin;
 
 import dal.CustomerDBContext;
-import dal.employeeDBContext;
+import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -59,7 +59,7 @@ public class employeeList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         employeeDBContext e = new employeeDBContext();
+         EmployeeDBContext e = new EmployeeDBContext();
         String pageStr = request.getParameter("page");
         int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
         List<Employee> list = e.getAll(pageNumber, PAGE_SIZE);

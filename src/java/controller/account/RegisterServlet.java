@@ -92,7 +92,7 @@ public class RegisterServlet extends HttpServlet {
         // Kiểm tra mật khẩu và nhập lại mật khẩu có khớp không
         if (!password.equals(re_password)) {
             request.setAttribute("errorMessage", "Passwords do not match!");
-            request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
             return;
         }
 
@@ -101,47 +101,47 @@ public class RegisterServlet extends HttpServlet {
         try {
             if (db.isEmailExists(email)) {
                 request.setAttribute("errorMessage", "Email already exists!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             // Kiểm tra xem username có bị trùng không
             if (db.isUsernameExists(username)) {
                 request.setAttribute("errorMessage", "Username already exists!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             if (db.isPhoneExists(phone)) {
                 request.setAttribute("errorMessage", "Phone number already exists!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             // Kiểm tra username và fullname không chứa ký tự đặc biệt
             if (!isValidString(fullname)) {
                 request.setAttribute("errorMessage", "Fullname contains invalid characters!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             // Kiểm tra độ dài mật khẩu
             if (!isValidPassword(password)) {
                 request.setAttribute("errorMessage", "Password must be at least 6 characters long!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             // Kiểm tra số điện thoại
             if (!isValidPhoneNumber(phone)) {
                 request.setAttribute("errorMessage", "Phone number must contain only digits!");
-                request.getRequestDispatcher("../view/account/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/account/register.jsp").forward(request, response);
                 return;
             }
 
             // Tạo đối tượng Customer_User từ thông tin đăng ký
             Customer_User cus = new Customer_User();
-
+            
             cus.setName_cus(fullname);
             cus.setEmail(email);
             cus.setC_phone(phone);

@@ -4,6 +4,7 @@
  */
 package dal;
 
+import jakarta.servlet.jsp.jstl.sql.Result;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import model.Image;
@@ -14,8 +15,8 @@ import java.util.List;
 
 
 
-public class ImageDBContext extends DBContext<Image>  {
-public Image getImageById (int igid) throws SQLException {
+public class ImageDBContext extends DBContext {
+    public Image getImageById (int igid) throws SQLException {
         String sql = "select * from Image where img_id=?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
