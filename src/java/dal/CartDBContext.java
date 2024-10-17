@@ -189,6 +189,26 @@ public class CartDBContext extends DBContext<Cart> {
 
     }
 
+    public void updateCartItemQuantity(int itemID, int newQuantity) {
+        PreparedStatement stm = null;
+        try {
+            String sql = "UPDATE Item\n"
+                    + "SET quanity = ?\n"
+                    + "WHERE item_id = ?";
+
+            stm = connect.prepareStatement(sql);
+
+            stm.setInt(1, newQuantity);
+            stm.setInt(2, itemID);
+
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CartDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     public static void main(String[] args) {
         CartDBContext c = new CartDBContext();
         c.addToCart(2, 7);
