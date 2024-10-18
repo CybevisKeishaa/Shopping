@@ -6495,3 +6495,19 @@ ul li a:focus {
   }
 
 }
+.pagination-container {
+    display:flex;
+    justify-content:end;
+}
+.pagination {
+    font-size:1.25em;
+}
+
+.pagination a {
+ border-radius: 8px; 
+ border: solid #333 2px;
+ padding: 4px 6px;
+}
+.pagination a[disabled]{
+    color:#333;
+}

@@ -67,10 +67,10 @@
                                     <td>${order.firstProductName}  </td>
                                     <td>${order.create_at}</td>
                                     <td>$${order.total_price}</td>
-                                    <td> ${order.status.status_name}</td>
-                                    <td> ${order.numberOfOtherProducts}</td>
+                                    <td>${order.status.status_name}</td>
+                                    <td>${order.numberOfOtherProducts}</td>
                                     <td>
-                                        <a href="./sale/order-details?order-id=${order.order_id}" class="btn btn-primary btn-sm text-bold">
+                                        <a href="./sale/orderdetail?order-id=${order.order_id}" class="btn btn-primary btn-sm text-bold">
                                             <b>View</b>
                                         </a>
                                     </td>
@@ -79,12 +79,40 @@
 
                         </tbody>
                     </table>
+                    <div class="container">
+                        <div class="pagination-container d-flex justify-content-center">
+                            <div class="pagination">
+                                <!-- Previous Button -->
+                                <c:if test="${currentPage > 1}">
+                                    <a href="?page=${currentPage - 1}" class="prev">&lt;</a>
+                                </c:if>
+
+                                <!-- Page Numbers -->
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <a disabled>${i}</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="?page=${i}">${i}</a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                                <!-- Next Button -->
+                                <c:if test="${currentPage < totalPages}">
+                                    <a href="?page=${currentPage + 1}" class="next">&gt;</a>
+                                </c:if>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>        
         </div>        
     </div>
+    <script src="${pageContext.request.contextPath}/a/asset/js/pagination.js"/>
     <script>
-        var orderBoughtData = ${orderCount}.reverse();
+
+            var orderBoughtData = ${orderCount}.reverse();
         document.addEventListener("DOMContentLoaded", function () {
             let container = document.querySelector('body');
             let scr = document.createElement("script")

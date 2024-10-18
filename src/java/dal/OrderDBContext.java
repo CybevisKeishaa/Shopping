@@ -5,21 +5,19 @@
 package dal;
 
 import dal.combiner.OrderCombiner;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import dal.sql.OrderSql;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import model.Order;
-import java.sql.*;
-import java.time.temporal.ChronoUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.Date;
-import java.time.LocalDate;
 import model.Address;
 import model.Customer_User;
 import model.Gender;
 import model.Image;
+import model.Order;
 import model.OrderDetail;
 import model.Product;
 import model.Status_Order;
@@ -31,33 +29,27 @@ import model.Status_Order;
 public class OrderDBContext extends DBContext<Order> {
 
     // ========================== Get Many Orders Section =======================
-    public List<Order> getAllOrder(int pageNumber, int pageSize) {
+    public List<Order> getAllOrder(Integer empID, int pageNumber, int pageSize) {
 
         ArrayList<Order> orders = new ArrayList<>();
         // Phân trang với OFFSET và FETCH
-        String sql = """
-                    SELECT o.order_id, 
-                           o.created_at AS orderedDate, 
-                           o.total AS totalCost, 
-                           so.status, 
-                           MIN(p.name) AS firstProductName, 
-                           COUNT(od.product_id) AS productCount
-                    FROM [dbo].[Order] o
-                    JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id
-                    JOIN [dbo].[Product] p ON od.product_id = p.product_id
-                    JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id
-                    GROUP BY o.order_id, o.created_at, o.total, so.status
-                    ORDER BY o.created_at DESC
-                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
-                    """;
 
         try {
-            PreparedStatement stm = connect.prepareStatement(sql);
-
-            // Thiết lập các tham số truy vấn
+            PreparedStatement stm;
             int offset = (pageNumber - 1) * pageSize;
-            stm.setInt(1, offset);    // Đặt OFFSET
-            stm.setInt(2, pageSize);  // Đặt FETCH NEXT
+            if (empID == null) {
+                String sql = OrderSql.GET_ALL;// lấy tất cả nếu empID == null
+                stm = connect.prepareStatement(sql);
+                stm.setInt(1, offset);    // Đặt OFFSET
+                stm.setInt(2, pageSize);  // Đặt FETCH NEXT
+            } else {
+                String sql = OrderSql.GET_ALL_WITH_EMPLOYEE_ID; // lấy theo empid
+                stm = connect.prepareStatement(sql);
+                stm.setInt(1, empID);
+                stm.setInt(2, offset);    // Đặt OFFSET
+                stm.setInt(3, pageSize);  // Đặt FETCH NEXT
+            }
+            // Thiết lập các tham số truy vấn
 
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -72,46 +64,29 @@ public class OrderDBContext extends DBContext<Order> {
         return orders;
     }
 
-    public ArrayList<Order> myOrders(int customerID, int pageNumber, int pageSize) {
-        ArrayList<Order> orders = new ArrayList<>();
-        // Phân trang với OFFSET và FETCH
-        String sql = """
-                    SELECT o.order_id, 
-                           o.created_at AS orderedDate, 
-                           o.total AS totalCost, 
-                           so.status, 
-                           MIN(p.name) AS firstProductName, 
-                           COUNT(od.product_id) AS productCount
-                    FROM [dbo].[Order] o
-                    JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id
-                    JOIN [dbo].[Product] p ON od.product_id = p.product_id
-                    JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id
-                    WHERE o.cus_id = ?
-                    GROUP BY o.order_id, o.created_at, o.total, so.status
-                    ORDER BY o.created_at DESC
-                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
-                    """;
-
+    public int getTotalOrderCount(Integer empID) {
+        int count = 0;
         try {
-            PreparedStatement stm = connect.prepareStatement(sql);
+            PreparedStatement stm;
+            if (empID == null) {
+                String sql = OrderSql.GET_ALL_COUNT;// lấy tất cả nếu empID == null
+                stm = connect.prepareStatement(sql);
+            } else {
+                String sql = OrderSql.GET_ALL_COUNT_WITH_EMPLOYEE_ID; // lấy theo empid
 
-            // Thiết lập các tham số truy vấn
-            stm.setInt(1, customerID);
-            int offset = (pageNumber - 1) * pageSize;
-            stm.setInt(2, offset);    // Đặt OFFSET
-            stm.setInt(3, pageSize);  // Đặt FETCH NEXT
-
+                stm = connect.prepareStatement(sql);
+                stm.setInt(1, empID);
+            }
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Order o = OrderCombiner.toTableRow(rs);
-                orders.add(o);
+                count = rs.getInt(1);
             }
             rs.close();
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return orders;
+        return count;
     }
 
     // ========================== Get Single Orders Section =======================

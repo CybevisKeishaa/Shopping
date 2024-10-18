@@ -4,8 +4,8 @@
  */
 package model;
 
-import java.util.ArrayList;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -148,5 +148,5 @@ public class Customer_User {
     public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
     }
-
+    
 }

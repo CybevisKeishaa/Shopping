@@ -7,6 +7,7 @@ package controller.dashboard.sale;
 import controller.auth.AuthenticationServlet;
 import dal.OrderDBContext;
 import helper.AuthenticationHelper;
+import helper.RequestHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,29 +35,22 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setAttribute("role", user.getRole().getRole_name());
         request.setAttribute("title", WEB_TITLE);
-
+        
         OrderDBContext odb = new OrderDBContext();
-        List<Order> orders = null;
-        int page = getPageIndex(request);
+        int page = RequestHelper.getIntParameterWithDefault("page", 1, request);
+        Integer empID = RequestHelper.getIntParameterWithDefault("empID", null, request);
+        // employee id
         if (AuthenticationHelper.isSaler(user)) {
-            orders = odb.myOrders(user.getCus_id(), page, PAGE_SIZE);
+            empID = user.getCus_id();
         }
-        if (AuthenticationHelper.isAdmin(user)) {
-            orders = odb.getAllOrder(page, PAGE_SIZE);
-        }
+        List<Order> orders = odb.getAllOrder(empID, page, PAGE_SIZE);
+        int count = odb.getTotalOrderCount(empID);
         List<Integer> orderCountByWeek = odb.getOrderCountByWeek();
         request.setAttribute("orders", orders);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalCount", (int) count);
+        request.setAttribute("totalPages", (int) Math.ceil((double)count / PAGE_SIZE));
         request.setAttribute("orderCount", orderCountByWeek);
         request.getRequestDispatcher(MAIN_PAGE).forward(request, response);
-    }
-
-    private int getPageIndex(HttpServletRequest request) {
-        int page = 1;
-        try {
-            page = Integer.parseInt(request.getParameter("page"));
-        } catch (Exception ex) {
-            //do nothing
-        }
-        return page;
     }
 }

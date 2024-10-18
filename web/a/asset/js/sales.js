@@ -1,23 +1,16 @@
 function getCurrentWeek() {
     const today = new Date();
-    const dayOfWeek = today.getDay(); // 0 (Sun) to 6 (Sat)
+    let dayOfweek = today.getDay();
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    
-    // Calculate the start of the week (Monday)
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
-    
-    // Get the days of the current week
     const weekDays = [];
-    for (let i = 0; i < 7; i++) {
-        const currentDay = new Date(startOfWeek);
-        currentDay.setDate(startOfWeek.getDate() + i);
-        weekDays.push(days[currentDay.getDay()]);
+    for (var i = 0, max = -7; i > max; i--) {
+        weekDays.push(days[dayOfweek--])
+        if (dayOfweek < 0)
+            dayOfweek = days.length-1;
     }
-    
-    return weekDays;
-}
 
+    return weekDays.reverse();
+}
 
 var lineChartData = {
     labels: getCurrentWeek(),
