@@ -71,7 +71,7 @@ public class CapacityDBContext extends DBContext<Capacity>{
     }
     public static void main(String[] args){
         CapacityDBContext cd=new CapacityDBContext();
-        List<Capacity> list=cd.getAll();
+        List<Capacity> list=cd.getCapacityByProductId(2);
         for(Capacity x:list){
                 System.out.println(x.getValue());
         }

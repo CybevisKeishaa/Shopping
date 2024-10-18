@@ -16,17 +16,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Order Details</title>
 
-        <!-- Include Bootstrap and custom styles -->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nicesellect.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/flex-slider.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl-carousel.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/slicknav.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
+          <link rel="stylesheet" href="${pageContext.request.contextPath}/css/niceselect.css">
+
 
         <style>
             .container {
@@ -73,6 +64,7 @@
                 margin-bottom: 10px;
             }
         </style>
+        <jsp:include page="/Demo_Template/BasePage/Header.jsp"/>
         <script type="text/javascript">
             function confirmReceived() {
                 return confirm("Bạn có chắc chắn muốn xác nhận đã nhận được hàng?");
@@ -83,7 +75,7 @@
             }
         </script>
     </head>
-    <jsp:include page="/Demo_Template/BasePage/Header.jsp"/> <br>
+    
     <body class="js">
         <!-- Order Details Section -->
         <div class="container">
@@ -186,14 +178,7 @@
         </div>
         <jsp:include page="/Demo_Template/BasePage/Footer.jsp" />
 
-        <!-- JS Files -->
-        <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/scrollup.js"></script>
         <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
-        <script src="${pageContext.request.contextPath}/js/owl-carousel.js"></script>
-        <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
-        <script src="${pageContext.request.contextPath}/js/slicknav.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/active.js"></script>
+
     </body>
 </html>

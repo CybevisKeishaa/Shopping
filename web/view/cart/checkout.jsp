@@ -1,227 +1,244 @@
-<%-- 
-    Document   : checkout
-    Created on : Oct 13, 2024, 12:19:45 AM
-    Author     : KEISHA
---%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <jsp:include page="/Demo_Template/BasePage/Header.jsp"/> <br><br><br>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
 
+    <style>
+        .gender-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 100% !important;
+            height: 33px !important;
+            padding: 13px !important;
+            font-size: 1rem;
+            line-height: 0.5rem !important;
+            text-align: center !important;
+            justify-content: center !important;
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
+        }
 
-    <!-- End Breadcrumbs -->
+        .nice-select {
+            display: block !important;
+            width: 100% !important; 
+            min-height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: white;
+            position: relative;
+            z-index: 10; 
+        }
 
-    <!-- Start Checkout -->
+        .nice-select.open .list {
+            display: block !important;
+            opacity: 0 !important;
+            visibility: visible !important;
+        }
+
+        .nice-select .list {
+            max-height: 300px;
+            overflow-y: auto; /* Allow scrolling for long lists */
+        }
+
+        .nice-select .option.selected {
+            background-color: #3164F4 !important;
+            color: white !important;
+        }
+
+        .btn-secondary {
+            background-color: #333 !important; 
+            color: white !important; 
+            border: 1px solid #00FF00 !important; 
+            padding: 8px 30px !important; 
+            text-transform: uppercase !important;
+            transition: background-color 0.3s, color 0.3s !important;
+        }
+
+        .btn-secondary:hover {
+            color: #111 !important;
+            background-color: #e0a800 !important;
+            border-color: #d39e00 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Include header -->
+    <jsp:include page="/Demo_Template/BasePage/Header.jsp"/>
     <section class="shop checkout section">
-        <div class="container">
-            <div class="row"> 
-                <div class="col-lg-8 col-12">
-                    <div class="checkout-form">
-                        <h2>Make Your Checkout Here</h2>
-                        <p>Please register in order to checkout more quickly</p>
-                        <!-- Form -->
-                        <form class="form" method="post" action="#">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>First Name<span>*</span></label>
-                                        <input type="text" name="name" placeholder="" required="required">
-                                    </div>
-                                </div>
+        <div class="container mt-5">
+            <!-- Product Summary Section -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="col-12">
+                        <div class="section-title">
+                            <h2>Feedback</h2> <!-- Giữ style tiêu đề của bạn -->
+                        </div>
+                    </div>
 
-                                <div class="col-lg-6 col-md-6 col-12">
+                    <!-- Kiểm tra nếu giỏ hàng có sản phẩm -->
+                    <c:if test="${not empty cart.items}">
+                        <!-- Đặt form bao quanh toàn bộ phần checkout -->
+                        <form action="${pageContext.request.contextPath}/cart/checkout" method="post">
+                            
+                            <!-- Thông tin giỏ hàng -->
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:set var="totalPrice" value="0"/>
+                                    <c:forEach var="item" items="${requestScope.cart.items}">
+                                        <tr>
+                                            <td>${item.product.product_id}</td>
+                                            <td>${item.product.name}</td>
+                                            <td><fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND"/></td>
+                                            <td>${item.quantity}</td>
+                                            <td><fmt:formatNumber value="${item.quantity * item.product.price}" type="currency" currencySymbol="VND"/></td>
+                                        </tr>
+                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.product.price)}"/>  
+                                    </c:forEach>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-right"><strong>Total Order Price:</strong></td>
+                                        <td><fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND"/></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <!-- Thông tin người nhận -->
+                            <h3>Receiver Information</h3> <br>
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Email Address<span>*</span></label>
-                                        <input type="email" name="email" placeholder="" required="required">
+                                        <label for="fullname">Full Name</label>
+                                        <input type="text" name="fullname" value="${sessionScope.customer.name_cus}" class="form-control" required />
                                     </div>
                                 </div>
-                                
-                                <div class="col-lg-6 col-md-6 col-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Phone Number<span>*</span></label>
-                                        <input type="number" name="number" placeholder="" required="required">
-                                    </div>
-                                </div>
-                                
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>Last Name<span>*</span></label>
-                                        <input type="text" name="name" placeholder="" required="required">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>State / Divition<span>*</span></label>
-                                        <select name="state-province" id="state-province">
-                                            <option value="divition" selected="selected">New Yourk</option>
-                                            <option>Los Angeles</option>
-                                            <option>Chicago</option>
-                                            <option>Houston</option>
-                                            <option>San Diego</option>
-                                            <option>Dallas</option>
-                                            <option>Charlotte</option>
+                                        <label for="gender">Gender</label>
+                                        <select name="gender" class="gender-select">
+                                            <option value="1" ${user.gender == 1 ? 'selected' : ''}>Male</option>
+                                            <option value="0" ${user.gender == 0 ? 'selected' : ''}>Female</option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>Address Line 1<span>*</span></label>
-                                        <input type="text" name="address" placeholder="" required="required">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>Address Line 2<span>*</span></label>
-                                        <input type="text" name="address" placeholder="" required="required">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>Postal Code<span>*</span></label>
-                                        <input type="text" name="post" placeholder="" required="required">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>Company<span>*</span></label>
-                                        <select name="company_name" id="company">
-                                            <option value="company" selected="selected">Microsoft</option>
-                                            <option>Apple</option>
-                                            <option>Xaiomi</option>
-                                            <option>Huawer</option>
-                                            <option>Wpthemesgrid</option>
-                                            <option>Samsung</option>
-                                            <option>Motorola</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group create-account">
-                                        <input id="cbox" type="checkbox">
-                                        <label>Create an account?</label>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <!--/ End Form -->
-                    </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" name="email" value="${sessionScope.customer.email}" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mobile">Mobile</label>
+                                        <input type="text" name="mobile" value="${sessionScope.customer.c_phone}" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="address">Select Address:</label>
+                                        <select name="selectedAddress" class=" nice-select form-control" required>
+                                            <c:forEach var="address" items="${requestScope.address}">
+                                                <option value="${address.a_id}">
+                                                    ${address.street}, ${address.ward}, ${address.district}, ${address.city} - Phone: ${address.a_phone}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ghi chú đơn hàng -->
+                            <div class="form-group">
+                                <label for="notes">Order Notes</label>
+                                <textarea name="notes" class="form-control"></textarea>
+                            </div>
+
+                            <!-- Nút xử lý đơn hàng -->
+                            <div class="text-right">
+                                <a href="${pageContext.request.contextPath}/cart/list" class="btn btn-secondary">Change</a>
+                                <button type="submit" class="btn btn-primary">Submit Order</button>
+                            </div>
+
+                        </form> <!-- Kết thúc form -->
+                    </c:if>
+
+                    <!-- Hiển thị thông báo nếu giỏ hàng trống -->
+                    <c:if test="${empty cart.items}">
+                        <p>Your cart is currently empty. <a href="/productList">Go back to product list</a></p>
+                    </c:if>
+
                 </div>
+
+                <!-- Chi tiết đơn hàng -->
                 <div class="col-lg-4 col-12">
                     <div class="order-details">
-                        <!-- Order Widget -->
+                        <!-- Thông tin tổng đơn hàng -->
                         <div class="single-widget">
-                            <h2>CART  TOTALS</h2>
+                            <h2>CART TOTALS</h2>
                             <div class="content">
                                 <ul>
-                                    <li>Sub Total<span>$330.00</span></li>
-                                    <li>(+) Shipping<span>$10.00</span></li>
-                                    <li class="last">Total<span>$340.00</span></li>
+                                    <li>Total cost<span><fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND"/></span></li>
+                                    <li>Total product<span>${cart.items.size()}</span></li>
+                                    <li class="last">Total<span><fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND"/></span></li>
+                                    <input type="hidden" name="totalCost" value="${totalPrice}" />
                                 </ul>
                             </div>
                         </div>
-                        <!--/ End Order Widget -->
-                        <!-- Order Widget -->
+
+                        <!-- Phương thức thanh toán -->
                         <div class="single-widget">
                             <h2>Payments</h2>
                             <div class="content">
                                 <div class="checkbox">
-                                    <label class="checkbox-inline" for="1"><input name="updates" id="1" type="checkbox"> Check Payments</label>
-                                    <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"> Cash On Delivery</label>
-                                    <label class="checkbox-inline" for="3"><input name="news" id="3" type="checkbox"> PayPal</label>
+                                    <c:forEach var="payment" items="${requestScope.payments}"> 
+                                        <input type="radio" name="paymentMethod" value="${payment.paymentID}"> ${payment.paymentName} <br>
+                                    </c:forEach>
                                 </div>
                             </div>
                         </div>
-                        <!--/ End Order Widget -->
-                        <!-- Payment Method Widget -->
-                        <div class="single-widget payement">
-                            <div class="content">
-                                <img src="images/payment-method.png" alt="#">
-                            </div>
-                        </div>
-                        <!--/ End Payment Method Widget -->
-                        <!-- Button Widget -->
+
+                        <!-- Nút xử lý -->
                         <div class="single-widget get-button">
                             <div class="content">
                                 <div class="button">
-                                    <a href="#" class="btn">proceed to checkout</a>
+                                    <a href="#" class="btn">Proceed to checkout</a>
                                 </div>
                             </div>
                         </div>
-                        <!--/ End Button Widget -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!--/ End Checkout -->
-
-    <!-- Start Shop Services Area  -->
-    <section class="shop-services section home">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-rocket"></i>
-                        <h4>Free shiping</h4>
-                        <p>Orders over $100</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-reload"></i>
-                        <h4>Free Return</h4>
-                        <p>Within 30 days returns</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-lock"></i>
-                        <h4>Sucure Payment</h4>
-                        <p>100% secure payment</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-tag"></i>
-                        <h4>Best Peice</h4>
-                        <p>Guaranteed price</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Shop Services -->
-
-    <!-- Start Shop Newsletter  -->
-    <section class="shop-newsletter section">
-        <div class="container">
-            <div class="inner-top">
-                <div class="row">
-                    <div class="col-lg-8 offset-lg-2 col-12">
-                        <!-- Start Newsletter Inner -->
-                        <div class="inner">
-                            <h4>Newsletter</h4>
-                            <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
-                            <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
-                                <input name="EMAIL" placeholder="Your email address" required="" type="email">
-                                <button class="btn">Subscribe</button>
-                            </form>
-                        </div>
-                        <!-- End Newsletter Inner -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <jsp:include page="/Demo_Template/BasePage/Footer.jsp" />
+    <!-- Include footer -->
+    <jsp:include page="/Demo_Template/BasePage/Footer.jsp"/>
+    <script>
+        $(document).ready(function () {
+            $('select').niceSelect();
+        });
+    </script>
+</body>
 </html>

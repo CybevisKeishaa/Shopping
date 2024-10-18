@@ -220,7 +220,7 @@
                                                 <span>Tổng hóa đơn</span>
                                                 <span class="total-amount">${totalPrice} VND</span>
                                             </div>
-                                            <a href="checkout.html" class="btn animate">Checkout</a>
+                                            <a href="${pageContext.request.contextPath}/cart/checkout" class="btn animate">Checkout</a>
                                         </div>
                                     </div>
 
