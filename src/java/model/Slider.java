@@ -1,6 +1,5 @@
 package model;
 
-
 public class Slider {
 
     private int slider_id;

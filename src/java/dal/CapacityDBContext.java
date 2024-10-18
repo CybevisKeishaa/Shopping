@@ -5,7 +5,9 @@
 package dal;
 
 import model.Capacity;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +73,7 @@ public class CapacityDBContext extends DBContext<Capacity>{
     }
     public static void main(String[] args){
         CapacityDBContext cd=new CapacityDBContext();
-        List<Capacity> list=cd.getAll();
+        List<Capacity> list=cd.getCapacityByProductId(2);
         for(Capacity x:list){
                 System.out.println(x.getValue());
         }

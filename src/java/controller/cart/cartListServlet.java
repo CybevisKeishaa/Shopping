@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Cart;
 import model.Customer_User;
+import model.Item;
 
 /**
  *
@@ -42,6 +43,28 @@ public class cartListServlet extends BaseRequiredCustomerAuthenticationControlle
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
 
+        // Lấy danh sách itemId và quantity từ form
+        String[] itemIds = request.getParameterValues("itemId[]");
+        String[] quantities = request.getParameterValues("quantity[]");
+        String[] capacities = request.getParameterValues("capacity[]");
+
+        // Kiểm tra nếu cả hai không null và có cùng kích thước
+        if (itemIds != null && quantities != null && itemIds.length == quantities.length) {
+            CartDBContext db = new CartDBContext();
+
+            // Lặp qua từng itemId và quantity để cập nhật
+            for (int i = 0; i < itemIds.length; i++) {
+                int itemId = Integer.parseInt(itemIds[i]);
+                int quantity = Integer.parseInt(quantities[i]);
+                int capacity = Integer.parseInt(capacities[i]);
+
+                // Cập nhật số lượng trong cơ sở dữ liệu
+                db.updateCartQuantity(itemId, quantity, capacity);
+            }
+        }
+
+        // Sau khi cập nhật, chuyển hướng lại trang giỏ hàng
+        response.sendRedirect("list");
     }
 
     /**

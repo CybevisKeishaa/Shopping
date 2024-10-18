@@ -4,6 +4,7 @@
  */
 package dal;
 
+import jakarta.servlet.jsp.jstl.sql.Result;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import model.Image;

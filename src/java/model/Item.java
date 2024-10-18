@@ -1,5 +1,7 @@
 package model;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author KEISHA
@@ -10,7 +12,18 @@ public class Item {
     private Product product;
     private Cart cart;
     private int quantity;
+    private Capacity capacity;
 
+    public Capacity getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Capacity capacity) {
+        this.capacity = capacity;
+    }
+
+    
+    
     public int getItem_id() {
         return item_id;
     }
