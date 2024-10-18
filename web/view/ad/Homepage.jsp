@@ -432,7 +432,7 @@
                     window.myLine = new Chart(ctx2).Line(lineChartData, {
                         responsive: true,
                         showTooltips: true,
-                        multiTooltipTemplate: "<%= 'value' %>",  // Fixed line
+                        multiTooltipTemplate: "",  // Fixed line
                         maintainAspectRatio: false
                     });
 

@@ -1,216 +1,186 @@
-<%@tag description="Default Page template" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@attribute name="title" required="false" %>
 
-<!DOCTYPE html>
-<html>
-    <c:set var="cPath" value="${pageContext.request.contextPath}/view/dashboard" scope="request" ></c:set>
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Dashboard | <c:out value="${!empty title ? title : ''}"/></title>
-        <link rel="shortcut icon" type="image/png" href="${cPath}/assets/images/logos/seodashlogo.png" />
-        <link rel="stylesheet" href="${cPath}/assets/css/styles.min.css" />
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Miminium Admin Template v.1">
+        <meta name="author" content="Isna Nur Azis">
+        <meta name="keyword" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Miminium</title>
+
+        <!-- start: Css -->
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/a/asset/css/bootstrap.min.css">
+
+        <!-- plugins -->
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/a/asset/css/plugins/font-awesome.min.css"/>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/a/asset/css/plugins/simple-line-icons.css"/>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/a/asset/css/plugins/animate.min.css"/>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/a/asset/css/plugins/fullcalendar.min.css"/>
+        <link href="${pageContext.request.contextPath}/a/asset/css/style.css" rel="stylesheet">
+        <!-- end: Css -->
+
+        <link rel="shortcut icon" href="${pageContext.request.contextPath}/a/asset/img/logomi.png">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
     </head>
-    <body>
-        <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-             data-sidebar-position="fixed" data-header-position="fixed">
-            <!-- Sidebar Start -->
-            <aside class="left-sidebar">
-                <!-- Sidebar scroll-->
-                <div>
-                    <div class="brand-logo d-flex align-items-center justify-content-between">
-                        <a href="./dashboard" class="text-nowrap logo-img">
-                            <img src="${cPath}/assets/images/logos/logo-light.svg" alt="" />
-                        </a>
-                        <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-                            <i class="ti ti-x fs-8"></i>
-                        </div>
+
+    <body id="mimin" class="dashboard">
+        <!-- start: Header -->
+        <nav class="navbar navbar-default header navbar-fixed-top">
+            <div class="col-md-12 nav-wrapper">
+                <div class="navbar-header" style="width:100%;">
+                    <div class="opener-left-menu is-open">
+                        <span class="top"></span>
+                        <span class="middle"></span>
+                        <span class="bottom"></span>
                     </div>
-                    <!-- Sidebar navigation-->
-                    <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-                        <ul id="sidebarnav">
-                            <li class="nav-small-cap">
-                                <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
-                                <span class="hide-menu">Home</span>
-                            </li>
-                            <c:if test="${role.equals('Admin')}">
-                                <li class="sidebar-item">
-                                    <a class="sidebar-link" href="${pageContext.request.contextPath}/dashboard" aria-expanded="false">
-                                        <span>
-                                            <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                        </span>
-                                        <span class="hide-menu">Dashboard</span>
-                                    </a>
-                                </li>
-                            </c:if>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="${pageContext.request.contextPath}/sale" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="solar:chat-round-money-bold-duotone" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Sale</span>
-                                </a>
-                            </li>
-                            <li class="nav-small-cap">
-                            <iconify-icon icon="solar:round-arrow-down-bold" class='mt-auto fs-6'></iconify-icon>
-                            <!-- Dùng để code (Đừng Xoá) -->
-                            <h3 class="d-inline">Viết Code</h3>
-                            </li>
-                            <li class="nav-small-cap">
-                                <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
-                                <span class="hide-menu">UI COMPONENTS</span>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="${cPath}/html/ui-buttons.jsp" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="solar:layers-minimalistic-bold-duotone" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Buttons</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="${cPath}/html/ui-alerts.jsp" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="solar:danger-circle-bold-duotone" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Alerts</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="${cPath}/html/ui-card.jsp" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="solar:bookmark-square-minimalistic-bold-duotone" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Card</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="${cPath}/html/ui-forms.jsp" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="solar:file-text-bold-duotone" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Forms</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="${cPath}/html/ui-typography.jsp" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="solar:text-field-focus-bold-duotone" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Typography</span>
-                                </a>
-                            </li>
-                            <li class="nav-small-cap">
-                            <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4" class="fs-6"></iconify-icon>
-                            <span class="hide-menu">EXTRA</span>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="${cPath}/html/icon-tabler.jsp" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="solar:sticker-smile-circle-2-bold-duotone" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Icons</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="${cPath}/html/sample-page.jsp" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="solar:planet-3-bold-duotone" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Sample Page</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="unlimited-access hide-menu bg-primary-subtle position-relative mb-7 mt-7 rounded-3"> 
-                            <div class="d-flex">
-                                <div class="unlimited-access-title me-3">
-                                    <h6 class="fw-semibold fs-4 mb-6 text-dark w-75">Upgrade to pro</h6>
-                                    <a href="#" target="_blank"
-                                       class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
-                                </div>
-                                <div class="unlimited-access-img">
-                                    <img src="${cPath}/assets/images/backgrounds/rocket.png" alt="" class="img-fluid">
+                    <a href="index.html" class="navbar-brand"> 
+                        <b>MIMIN</b>
+                    </a>
+
+                    <ul class="nav navbar-nav search-nav">
+                        <li>
+                            <div class="search">
+                                <span class="fa fa-search icon-search" style="font-size:23px;"></span>
+                                <div class="form-group form-animate-text">
+                                    <input type="text" class="form-text" required>
+                                    <span class="bar"></span>
+                                    <label class="label-search">Type anywhere to <b>Search</b> </label>
                                 </div>
                             </div>
-                        </div>
-                    </nav>
-                    <!-- End Sidebar navigation -->
-                </div>
-                <!-- End Sidebar scroll-->
-            </aside>
-            <!--  Sidebar End -->
-            <!--  Main wrapper -->
-            <div class="body-wrapper">
-                <!--  Header Start -->
-                <header class="app-header">
-                    <nav class="navbar navbar-expand-lg navbar-light">
-                        <ul class="navbar-nav">
-                            <li class="nav-item d-block d-xl-none">
-                                <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
-                                    <i class="ti ti-menu-2"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link nav-icon-hover" href="javascript:void(0)">
-                                    <i class="ti ti-bell-ringing"></i>
-                                    <div class="notification bg-primary rounded-circle"></div>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-                            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                                       aria-expanded="false">
-                                        <img src="${cPath}/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                                        <div class="message-body">
-                                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                                <i class="ti ti-user fs-6"></i>
-                                                <p class="mb-0 fs-3">My Profile</p>
-                                            </a>
-                                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                                <i class="ti ti-mail fs-6"></i>
-                                                <p class="mb-0 fs-3">My Account</p>
-                                            </a>
-                                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                                <i class="ti ti-list-check fs-6"></i>
-                                                <p class="mb-0 fs-3">My Task</p>
-                                            </a>
-                                            <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
-                                        </div>
-                                    </div>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right user-nav">
+                        <li class="user-name"><span>Akihiko Avaron</span></li>
+                        <li class="dropdown avatar-dropdown">
+                            <img src="${pageContext.request.contextPath}/a/asset/img/avatar.jpg" class="img-circle avatar" alt="user name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"/>
+                            <ul class="dropdown-menu user-dropdown">
+                                <li><a href="#"><span class="fa fa-user"></span> My Profile</a></li>
+                                <li><a href="#"><span class="fa fa-calendar"></span> My Calendar</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="more">
+                                    <ul>
+                                        <li><a href=""><span class="fa fa-cogs"></span></a></li>
+                                        <li><a href=""><span class="fa fa-lock"></span></a></li>
+                                        <li><a href=""><span class="fa fa-power-off "></span></a></li>
+                                    </ul>
                                 </li>
                             </ul>
-                        </div>
-                    </nav>
-                </header>
-                <!--  Header End -->
-                <div class="container-fluid">
-                    <!-- Main Content -->
+                        </li>
+                        <li ><a href="#" class="opener-right-menu"><span class="fa fa-coffee"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- end: Header -->
+
+        <div class="container-fluid mimin-wrapper">
+            <!-- start:Left Menu -->
+            <div id="left-menu">
+                <div class="sub-left-menu scroll">
+                    <ul class="nav nav-list">
+                        <li><div class="left-bg"></div></li>
+
+                        <li class="active ripple">
+                            <a href = "homepage" class="tree-toggle nav-header"><span class="fa-home fa"></span> Dashboard 
+                            </a>
+                        </li>
+                        <li class="ripple"><a class="tree-toggle nav-header"><span class="fa fa-table"></span> Tables  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
+                            <ul class="nav nav-list tree">
+                                <li><a href="userlist">User List</a></li>
+                                <li><a href="employeelist">Employees List</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- end: Left Menu -->
+
+            <!-- start: content -->
+            <div id="content">
+                <div class="col-md-12" style="padding:20px;">
                     <jsp:doBody/>
-                    <!--End Main Content -->
-                    <div class="py-6 px-6 text-center">
-                        <p class="mb-0 fs-4">Design and Developed by 
-                            <a href="https://adminmart.com/" target="_blank"
-                               class="pe-1 text-primary text-decoration-underline">AdminMart.com</a>
-                            Distributed by <a href="https://themewagon.com/" target="_blank"
-                                              class="pe-1 text-primary text-decoration-underline">ThemeWagon</a>
-                        </p>
+                </div>
+            </div>
+            <!-- end: content -->
+
+            <!-- start: right menu -->
+            <div id="right-menu">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" href="#right-menu-user">
+                            <span class="fa fa-comment-o fa-2x"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#right-menu-notif">
+                            <span class="fa fa-bell-o fa-2x"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#right-menu-config">
+                            <span class="fa fa-cog fa-2x"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="right-menu-user" class="tab-pane fade in active">
+                        <div class="search col-md-12">
+                            <input type="text" placeholder="search.."/>
+                        </div>
+                        <div class="user col-md-12">
+                            <ul class="nav nav-list">
+                                <!-- User items here -->
+                            </ul>
+                        </div>
                     </div>
-                </div>        
-            </div>        
+
+                    <div id="right-menu-notif" class="tab-pane fade">
+                        <!-- Notification items here -->
+                    </div>
+
+                    <div id="right-menu-config" class="tab-pane fade">
+                        <!-- Configuration items here -->
+                    </div>
+                </div>
+            </div>  
+            <!-- end: right menu -->
+
         </div>
-        <script src="${cPath}/assets/libs/jquery/dist/jquery.min.js"></script>
-        <script src="${cPath}/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="${cPath}/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-        <script src="${cPath}/assets/libs/simplebar/dist/simplebar.js"></script>
-        <script src="${cPath}/assets/js/sidebarmenu.js"></script>
-        <script src="${cPath}/assets/js/app.min.js"></script>
-        <div class="d-none" id="script-container"></div>
-        <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+
+        <!-- start: Mobile -->
+        <div id="mimin-mobile" class="reverse">
+            <div class="mimin-mobile-menu-list">
+                <div class="col-md-12 sub-mimin-mobile-menu-list animated fadeInLeft">
+                    <ul class="nav nav-list">
+                        <!-- Mobile menu items here -->
+                    </ul>
+                </div>
+            </div>       
+        </div>
+        <button id="mimin-mobile-menu-opener" class="animated rubberBand btn btn-circle btn-danger">
+            <span class="fa fa-bars"></span>
+        </button>
+        <!-- end: Mobile -->
+
+        <!-- start: Javascript -->
+        <script src="${pageContext.request.contextPath}/a/asset/js/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/jquery.ui.min.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/bootstrap.min.js"></script>
+
+        <!-- plugins -->
+        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/moment.min.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/fullcalendar.min.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/jquery.nicescroll.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/jquery.vmap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/maps/jquery.vmap.world.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/jquery.vmap.sampledata.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/chart.min.js"></script>
+
     </body>
 </html>

@@ -2012,7 +2012,7 @@ ul li a:focus {
 }
 
 #left-menu .sub-left-menu .active {
-  width: 100%;
+    height:auto;
 }
 
 

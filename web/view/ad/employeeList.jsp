@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -195,12 +196,12 @@
             $(document).ready(function () {
                 var table = $('#datatables-example').DataTable({
 
-                    "searching": false, // T?t tìm ki?m m?c ??nh
-                    "paging": true, // B?t phân trang
-                    "pageLength": 6, // S? hàng trên m?i trang
+                    "searching": false, // T?t tÃ¬m ki?m m?c ??nh
+                    "paging": true, // B?t phÃ¢n trang
+                    "pageLength": 6, // S? hÃ ng trÃªn m?i trang
                     "lengthChange": false   // T?t "Show ... entries"
                 });
-                // Tìm ki?m theo Full Name, Email, ho?c Mobile
+                // TÃ¬m ki?m theo Full Name, Email, ho?c Mobile
                 $('#custom-search').on('keyup', function () {
                     var searchTerm = this.value.toLowerCase();
                     var searchType = $('#search-type').val();
@@ -210,7 +211,7 @@
                         var email = data[3].toLowerCase(); // Email
                         var mobile = data[4].toLowerCase(); // Mobile
 
-                        // Ki?m tra n?u searchTerm t?n t?i trong lo?i tìm ki?m ?ã ch?n
+                        // Ki?m tra n?u searchTerm t?n t?i trong lo?i tÃ¬m ki?m ?Ã£ ch?n
                         var match = false;
                         if (searchType === 'name' && fullName.includes(searchTerm)) {
                             match = true;
@@ -220,7 +221,7 @@
                             match = true;
                         }
 
-                        // Hi?n ho?c ?n hàng d?a trên k?t qu? tìm ki?m
+                        // Hi?n ho?c ?n hÃ ng d?a trÃªn k?t qu? tÃ¬m ki?m
                         if (match) {
                             this.show();
                         } else {

@@ -7,19 +7,14 @@ package controller.dashboard.sale;
 import controller.auth.AuthenticationServlet;
 import dal.OrderDBContext;
 import helper.AuthenticationHelper;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 import model.Customer_User;
 import model.Order;
-import model.Role;
 
 /**
  *
@@ -28,7 +23,7 @@ import model.Role;
 @WebServlet(name = "SaleDashBoardServlet", urlPatterns = {"/sale"})
 public class SaleDashBoardServlet extends AuthenticationServlet {
 
-    private static final String MAIN_PAGE = "/view/dashboard/html/sale.jsp";
+    private static final String MAIN_PAGE = "/view/ad/order/sale.jsp";
 
     private static final int PAGE_SIZE = 10;//Default = 10
 
