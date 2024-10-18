@@ -1,4 +1,5 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@attribute name="title" required="false" %>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -6,7 +7,7 @@
         <meta name="author" content="Isna Nur Azis">
         <meta name="keyword" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Miminium</title>
+        <title>Miminium | ${title}</title>
 
         <!-- start: Css -->
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/a/asset/css/bootstrap.min.css">
@@ -85,9 +86,8 @@
                     <ul class="nav nav-list">
                         <li><div class="left-bg"></div></li>
 
-                        <li class="active ripple">
-                            <a href = "homepage" class="tree-toggle nav-header"><span class="fa-home fa"></span> Dashboard 
-                            </a>
+                        <li class="ripple">
+                            <a href = "homepage" class="tree-toggle nav-header"><span class="fa-home fa"></span> Dashboard </a>
                         </li>
                         <li class="ripple"><a class="tree-toggle nav-header"><span class="fa fa-table"></span> Tables  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
                             <ul class="nav nav-list tree">
@@ -95,6 +95,11 @@
                                 <li><a href="employeelist">Employees List</a></li>
                             </ul>
                         </li>
+                        <li><a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a></li>
+                        <script>
+                            let pathname = location.pathname.split('/').reverse()[0];
+                            document.querySelector(`a[href*=` + pathname + ``).classList.add('active');
+                        </script>
                     </ul>
                 </div>
             </div>

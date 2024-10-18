@@ -24,6 +24,7 @@ import model.Order;
 public class SaleDashBoardServlet extends AuthenticationServlet {
 
     private static final String MAIN_PAGE = "/view/ad/order/sale.jsp";
+    private static final String WEB_TITLE = "Sale Dashboard";
 
     private static final int PAGE_SIZE = 10;//Default = 10
 
@@ -31,6 +32,9 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setAttribute("role", user.getRole().getRole_name());
+        request.setAttribute("title", WEB_TITLE);
+
         OrderDBContext odb = new OrderDBContext();
         List<Order> orders = null;
         int page = getPageIndex(request);
