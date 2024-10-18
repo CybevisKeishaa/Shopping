@@ -8,12 +8,15 @@ import model.Gender;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author KEISHA
  */
-public class GenderDBContext extends DBContext {
+public class GenderDBContext extends DBContext<Gender> {
+
     public Gender getGenderFindById(int gid) {
         String sql = "Select * from Gender WHERE gender_id=?";
         try {
@@ -28,9 +31,43 @@ public class GenderDBContext extends DBContext {
             System.out.println(e);
         }
         return null;
-        
+
     }
-     public List<Gender> getAll() {
+
+    public ArrayList<Gender> getGenderByProductID(int productID) {
+        PreparedStatement stm = null;
+        ArrayList<Gender> genders = new ArrayList<>();
+        try {
+            String sql = "SELECT g.gender_id, g.name AS gender_name\n"
+                    + "FROM Product_Gender pg\n"
+                    + "JOIN Gender g ON pg.gender_id = g.gender_id\n"
+                    + "WHERE pg.product_id = ?";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, productID);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Gender g = new Gender();
+                g.setGender_id(rs.getInt("gender_id"));
+                g.setName(rs.getString("gender_name"));
+                genders.add(g);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(GenderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                stm.close();
+                connect.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(GenderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return genders;
+    }
+
+    public List<Gender> getAll() {
         List<Gender> list = new ArrayList<>();
         String sql = "Select * from Gender";
         try {

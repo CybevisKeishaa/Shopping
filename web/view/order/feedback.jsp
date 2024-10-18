@@ -145,6 +145,9 @@
 
 
         </style>
+                <link rel="stylesheet" href="${pageContext.request.contextPath}/css/niceselect.css">
+
+        <jsp:include page="/Demo_Template/BasePage/Header.jsp"/>
     </head>
     <body>
         <script>
@@ -155,7 +158,7 @@
             });
 
         </script>
-        <jsp:include page="/Demo_Template/BasePage/Header.jsp"/>
+
         <br><br><br>
         <div class="container">
             <div class="row">
@@ -180,7 +183,7 @@
                                             </c:forEach>
                                         </select>
 
-                                        
+
 
 
                                     </div>
@@ -310,6 +313,8 @@
     </div> <br><br><br><br>
     <jsp:include page="/Demo_Template/BasePage/Footer.jsp" />
     <!-- Bootstrap JS and dependencies -->
+            <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
