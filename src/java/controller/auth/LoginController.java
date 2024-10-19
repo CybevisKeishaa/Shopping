@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
 import model.Customer_User;
 import model.Employee;
 
@@ -19,8 +18,8 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String errorMessage = (String) session.getAttribute("errorMessage");
-        session.removeAttribute("errorMessage");
-        request.setAttribute("errorMessage", errorMessage);
+        session.removeAttribute("errorMessage");  
+        request.setAttribute("errorMessage", errorMessage); 
         request.getRequestDispatcher("view/auth/login.jsp").forward(request, response);
     }
 

@@ -51,9 +51,9 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
         boolean emailSent = mailService.send(email, "Thank you", "Cảm ơn quý khách đã sử dụng sản phẩm của chúng tôi, hãy để lại đánh giá để chúng tôi có thể nâng cao trải nghiệm dịch vụ của bạn cho những lần tiếp theo", verificationLink);
 
         if (emailSent) {            
-            request.getRequestDispatcher("/view/notice/ThanksForBuy.jsp").forward(request, response);
+            request.getRequestDispatcher("../../view/notice/ThanksForBuy.jsp").forward(request, response);
         } else {           
-            request.getRequestDispatcher("/view/notice/ThanksForBuy.jsp").forward(request, response);
+            request.getRequestDispatcher("../../view/notice/ThanksForBuy.jsp").forward(request, response);
         }
     }
     /**

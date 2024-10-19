@@ -5,7 +5,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Customer_User;
 
 public class AddressDBContext extends DBContext<Address> {
 
@@ -56,79 +55,43 @@ public class AddressDBContext extends DBContext<Address> {
     }
 
     public void update(int aid, String detail, String street, String ward, String district, String city) {
-        PreparedStatement stm = null;
+    PreparedStatement stm = null;
 
-        String sql = "UPDATE [dbo].[Address]\n"
-                + "   SET\n"
-                + "      [city] = ?,\n"
-                + "      [district] = ?,\n"
-                + "      [ward] = ?,\n"
-                + "      [street] = ?,\n"
-                + "      [detail] = ?\n"
-                + " WHERE [a_id] = ?"; // Using a_id to identify the address to update
+   
+    String sql = "UPDATE [dbo].[Address]\n"
+            + "   SET\n"
+            + "      [city] = ?,\n"
+            + "      [district] = ?,\n"
+            + "      [ward] = ?,\n"
+            + "      [street] = ?,\n"
+            + "      [detail] = ?\n"
+            + " WHERE [a_id] = ?"; // Using a_id to identify the address to update
 
-        try {
-            stm = connect.prepareStatement(sql);
-            stm.setString(1, city);
-            stm.setString(2, district);
-            stm.setString(3, ward);
-            stm.setString(4, street);
-            stm.setString(5, detail);
-            stm.setInt(6, aid); // Correctly binding the address ID (a_id)
-            stm.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace(); // Print the exception for debugging purposes
-        } finally {
-            if (stm != null) {
-                try {
-                    stm.close(); // Always close the PreparedStatement to free resources
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    try {
+        stm = connect.prepareStatement(sql);
+        stm.setString(1, city);
+        stm.setString(2, district);
+        stm.setString(3, ward);
+        stm.setString(4, street);
+        stm.setString(5, detail);
+        stm.setInt(6, aid); // Correctly binding the address ID (a_id)
+        stm.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace(); // Print the exception for debugging purposes
+    } finally {
+        if (stm != null) {
+            try {
+                stm.close(); // Always close the PreparedStatement to free resources
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
+}
 
-    public ArrayList<Address> getAddressByCusID(int cusID) {
-        PreparedStatement stm = null;
-        ArrayList<Address> addresss = new ArrayList<>();
-        try {
-            String sql = "SELECT c.cus_id, a.a_id, a.a_phone, a.city, a.district, a.ward, a.street, a.detail\n"
-                    + "FROM dbo.[Customer] c\n"
-                    + "JOIN dbo.[Address] a ON c.cus_id = a.cus_id\n"
-                    + "WHERE c.cus_id = ?;";
-
-            stm = connect.prepareStatement(sql);
-            stm.setInt(1, cusID);
-            ResultSet rs = stm.executeQuery();
-            while(rs.next()){
-                Address a = new Address();
-                a.setA_id(rs.getInt("a_id"));
-                a.setA_phone(rs.getString("a_phone"));
-                a.setCity(rs.getString("city"));
-                a.setDistrict(rs.getString("district"));
-                a.setWard(rs.getString("ward"));
-                a.setStreet(rs.getString("street"));
-                a.setDetail(rs.getString("detail"));
-                Customer_User c = new Customer_User();
-                c.setCus_id(rs.getInt("cus_id"));
-                a.setCustomer(c);
-                
-                addresss.add(a);
-            }
-            
-            
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(AddressDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return addresss;
-    }
-
-    public static void main(String[] arr) {
-        AddressDBContext ad = new AddressDBContext();
-        ArrayList<Address> a = ad.getAddressByCustomerId(1);
-        System.out.println(a.size());
-    }
+public static void main(String[] arr) {
+    AddressDBContext ad = new AddressDBContext();
+    ad.update(13, "123 Main St", "Elm Street", "Ward 1", "District 5", "Ho Chi Minh City");
+}
 
 }

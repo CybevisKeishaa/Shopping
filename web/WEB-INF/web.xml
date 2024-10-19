@@ -9,12 +9,16 @@
         <servlet-class>controller.product.ProductList</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>blogDetail</servlet-name>
+        <servlet-class>controller.blog.blogDetail</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>blogList</servlet-name>
-        <servlet-class>controller.blog.BlogList</servlet-class>
+        <servlet-class>controller.blog.blogList</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>blogSearch</servlet-name>
-        <servlet-class>controller.blog.BlogSearch</servlet-class>
+        <servlet-class>controller.blog.blogSearch</servlet-class>
     </servlet>
     <!-- Servlets from second section -->
     <servlet>
@@ -71,10 +75,6 @@
         <servlet-class>controller.admin.employeeDetails</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>HomePageServlet</servlet-name>
-        <servlet-class>controller.home.HomePageServlet</servlet-class>
-    </servlet>
-     <servlet>
         <servlet-name>HomeFeedbackServlet</servlet-name>
         <servlet-class>controller.home.HomeFeedbackServlet</servlet-class>
     </servlet>
@@ -91,16 +91,8 @@
         <servlet-class>controller.feedback.FeedbackServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>EmployeeLogin</servlet-name>
-        <servlet-class>controller.auth.EmployeeLogin</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ChangeOrderStatusServlet</servlet-name>
         <servlet-class>controller.order.ChangeOrderStatusServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>FeedbackServlet</servlet-name>
-        <servlet-class>controller.feedback.FeedbackServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>addToCart</servlet-name>
@@ -110,10 +102,6 @@
         <servlet-name>deleteItem</servlet-name>
         <servlet-class>controller.cart.deleteItem</servlet-class>
     </servlet>
-	<servlet>
-        <servlet-name>HomeFeedbackServlet</servlet-name>
-        <servlet-class>controller.home.HomeFeedbackServlet</servlet-class>
-    </servlet>    
     <servlet>
         <servlet-name>cartListServlet</servlet-name>
         <servlet-class>controller.cart.cartListServlet</servlet-class>
@@ -137,6 +125,10 @@
     <servlet-mapping>
         <servlet-name>productList</servlet-name>
         <url-pattern>/productList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>blogDetail</servlet-name>
+        <url-pattern>/blogDetail</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>blogList</servlet-name>
@@ -263,8 +255,8 @@
         <url-pattern>/account/order/detail</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>EmployeeLogin</servlet-name>
-        <url-pattern>/employee/login</url-pattern>
+        <servlet-name>FeedbackServlet</servlet-name>
+        <url-pattern>/account/feedback</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChangeOrderStatusServlet</servlet-name>
@@ -287,10 +279,6 @@
         <url-pattern>/cart/checkout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>FeedbackServlet</servlet-name>
-        <url-pattern>/account/feedback</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>employeeProductList</servlet-name>
         <url-pattern>/employeeProductList</url-pattern>
     </servlet-mapping>
@@ -299,6 +287,6 @@
         <url-pattern>/employeeAddProduct</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>homepage</welcome-file>
+        <welcome-file>view/home/homepage.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

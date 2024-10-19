@@ -214,12 +214,13 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                         </ul>
+
                                         <div class="bottom">
                                             <div class="total">
                                                 <span>Tổng hóa đơn</span>
                                                 <span class="total-amount">${totalPrice} VND</span>
                                             </div>
-                                            <a href="${pageContext.request.contextPath}/cart/checkout" class="btn animate">Checkout</a>
+                                            <a href="checkout.html" class="btn animate">Checkout</a>
                                         </div>
                                     </div>
 
@@ -394,12 +395,11 @@
                                         </c:forEach>
                                     </div>
                                 </div>
-
+                                <br><br><br><br>
                                 <!--End JSP -->                                   
 
 
 
-                                <!-- Top 3  -->
 
 
 
