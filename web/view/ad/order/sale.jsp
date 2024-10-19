@@ -1,38 +1,42 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <t:dashboard>
+    <!-- Order revenues by week -->
     <div class="col-md-6">
         <div class="panel">
             <div class="panel-heading bg-white border-none" style="padding:20px;">
                 <div class="col-md-6 col-sm-6 col-sm-12 text-left">
                     <h4>Sale Statistics</h4>
                 </div>
-                <div class="col-md-6 col-sm-6 col-sm-12">
-                    <div class="mini-onoffswitch pull-right onoffswitch-danger" style="margin-top:10px;">
-                        <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox" id="myonoffswitch1" checked>
-                        <label class="onoffswitch-label" for="myonoffswitch1"></label>
-                    </div>
-                </div>
             </div>
             <div class="panel-body" style="padding-bottom:50px;">
                 <div id="canvas-holder1">
                     <canvas class="line-chart" style="margin-top:30px;height:200px;"></canvas>
                 </div>
-                <!--                <div class="col-md-12" style="padding-top:20px;">
-                                    <div class="col-md-4 col-sm-4 col-xs-6 text-center">
-                                        <h2 style="line-height:.4;">$100.21</h2>
-                                        <small>Total Laba</small>
-                                    </div>
-                                    <div class="col-md-4 col-sm-4 col-xs-6 text-center">
-                                        <h2 style="line-height:.4;">2000</h2>
-                                        <small>Total Barang</small>
-                                    </div>
-                                    <div class="col-md-4 col-sm-4 col-xs-12 text-center">
-                                        <h2 style="line-height:.4;">$291.1</h2>
-                                        <small>Total Pengeluaran</small>
-                                    </div>
-                                </div>-->
+            </div>
+        </div>
+    </div>
+    <!-- Order Totals chart -->
+    <div class="col-md-6">
+        <div class="panel">
+            <div class="panel-heading bg-white border-none" style="padding:20px;">
+                <div class="col-md-6 col-sm-6 col-sm-12 text-left">
+                    <h4>Order Status Totals</h4>
+                </div>
+            </div>
+            <div class="panel-body" style="padding-bottom:50px;display: flex;flex-flow: column;width: 100%;">
+                <div id="canvas-holder1" class="col-md-10" style="margin: auto">
+                    <canvas class="doughnut-chart"></canvas>
+                </div>
+                <div class="col-md-10 " style="padding-top:20px;display: flex; justify-content: space-evenly; flex-wrap: wrap; margin: auto" >
+                    <c:forEach var="st" items="${statusTotals}" >
+                        <div class="col-md-4 col-sm-4 col-xs-6 text-center status-display">
+                            <p><i class="fa fa-square" style="margin-right: 0.25em" data-status="${st.status}" ></i>${st.status}</p>
+                        </div>
+                    </c:forEach>
+                </div>
             </div>
         </div>
     </div>
@@ -40,10 +44,38 @@
         <div class="panel">
             <div class="panel-heading"><h3>Sales</h3></div>
             <div class="panel-body">
-                <form action="sale" method="GET">
-                    <div class="form-group d-flex align-items-center">
-                        <input type="text" id="custom-search" class="form-control" placeholder="Search..." name="search"/>
-                        <input type="submit" value="Search"/>
+                <form action="sale" class="row" method="GET">
+                    <div class="form-group col-md-2">
+                        <label for="startdate">Start Date:</label>
+                        <input type="date" id="startdate" value="${param.startdate}" class="form-control" name="startdate"/>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="enddate">End Date:</label>
+                        <input type="date" id="enddate" value="${param.enddate}" class="form-control" name="enddate"/>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="sortby">Sort By:</label>
+                        <select id="sort" class="form-control" name="sort">
+                            <option value="orderdate" ${param.sort == 'orderdate' ? 'selected':''}>Order Date</option>
+                            <option value="customername" ${param.sort == 'customername' ? 'selected':''}>Customer Name</option>
+                            <option value="totalcost" ${param.sort == 'totalcost' ? 'selected':''}>Total Cost</option>
+                            <option value="status" ${param.sort == 'status' ? 'selected':''}>Status</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for='desc' >Thứ tự</label>
+                        <select id="desc" class="form-control" name="desc">
+                            <option value="on" ${param.desc == 'on' ? 'selected':''}>Giảm Dần</option>
+                            <option value="off" ${param.desc == 'off' ? 'selected':''}>Tăng Dần</option>
+                        </select>
+                    </div>
+                    <div class="form-group align-items-center col-md-3" >
+                        <label for="startdate">Search:</label>
+                        <input type="text" id="custom-search" class="form-control " value="${param.search}" placeholder="Search..." name="search"/>
+                    </div>
+                    <div class="form-group col-md">
+                        <label for="submit"> </label>
+                        <input type="submit" value="Search" class="btn btn-primary " style="display: block"/>
                     </div>
                 </form>
                 <div class="responsive-table">
@@ -51,7 +83,7 @@
                         <thead>
                             <tr>
                                 <th>Order Id</th>
-                                <th>Product</th>
+                                <th>Customer Name</th>
                                 <th>Order Date</th>
                                 <th>Total Cost</th>
                                 <th>Status</th>
@@ -60,17 +92,16 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <c:forEach var="order" items="${orders}">
                                 <tr>
                                     <td>${order.order_id}</td>
-                                    <td>${order.firstProductName}  </td>
+                                    <td>${order.customer.name_cus}</td>
                                     <td>${order.create_at}</td>
                                     <td>$${order.total_price}</td>
                                     <td>${order.status.status_name}</td>
                                     <td>${order.numberOfOtherProducts}</td>
                                     <td>
-                                        <a href="./sale/orderdetail?order-id=${order.order_id}" class="btn btn-primary btn-sm text-bold">
+                                        <a href="./sale/orderDetail?orderId=${order.order_id}" class="btn btn-primary btn-sm text-bold">
                                             <b>View</b>
                                         </a>
                                     </td>
@@ -109,10 +140,12 @@
             </div>        
         </div>        
     </div>
-    <script src="${pageContext.request.contextPath}/a/asset/js/pagination.js"/>
-    <script>
+    <!-- start script --> 
 
-            var orderBoughtData = ${orderCount}.reverse();
+    <script async="">
+        var orderBoughtData = ${orderCount}.reverse();
+        var statusTotals = ${statusTotals};
+
         document.addEventListener("DOMContentLoaded", function () {
             let container = document.querySelector('body');
             let scr = document.createElement("script")
@@ -120,4 +153,6 @@
             container.append(scr);
         });
     </script>
+    <!-- end script --> 
+
 </t:dashboard>

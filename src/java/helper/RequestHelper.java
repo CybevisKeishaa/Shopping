@@ -5,6 +5,8 @@
 package helper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -21,4 +23,31 @@ public class RequestHelper {
         }
         return page;
     }
+
+    public static Date getDateParameterWithDefault(String param, Date defaultValue, HttpServletRequest request) {
+        try {
+            return Date.valueOf(request.getParameter(param));
+        } catch (Exception ex) {
+            return defaultValue;
+        }
+    }
+
+    public static Timestamp getTimeStampParameterWithDefault(String param, Timestamp defaultValue, HttpServletRequest request) {
+        try {
+            return Timestamp.valueOf(request.getParameter(param));
+        } catch (Exception ex) {
+            return defaultValue;
+        }
+    }
+
+    public static String getStringParameterWithDefault(String parameter, String defaultValue, HttpServletRequest request) {
+        String value = request.getParameter(parameter);
+        return (value != null && !value.isEmpty()) ? value : defaultValue;
+    }
+
+    public static boolean getCheckboxParameterWithDefault(String parameter, boolean defaultValue, HttpServletRequest request) {
+        String value = request.getParameter(parameter);
+        return (value != null) ? value.equals("on") : defaultValue;
+    }
+
 }

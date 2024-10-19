@@ -148,5 +148,10 @@ public class Customer_User {
     public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
     }
+
+    @Override
+    public String toString() {
+        return "Customer_User{" + "cus_id=" + cus_id + ", username=" + username + ", name_cus=" + name_cus + ", email=" + email + ", password=" + password + ", c_phone=" + c_phone + ", status=" + status + ", role=" + role + ", cart=" + cart + ", avatar=" + avatar + ", address=" + address + ", orders=" + orders + ", gender=" + gender + ", dob=" + dob + ", verificationCode=" + verificationCode + '}';
+    }
     
 }

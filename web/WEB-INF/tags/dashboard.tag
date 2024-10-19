@@ -54,9 +54,8 @@
                             </div>
                         </li>
                     </ul>
-
                     <ul class="nav navbar-nav navbar-right user-nav">
-                        <li class="user-name"><span>Akihiko Avaron</span></li>
+                        <li class="user-name"><span>${customer.name_cus}</span></li>
                         <li class="dropdown avatar-dropdown">
                             <img src="${pageContext.request.contextPath}/a/asset/img/avatar.jpg" class="img-circle avatar" alt="user name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"/>
                             <ul class="dropdown-menu user-dropdown">
@@ -67,7 +66,7 @@
                                     <ul>
                                         <li><a href=""><span class="fa fa-cogs"></span></a></li>
                                         <li><a href=""><span class="fa fa-lock"></span></a></li>
-                                        <li><a href=""><span class="fa fa-power-off "></span></a></li>
+                                        <li><a href="${pageContext.request.contextPath}/logout"><span class="fa fa-power-off "></span></a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -87,7 +86,7 @@
                         <li><div class="left-bg"></div></li>
 
                         <li class="ripple">
-                            <a href = "homepage" class="tree-toggle nav-header"><span class="fa-home fa"></span> Dashboard </a>
+                            <a href = "${pageContext.request.contextPath}/admin/homepage" class="tree-toggle nav-header"><span class="fa-home fa"></span> Dashboard </a>
                         </li>
                         <li class="ripple"><a class="tree-toggle nav-header"><span class="fa fa-table"></span> Tables  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
                             <ul class="nav nav-list tree">
@@ -97,8 +96,8 @@
                         </li>
                         <li><a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a></li>
                         <script>
-                            let pathname = location.pathname.split('/').reverse()[0];
-                            document.querySelector(`a[href*=` + pathname + ``).classList.add('active');
+                            let pathname = location.pathname;
+                            document.querySelector(`a[href*='` + pathname + `'`).classList.add('active');
                         </script>
                     </ul>
                 </div>
@@ -177,6 +176,7 @@
         <script src="${pageContext.request.contextPath}/a/asset/js/jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/a/asset/js/jquery.ui.min.js"></script>
         <script src="${pageContext.request.contextPath}/a/asset/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/pagination.js"></script>
 
         <!-- plugins -->
         <script src="${pageContext.request.contextPath}/a/asset/js/plugins/moment.min.js"></script>

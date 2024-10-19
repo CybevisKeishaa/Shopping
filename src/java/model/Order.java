@@ -1,11 +1,8 @@
 package model;
 
 
-import model.Status_Order;
-import model.Payment;
-import java.util.ArrayList;
-
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class Order {
 
@@ -148,6 +145,11 @@ public class Order {
 
     public void setPayment_method(String payment_method) {
         this.payment_method = payment_method;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" + "order_id=" + order_id + ", firstProductName=" + firstProductName + ", numberOfOtherProducts=" + numberOfOtherProducts + ", customer=" + customer + ", total_price=" + total_price + ", create_at=" + create_at + ", payment_method=" + payment_method + ", status=" + status + ", payment=" + payment + ", shipping_method=" + shipping_method + ", orderDetails=" + orderDetails + ", successOrders=" + successOrders + ", cancelledOrders=" + cancelledOrders + ", pendingOrders=" + pendingOrders + ", totalRevenue=" + totalRevenue + '}';
     }
     
 }

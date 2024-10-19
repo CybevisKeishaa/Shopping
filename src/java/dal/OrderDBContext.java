@@ -21,6 +21,7 @@ import model.Order;
 import model.OrderDetail;
 import model.Product;
 import model.Status_Order;
+import model.combiner.Order_StatusTotal;
 
 /**
  *
@@ -29,28 +30,59 @@ import model.Status_Order;
 public class OrderDBContext extends DBContext<Order> {
 
     // ========================== Get Many Orders Section =======================
-    public List<Order> getAllOrder(Integer empID, int pageNumber, int pageSize) {
+    public List<Order> getAllOrder(String search, Date startDate, Date endDate, String sort, boolean desc, int pageNumber, int pageSize) {
 
         ArrayList<Order> orders = new ArrayList<>();
         // Phân trang với OFFSET và FETCH
-
+        String sql = OrderSql.GET_ALL;// lấy tất cả nếu empID == null
+        String whereSQL = "";
+        String orderBySQL = "";
         try {
             PreparedStatement stm;
             int offset = (pageNumber - 1) * pageSize;
-            if (empID == null) {
-                String sql = OrderSql.GET_ALL;// lấy tất cả nếu empID == null
-                stm = connect.prepareStatement(sql);
-                stm.setInt(1, offset);    // Đặt OFFSET
-                stm.setInt(2, pageSize);  // Đặt FETCH NEXT
+            boolean hasSearch = true;
+            if (startDate != null && endDate != null) {
+                whereSQL = "WHERE o.created_at BETWEEN '" + startDate.toString() + "' AND '" + endDate.toString() + "'";
+            } else if (startDate != null) {
+                whereSQL = "WHERE o.created_at >= '" + startDate.toString() + "'";
+            } else if (endDate != null) {
+                whereSQL = "WHERE o.created_at <= '" + endDate.toString() + "'";
             } else {
-                String sql = OrderSql.GET_ALL_WITH_EMPLOYEE_ID; // lấy theo empid
-                stm = connect.prepareStatement(sql);
-                stm.setInt(1, empID);
-                stm.setInt(2, offset);    // Đặt OFFSET
-                stm.setInt(3, pageSize);  // Đặt FETCH NEXT
+                hasSearch = false;
             }
-            // Thiết lập các tham số truy vấn
+            if (!search.isEmpty()) {
+                if (hasSearch) {
+                    whereSQL += " AND (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
+                } else {
+                    whereSQL = "WHERE (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
+                }
+            }
+            switch (sort) {
+                case "orderdate":
+                    orderBySQL = "ORDER BY o.created_at ";
+                    break;
+                case "customername":
+                    orderBySQL = "ORDER BY c.name_cus ";
+                    break;
+                case "totalcost":
+                    orderBySQL = "ORDER BY o.total ";
+                    break;
+                case "status":
+                    orderBySQL = "ORDER BY so.status ";
+                    break;
+                default:
+                    orderBySQL = "ORDER BY o.created_at ";
+            }
+            if (desc) {
+                orderBySQL += " DESC";
+            }
+            sql = sql.replace("{where}", whereSQL).replace("{orderBy}", orderBySQL);
 
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, offset);    // Set OFFSET
+            stm.setInt(2, pageSize);  // Set FETCH NEXT
+
+            // Execute the query
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Order o = OrderCombiner.toTableRow(rs);
@@ -61,22 +93,38 @@ public class OrderDBContext extends DBContext<Order> {
         } catch (SQLException ex) {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return orders;
     }
 
-    public int getTotalOrderCount(Integer empID) {
+    public int getTotalOrderCount(String search, Date startDate, Date endDate) {
         int count = 0;
+        String sql = OrderSql.GET_ALL_COUNT;
+        String whereSQL = "";
         try {
             PreparedStatement stm;
-            if (empID == null) {
-                String sql = OrderSql.GET_ALL_COUNT;// lấy tất cả nếu empID == null
-                stm = connect.prepareStatement(sql);
+            boolean hasSearch = true;
+            if (startDate != null && endDate != null) {
+                whereSQL = "WHERE o.created_at BETWEEN '" + startDate.toString() + "' AND '" + endDate.toString() + "'";
+            } else if (startDate != null) {
+                whereSQL = "WHERE o.created_at >= '" + startDate.toString() + "'";
+            } else if (endDate != null) {
+                whereSQL = "WHERE o.created_at <= '" + endDate.toString() + "'";
             } else {
-                String sql = OrderSql.GET_ALL_COUNT_WITH_EMPLOYEE_ID; // lấy theo empid
-
-                stm = connect.prepareStatement(sql);
-                stm.setInt(1, empID);
+                hasSearch = false;
             }
+            if (!search.isEmpty()) {
+                if (hasSearch) {
+                    whereSQL += " AND (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
+                } else {
+                    whereSQL = "WHERE (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
+                }
+            }
+
+            sql = sql.replace("{where}", whereSQL);
+
+            stm = connect.prepareStatement(sql);
+
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 count = rs.getInt(1);
@@ -89,7 +137,6 @@ public class OrderDBContext extends DBContext<Order> {
         return count;
     }
 
-    // ========================== Get Single Orders Section =======================
     public int getTotalOrderByCustomer(int cus_id) {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM [Order] o\n"
@@ -211,6 +258,33 @@ public class OrderDBContext extends DBContext<Order> {
         return orders;
     }
 
+    public Order getOrderByOrderID(int orderID) {
+        Order o = new Order();
+        PreparedStatement stm = null;
+        try {
+            String sql = "SELECT o.order_id, o.total, o.created_at, o.shipping_method,"
+                    + "       so.status_id,so.status, \n"
+                    + "       c.cus_id ,c.name_cus, c.gender, c.email, c.c_phone, \n"
+                    + "       a.city, a.district, a.ward, a.street\n"
+                    + "FROM [Order] o\n"
+                    + "LEFT JOIN Customer c ON c.cus_id = o.cus_id\n"
+                    + "LEFT JOIN [db_owner].[Status_Order] so ON so.status_id = o.status_id\n"
+                    + "LEFT JOIN Address a ON a.cus_id = c.cus_id\n"
+                    + "WHERE o.order_id = ? ";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, orderID);
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                o = OrderCombiner.toElement(rs, o);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return o;
+    }
+
     public Order getOrderByOrderID(int orderID, int cus_id) {
         Order o = new Order();
         PreparedStatement stm = null;
@@ -234,6 +308,7 @@ public class OrderDBContext extends DBContext<Order> {
                 o.setCreate_at(rs.getTimestamp("created_at"));
                 o.setTotal_price(rs.getInt("total"));
                 Status_Order so = new Status_Order();
+                so.setStatus_id(rs.getInt("status_id"));
                 so.setStatus_name(rs.getString("status"));
 
                 o.setStatus(so);
@@ -371,6 +446,27 @@ public class OrderDBContext extends DBContext<Order> {
             }
         }
         return products;
+    }
+
+    public List<Order_StatusTotal> getStatusTotal() {
+        PreparedStatement stm = null;
+        ArrayList<Order_StatusTotal> list = new ArrayList<>();
+        String sql = OrderSql.TOTAL_PRICE_ORDER_SQL;
+        try {
+            stm = connect.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                var statusTotal = new Order_StatusTotal();
+                statusTotal.setStatus(rs.getString("status").trim());
+                statusTotal.setTotal(rs.getDouble("total"));
+                list.add(statusTotal);
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
     public List<Integer> getOrderCountByWeek() {

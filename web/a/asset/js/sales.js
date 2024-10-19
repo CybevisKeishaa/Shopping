@@ -6,7 +6,7 @@ function getCurrentWeek() {
     for (var i = 0, max = -7; i > max; i--) {
         weekDays.push(days[dayOfweek--])
         if (dayOfweek < 0)
-            dayOfweek = days.length-1;
+            dayOfweek = days.length - 1;
     }
 
     return weekDays.reverse();
@@ -25,6 +25,31 @@ var lineChartData = {
             data: orderBoughtData
         }]
 };
+var doughnutMap = {
+    "Cancelled": {
+        "color": "#FF4C4C",
+        "highlight": "#FF7F7F",
+    },
+    "Completed": {
+        "color": "#4CAF50",
+        "highlight": "#81C784",
+    },
+    "Confirmed": {
+        "color": "#2196F3",
+        "highlight": "#64B5F6",
+    },
+    "Pending": {
+        "color": "#FFEB3B",
+        "highlight": "#FFF176",
+    },
+    "Shipping": {
+        "color": "#FF9800",
+        "highlight": "#FFB74D",
+    }
+};
+var statusElem = document.querySelectorAll('.status-display i.fa')
+console.log([...statusElem].map(elem => elem.dataset.status));
+statusElem.forEach(elem => elem.style.color = doughnutMap[elem.dataset.status].color)
 window.onload = function () {
     var ctx2 = $(".line-chart")[0].getContext("2d");
     window.myLine = new Chart(ctx2).Line(lineChartData, {
@@ -32,5 +57,20 @@ window.onload = function () {
         showTooltips: true,
         multiTooltipTemplate: "", // Fixed line
         maintainAspectRatio: false
+    });
+    var ctx4 = $(".doughnut-chart")[0].getContext("2d");
+    var ctx4Data = statusTotals.map((statusTotal) => {
+        // Get the color and highlight from doughnutMap
+        var statusInfo = doughnutMap[statusTotal.status];
+        return {
+            label: statusTotal.status,
+            value: statusTotal.total,
+            color: statusInfo ? statusInfo.color : "#000000", // Fallback color
+            highlight: statusInfo ? statusInfo.highlight : "#FFFFFF" // Fallback highlight
+        };
+    });
+    window.myDoughnut2 = new Chart(ctx4).Doughnut(ctx4Data, {
+        responsive: true,
+        showTooltips: true
     });
 };
