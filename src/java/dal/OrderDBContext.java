@@ -549,6 +549,43 @@ public class OrderDBContext extends DBContext<Order> {
         }
     }
 
+    public void insertOrder(int total, Date create_at, int statusID, int cusID, int paymentMethodID, String note, int addressID) {
+        PreparedStatement stm = null;
+        try {
+            String sql = "INSERT INTO [dbo].[Order]\n"
+                    + "           ([total]\n"
+                    + "           ,[created_at]\n"
+                    + "           ,[status_id]\n"
+                    + "           ,[cus_id]\n"
+                    + "           ,[payment_method_id]\n"
+                    + "           ,[note]\n"
+                    + "           ,[addressID])\n"
+                    + "     VALUES\n"
+                    + "           (?,?,?,?,?,?,?)";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, total);
+            stm.setDate(2, new java.sql.Date(create_at.getTime()));
+            stm.setInt(3, statusID);
+            stm.setInt(4, cusID);
+            stm.setInt(5, paymentMethodID);
+            stm.setString(6, note);
+            stm.setInt(7, addressID);
+
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         OrderDBContext db = new OrderDBContext();
         ArrayList<Product> products = db.getProductsByOrderAndCustomer(25, 1);

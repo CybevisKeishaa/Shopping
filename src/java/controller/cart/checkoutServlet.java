@@ -5,7 +5,10 @@
 package controller.cart;
 
 import controller.auth.BaseRequiredCustomerAuthenticationController;
+import dal.AddressDBContext;
 import dal.CartDBContext;
+import dal.CustomerDBContext;
+import dal.OrderDBContext;
 import dal.paymentDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,9 +17,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
+import model.Address;
 import model.Cart;
 import model.Customer_User;
 import model.Payment;
+import java.sql.*;
 
 /**
  *
@@ -27,17 +33,20 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        
-        
+
         int userID = user.getCus_id();
         paymentDBContext paymentDB = new paymentDBContext();
         CartDBContext db = new CartDBContext();
+        AddressDBContext aDB = new AddressDBContext();
+        ArrayList<Address> addresses = aDB.getAddressByCusID(userID);
+        
+
         ArrayList<Payment> payments = paymentDB.allPaymentMethods();
         Cart c = db.getCartByCustomer(userID);
         request.setAttribute("payments", payments);
         request.setAttribute("cart", c);
-
-        request.getRequestDispatcher("/view/cart/checkoutr.jsp").forward(request, response);
+        request.setAttribute("address", addresses);
+        request.getRequestDispatcher("/view/cart/checkout.jsp").forward(request, response);
 
     }
 
@@ -52,12 +61,31 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        int paymentID =  Integer.parseInt(request.getParameter("paymentMethod"));
+        int paymentID = Integer.parseInt(request.getParameter("paymentMethod"));
         int totalCost = Integer.parseInt(request.getParameter("totalCost"));
         int statusID = 1;
         int cusID = user.getCus_id();
         String note = request.getParameter("notes");
-//        int addressID = request.getParameter("");
+        Date utilDate = new Date();
+        Date sqlDate = new Date(utilDate.getTime());       
+        int addressID = Integer.parseInt(request.getParameter("selectedAddress"));
+        
+        OrderDBContext db = new OrderDBContext();
+        db.insertOrder(totalCost, sqlDate, statusID, cusID, paymentID, note, addressID);
+        
+        int productID = Integer.parseInt(request.getParameter(""));
+        int unit_price = Integer.parseInt(request.getParameter(""));
+        int quantity = Integer.parseInt(request.getParameter(""));
+        int gender = Integer.parseInt(request.getParameter(note));
+//        int capaciy = 
+        
+        
+        
+        
+        
+        response.sendRedirect("../view/notice/ThanksForOrder.jsp");
+        
+        
     }
 
     /**

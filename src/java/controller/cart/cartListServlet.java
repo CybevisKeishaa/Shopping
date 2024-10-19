@@ -46,6 +46,7 @@ public class cartListServlet extends BaseRequiredCustomerAuthenticationControlle
         // Lấy danh sách itemId và quantity từ form
         String[] itemIds = request.getParameterValues("itemId[]");
         String[] quantities = request.getParameterValues("quantity[]");
+        String[] capacities = request.getParameterValues("capacity[]");
 
         // Kiểm tra nếu cả hai không null và có cùng kích thước
         if (itemIds != null && quantities != null && itemIds.length == quantities.length) {
@@ -55,9 +56,10 @@ public class cartListServlet extends BaseRequiredCustomerAuthenticationControlle
             for (int i = 0; i < itemIds.length; i++) {
                 int itemId = Integer.parseInt(itemIds[i]);
                 int quantity = Integer.parseInt(quantities[i]);
+                int capacity = Integer.parseInt(capacities[i]);
 
                 // Cập nhật số lượng trong cơ sở dữ liệu
-                db.updateCartItemQuantity(itemId, quantity);
+                db.updateCartQuantity(itemId, quantity, capacity);
             }
         }
 
