@@ -565,7 +565,7 @@ public class OrderDBContext extends DBContext<Order> {
 
             stm = connect.prepareStatement(sql);
             stm.setInt(1, total);
-            stm.setDate(2, new java.sql.Date(create_at.getTime()));
+            stm.setDate(2, new Date(create_at.getTime()));
             stm.setInt(3, statusID);
             stm.setInt(4, cusID);
             stm.setInt(5, paymentMethodID);

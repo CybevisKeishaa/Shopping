@@ -62,7 +62,7 @@
                             <option value="status" ${param.sort == 'status' ? 'selected':''}>Status</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-1">
+                    <div class="form-group col-md-2">
                         <label for='desc' >Thứ tự</label>
                         <select id="desc" class="form-control" name="desc">
                             <option value="on" ${param.desc == 'on' ? 'selected':''}>Giảm Dần</option>
@@ -111,14 +111,14 @@
                         </tbody>
                     </table>
                     <div class="container">
-                        <div class="pagination-container d-flex justify-content-center">
+<!--                        <div class="pagination-container d-flex justify-content-center">
                             <div class="pagination">
-                                <!-- Previous Button -->
+                                 Previous Button 
                                 <c:if test="${currentPage > 1}">
                                     <a href="?page=${currentPage - 1}" class="prev">&lt;</a>
                                 </c:if>
 
-                                <!-- Page Numbers -->
+                                 Page Numbers 
                                 <c:forEach var="i" begin="1" end="${totalPages}">
                                     <c:choose>
                                         <c:when test="${i == currentPage}">
@@ -129,11 +129,54 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
-                                <!-- Next Button -->
+                                 Next Button 
                                 <c:if test="${currentPage < totalPages}">
                                     <a href="?page=${currentPage + 1}" class="next">&gt;</a>
                                 </c:if>
                             </div>
+                        </div>-->
+                        <div class="pagination-container dataTables_paginate paging_simple_numbers" id="datatables-example_paginate">
+                            <ul class="pagination">
+                                <c:choose >
+                                    <c:when test="${currentPage > 1}">
+                                        <li class="paginate_button previous" id="datatables-example_previous">
+                                            <a href="?page=${currentPage - 1}" aria-controls="datatables-example" data-dt-idx="0" tabindex="0">Previous</a>
+                                        </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li class="paginate_button previous disabled" id="datatables-example_previous">
+                                            <a href="#" aria-controls="datatables-example" data-dt-idx="0" tabindex="0">Previous</a>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <li class="paginate_button active">
+                                                <a href="#" aria-controls="datatables-example" data-dt-idx="${i}" tabindex="0">${i}</a>
+                                            </li>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <li class="paginate_button ">
+                                                <a href="?page=${i}" aria-controls="datatables-example" data-dt-idx="${i}" tabindex="0">${i}</a>
+                                            </li>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                                <c:choose >
+                                    <c:when test="${currentPage < totalPages}">
+                                        <li class="paginate_button next" id="datatables-example_previous">
+                                            <a href="?page=${currentPage + 1}" aria-controls="datatables-example" data-dt-idx="${currentPage + 1}" tabindex="0">Next</a>
+                                        </li>
+                                    </c:when>
+                                    <c:otherwise>
+
+                                        <li class="paginate_button next disabled" id="datatables-example_next">
+                                            <a href="#" aria-controls="datatables-example" data-dt-idx="3" tabindex="0">Next</a>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
+                            </ul>
                         </div>
                     </div>
                 </div>

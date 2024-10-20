@@ -72,5 +72,6 @@ window.onload = function () {
     window.myDoughnut2 = new Chart(ctx4).Doughnut(ctx4Data, {
         responsive: true,
         showTooltips: true
+        
     });
 };

@@ -27,7 +27,7 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-
+    <c:set var="role" value="${sessionScope.customer.role.role_name}"/>
     <body id="mimin" class="dashboard">
         <!-- start: Header -->
         <nav class="navbar navbar-default header navbar-fixed-top">
@@ -77,24 +77,49 @@
             </div>
         </nav>
         <!-- end: Header -->
-
         <div class="container-fluid mimin-wrapper">
             <!-- start:Left Menu -->
             <div id="left-menu">
                 <div class="sub-left-menu scroll">
                     <ul class="nav nav-list">
-                        <li><div class="left-bg"></div></li>
+                        <li>
+                            <div class="left-bg"></div>
+                        </li>
+                        <c:if test="${role == 'Admin'}">
+                            <li class="ripple">
+                                <a href="${pageContext.request.contextPath}/admin/homepage" class="tree-toggle nav-header">
+                                    <span class="fa-home fa"></span> Dashboard
+                                </a>
+                            </li>
+                            <li class="ripple">
+                                <a class="tree-toggle nav-header">
+                                    <span class="fa fa-table"></span> Tables
+                                    <span class="fa-angle-right fa right-arrow text-right"></span>
+                                </a>
+                                <ul class="nav nav-list tree">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/admin/userlist">User List</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/admin/employeelist">Employees List</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/bloglist">Blogs List</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </c:if>
+                        <c:if test="${role == 'Marketer'}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${role == 'Admin' || role == 'Saler'}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a>
+                            </li>
+                        </c:if>
 
-                        <li class="ripple">
-                            <a href = "${pageContext.request.contextPath}/admin/homepage" class="tree-toggle nav-header"><span class="fa-home fa"></span> Dashboard </a>
-                        </li>
-                        <li class="ripple"><a class="tree-toggle nav-header"><span class="fa fa-table"></span> Tables  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
-                            <ul class="nav nav-list tree">
-                                <li><a href="userlist">User List</a></li>
-                                <li><a href="employeelist">Employees List</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a></li>
                         <script>
                             let pathname = location.pathname;
                             document.querySelector(`a[href*='` + pathname + `'`).classList.add('active');
@@ -107,6 +132,7 @@
             <!-- start: content -->
             <div id="content">
                 <div class="col-md-12" style="padding:20px;">
+
                     <jsp:doBody/>
                 </div>
             </div>

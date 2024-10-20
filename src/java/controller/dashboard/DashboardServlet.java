@@ -5,15 +5,12 @@
 package controller.dashboard;
 
 import controller.auth.AuthenticationServlet;
-import controller.auth.BaseRequiredCustomerAuthenticationController;
 import helper.AuthenticationHelper;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import model.Customer_User;
 
 /**
@@ -22,16 +19,24 @@ import model.Customer_User;
 @WebServlet(name = "DashboardServlet", urlPatterns = {"/dashboard"})
 public class DashboardServlet extends AuthenticationServlet {
 
-    private static final String MAIN_PAGE = "/view/dashboard/html/index.jsp";
+    private static final String MAIN_PAGE = "admin/homepage";
+    private static final String SALER_PAGE = "/sale";
+    private static final String MARKETER_PAGE = "/markets";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response,Customer_User user)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
+
         if (AuthenticationHelper.isAdmin(user)) {
-            request.getRequestDispatcher(MAIN_PAGE).forward(request, response);
+            response.sendRedirect(request.getContextPath() + MAIN_PAGE);
+        } else if (AuthenticationHelper.isSaler(user)) {
+            response.sendRedirect(request.getContextPath() + SALER_PAGE);
+        } else if (AuthenticationHelper.isMarketer(user)) {
+            response.sendRedirect(request.getContextPath() + MARKETER_PAGE);
         } else {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
+        
     }
 
 }

@@ -7,22 +7,18 @@ package controller.cart;
 import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.AddressDBContext;
 import dal.CartDBContext;
-import dal.CustomerDBContext;
 import dal.OrderDBContext;
 import dal.paymentDBContext;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import model.Address;
 import model.Cart;
 import model.Customer_User;
 import model.Payment;
-import java.sql.*;
 
 /**
  *
@@ -66,7 +62,7 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
         int statusID = 1;
         int cusID = user.getCus_id();
         String note = request.getParameter("notes");
-        Date utilDate = new Date();
+        var utilDate = new java.util.Date();
         Date sqlDate = new Date(utilDate.getTime());       
         int addressID = Integer.parseInt(request.getParameter("selectedAddress"));
         
