@@ -6,7 +6,7 @@
 package controller.admin;
 
 import dal.CustomerDBContext;
-import dal.employeeDBContext;
+import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -56,7 +56,7 @@ public class employeeDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         employeeDBContext e = new employeeDBContext();
+         EmployeeDBContext e = new EmployeeDBContext();
         String a_raw = request.getParameter("emp_id");
         int a = Integer.parseInt(a_raw);
         Employee emp = e.getDetailsByEmpIds(a);
@@ -79,7 +79,7 @@ public class employeeDetails extends HttpServlet {
        String phone = request.getParameter("phone");
        String email = request.getParameter("email");
        String status = request.getParameter("status");
-       employeeDBContext e = new employeeDBContext();
+       EmployeeDBContext e = new EmployeeDBContext();
        e.updateEmployee(emp_id, name, email, phone, status);
        response.sendRedirect("employeedetails?emp_id=" + emp_id);
     }

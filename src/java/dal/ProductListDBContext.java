@@ -1,26 +1,18 @@
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import model.*;
 import model.Brand;
 import model.Capacity;
 import model.Discount;
 import model.Gender;
 import model.Image;
+import model.PriceRange;
 import model.Product;
 
 /**
@@ -645,7 +637,7 @@ public class ProductListDBContext extends DBContext {
     }
 
     public List<Product> getListProduct(
-          String[] bids,
+            String[] bids,
             String[] cids,
             String[] gids,
             String[] pids,
@@ -655,10 +647,10 @@ public class ProductListDBContext extends DBContext {
         List<Product> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
                 "SELECT DISTINCT p.*, p.brand_id AS brand_id, pg.gender_id AS gender_id, pi.img_id AS img_id FROM Product p "
-                        + "LEFT OUTER JOIN Product_Capacity pc ON pc.product_id = p.product_id "
-                        + "LEFT OUTER JOIN Product_Gender pg ON pg.product_id = p.product_id "
-                        + "LEFT OUTER JOIN Product_Image pi ON pi.product_id = p.product_id "
-                        + "WHERE 1=1 ");
+                + "LEFT OUTER JOIN Product_Capacity pc ON pc.product_id = p.product_id "
+                + "LEFT OUTER JOIN Product_Gender pg ON pg.product_id = p.product_id "
+                + "LEFT OUTER JOIN Product_Image pi ON pi.product_id = p.product_id "
+                + "WHERE 1=1 ");
         if (bids != null && bids.length > 0) {
             String bidList = String.join(",", bids);
             sql.append("AND p.brand_id IN (" + bidList + ") ");
@@ -702,7 +694,6 @@ public class ProductListDBContext extends DBContext {
                 p.setDate(rs.getDate("date"));
                 p.setPrice(rs.getInt("price"));
 
-
                 p.setBrand(b);
                 if (g != null) {
                     p.setGender(new ArrayList<>(List.of(g)));
@@ -729,9 +720,9 @@ public class ProductListDBContext extends DBContext {
     ) {
         StringBuilder sql = new StringBuilder(
                 "SELECT COUNT(DISTINCT p.product_id) AS total FROM Product p "
-                        + "LEFT OUTER JOIN Product_Capacity pc ON pc.product_id = p.product_id "
-                        + "LEFT OUTER JOIN Product_Gender pg ON pg.product_id = p.product_id "
-                        + "WHERE 1=1 ");
+                + "LEFT OUTER JOIN Product_Capacity pc ON pc.product_id = p.product_id "
+                + "LEFT OUTER JOIN Product_Gender pg ON pg.product_id = p.product_id "
+                + "WHERE 1=1 ");
         if (bids != null && bids.length > 0) {
             String bidList = String.join(",", bids);
             sql.append("AND p.brand_id IN (" + bidList + ") ");
@@ -766,9 +757,9 @@ public class ProductListDBContext extends DBContext {
     }
 
     public List<Product> getHotProducts() {
-        String sql =
-                "SELECT TOP 3 p.*, pi.img_id FROM Product p LEFT OUTER JOIN Product_Image pi ON p.product_id = pi.product_id LEFT OUTER JOIN Discount d ON p.discount_id = d.discount_id  " +
-                        "WHERE d.start <= ? AND ? <= d.[end] ";
+        String sql
+                = "SELECT TOP 3 p.*, pi.img_id FROM Product p LEFT OUTER JOIN Product_Image pi ON p.product_id = pi.product_id LEFT OUTER JOIN Discount d ON p.discount_id = d.discount_id  "
+                + "WHERE d.start <= ? AND ? <= d.[end] ";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setDate(1, Date.valueOf(LocalDate.now()));
@@ -813,10 +804,10 @@ public class ProductListDBContext extends DBContext {
     }
 
     public List<Product> getNewProducts() {
-        String sql =
-                "SELECT p.*, pi.img_id FROM Product p LEFT OUTER JOIN Product_Image pi ON p.product_id = pi.product_id " +
-                        "ORDER BY p.product_id DESC " +
-                        "OFFSET 0 ROWS FETCH NEXT 3 ROWS ONLY ";
+        String sql
+                = "SELECT p.*, pi.img_id FROM Product p LEFT OUTER JOIN Product_Image pi ON p.product_id = pi.product_id "
+                + "ORDER BY p.product_id DESC "
+                + "OFFSET 0 ROWS FETCH NEXT 3 ROWS ONLY ";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -858,6 +849,99 @@ public class ProductListDBContext extends DBContext {
         return null;
     }
 
-   
+    public ArrayList<Product> getAllListByEidPid(int eid, int pid, int odid) {
+        String sql = "SELECT *\n"
+                + "              FROM Employee e \n"
+                + "              INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "              INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "                INNER JOIN OrderDetail od on od.product_id=p.product_id\n"
+                + "             INNER JOIN [Order] o on od.detail_id=o.order_id\n"
+                + "               INNER JOIN Customer c on c.cus_id=o.cus_id\n"
+                + "               WHERE e.emp_id = ? and p.product_id=? and od.detail_id=?";
+        ArrayList<Product> list = new ArrayList<>();
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, eid);
+            st.setInt(2, pid);
+            st.setInt(3, odid);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setName(rs.getString("name"));
+                list.add(p);
+            }
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public List<Product> getListProductByEmployeeId(int id, int pageNumber, int pageSize) {
+        String sql = "SELECT p.* \n"
+                + "FROM Employee e \n"
+                + "INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "WHERE e.emp_id = ? \n"
+                + "ORDER BY p.product_id \n"
+                + "OFFSET ? ROWS \n"
+                + "FETCH NEXT ? ROWS ONLY;";
+        List<Product> pList = new ArrayList<>();
+        BrandDBContext br = new BrandDBContext();
+        CapacityDBContext cap = new CapacityDBContext();
+        GenderDBContext gen = new GenderDBContext();
+        ImageDBContext image = new ImageDBContext();
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            int offset = (pageNumber - 1) * pageSize;
+            st.setInt(1, id);
+            st.setInt(2, offset);
+            st.setInt(3, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                Brand b = br.getBrandFindById(rs.getInt(1));
+                Capacity c = cap.getCapacityFindById(rs.getInt(1));
+                Gender g = gen.getGenderFindById(rs.getInt(1));
+                Image ig = image.getImageById(rs.getInt(1));
+                p.setProduct_id(rs.getInt("product_id"));
+                p.setName(rs.getString("name"));
+                p.setDate(rs.getDate("date"));
+                p.setPrice(rs.getInt("price"));
+
+                p.setBrand(b);
+
+                pList.add(p);
+            }
+            return pList;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public int totalListProductByEmployeeId(int id) {
+        String sql = "SELECT COUNT(*) \n"
+                + "FROM Employee e \n"
+                + "INNER JOIN Employee_Product ep ON e.emp_id = ep.emp_id \n"
+                + "INNER JOIN Product p ON p.product_id = ep.product_id \n"
+                + "WHERE e.emp_id = ? \n";
+        int bid = -1;
+
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                bid = rs.getInt(1);
+            }
+            return bid;
+        } catch (Exception e) {
+
+        }
+        return -1;
+    }
 
 }

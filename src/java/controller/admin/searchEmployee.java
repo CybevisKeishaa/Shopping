@@ -6,7 +6,7 @@
 package controller.admin;
 
 import dal.CustomerDBContext;
-import dal.employeeDBContext;
+import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -60,7 +60,7 @@ public class searchEmployee extends HttpServlet {
     throws ServletException, IOException {
         String op = request.getParameter("op");
         String search = request.getParameter("search");
-        employeeDBContext e = new employeeDBContext();
+        EmployeeDBContext e = new EmployeeDBContext();
         List<Employee> list = new ArrayList<>();
         if (op.equals("name")) {
             list = e.getAllByFullName(search);

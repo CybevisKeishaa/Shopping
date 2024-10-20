@@ -67,7 +67,7 @@ public class OrderDetailServlet extends BaseRequiredCustomerAuthenticationContro
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User customer)
     throws ServletException, IOException {
-        
+        super.doPost(request, response);
     }
 
     /** 

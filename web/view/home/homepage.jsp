@@ -214,7 +214,6 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                         </ul>
-
                                         <div class="bottom">
                                             <div class="total">
                                                 <span>Tổng hóa đơn</span>
@@ -393,11 +392,12 @@
                                         </c:forEach>
                                     </div>
                                 </div>
-                                <br><br><br><br>
+
                                 <!--End JSP -->                                   
 
 
 
+                                <!-- Top 3  -->
 
 
 
