@@ -19,7 +19,7 @@ import model.Customer_User;
 @WebServlet(name = "DashboardServlet", urlPatterns = {"/dashboard"})
 public class DashboardServlet extends AuthenticationServlet {
 
-    private static final String MAIN_PAGE = "admin/homepage";
+    private static final String MAIN_PAGE = "/admin/homepage";
     private static final String SALER_PAGE = "/sale";
     private static final String MARKETER_PAGE = "/markets";
 

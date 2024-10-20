@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Address;
+import model.Capacity;
 import model.Customer_User;
 import model.Gender;
 import model.Image;
@@ -549,9 +550,12 @@ public class OrderDBContext extends DBContext<Order> {
         }
     }
 
-    public void insertOrder(int total, Date create_at, int statusID, int cusID, int paymentMethodID, String note, int addressID) {
+    public int insertOrder(int total, int statusID, int cusID, int paymentMethodID, String note, int addressID) {
         PreparedStatement stm = null;
+        ResultSet generatedKeys = null;
+        int orderId = -1;
         try {
+            // Sử dụng GETDATE() để tự động lấy thời gian hiện tại từ SQL Server
             String sql = "INSERT INTO [dbo].[Order]\n"
                     + "           ([total]\n"
                     + "           ,[created_at]\n"
@@ -559,21 +563,76 @@ public class OrderDBContext extends DBContext<Order> {
                     + "           ,[cus_id]\n"
                     + "           ,[payment_method_id]\n"
                     + "           ,[note]\n"
-                    + "           ,[addressID])\n"
+                    + "           ,[addressID]\n"
+                    + "           ,[paid_status])\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?,?)";
+                    + "           (?, GETDATE(), ?, ?, ?, ?, ?, 0)";
 
-            stm = connect.prepareStatement(sql);
+            stm = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stm.setInt(1, total);
-            stm.setDate(2, new Date(create_at.getTime()));
-            stm.setInt(3, statusID);
-            stm.setInt(4, cusID);
-            stm.setInt(5, paymentMethodID);
-            stm.setString(6, note);
-            stm.setInt(7, addressID);
+            stm.setInt(2, statusID);
+            stm.setInt(3, cusID);
+            stm.setInt(4, paymentMethodID);
+            stm.setString(5, note);
+            stm.setInt(6, addressID);
 
-            stm.executeUpdate();
+            int affectedRows = stm.executeUpdate();
+
+            if (affectedRows > 0) {
+                generatedKeys = stm.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    orderId = generatedKeys.getInt(1);
+                }
+            }
         } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (generatedKeys != null) {
+                try {
+                    generatedKeys.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return orderId;  // Trả về orderId
+    }
+
+    public void insertOrderDetail(int orderId, ArrayList<OrderDetail> orderDetails) {
+        PreparedStatement stm = null;
+
+        try {
+            String sql = "INSERT INTO [dbo].[OrderDetail]\n"
+                    + "           ([order_id],\n"
+                    + "            [product_id],\n"
+                    + "            [quantity],\n"
+                    + "            [price_at_order],\n"
+                    + "            [capacity_id])\n"
+                    + "     VALUES (?,?,?,?,?)";
+            stm = connect.prepareStatement(sql);
+
+            for (OrderDetail detail : orderDetails) {
+                stm.setInt(1, orderId);
+                stm.setInt(2, detail.getProducts().get(0).getProduct_id());  // Lấy ID của sản phẩm từ danh sách sản phẩm
+                stm.setInt(3, detail.getQuantity());
+                stm.setInt(4, detail.getPrice_at_order());
+                stm.setInt(5, detail.getCapacity().getCapacity_id());
+
+                // Sử dụng executeUpdate để in ra số hàng bị ảnh hưởng
+                stm.executeUpdate();
+
+            }
+
+        } catch (SQLException e) {
+            // In ra lỗi SQL chi tiết
+            System.err.println("SQL Error while inserting OrderDetail: " + e.getMessage());
             e.printStackTrace();
         } finally {
             if (stm != null) {
@@ -587,9 +646,25 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     public static void main(String[] args) {
-        OrderDBContext db = new OrderDBContext();
-        ArrayList<Product> products = db.getProductsByOrderAndCustomer(25, 1);
-        System.out.println(products.size());
-    }
+            OrderDBContext orderDB = new OrderDBContext();
+            
+            // Gọi hàm insertOrder để chèn một đơn hàng mới
+            int total = 1500000;
+            int statusID = 1; // Đang chờ xử lý
+            int cusID = 1; // ID của khách hàng
+            int paymentMethodID = 1; // ID của phương thức thanh toán
+            String note = "This is a test order";
+            int addressID = 13; // ID của địa chỉ giao hàng
 
+            // Thực hiện chèn đơn hàng
+            int orderId = orderDB.insertOrder(total, statusID, cusID, paymentMethodID, note, addressID);
+
+            // Kiểm tra kết quả
+            if (orderId != -1) {
+                System.out.println("Order inserted successfully with ID: " + orderId);
+            } else {
+                System.out.println("Failed to insert order.");
+            }
+        
+    }
 }
