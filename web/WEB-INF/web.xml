@@ -115,6 +115,11 @@
         <servlet-class>controller.home.HomeFeedbackServlet</servlet-class>
     </servlet>    
     <servlet>
+        <servlet-name>HomeFeedbackServlet</servlet-name>
+        <servlet-class>controller.home.HomeFeedbackServlet</servlet-class>
+    </servlet>
+
+    <servlet>
         <servlet-name>cartListServlet</servlet-name>
         <servlet-class>controller.cart.cartListServlet</servlet-class>
     </servlet>

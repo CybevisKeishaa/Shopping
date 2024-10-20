@@ -19,6 +19,11 @@ import model.Address;
 import model.Cart;
 import model.Customer_User;
 import model.Payment;
+import java.sql.*;
+import model.Capacity;
+import model.Order;
+import model.OrderDetail;
+import model.Product;
 
 /**
  *
@@ -35,7 +40,6 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
         CartDBContext db = new CartDBContext();
         AddressDBContext aDB = new AddressDBContext();
         ArrayList<Address> addresses = aDB.getAddressByCusID(userID);
-        
 
         ArrayList<Payment> payments = paymentDB.allPaymentMethods();
         Cart c = db.getCartByCustomer(userID);
@@ -57,31 +61,73 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        int paymentID = Integer.parseInt(request.getParameter("paymentMethod"));
-        int totalCost = Integer.parseInt(request.getParameter("totalCost"));
-        int statusID = 1;
-        int cusID = user.getCus_id();
-        String note = request.getParameter("notes");
-        var utilDate = new java.util.Date();
-        Date sqlDate = new Date(utilDate.getTime());       
-        int addressID = Integer.parseInt(request.getParameter("selectedAddress"));
-        
-        OrderDBContext db = new OrderDBContext();
-        db.insertOrder(totalCost, sqlDate, statusID, cusID, paymentID, note, addressID);
-        
-        int productID = Integer.parseInt(request.getParameter(""));
-        int unit_price = Integer.parseInt(request.getParameter(""));
-        int quantity = Integer.parseInt(request.getParameter(""));
-        int gender = Integer.parseInt(request.getParameter(note));
-//        int capaciy = 
-        
-        
-        
-        
-        
-        response.sendRedirect("../view/notice/ThanksForOrder.jsp");
-        
-        
+
+        try {
+            // Lấy các tham số từ form
+            int paymentID = Integer.parseInt(request.getParameter("paymentMethod"));
+            int totalCost = Integer.parseInt(request.getParameter("totalCost"));
+            int statusID = 1;  // Mặc định là 'Pending'
+            int cusID = user.getCus_id();
+            String note = request.getParameter("notes");
+            int addressID = Integer.parseInt(request.getParameter("selectedAddress"));
+
+            // Lấy danh sách sản phẩm từ giỏ hàng và thông tin chi tiết đơn hàng
+            String[] productIds = request.getParameterValues("productID");
+            String[] quantities = request.getParameterValues("quantity");
+            String[] unitPrices = request.getParameterValues("unit_price");
+            String[] capacityIds = request.getParameterValues("capacity_id");
+
+            if (productIds == null || quantities == null || unitPrices == null) {
+                response.getWriter().println("Missing product details.");
+                return;
+            }
+
+            if (productIds.length != quantities.length || productIds.length != unitPrices.length) {
+                response.getWriter().println("Product details are mismatched.");
+                return;
+            }
+
+            OrderDBContext orderDB = new OrderDBContext();
+            int orderId = orderDB.insertOrder(totalCost, statusID, cusID, paymentID, note, addressID);
+
+            if (orderId > 0) {
+                ArrayList<OrderDetail> orderDetails = new ArrayList<>();
+                for (int i = 0; i < productIds.length; i++) {
+                    OrderDetail detail = new OrderDetail();
+                    detail.setQuantity(Integer.parseInt(quantities[i]));
+                    detail.setPrice_at_order(Integer.parseInt(unitPrices[i]));
+
+                    // Tạo đối tượng sản phẩm và đặt ID sản phẩm
+                    ArrayList<Product> products = new ArrayList<>();
+                    Product product = new Product();
+                    product.setProduct_id(Integer.parseInt(productIds[i]));
+                    products.add(product);  // Đảm bảo thêm sản phẩm vào danh sách
+                    detail.setProducts(products);
+
+                    Capacity capacity = new Capacity();
+                    capacity.setCapacity_id(Integer.parseInt(capacityIds[i]));
+                    detail.setCapacity(capacity);
+
+                    Order order = new Order();
+                    order.setOrder_id(orderId);
+                    detail.setOrder(order);
+
+                    // Thêm chi tiết đơn hàng vào danh sách
+                    orderDetails.add(detail);
+                }
+
+                orderDB.insertOrderDetail(orderId, orderDetails);
+                response.sendRedirect(request.getContextPath() + "/view/notice/ThanksForOrder.jsp");
+
+            } else {
+                response.getWriter().println("Failed to create order!");
+            }
+
+        } catch (Exception e) {
+            // Xử lý các lỗi ngoại lệ khác
+            response.getWriter().println("An error occurred while processing your request.");
+            e.printStackTrace();
+        }
     }
 
     /**
