@@ -17,13 +17,39 @@ public class Order {
     private Status_Order status;
     private Payment payment;
     private String shipping_method;
-    // Objects
     private ArrayList<OrderDetail> orderDetails = new ArrayList<>();
     private int successOrders;
     private int cancelledOrders;
     private int pendingOrders;
-    private double totalRevenue;
+    private double totalRevenue;  
+    private boolean paidStatus;
+    private String note;
+    private Address address;
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+    
+    public boolean isPaidStatus() {
+        return paidStatus;
+    }
+
+    public void setPaidStatus(boolean paidStatus) {
+        this.paidStatus = paidStatus;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+    
     // Các getter và setter
     public double getTotalRevenue() {
         return totalRevenue;

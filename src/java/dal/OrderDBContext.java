@@ -286,24 +286,26 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     public Order getOrderByOrderID(int orderID, int cus_id) {
-        Order o = new Order();
+        Order o = null; // Khởi tạo là null để kiểm tra xem có lấy được kết quả hay không
         PreparedStatement stm = null;
+        ResultSet rs = null;
         try {
-            String sql = "SELECT o.order_id, o.total, o.created_at, o.shipping_method, so.status, \n"
+            String sql = "SELECT o.order_id, o.note, o.total, o.created_at, o.shipping_method, o.status_id, so.status, \n"
                     + "       c.name_cus, c.gender, c.email, c.c_phone, \n"
                     + "       a.city, a.district, a.ward, a.street\n"
                     + "FROM [Order] o\n"
                     + "LEFT JOIN Customer c ON c.cus_id = o.cus_id\n"
                     + "LEFT JOIN [db_owner].[Status_Order] so ON so.status_id = o.status_id\n"
-                    + "LEFT JOIN Address a ON a.cus_id = c.cus_id\n"
-                    + "WHERE o.order_id = ?  AND c.cus_id = ?";
+                    + "LEFT JOIN Address a ON a.a_id = o.addressID\n" // Liên kết qua addressID
+                    + "WHERE o.order_id = ? AND c.cus_id = ?";
 
             stm = connect.prepareStatement(sql);
             stm.setInt(1, orderID);
             stm.setInt(2, cus_id);
-            ResultSet rs = stm.executeQuery();
+            rs = stm.executeQuery();
 
             if (rs.next()) {
+                o = new Order();
                 o.setOrder_id(rs.getInt("order_id"));
                 o.setCreate_at(rs.getTimestamp("created_at"));
                 o.setTotal_price(rs.getInt("total"));
@@ -314,27 +316,47 @@ public class OrderDBContext extends DBContext<Order> {
                 o.setStatus(so);
                 o.setShipping_method(rs.getString("shipping_method"));
 
+                // Lấy thông tin trạng thái
+                Status_Order so = new Status_Order();
+                so.setStatus_id(rs.getInt("status_id"));
+                so.setStatus_name(rs.getString("status"));
+                o.setStatus(so);
+
                 // Lấy thông tin khách hàng
                 Customer_User c = new Customer_User();
                 c.setName_cus(rs.getString("name_cus"));
                 c.setGender(rs.getBoolean("gender"));
                 c.setEmail(rs.getString("email"));
                 c.setC_phone(rs.getString("c_phone"));
+                o.setNote(rs.getString("note"));
 
-                // Lấy thông tin địa chỉ
-                ArrayList<Address> addres = new ArrayList<>();
                 Address address = new Address();
                 address.setCity(rs.getString("city"));
                 address.setDistrict(rs.getString("district"));
                 address.setWard(rs.getString("ward"));
                 address.setStreet(rs.getString("street"));
-                addres.add(address);
-                c.setAddress(addres);
-
+                
+                o.setAddress(address);
                 o.setCustomer(c);
             }
         } catch (SQLException ex) {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Đóng các tài nguyên
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return o;
     }
@@ -699,24 +721,9 @@ public class OrderDBContext extends DBContext<Order> {
 
     public static void main(String[] args) {
         OrderDBContext orderDB = new OrderDBContext();
-
-        // Gọi hàm insertOrder để chèn một đơn hàng mới
-        int total = 1500000;
-        int statusID = 1; // Đang chờ xử lý
-        int cusID = 1; // ID của khách hàng
-        int paymentMethodID = 1; // ID của phương thức thanh toán
-        String note = "This is a test order";
-        int addressID = 13; // ID của địa chỉ giao hàng
-
-        // Thực hiện chèn đơn hàng
-        int orderId = orderDB.insertOrder(total, statusID, cusID, paymentMethodID, note, addressID);
-
-        // Kiểm tra kết quả
-        if (orderId != -1) {
-            System.out.println("Order inserted successfully with ID: " + orderId);
-        } else {
-            System.out.println("Failed to insert order.");
-        }
+        Order o = orderDB.getOrderByOrderID(41, 1);
+        System.out.println(o.getNote());
+        
 
     }
 }
