@@ -27,7 +27,7 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
     private static final String MAIN_PAGE = "/view/ad/order/sale.jsp";
     private static final String WEB_TITLE = "Sale Dashboard";
 
-    private static final int PAGE_SIZE = 3;//Default = 10
+    private static final int PAGE_SIZE = 10;//Default = 10
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
@@ -49,7 +49,7 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
 //            cusID = user.getCus_id();
 //        }
         List<Order> orders = odb.getAllOrder(search, startDate, endDate, sort, desc, page, PAGE_SIZE);
-        int count = odb.getTotalOrderCount(search, startDate, endDate);
+        int count = odb.getTotalOrderCount(search, startDate, endDate); // pagination
         var statusTotals = odb.getStatusTotal();
         List<Integer> orderCountByWeek = odb.getOrderCountByWeek();
         request.setAttribute("orders", orders);

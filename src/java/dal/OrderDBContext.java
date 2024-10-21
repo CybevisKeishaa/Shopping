@@ -58,6 +58,7 @@ public class OrderDBContext extends DBContext<Order> {
                     whereSQL = "WHERE (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
                 }
             }
+            //sort
             switch (sort) {
                 case "orderdate":
                     orderBySQL = "ORDER BY o.created_at ";
@@ -310,11 +311,6 @@ public class OrderDBContext extends DBContext<Order> {
                 o.setOrder_id(rs.getInt("order_id"));
                 o.setCreate_at(rs.getTimestamp("created_at"));
                 o.setTotal_price(rs.getInt("total"));
-                Status_Order so = new Status_Order();
-                so.setStatus_id(rs.getInt("status_id"));
-                so.setStatus_name(rs.getString("status"));
-
-                o.setStatus(so);
                 o.setShipping_method(rs.getString("shipping_method"));
 
                 // Lấy thông tin trạng thái
@@ -550,7 +546,7 @@ public class OrderDBContext extends DBContext<Order> {
 
             // Check if the order is paid
             if (!o.isPaid_status()) {
-                throw new MessagingException("Customer has not paid for the product.");
+                throw new MessagingException("Khách hàng chưa trả tiền cho sản phầm.");
             }
 
             // Check if status Order is invalid for change 
@@ -568,14 +564,14 @@ public class OrderDBContext extends DBContext<Order> {
             stm.setInt(2, orderID);
 
             rs = stm.executeQuery();
-            if (rs.next() && rs.getInt("status_id") == 3) { // Assuming 3 = "Cancelled"
+            if (rs.next() && rs.getString("status").trim().equals("Cancelled")) { // Trả Tiền
                 // Restock to Wallet
                 sql = """
-                  UPDATE w
-                  SET w.total = w.total + ?
-                  FROM Wallet w 
-                  JOIN Customer c ON c.wallet_id = w.wallet_id
-                  WHERE c.cus_id = ?;
+                        UPDATE w
+                        SET w.total = w.total + ?
+                        FROM Wallet w 
+                        JOIN Customer c ON c.wallet_id = w.wallet_id
+                        WHERE c.cus_id = ?;
                   """;
                 int total = rs.getInt("total");
                 stm.close(); // Close previous statement
@@ -587,10 +583,10 @@ public class OrderDBContext extends DBContext<Order> {
                 // Restock products
                 for (OrderDetail od : orderDetailList) {
                     sql = """
-                      UPDATE p
-                      SET p.stock = p.stock + ?
-                      FROM Product p
-                      WHERE p.product_id = ?;
+                        UPDATE p
+                        SET p.stock = p.stock + ?
+                        FROM Product p
+                        WHERE p.product_id = ?;
                       """;
                     int quantity = od.getQuantity(); // Corrected from getPrice_at_order()
                     stm.close(); // Close previous statement

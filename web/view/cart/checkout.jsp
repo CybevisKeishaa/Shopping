@@ -93,7 +93,7 @@
                     <div class="col-md-8">
                         <div class="col-12">
                             <div class="section-title">
-                                <h2>Feedback</h2>
+                                <h2>Checkout</h2>
                             </div>
                         </div>
                         <!-- Kiểm tra nếu giỏ hàng có sản phẩm -->

@@ -27,13 +27,15 @@ public class ProductDBContext extends DBContext<Product> {
         ArrayList<Product> products = new ArrayList<>();
         PreparedStatement stm = null;
         try {
-            String sql = "SELECT p.product_id, p.name, p.price, g.name AS gname, d.name AS dname, d.discount_amount, i.img_url\n"
+            String sql = "SELECT TOP 8 p.product_id, p.name, p.price, g.name AS gname, d.name AS dname, d.discount_amount, MIN(i.img_url) AS img_url\n"
                     + "FROM dbo.Product p\n"
                     + "JOIN dbo.Product_Gender pg ON p.product_id = pg.product_id\n"
                     + "JOIN dbo.Gender g ON pg.gender_id = g.gender_id\n"
-                    + "JOIN dbo.Discount d ON d.discount_id = p.discount_id\n"
+                    + "LEFT JOIN dbo.Discount d ON d.discount_id = p.discount_id\n"
                     + "JOIN dbo.Product_Image pi ON pi.product_id = p.product_id\n"
                     + "JOIN dbo.Image i ON i.img_id = pi.img_id\n"
+                    + "WHERE img_url like 'product%' and p.status = 1\n"
+                    + "GROUP BY p.product_id, p.name, p.price, g.name, d.name, d.discount_amount\n"
                     + "ORDER BY d.discount_amount DESC;";
 
             stm = connect.prepareStatement(sql);
@@ -77,13 +79,15 @@ public class ProductDBContext extends DBContext<Product> {
         ArrayList<Product> products = new ArrayList<>();
 
         try {
-            String sql = "SELECT TOP 2 p.product_id, p.name, p.price, p.date, g.name AS gname, d.name AS dname, d.discount_amount, i.img_url\n"
+            String sql = "SELECT TOP 2 p.product_id, p.name, p.price, p.date, g.name AS gname, d.name AS dname, d.discount_amount, MIN(i.img_url) AS img_url\n"
                     + "FROM dbo.Product p\n"
                     + "JOIN dbo.Product_Gender pg ON p.product_id = pg.product_id\n"
                     + "JOIN dbo.Gender g ON pg.gender_id = g.gender_id\n"
                     + "JOIN dbo.Discount d ON d.discount_id = p.discount_id\n"
                     + "JOIN dbo.Product_Image pi ON pi.product_id = p.product_id\n"
                     + "JOIN dbo.Image i ON i.img_id = pi.img_id\n"
+                    + "WHERE img_url like 'product%' and p.status = 1\n"
+                    + "GROUP BY p.product_id, p.name, p.price, p.date, g.name, d.name, d.discount_amount\n"
                     + "ORDER BY p.date DESC;";
 
             stm = connect.prepareStatement(sql);
@@ -136,7 +140,7 @@ public class ProductDBContext extends DBContext<Product> {
                     + "JOIN Product_Gender pg ON p.product_id = pg.product_id\n"
                     + "JOIN Gender g ON pg.gender_id = g.gender_id\n"
                     + "LEFT JOIN Discount d ON p.discount_id = d.discount_id\n"
-                    + "WHERE g.name = 'Male';";
+                    + "WHERE g.name = 'Male' and p.status = 1";
 
             stm = connect.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -177,8 +181,7 @@ public class ProductDBContext extends DBContext<Product> {
         ArrayList<Product> p = db.getProductByGender();
         System.out.println(p.size());
     }
-    
-    
+
     public int getTotalProduct() {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM Product";
