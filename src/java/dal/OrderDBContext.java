@@ -6,6 +6,7 @@ package dal;
 
 import dal.combiner.OrderCombiner;
 import dal.sql.OrderSql;
+import jakarta.mail.MessagingException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -335,7 +336,7 @@ public class OrderDBContext extends DBContext<Order> {
                 address.setDistrict(rs.getString("district"));
                 address.setWard(rs.getString("ward"));
                 address.setStreet(rs.getString("street"));
-                
+
                 o.setAddress(address);
                 o.setCustomer(c);
             }
@@ -531,7 +532,7 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     //=============== Data Change ===============
-    public void updateOrderStatus(int orderID, int statusID) throws Exception {
+    public void updateOrderStatus(int orderID, int statusID) throws MessagingException {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -540,18 +541,22 @@ public class OrderDBContext extends DBContext<Order> {
             // Validate order existence
             Order o = getOrderByOrderID(orderID);
             if (o == null) {
-                throw new Exception("Order not found.");
+                throw new MessagingException("Order not found.");
             }
-
+            Status_Order status = o.getStatus();
             int customerId = o.getCustomer().getCus_id();
             OrderDetailDBContext oddb = new OrderDetailDBContext();
             List<OrderDetail> orderDetailList = oddb.getDetailsByOrderID(orderID);
 
             // Check if the order is paid
             if (!o.isPaid_status()) {
-                throw new Exception("Customer has not paid for the product.");
+                throw new MessagingException("Customer has not paid for the product.");
             }
 
+            // Check if status Order is invalid for change 
+            if (status.getStatus_name().equals("Cancelled") || status.getStatus_name().equals("Completed") || status.getStatus_id() >= statusID) {
+                throw new MessagingException("Invalid Status Update.");
+            }
             String sql = """
                      UPDATE dbo.[Order] SET status_id = ?
                      OUTPUT inserted.status_id
@@ -723,7 +728,6 @@ public class OrderDBContext extends DBContext<Order> {
         OrderDBContext orderDB = new OrderDBContext();
         Order o = orderDB.getOrderByOrderID(41, 1);
         System.out.println(o.getNote());
-        
 
     }
 }
