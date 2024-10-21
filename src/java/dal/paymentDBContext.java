@@ -15,7 +15,7 @@ import model.Payment;
  *
  * @author KEISHA
  */
-public class paymentDBContext extends DBContext<Payment> {
+public class PaymentDBContext extends DBContext<Payment> {
 
     public ArrayList<Payment> allPaymentMethods() {
 
@@ -33,7 +33,7 @@ public class paymentDBContext extends DBContext<Payment> {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(paymentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PaymentDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return payments;
     }

@@ -9,7 +9,7 @@ import dal.AddressDBContext;
 import dal.CartDBContext;
 import dal.CustomerDBContext;
 import dal.OrderDBContext;
-import dal.paymentDBContext;
+import dal.PaymentDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -39,7 +39,7 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
             throws ServletException, IOException {
 
         int userID = user.getCus_id();
-        paymentDBContext paymentDB = new paymentDBContext();
+        PaymentDBContext paymentDB = new PaymentDBContext();
         CartDBContext db = new CartDBContext();
         AddressDBContext aDB = new AddressDBContext();
         ArrayList<Address> addresses = aDB.getAddressByCusID(userID);
