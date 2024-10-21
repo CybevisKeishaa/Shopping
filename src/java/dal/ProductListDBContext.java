@@ -643,7 +643,10 @@ public class ProductListDBContext extends DBContext {
         }
         return -1;
     }
-
+    public static void main(String[] args){
+        ProductListDBContext p=new ProductListDBContext();
+        System.out.println(p.getListProduct(null, null, args, null, 1, 2).size());
+    }
     public List<Product> getListProduct(
           String[] bids,
             String[] cids,
@@ -657,8 +660,8 @@ public class ProductListDBContext extends DBContext {
                 "SELECT DISTINCT p.*, p.brand_id AS brand_id, pg.gender_id AS gender_id, pi.img_id AS img_id FROM Product p "
                         + "LEFT OUTER JOIN Product_Capacity pc ON pc.product_id = p.product_id "
                         + "LEFT OUTER JOIN Product_Gender pg ON pg.product_id = p.product_id "
-                        + "LEFT OUTER JOIN Product_Image pi ON pi.product_id = p.product_id "
-                        + "WHERE 1=1 ");
+                        + "LEFT OUTER JOIN Product_Image pi ON pi.product_id = p.product_id 						"
+                        + "WHERE 1=1 and p.status=1 ");
         if (bids != null && bids.length > 0) {
             String bidList = String.join(",", bids);
             sql.append("AND p.brand_id IN (" + bidList + ") ");
@@ -693,23 +696,23 @@ public class ProductListDBContext extends DBContext {
                 GenderDBContext gen = new GenderDBContext();
                 ImageDBContext image = new ImageDBContext();
 
+                
                 Product p = new Product();
                 Brand b = br.getBrandFindById(rs.getInt("brand_id"));
                 Gender g = gen.getGenderFindById(rs.getInt("gender_id"));
-                Image ig = image.getImageById(rs.getInt("img_id"));
+               ArrayList<Image> i = image.getByProductId(rs.getInt(1));
+                p.setImg(i);
                 p.setProduct_id(rs.getInt("product_id"));
                 p.setName(rs.getString("name"));
                 p.setDate(rs.getDate("date"));
                 p.setPrice(rs.getInt("price"));
-
-
+                DiscountDBContext d=new DiscountDBContext();
+                p.setDiscount(d.getDiscountById(rs.getInt("discount_id")));
                 p.setBrand(b);
                 if (g != null) {
                     p.setGender(new ArrayList<>(List.of(g)));
                 }
-                if (ig != null) {
-                    p.setImg(new ArrayList<>(List.of(ig)));
-                }
+               
 
                 list.add(p);
             }
@@ -768,7 +771,7 @@ public class ProductListDBContext extends DBContext {
     public List<Product> getHotProducts() {
         String sql =
                 "SELECT TOP 3 p.*, pi.img_id FROM Product p LEFT OUTER JOIN Product_Image pi ON p.product_id = pi.product_id LEFT OUTER JOIN Discount d ON p.discount_id = d.discount_id  " +
-                        "WHERE d.start <= ? AND ? <= d.[end] ";
+                        "WHERE d.start <= ? AND ? <= d.[end] and p.status=1  ";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setDate(1, Date.valueOf(LocalDate.now()));
@@ -781,7 +784,8 @@ public class ProductListDBContext extends DBContext {
                 DiscountDBContext discountDB = new DiscountDBContext();
 
                 Product p = new Product();
-                Image ig = image.getImageById(rs.getInt("img_id"));
+                    ArrayList<Image> i = image.getByProductId(rs.getInt(1));
+                p.setImg(i);
                 Discount d = discountDB.getDiscountById(rs.getInt("discount_id"));
                 p.setProduct_id(rs.getInt("product_id"));
                 p.setName(rs.getString("name"));
@@ -799,10 +803,7 @@ public class ProductListDBContext extends DBContext {
                     }
                 }
 
-                if (ig != null) {
-                    p.setImg(new ArrayList<>(List.of(ig)));
-                }
-
+          
                 list.add(p);
             }
             return list;

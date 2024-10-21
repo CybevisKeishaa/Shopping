@@ -365,10 +365,13 @@
                                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                                                     <div class="single-product">
                                                         <div class="product-img">
-                                                            <a href="product/detail?product_id=">
-                                                                <img class="default-img" src="img/${i.img[0].img_url}" alt="#">
-                                                                <img class="hover-img" src="img/${i.img[0].img_url}" alt="#">
-                                                            </a>
+                                                               <c:forEach var="j" items="${i.img}">
+                                                                    <a href="product/detail?product_id=">
+                                                            <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" class="default-img" >
+                                                                   </a>
+                                                                   <span class="price-dec">${i.discount.amount}% OFF</span>
+                                                        </c:forEach>
+                                                        
                                                             <div class="button-head">
                                                                 <div class="product-action-2">
                                                                     <a title="Add to cart" href="#">Add to cart</a>
@@ -538,8 +541,13 @@
                             <div class="single-product">
                                 <div class="product-img">
                                     <a href="product/detail?id=">
-                                        <img class="default-img" src="img/${i.img[0].img_url}" alt="#">
-                                        <img class="hover-img" src="img/${i.img[0].img_url}" alt="#">
+                                          <c:forEach var="j" items="${i.img}">
+                                                                    <a href="product/detail?product_id=">
+                                                            <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" class="default-img" >
+                                                                   </a>
+                                                                   <span class="price-dec">${i.discount.amount}% OFF</span>
+                                                        </c:forEach>
+                                                        
                                         <span class="out-of-stock">Hot</span>
                                     </a>
                                     <div class="button-head">

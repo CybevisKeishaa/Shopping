@@ -57,12 +57,13 @@ public class employeeProductList extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         Object object=request.getSession().getAttribute("employee");
+        String search=request.getParameter("search");
         Employee e=new Employee();
         if(object!=null){
             e=(Employee)object;
         }
         ProductDBContext pdb=new ProductDBContext();
-        ArrayList<Product> list=pdb.getAllByEid(e.getEmp_id());
+        ArrayList<Product> list=pdb.getAllByEid(e.getEmp_id(),search);
         request.setAttribute("data", list);
         request.getRequestDispatcher("view/maketer/employeeProductList.jsp").forward(request, response);
     } 

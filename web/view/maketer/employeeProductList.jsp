@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,7 +21,7 @@
         <!-- end: Css -->
 
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/a/asset/img/logomi.png">
-
+         
         <style>
             .ml-2 {
                 margin-left: 10px;
@@ -43,7 +45,7 @@
             }
 
             .search-container input[type="text"] {
-                width: 200px; /* ?i?u ch?nh ?? r?ng c?a thanh tìm ki?m */
+                width: 200px; /* ?i?u ch?nh ?? r?ng c?a thanh tÃ¬m ki?m */
             }
               
         </style>
@@ -128,13 +130,13 @@
                                 <h3>Product List</h3>
                             </div>
                             <div class="panel-body">
-                                <!-- Nút Create và Thanh tìm ki?m n?m trên cùng, ngang hàng nhau -->
+                                <!-- NÃºt Create vÃ  Thanh tÃ¬m ki?m n?m trÃªn cÃ¹ng, ngang hÃ ng nhau -->
                                 <div class="search-container">
                                     <a href="employeeAddProduct" class="btn btn-success btn-create">
                                         <b>Create</b>
                                     </a>
-                                    <form action="searchProduct" method="GET">
-                                        <input type="text" id="custom-search" class="form-control" placeholder="Search..." name="search"/>
+                                    <form action="employeeProductList" method="GET">
+                                        <input type="text" id="custom-search" class="form-control" placeholder="Search by name..." name="search"/>
                                         <input type="submit" value="Search" class="btn btn-primary ml-2"/>
                                     </form>
                                 </div>
@@ -173,8 +175,7 @@
                                                         <td>Chua kich hoat</td>
                                                     </c:if>
                                                     <td>
-                                                        <a href="productdetails?product_id=${i.product_id}" class="btn btn-primary btn-sm">Update</a>
-                                                        <a href="productdetails?product_id=${i.product_id}" class="btn btn-danger btn-sm">Delete</a>
+                                                        <a href="employeeUpdateProduct?product_id=${i.product_id}" class="btn btn-primary btn-sm">Update</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -211,12 +212,12 @@
             $(document).ready(function () {
                 var table = $('#datatables-example').DataTable({
 
-                    "searching": false, // T?t tìm ki?m m?c ??nh
-                    "paging": true, // B?t phân trang
-                    "pageLength": 6, // S? hàng trên m?i trang
+                    "searching": false, // T?t tÃ¬m ki?m m?c ??nh
+                    "paging": true, // B?t phÃ¢n trang
+                    "pageLength": 6, // S? hÃ ng trÃªn m?i trang
                     "lengthChange": false   // T?t "Show ... entries"
                 });
-                // Tìm ki?m theo Full Name, Email, ho?c Mobile
+                // TÃ¬m ki?m theo Full Name, Email, ho?c Mobile
                 $('#custom-search').on('keyup', function () {
                     var searchTerm = this.value.toLowerCase();
                     var searchType = $('#search-type').val();
@@ -226,7 +227,7 @@
                         var email = data[3].toLowerCase(); // Email
                         var mobile = data[4].toLowerCase(); // Mobile
 
-                        // Ki?m tra n?u searchTerm t?n t?i trong lo?i tìm ki?m ?ã ch?n
+                        // Ki?m tra n?u searchTerm t?n t?i trong lo?i tÃ¬m ki?m ?Ã£ ch?n
                         var match = false;
                         if (searchType === 'name' && fullName.includes(searchTerm)) {
                             match = true;
@@ -236,7 +237,7 @@
                             match = true;
                         }
 
-                        // Hi?n ho?c ?n hàng d?a trên k?t qu? tìm ki?m
+                        // Hi?n ho?c ?n hÃ ng d?a trÃªn k?t qu? tÃ¬m ki?m
                         if (match) {
                             this.show();
                         } else {

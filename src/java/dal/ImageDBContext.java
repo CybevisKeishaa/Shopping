@@ -21,6 +21,7 @@ public class ImageDBContext extends DBContext<Image> {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Image ig = new Image();
+                ig.setImg_id(rs.getInt("img_id"));
                 ig.setImg_url(rs.getString("img_url"));
                 ig.setName(rs.getString("img_name"));
                 list.add(ig);

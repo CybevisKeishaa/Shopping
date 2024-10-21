@@ -23,7 +23,7 @@ import java.io.InputStream;
  */
 public class ProductDBContext extends DBContext<Product> {
 
-    public ArrayList<Product> getAllByEid(int eid) {
+    public ArrayList<Product> getAllByEid(int eid,String s) {
         PreparedStatement stm = null;
         BrandDBContext br = new BrandDBContext();
         CapacityDBContext cap = new CapacityDBContext();
@@ -40,9 +40,15 @@ public class ProductDBContext extends DBContext<Product> {
                 + "      ,[status]\n"
                 + "      ,[emp_id]\n"
                 + "  FROM [swp-son].[dbo].[Product] where emp_id=?";
+        if(s!=null){
+            sql+=" and name like '%'+?+'%'";
+        }
         try {
             stm = connect.prepareStatement(sql);
             stm.setInt(1, eid);
+            if(s!=null){
+                stm.setString(2, s);
+            }
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
@@ -60,7 +66,7 @@ public class ProductDBContext extends DBContext<Product> {
                 p.setStatus(rs.getBoolean(8));
                 ArrayList<Capacity> c = cap.getCapacityByProductId(rs.getInt(1));
                 p.setCapacity(c);
-                ArrayList<Image> i=image.getByProductId(rs.getInt(1));
+                ArrayList<Image> i = image.getByProductId(rs.getInt(1));
                 p.setImg(i);
                 list.add(p);
             }
@@ -71,7 +77,71 @@ public class ProductDBContext extends DBContext<Product> {
         return null;
     }
 
-    public void insertProduct(String eid, String name, String price, String stock, String date, String dis, String brand, String image,String imgename) {
+ 
+    public void deleteProduct(String id) {
+
+        try {
+            connect.setAutoCommit(false);
+
+            String sql = "DELETE FROM [dbo].[Product]\n"
+                    + "      WHERE product_id=?";
+            PreparedStatement st = connect.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            st.setInt(1, Integer.parseInt(id));
+            st.executeUpdate();
+            String sql1 = "DELETE FROM [dbo].[Product_Image]\n"
+                    + "      WHERE product_id=?";
+            PreparedStatement st1 = connect.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
+            st1.setInt(1, Integer.parseInt(id));
+            st1.executeUpdate();
+            connect.commit();
+            connect.setAutoCommit(true);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateProduct(String pid, int igid, String name, String price, String stock, String date, String dis, String brand, String status, String image, String imgename) {
+        try {
+            connect.setAutoCommit(false);
+
+            String updateProduct = "UPDATE [dbo].[Product]\n"
+                    + "   SET [name] = ?\n"
+                    + "      ,[price] = ?\n"
+                    + "      ,[date] = ?\n"
+                    + "      ,[stock] = ?\n"
+                    + "      ,[discount_id] = ?\n"
+                    + "      ,[brand_id] = ?\n"
+                    + "      ,[status] = ?\n"
+                    + " WHERE product_id=?";
+            PreparedStatement updateProductstm = connect.prepareStatement(updateProduct, PreparedStatement.RETURN_GENERATED_KEYS);
+            updateProductstm.setString(1, name);
+            updateProductstm.setInt(2, Integer.parseInt(price));
+            updateProductstm.setDate(3, Date.valueOf(date));
+            updateProductstm.setInt(4, Integer.parseInt(stock));
+            updateProductstm.setInt(5, Integer.parseInt(dis));
+            updateProductstm.setInt(6, Integer.parseInt(brand));
+            updateProductstm.setBoolean(7, Boolean.parseBoolean(status));
+            updateProductstm.setInt(8, Integer.parseInt(pid));
+            updateProductstm.executeUpdate();
+
+            String insertImageProduct = "UPDATE [dbo].[Image]\n"
+                    + "   SET [img_url] = ?\n"
+                    + "      ,[img_name] = ?\n"
+                    + " WHERE img_id=?";
+            PreparedStatement insertImageProductst = connect.prepareStatement(insertImageProduct, PreparedStatement.RETURN_GENERATED_KEYS);
+            insertImageProductst.setString(1, image);
+            insertImageProductst.setString(2, imgename);
+            insertImageProductst.setInt(3, igid);
+            insertImageProductst.executeUpdate();
+            connect.commit();
+            connect.setAutoCommit(true);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void insertProduct(String eid, String name, String price, String stock, String date, String dis, String brand, String image, String imgename) {
         try {
             connect.setAutoCommit(false);
 
@@ -294,15 +364,6 @@ public class ProductDBContext extends DBContext<Product> {
         return products;
     }
 
-    public static void main(String[] args) {
-        ProductDBContext db = new ProductDBContext();
-        ArrayList<Product> p = db.getAllByEid(2);
-        for(Product x:p){
-            System.out.println(x.getProduct_id());
-            System.out.println(x.getImg().size());
-        }
-    }
-
     public int getTotalProduct() {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM Product";
@@ -371,6 +432,12 @@ public class ProductDBContext extends DBContext<Product> {
     }
 
     public Product getByProductId(int id) {
+        PreparedStatement stm = null;
+        BrandDBContext br = new BrandDBContext();
+        CapacityDBContext cap = new CapacityDBContext();
+        GenderDBContext gen = new GenderDBContext();
+        ImageDBContext image = new ImageDBContext();
+        ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product where product_id=?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
@@ -396,6 +463,8 @@ public class ProductDBContext extends DBContext<Product> {
                 p.setBrand(b);
                 CapacityDBContext cDb = new CapacityDBContext();
                 ArrayList<Capacity> cList = cDb.getCapacityByProductId(id);
+                ArrayList<Image> i = image.getByProductId(rs.getInt(1));
+                p.setImg(i);
                 p.setCapacity(cList);
             }
             return p;

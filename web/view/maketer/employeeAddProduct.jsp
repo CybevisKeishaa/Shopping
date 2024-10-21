@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -171,8 +173,8 @@
                                 <div class="form-group">
                                     <label for="dis">Discount:</label>
                                     <select name="dis" id="dis" required>
-                                        <option value="" disabled selected>-- Select discount --</option> <!-- Tùy ch?n ch?n m?c ??nh -->
-                                        <option value="0">Không có discount</option> <!-- Tùy ch?n không có discount -->
+                                        <option value="" disabled selected>-- Select discount --</option> 
+                                        <option value="0">KhÃ´ng cÃ³ discount</option> 
                                         <c:forEach var="i" items="${requestScope.datad}">
                                             <option value="${i.discount_id}">${i.name}</option>
                                         </c:forEach>
