@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/SWP391/group06/src/java/model/Capacity.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/auth/BaseRequiredCustomerAuthenticationController.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/admin/employeeDetails.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/product/ProductDetail.java</file>
@@ -14,8 +15,10 @@
             <file>file:/D:/SWP391/group06/web/view/order/feedback.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/controller/cart/addToCartServlet.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/DiscountDBContext.java</file>
+            <file>file:/D:/SWP391/group06/web/Demo_Template/BasePage/Footer.jsp</file>
             <file>file:/D:/SWP391/group06/web/view/viewProductList/productDetail.jsp</file>
             <file>file:/D:/SWP391/group06/web/view/maketer/employeeAddProduct.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/OrderDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/ImageDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/product/ProductList.java</file>
             <file>file:/D:/SWP391/group06/web/view/order/orderList.jsp</file>
@@ -27,17 +30,19 @@
             <file>file:/D:/SWP391/group06/web/view/maketer/employeeProductList.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/model/Employee.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/home/HomePageServlet.java</file>
-            <file>file:/D:/SWP391/group06/src/java/dal/OderDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/ProductListDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Gender.java</file>
             <file>file:/D:/SWP391/group06/src/java/model/Image.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeAddProduct.java</file>
             <file>file:/D:/SWP391/group06/src/java/model/Discount.java</file>
+            <file>file:/D:/SWP391/group06/web/Demo_Template/BasePage/Header.jsp</file>
             <file>file:/D:/SWP391/group06/web/view/home/homepage.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/controller/home/HomeFeedbackServlet.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeUpdateProduct.java</file>
             <file>file:/D:/SWP391/group06/web/WEB-INF/web.xml</file>
             <file>file:/D:/SWP391/group06/web/view/ad/searchList.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeProductList.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/GenderDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/employeeDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/model/Product.java</file>
             <file>file:/D:/SWP391/group06/web/META-INF/context.xml</file>
@@ -45,6 +50,7 @@
             <file>file:/D:/SWP391/group06/src/java/dal/CustomerDBContext.java</file>
         </group>
         <group>
+            <file>file:/D:/SWP391/group06/src/java/model/Capacity.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/auth/BaseRequiredCustomerAuthenticationController.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/admin/employeeDetails.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/product/ProductDetail.java</file>
@@ -56,8 +62,10 @@
             <file>file:/D:/SWP391/group06/web/view/order/feedback.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/controller/cart/addToCartServlet.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/DiscountDBContext.java</file>
+            <file>file:/D:/SWP391/group06/web/Demo_Template/BasePage/Footer.jsp</file>
             <file>file:/D:/SWP391/group06/web/view/viewProductList/productDetail.jsp</file>
             <file>file:/D:/SWP391/group06/web/view/maketer/employeeAddProduct.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/OrderDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/ImageDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/product/ProductList.java</file>
             <file>file:/D:/SWP391/group06/web/view/order/orderList.jsp</file>
@@ -69,17 +77,19 @@
             <file>file:/D:/SWP391/group06/web/view/maketer/employeeProductList.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/model/Employee.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/home/HomePageServlet.java</file>
-            <file>file:/D:/SWP391/group06/src/java/dal/OderDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/ProductListDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Gender.java</file>
             <file>file:/D:/SWP391/group06/src/java/model/Image.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeAddProduct.java</file>
             <file>file:/D:/SWP391/group06/src/java/model/Discount.java</file>
+            <file>file:/D:/SWP391/group06/web/Demo_Template/BasePage/Header.jsp</file>
             <file>file:/D:/SWP391/group06/web/view/home/homepage.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/controller/home/HomeFeedbackServlet.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeUpdateProduct.java</file>
             <file>file:/D:/SWP391/group06/web/WEB-INF/web.xml</file>
             <file>file:/D:/SWP391/group06/web/view/ad/searchList.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeProductList.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/GenderDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/employeeDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/model/Product.java</file>
             <file>file:/D:/SWP391/group06/web/META-INF/context.xml</file>

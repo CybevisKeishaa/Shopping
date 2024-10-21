@@ -5,7 +5,9 @@
 package controller.makerProduct;
 
 import dal.BrandDBContext;
+import dal.CapacityDBContext;
 import dal.DiscountDBContext;
+import dal.GenderDBContext;
 import dal.ProductDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -74,8 +76,13 @@ public class employeeUpdateProduct extends HttpServlet {
         if (object != null) {
             e = (Employee) object;
         }
+        String cid=request.getParameter("cid");
+        CapacityDBContext cdb=new CapacityDBContext();
         ProductDBContext pdb = new ProductDBContext();
-
+        GenderDBContext ged=new GenderDBContext();
+        List<Gender> l=ged.getAll();
+        Capacity c=cdb.getCapacityFindById(Integer.parseInt(cid));
+        List<Capacity> clist=cdb.getAll();
         Product p = pdb.getByProductId(Integer.parseInt(product_id));
         DiscountDBContext db = new DiscountDBContext();
         List<Discount> dlist = db.getAll();
@@ -86,6 +93,9 @@ public class employeeUpdateProduct extends HttpServlet {
         request.setAttribute("p", p);
         request.setAttribute("pid", product_id);
         request.setAttribute("eid", e.getEmp_id());
+        request.setAttribute("g", l);
+        request.setAttribute("c", c);
+        request.setAttribute("listc", clist);
         request.getRequestDispatcher("view/maketer/employeeUpdateProduct.jsp").forward(request, response);
     }
 
@@ -117,6 +127,9 @@ public class employeeUpdateProduct extends HttpServlet {
         String brand = request.getParameter("brand");
         String status = request.getParameter("status");
         String size = request.getParameter("size");
+        String gender=request.getParameter("gender");
+        String cidd=request.getParameter("cidd");
+        String capa=request.getParameter("capa");
         int arraySize = Integer.parseInt(size);
 
          String fileName = null;
@@ -134,7 +147,7 @@ public class employeeUpdateProduct extends HttpServlet {
         if (fileName != null && !fileName.isEmpty()) {
             filePath = uploadFilePath + File.separator + fileName;
             filePart.write(filePath);
-            pdb.updateProduct(pid, Integer.parseInt(imgId), name, price, stock, formattedDate, dis, brand, status, filePath, fileName);
+            pdb.updateProduct(pid, cidd,capa,Integer.parseInt(imgId), name, price, stock, formattedDate, dis,gender, brand, status, filePath, fileName);
         }
     }
 }

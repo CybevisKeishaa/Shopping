@@ -30,6 +30,28 @@ public class GenderDBContext extends DBContext<Gender>{
         return null;
         
     }
+    public static void main(String[] args){
+        GenderDBContext gd=new GenderDBContext();
+        System.out.println(gd.getAll().get(0).getGender_id());
+    }
+    public ArrayList<Gender> getGenderFindByPid(int pid){
+                ArrayList<Gender> list = new ArrayList<>();
+
+        String sql="SELECT g.* FROM Product p inner join Product_Gender pg on p.product_id=pg.product_id inner join Gender g on pg.gender_id=g.gender_id where p.product_id=?";
+        try{
+               PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, pid);
+            ResultSet rs = st.executeQuery();
+             while (rs.next()) {
+                Gender g = new Gender(rs.getInt(1), rs.getString(2));
+                list.add(g);
+            }
+             return list;
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
      public List<Gender> getAll() {
         List<Gender> list = new ArrayList<>();
         String sql = "Select * from Gender";

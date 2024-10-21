@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zxx">
     <head>
@@ -47,64 +48,51 @@
 
         </style>
         <!-- Meta Tag -->
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name='copyright' content=''>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- Title Tag  -->
-        <title>Eshop - eCommerce HTML5 Template.</title>
+        <title>Keishaa Perfume</title>
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="images/favicon.png">
+        <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/images/favicon.png">
         <!-- Web Font -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
 
         <!-- StyleSheet -->
 
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
         <!-- Magnific Popup -->
-        <link rel="stylesheet" href="css/magnific-popup.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/magnific-popup.min.css">
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="css/font-awesome.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.css">
         <!-- Fancybox -->
-        <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery.fancybox.min.css">
         <!-- Themify Icons -->
-        <link rel="stylesheet" href="css/themify-icons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/themify-icons.css">
         <!-- Nice Select CSS -->
-        <link rel="stylesheet" href="css/niceselect.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/niceselect.css">
         <!-- Animate CSS -->
-        <link rel="stylesheet" href="css/animate.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
         <!-- Flex Slider CSS -->
-        <link rel="stylesheet" href="css/flex-slider.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/flex-slider.min.css">
         <!-- Owl Carousel -->
-        <link rel="stylesheet" href="css/owl-carousel.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl-carousel.css">
         <!-- Slicknav -->
-        <link rel="stylesheet" href="css/slicknav.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/slicknav.min.css">
 
         <!-- Eshop StyleSheet -->
-        <link rel="stylesheet" href="css/reset.css">
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="css/responsive.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
 
 
 
     </head>
     <body class="js">
-
-        <!-- Preloader -->
-        <div class="preloader">
-            <div class="preloader-inner">
-                <div class="preloader-icon">
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-        </div>
-        <!-- End Preloader -->
-
-
-        <!-- Header -->
         <header class="header shop">
             <!-- Topbar -->
             <div class="topbar">
@@ -114,8 +102,8 @@
                             <!-- Top Left -->
                             <div class="top-left">
                                 <ul class="list-main">
-                                    <li><i class="ti-headphone-alt"></i> +060 (800) 801-582</li>
-                                    <li><i class="ti-email"></i> support@shophub.com</li>
+                                    <li><i class="ti-headphone-alt"></i> +84 354 995 144</li>
+                                    <li><i class="ti-email"></i> group6@fpt.edu.vn</li>
                                 </ul>
                             </div>
                             <!--/ End Top Left -->
@@ -124,10 +112,10 @@
                             <!-- Top Right -->
                             <div class="right-content">
                                 <ul class="list-main">
-                                    <li><i class="ti-location-pin"></i> Store location</li>
-                                    <li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
-                                    <li><i class="ti-user"></i> <a href="#">My account</a></li>
-                                    <li><i class="ti-power-off"></i><a href="login.html#">Login</a></li>
+                                    <li><i class="ti-location-pin"></i> Đại Học FPT Hà Nội</li>
+
+                                    <li><i class="ti-user"></i> <a href="${pageContext.request.contextPath}/customer_profile">Tài khoản</a></li>
+                                    <li><i class="ti-power-off"></i><a href="${pageContext.request.contextPath}/login">Đăng nhập</a></li>
                                 </ul>
                             </div>
                             <!-- End Top Right -->
@@ -142,7 +130,7 @@
                         <div class="col-lg-2 col-md-2 col-12">
                             <!-- Logo -->
                             <div class="logo">
-                                <a href="index.html"><img src="images/logo.png" alt="logo"></a>
+                                <a href="${pageContext.request.contextPath}/homepage"><img src="${pageContext.request.contextPath}/img/logo.png" alt="logo"></a>
                             </div>
                             <!--/ End Logo -->
                             <!-- Search Form -->
@@ -165,12 +153,12 @@
                                 <div class="search-bar">
                                     <select>
                                         <option selected="selected">All Category</option>
-                                        <option>watch</option>
-                                        <option>mobile</option>
-                                        <option>kid?s item</option>
+                                        <option>Nam</option>
+                                        <option>Nữ</option>
+                                        <option>Unisex</option>
                                     </select>
                                     <form action="productSearch">
-                                        <input name="search" placeholder="Search Products Here....." type="search">
+                                        <input name="search" placeholder="Tìm kiếm....." type="search">
                                         <button class="btnn"><i class="ti-search"></i></button>
                                     </form>
                                 </div>
@@ -183,34 +171,34 @@
                                     <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
                                 </div>
                                 <div class="sinlge-bar">
-                                    <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                                    <a href="${pageContext.request.contextPath}/customer_profile" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
                                 </div>
                                 <div class="sinlge-bar shopping">
                                     <a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
                                     <!-- Shopping Item -->
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
-                                            <span>2 Items</span>
-                                            <a href="#">View Cart</a>
+                                            <span>2 Sản phẩm</span>
+                                            <a href="#">Xem giỏ hàng</a>
                                         </div>
                                         <ul class="shopping-list">
                                             <li>
                                                 <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                                <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-                                                <h4><a href="#">Woman Ring</a></h4>
-                                                <p class="quantity">1x - <span class="amount">$99.00</span></p>
+                                                <a class="cart-img" href="#"><img src="${pageContext.request.contextPath}/https://via.placeholder.com/70x70" alt="#"></a>
+                                                <h4><a href="#">Dior Sauvage</a></h4>
+                                                <p class="quantity">1x - <span class="amount">2.800.000 VND</span></p>
                                             </li>
                                             <li>
                                                 <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                                <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-                                                <h4><a href="#">Woman Necklace</a></h4>
-                                                <p class="quantity">1x - <span class="amount">$35.00</span></p>
+                                                <a class="cart-img" href="#"><img src="${pageContext.request.contextPath}/https://via.placeholder.com/70x70" alt="#"></a>
+                                                <h4><a href="#">Channel</a></h4>
+                                                <p class="quantity">1x - <span class="amount">2.000.000 VND</span></p>
                                             </li>
                                         </ul>
                                         <div class="bottom">
                                             <div class="total">
-                                                <span>Total</span>
-                                                <span class="total-amount">$134.00</span>
+                                                <span>Tổng hóa đơn</span>
+                                                <span class="total-amount">4.800.000 VND</span>
                                             </div>
                                             <a href="checkout.html" class="btn animate">Checkout</a>
                                         </div>
@@ -237,22 +225,18 @@
                                         <div class="navbar-collapse">	
                                             <div class="nav-inner">	
                                                 <ul class="nav main-menu menu navbar-nav">
-                                                    <li ><a href="#">Home</a></li>
-                                                    <li class="active"><a href="#">Product</a></li>												
-                                                    <li><a href="#">Service</a></li>
-                                                    <li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
+                                                    <li class="active"><a href="${pageContext.request.contextPath}/homepage">Trang chủ</a></li>
+                                                    <li><a href="${pageContext.request.contextPath}/productList">Sản phẩm</a></li>												
+
+                                                    <li><a href="#">Đơn hàng<i class="ti-angle-down"></i><span class="new">New</span></a>
                                                         <ul class="dropdown">
-                                                            <li><a href="cart.html">Cart</a></li>
-                                                            <li><a href="checkout.html">Checkout</a></li>
+                                                            <li><a href="cart.html">Giỏ hàng</a></li>
+                                                            <li><a href="${pageContext.request.contextPath}/account/order">Đơn hàng</a></li>
                                                         </ul>
                                                     </li>
-                                                    <li><a href="#">Pages</a></li>									
-                                                    <li><a href="#">Blog<i class="ti-angle-down"></i></a>
-                                                        <ul class="dropdown">
-                                                            <li><a href="blog-single-sidebar.html">Blog Single Sidebar</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><a href="contact.html">Contact Us</a></li>
+
+                                                    <li><a href="${pageContext.request.contextPath}/blogList">Bài viết</a></li>
+                                                    <li><a href="${pageContext.request.contextPath}/homepage/feedback">Đánh giá</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -266,7 +250,7 @@
             </div>
             <!--/ End Header Inner -->
         </header>
-        <!--/ End Header -->
+
 
 
         <!-- Start Product Area -->
@@ -365,13 +349,14 @@
                                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                                                     <div class="single-product">
                                                         <div class="product-img">
-                                                               <c:forEach var="j" items="${i.img}">
-                                                                    <a href="product/detail?product_id=">
-                                                            <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" class="default-img" >
-                                                                   </a>
-                                                                   <span class="price-dec">${i.discount.amount}% OFF</span>
-                                                        </c:forEach>
-                                                        
+                                                            <c:forEach var="j" items="${i.img}">
+                                                                <a href="product/detail?product_id=">
+                                                                    <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" class="default-img" >
+                                                                <span class="price-dec">${i.discount.amount}% OFF</span>
+                                                                </a>
+                                                                
+                                                            </c:forEach>
+
                                                             <div class="button-head">
                                                                 <div class="product-action-2">
                                                                     <a title="Add to cart" href="#">Add to cart</a>
@@ -444,7 +429,7 @@
                                                         <a href="productList?page=${i}&brandid=${param.brandid}">${i}</a>
                                                     </c:if>
                                                     <c:if test="${param.genderid != null}">
-                                                        <a href="productList?page=${i}&brandid=${param.genderid}">${i}</a>
+                                                        <a href="productList?page=${i}&genderid=${param.genderid}">${i}</a>
                                                     </c:if>
                                                     <c:if test="${param.capacityid != null}">
                                                         <a href="productList?page=${i}&capacityid=${param.capacityid}">${i}</a>
@@ -541,13 +526,15 @@
                             <div class="single-product">
                                 <div class="product-img">
                                     <a href="product/detail?id=">
-                                          <c:forEach var="j" items="${i.img}">
-                                                                    <a href="product/detail?product_id=">
-                                                            <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" class="default-img" >
-                                                                   </a>
-                                                                   <span class="price-dec">${i.discount.amount}% OFF</span>
-                                                        </c:forEach>
-                                                        
+                                        <c:forEach var="j" items="${i.img}">
+                                            <a href="product/detail?product_id=">
+                                                <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" class="default-img" >
+                                                <span class="price-dec">${i.discount.amount}% OFF</span>
+                                            </a>
+                                            
+                                            
+                                        </c:forEach>
+
                                         <span class="out-of-stock">Hot</span>
                                     </a>
                                     <div class="button-head">
@@ -573,11 +560,16 @@
                             <!-- Start Single Product -->
                             <div class="single-product">
                                 <div class="product-img">
-                                    <a href="product/detail?id=">
-                                        <img class="default-img" src="img/${i.img[0].img_url}" alt="#">
-                                        <img class="hover-img" src="img/${i.img[0].img_url}" alt="#">
-                                        <span class="new">New</span>
-                                    </a>
+                                  
+                                        <c:forEach var="j" items="${i.img}">
+                                            <a href="product/detail?product_id=">
+                                                <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" class="default-img" >
+                                                                                        <span class="new">New</span>
+
+                                            </a>
+                                            
+                                            
+                                        </c:forEach>
                                     <div class="button-head">
 
                                         <div class="product-action-2">
@@ -595,7 +587,7 @@
                             <!-- End Single Product -->
                         </c:forEach>
                         <!-- Start Single Product -->
-                        
+
                         <!-- End Single Product -->
                     </div>
                 </div>
@@ -627,8 +619,6 @@
                                     </div>
                                     </div>
                                     <!-- Modal end -->
-
-                                    <!-- Start Footer Area -->
                                     <footer class="footer">
                                         <!-- Footer Top -->
                                         <div class="footer-top section">
@@ -638,26 +628,14 @@
                                                         <!-- Single Widget -->
                                                         <div class="single-footer about">
                                                             <div class="logo">
-                                                                <a href="index.html"><img src="images/logo2.png" alt="#"></a>
+                                                                <a href="index.html"><img src="${pageContext.request.contextPath}/img/logo.png" alt="#"></a>
                                                             </div>
                                                             <p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
-                                                            <p class="call">Got Question? Call us 24/7<span><a href="tel:123456789">+0123 456 789</a></span></p>
+                                                            <p class="call">Giải đáp thắc mắc? Call us 24/7<span><a href="tel:123456789">+84 354 995 144</a></span></p>
                                                         </div>
                                                         <!-- End Single Widget -->
                                                     </div>
-                                                    <div class="col-lg-2 col-md-6 col-12">
-                                                        <!-- Single Widget -->
-                                                        <div class="single-footer links">
-                                                            <h4>Information</h4>
-                                                            <ul>
-                                                                <li><a href="#">About Us</a></li>
-                                                                <li><a href="#">Faq</a></li>
-                                                                <li><a href="#">Terms & Conditions</a></li>
-                                                                <li><a href="#">Contact Us</a></li>
-                                                                <li><a href="#">Help</a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <!-- End Single Widget -->
+                                                    <div class="col-lg-2 col-md-6 col-12">                           
                                                     </div>
                                                     <div class="col-lg-2 col-md-6 col-12">
                                                         <!-- Single Widget -->
@@ -680,18 +658,18 @@
                                                             <!-- Single Widget -->
                                                             <div class="contact">
                                                                 <ul>
-                                                                    <li>NO. 342 - London Oxford Street.</li>
-                                                                    <li>012 United Kingdom.</li>
-                                                                    <li>info@eshop.com</li>
-                                                                    <li>+032 3456 7890</li>
+                                                                    <li>Đại học FPT Hà Nội</li>
+                                                                    <li>49 Mục Uyên - Thạch Thất</li>
+                                                                    <li>group6@gmail.com</li>
+                                                                    <li>+84 354 995 144</li>
                                                                 </ul>
                                                             </div>
                                                             <!-- End Single Widget -->
                                                             <ul>
-                                                                <li><a href="#"><i class="ti-facebook"></i></a></li>
-                                                                <li><a href="#"><i class="ti-twitter"></i></a></li>
-                                                                <li><a href="#"><i class="ti-flickr"></i></a></li>
-                                                                <li><a href="#"><i class="ti-instagram"></i></a></li>
+                                                                <li><a href="https://www.facebook.com/Cybevis.Keisha"><i class="ti-facebook"></i></a></li>
+                                                                <li><a href="https://www.instagram.com/iam._.nongg/"><i class="ti-twitter"></i></a></li>
+                                                                <li><a href="https://www.youtube.com/watch?v=bfxJZk4SGpA&list=RDbfxJZk4SGpA&start_radio=1"><i class="ti-flickr"></i></a></li>
+                                                                <li><a href="https://www.youtube.com/watch?v=ZjjmqHW7MgQ&list=RDZjjmqHW7MgQ&start_radio=1&rv=bfxJZk4SGpA"><i class="ti-instagram"></i></a></li>
                                                             </ul>
                                                         </div>
                                                         <!-- End Single Widget -->
@@ -706,12 +684,12 @@
                                                     <div class="row">
                                                         <div class="col-lg-6 col-12">
                                                             <div class="left">
-                                                                <p>Copyright � 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
+                                                                <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6 col-12">
                                                             <div class="right">
-                                                                <img src="images/payments.png" alt="#">
+                                                                <img src="img/payments.png" alt="#">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -719,39 +697,38 @@
                                             </div>
                                         </div>
                                     </footer>
-                                    <!-- /End Footer Area -->
-
+                                    <!-- Start Footer Area -->
                                     <!-- Jquery -->
-                                    <script src="js/jquery.min.js"></script>
-                                    <script src="js/jquery-migrate-3.0.0.js"></script>
-                                    <script src="js/jquery-ui.min.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.0.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/jquery-ui.min.js"></script>
                                     <!-- Popper JS -->
-                                    <script src="js/popper.min.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/popper.min.js"></script>
                                     <!-- Bootstrap JS -->
-                                    <script src="js/bootstrap.min.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
                                     <!-- Color JS -->
-                                    <script src="js/colors.js"></script>
+                                    <!--<script src="${pageContext.request.contextPath}/js/colors.js"></script>-->
                                     <!-- Slicknav JS -->
-                                    <script src="js/slicknav.min.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/slicknav.min.js"></script>
                                     <!-- Owl Carousel JS -->
-                                    <script src="js/owl-carousel.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/owl-carousel.js"></script>
                                     <!-- Magnific Popup JS -->
-                                    <script src="js/magnific-popup.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/magnific-popup.js"></script>
                                     <!-- Waypoints JS -->
-                                    <script src="js/waypoints.min.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/waypoints.min.js"></script>
                                     <!-- Countdown JS -->
-                                    <script src="js/finalcountdown.min.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/finalcountdown.min.js"></script>
                                     <!-- Nice Select JS -->
-                                    <script src="js/nicesellect.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
                                     <!-- Flex Slider JS -->
-                                    <script src="js/flex-slider.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
                                     <!-- ScrollUp JS -->
-                                    <script src="js/scrollup.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/scrollup.js"></script>
                                     <!-- Onepage Nav JS -->
-                                    <script src="js/onepage-nav.min.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/onepage-nav.min.js"></script>
                                     <!-- Easing JS -->
-                                    <script src="js/easing.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/easing.js"></script>
                                     <!-- Active JS -->
-                                    <script src="js/active.js"></script>
+                                    <script src="${pageContext.request.contextPath}/js/active.js"></script>
                                     </body>
                                     </html>

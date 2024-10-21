@@ -23,7 +23,7 @@ import java.io.InputStream;
  */
 public class ProductDBContext extends DBContext<Product> {
 
-    public ArrayList<Product> getAllByEid(int eid,String s) {
+    public ArrayList<Product> getAllByEid(int eid, String s) {
         PreparedStatement stm = null;
         BrandDBContext br = new BrandDBContext();
         CapacityDBContext cap = new CapacityDBContext();
@@ -40,13 +40,13 @@ public class ProductDBContext extends DBContext<Product> {
                 + "      ,[status]\n"
                 + "      ,[emp_id]\n"
                 + "  FROM [swp-son].[dbo].[Product] where emp_id=?";
-        if(s!=null){
-            sql+=" and name like '%'+?+'%'";
+        if (s != null) {
+            sql += " and name like '%'+?+'%'";
         }
         try {
             stm = connect.prepareStatement(sql);
             stm.setInt(1, eid);
-            if(s!=null){
+            if (s != null) {
                 stm.setString(2, s);
             }
             ResultSet rs = stm.executeQuery();
@@ -67,6 +67,8 @@ public class ProductDBContext extends DBContext<Product> {
                 ArrayList<Capacity> c = cap.getCapacityByProductId(rs.getInt(1));
                 p.setCapacity(c);
                 ArrayList<Image> i = image.getByProductId(rs.getInt(1));
+                ArrayList<Gender> ge = gen.getGenderFindByPid(rs.getInt(1));
+                p.setGender(ge);
                 p.setImg(i);
                 list.add(p);
             }
@@ -77,7 +79,6 @@ public class ProductDBContext extends DBContext<Product> {
         return null;
     }
 
- 
     public void deleteProduct(String id) {
 
         try {
@@ -101,7 +102,7 @@ public class ProductDBContext extends DBContext<Product> {
         }
     }
 
-    public void updateProduct(String pid, int igid, String name, String price, String stock, String date, String dis, String brand, String status, String image, String imgename) {
+    public void updateProduct(String pid, String cidd, String capa, int igid, String name, String price, String stock, String date, String dis, String gender, String brand, String status, String image, String imgename) {
         try {
             connect.setAutoCommit(false);
 
@@ -119,7 +120,14 @@ public class ProductDBContext extends DBContext<Product> {
             updateProductstm.setInt(2, Integer.parseInt(price));
             updateProductstm.setDate(3, Date.valueOf(date));
             updateProductstm.setInt(4, Integer.parseInt(stock));
-            updateProductstm.setInt(5, Integer.parseInt(dis));
+            if (Integer.parseInt(dis) == -1) {
+                updateProductstm.setNull(5, java.sql.Types.INTEGER);
+
+            } else {
+
+                updateProductstm.setInt(5, Integer.parseInt(dis));
+
+            }
             updateProductstm.setInt(6, Integer.parseInt(brand));
             updateProductstm.setBoolean(7, Boolean.parseBoolean(status));
             updateProductstm.setInt(8, Integer.parseInt(pid));
@@ -134,6 +142,23 @@ public class ProductDBContext extends DBContext<Product> {
             insertImageProductst.setString(2, imgename);
             insertImageProductst.setInt(3, igid);
             insertImageProductst.executeUpdate();
+            String updateGender = "UPDATE [dbo].[Product_Gender]\n"
+                    + "   SET [gender_id] = ?\n"
+                    + "   \n"
+                    + " WHERE product_id=?";
+            PreparedStatement updateGenderst = connect.prepareStatement(updateGender, PreparedStatement.RETURN_GENERATED_KEYS);
+            updateGenderst.setInt(1, Integer.parseInt(gender));
+            updateGenderst.setInt(2, Integer.parseInt(pid));
+            updateGenderst.executeUpdate();
+            String updateCap = "UPDATE [dbo].[Product_Capacity]\n"
+                    + "   SET [cap_id] = ?\n"
+                    + "    \n"
+                    + " WHERE product_id=? and cap_id=?";
+            PreparedStatement updateCapst = connect.prepareStatement(updateCap, PreparedStatement.RETURN_GENERATED_KEYS);
+            updateCapst.setInt(1, Integer.parseInt(capa));
+            updateCapst.setInt(2, Integer.parseInt(pid));
+            updateCapst.setInt(3, Integer.parseInt(cidd));
+            updateCapst.executeUpdate();
             connect.commit();
             connect.setAutoCommit(true);
         } catch (Exception e) {
@@ -466,6 +491,8 @@ public class ProductDBContext extends DBContext<Product> {
                 ArrayList<Image> i = image.getByProductId(rs.getInt(1));
                 p.setImg(i);
                 p.setCapacity(cList);
+                ArrayList<Gender> ge = gen.getGenderFindByPid(rs.getInt(1));
+                p.setGender(ge);
             }
             return p;
         } catch (Exception e) {

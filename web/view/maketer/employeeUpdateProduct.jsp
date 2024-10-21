@@ -175,7 +175,10 @@
                                         <label for="dis">Discount:</label>
                                         <select name="dis" id="dis" required>
                                             <option value="" disabled selected>-- Select discount --</option>
+                                            <option value="-1">Không discount</option>
                                             <c:forEach var="i" items="${requestScope.datad}">
+
+
                                                 <option value="${i.discount_id}" 
                                                         <c:if test="${i.discount_id == requestScope.p.discount.discount_id}">
                                                             selected
@@ -197,6 +200,28 @@
                                         </select>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="brand">Gender:</label>
+                                        <select name="gender"  required>
+                                            <c:forEach var="j" items="${requestScope.g}">
+                                                <option value="${j.gender_id}">${j.name}</option>
+
+                                            </c:forEach>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" value="${requestScope.c.capacity_id}" name="cidd">
+                                        <label for="brand">Capacity:</label>
+                                        <select name="capa"  required>
+                                            
+                                            <c:forEach var="j" items="${requestScope.listc}">
+                                                <option value="${j.capacity_id}">${j.value}</option>
+
+                                            </c:forEach>
+                                        </select>
+
+                                    </div>
                                     <div class="form-group">
                                         <label for="status">Status:</label>
                                         <select name="status" required>

@@ -21,7 +21,7 @@
         <!-- end: Css -->
 
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/a/asset/img/logomi.png">
-         
+
         <style>
             .ml-2 {
                 margin-left: 10px;
@@ -30,7 +30,6 @@
             .btn-create {
                 font-size: 16px;
                 padding: 8px 15px;
-                margin-left: 0;
             }
 
             .search-container {
@@ -45,9 +44,36 @@
             }
 
             .search-container input[type="text"] {
-                width: 200px; /* ?i?u ch?nh ?? r?ng c?a thanh tìm ki?m */
+                width: 200px; /* Điều chỉnh độ rộng của thanh tìm kiếm */
             }
-              
+
+            /* Style cho phần Filter */
+            .filter-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .filter-form {
+                display: flex;
+                align-items: center;
+            }
+
+            .filter-form ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+            }
+
+            .filter-form li {
+                margin-right: 20px;
+            }
+
+            .dropdown-menu {
+                max-height: 200px;
+                overflow-y: auto;
+            }
         </style>
     </head>
 
@@ -130,17 +156,90 @@
                                 <h3>Product List</h3>
                             </div>
                             <div class="panel-body">
-                                <!-- Nút Create và Thanh tìm ki?m n?m trên cùng, ngang hàng nhau -->
-                                <div class="search-container">
+
+                                <!-- Phần điều khiển: Create, Filter, và Search trên cùng một hàng -->
+                                <div class="filter-container mb-4">
+
+                                    <!-- Nút Create ở bên trái -->
                                     <a href="employeeAddProduct" class="btn btn-success btn-create">
                                         <b>Create</b>
                                     </a>
-                                    <form action="employeeProductList" method="GET">
+
+                                    <!-- Phần Filter ở giữa -->
+                                    <form id="filterForm" method="get" action="productList" class="filter-form">
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <!-- Dropdown for Brand -->
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                                    Brand 
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <c:forEach var="i" items="${requestScope.listBrand}">
+                                                        <div class="dropdown-item">
+                                                            <input type="checkbox" name="brandid" value="${i.brand_id}" id="brand${i.brand_id}">
+                                                            <label for="brand${i.brand_id}">${i.name}</label>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                            </li>
+
+                                            <!-- Dropdown for Capacity -->
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                                    Capacity
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <c:forEach var="i" items="${requestScope.listCapacity}">
+                                                        <div class="dropdown-item">
+                                                            <input type="checkbox" name="capacityid" value="${i.capacity_id}" id="capacity${i.capacity_id}">
+                                                            <label for="capacity${i.capacity_id}">${i.value}</label>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                            </li>
+
+                                            <!-- Dropdown for Gender -->
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                                    Gender 
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <c:forEach var="i" items="${requestScope.genderList}">
+                                                        <div class="dropdown-item">
+                                                            <input type="checkbox" name="genderid" value="${i.gender_id}" id="gender${i.gender_id}">
+                                                            <label for="gender${i.gender_id}">${i.name}</label>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                            </li>
+
+                                            <!-- Dropdown for Price -->
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                                    Price
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <c:forEach var="i" items="${requestScope.priceRanges}">
+                                                        <div class="dropdown-item">
+                                                            <input type="checkbox" name="priceid" value="${i.id}" id="price${i.id}">
+                                                            <label for="price${i.id}">${i.min} - ${i.max} VND</label>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <!-- Nút Filter -->
+                                        <button type="submit" class="btn btn-primary ml-3">Filter</button>
+                                    </form>
+
+                                    <!-- Phần Search ở bên phải -->
+                                    <form action="employeeProductList" method="GET" class="d-flex align-items-center">
                                         <input type="text" id="custom-search" class="form-control" placeholder="Search by name..." name="search"/>
                                         <input type="submit" value="Search" class="btn btn-primary ml-2"/>
                                     </form>
                                 </div>
 
+                                <!-- Bảng sản phẩm -->
                                 <div class="responsive-table">
                                     <table id="datatables-example" class="table table-striped table-bordered" width="100%" cellspacing="0">
                                         <thead>
@@ -151,35 +250,46 @@
                                                 <th>Price</th>
                                                 <th>Stock</th>
                                                 <th>Discount</th>
+                                                <th>Gender</th>
+                                                <th>Capacity</th>
                                                 <th>Status</th>
                                                 <th>Actions</th> 
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <c:forEach var="i" items="${requestScope.data}">
-                                                <tr>
-                                                    <td>${i.product_id}</td>
-                                                    <td>
-                                                        <c:forEach var="j" items="${i.img}">
-                                                            <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" width="100" height="100">
-                                                        </c:forEach>
-                                                    </td>
-                                                    <td>${i.name}</td>
-                                                    <td>${i.price}</td>
-                                                    <td>${i.stock}</td>
-                                                    <td>${i.discount.amount}</td>
-                                                    <c:if test="${i.status == 'true'}">
-                                                        <td>Kich hoat</td>
-                                                    </c:if>
-                                                    <c:if test="${i.status == 'false'}">
-                                                        <td>Chua kich hoat</td>
-                                                    </c:if>
-                                                    <td>
-                                                        <a href="employeeUpdateProduct?product_id=${i.product_id}" class="btn btn-primary btn-sm">Update</a>
-                                                    </td>
-                                                </tr>
+                                                <c:forEach var="b" items="${i.capacity}">
+                                                    <tr>
+                                                        <td>${i.product_id}</td>
+                                                        <td>
+                                                            <c:forEach var="j" items="${i.img}">
+                                                                <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" width="100" height="100">
+                                                            </c:forEach>
+                                                        </td>
+                                                        <td>${i.name}</td>
+                                                        <td>${i.price}</td>
+                                                        <td>${i.stock}</td>
+                                                        <td>${i.discount.amount}</td>
+                                                        <td>
+                                                            <c:forEach var="a" items="${i.gender}">
+                                                                ${a.name}
+                                                            </c:forEach>
+                                                        </td>
+                                                        <td>${b.value}</td> <!-- Hiển thị capacity -->
+                                                        <c:if test="${i.status == 'true'}">
+                                                            <td>Kích hoạt</td>
+                                                        </c:if>
+                                                        <c:if test="${i.status == 'false'}">
+                                                            <td>Chưa kích hoạt</td>
+                                                        </c:if>
+                                                        <td>
+                                                            <a href="employeeUpdateProduct?product_id=${i.product_id}&cid=${b.capacity_id}" class="btn btn-primary btn-sm">Update</a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
                                             </c:forEach>
                                         </tbody>
+
                                     </table>
                                 </div>
 
@@ -212,33 +322,18 @@
             $(document).ready(function () {
                 var table = $('#datatables-example').DataTable({
 
-                    "searching": false, // T?t tìm ki?m m?c ??nh
-                    "paging": true, // B?t phân trang
-                    "pageLength": 6, // S? hàng trên m?i trang
-                    "lengthChange": false   // T?t "Show ... entries"
+                    "searching": false, // Tắt tìm kiếm mặc định
+                    "paging": true, // Bật phân trang
+                    "pageLength": 6, // Số hàng trên mỗi trang
+                    "lengthChange": false   // Tắt "Show ... entries"
                 });
-                // Tìm ki?m theo Full Name, Email, ho?c Mobile
+                // Tìm kiếm theo Full Name
                 $('#custom-search').on('keyup', function () {
                     var searchTerm = this.value.toLowerCase();
-                    var searchType = $('#search-type').val();
                     table.rows().every(function (rowIdx, tableLoop, rowLoop) {
                         var data = this.data();
                         var fullName = data[1].toLowerCase(); // Full Name
-                        var email = data[3].toLowerCase(); // Email
-                        var mobile = data[4].toLowerCase(); // Mobile
-
-                        // Ki?m tra n?u searchTerm t?n t?i trong lo?i tìm ki?m ?ã ch?n
-                        var match = false;
-                        if (searchType === 'name' && fullName.includes(searchTerm)) {
-                            match = true;
-                        } else if (searchType === 'email' && email.includes(searchTerm)) {
-                            match = true;
-                        } else if (searchType === 'mobile' && mobile.includes(searchTerm)) {
-                            match = true;
-                        }
-
-                        // Hi?n ho?c ?n hàng d?a trên k?t qu? tìm ki?m
-                        if (match) {
+                        if (fullName.includes(searchTerm)) {
                             this.show();
                         } else {
                             this.hide();
