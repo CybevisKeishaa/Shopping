@@ -27,6 +27,9 @@ import model.Status_Order;
 @WebServlet(name = "SaleOrderDetailServlet", urlPatterns = {"/sale/orderDetail"})
 public class OrderDetailServlet extends AuthenticationServlet {
 
+        private static final String WEB_TITLE = "Order Detail";
+
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
@@ -43,6 +46,7 @@ public class OrderDetailServlet extends AuthenticationServlet {
         ArrayList<Product> p = db.getProductsByOrderAndCustomer(id, o.getCustomer().getCus_id());
         List<Status_Order> status = odb.getAllStatus();
         request.setAttribute("products", p);
+        request.setAttribute("title", WEB_TITLE + " " + id);
         request.setAttribute("order", o);
         request.setAttribute("statusList", status);
         request.getRequestDispatcher("/view/ad/order/orderDetail.jsp").forward(request, response);

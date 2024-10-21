@@ -1,6 +1,5 @@
 package model;
 
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -11,6 +10,8 @@ public class Order {
     private int numberOfOtherProducts;
     private Customer_User customer;
     private int total_price;
+    private boolean paid_status;
+    
     private Timestamp create_at;
     private String payment_method;
     private Status_Order status;
@@ -21,13 +22,13 @@ public class Order {
     private int successOrders;
     private int cancelledOrders;
     private int pendingOrders;
-    private double totalRevenue;  
-    
+    private double totalRevenue;
+
     // Các getter và setter
     public double getTotalRevenue() {
         return totalRevenue;
     }
-    
+
     public void setTotalRevenue(double totalRevenue) {
         this.totalRevenue = totalRevenue;
     }
@@ -105,8 +106,6 @@ public class Order {
         this.payment = payment;
     }
 
-    
-
     public String getShipping_method() {
         return shipping_method;
     }
@@ -147,9 +146,17 @@ public class Order {
         this.payment_method = payment_method;
     }
 
+    public boolean isPaid_status() {
+        return paid_status;
+    }
+
+    public void setPaid_status(boolean paid_status) {
+        this.paid_status = paid_status;
+    }
+
     @Override
     public String toString() {
         return "Order{" + "order_id=" + order_id + ", firstProductName=" + firstProductName + ", numberOfOtherProducts=" + numberOfOtherProducts + ", customer=" + customer + ", total_price=" + total_price + ", create_at=" + create_at + ", payment_method=" + payment_method + ", status=" + status + ", payment=" + payment + ", shipping_method=" + shipping_method + ", orderDetails=" + orderDetails + ", successOrders=" + successOrders + ", cancelledOrders=" + cancelledOrders + ", pendingOrders=" + pendingOrders + ", totalRevenue=" + totalRevenue + '}';
     }
-    
+
 }

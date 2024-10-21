@@ -6,7 +6,6 @@ package controller.dashboard.sale;
 
 import controller.auth.AuthenticationServlet;
 import dal.OrderDBContext;
-import helper.AuthenticationHelper;
 import helper.RequestHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,13 +33,11 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.setAttribute("role", user.getRole().getRole_name());
         request.setAttribute("title", WEB_TITLE);
 
         OrderDBContext odb = new OrderDBContext();
         //filtering params
         int page = RequestHelper.getIntParameterWithDefault("page", 1, request);
-        Integer cusID = RequestHelper.getIntParameterWithDefault("cusID", null, request);
         Date startDate = RequestHelper.getDateParameterWithDefault("startdate", null, request);
         Date endDate = RequestHelper.getDateParameterWithDefault("enddate", null, request);
         String sort = RequestHelper.getStringParameterWithDefault("sort", "orderdate", request);
@@ -48,9 +45,9 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
         boolean desc = RequestHelper.getCheckboxParameterWithDefault("desc", true, request);
 
         // employee id
-        if (AuthenticationHelper.isSaler(user)) {
-            cusID = user.getCus_id();
-        }
+//        if (AuthenticationHelper.isSaler(user)) {
+//            cusID = user.getCus_id();
+//        }
         List<Order> orders = odb.getAllOrder(search, startDate, endDate, sort, desc, page, PAGE_SIZE);
         int count = odb.getTotalOrderCount(search, startDate, endDate);
         var statusTotals = odb.getStatusTotal();

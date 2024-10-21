@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Address;
-import model.Capacity;
 import model.Customer_User;
 import model.Gender;
 import model.Image;
@@ -263,7 +262,7 @@ public class OrderDBContext extends DBContext<Order> {
         Order o = new Order();
         PreparedStatement stm = null;
         try {
-            String sql = "SELECT o.order_id, o.total, o.created_at, o.shipping_method,"
+            String sql = "SELECT o.order_id, o.total, o.created_at, o.shipping_method, o.paid_status, "
                     + "       so.status_id,so.status, \n"
                     + "       c.cus_id ,c.name_cus, c.gender, c.email, c.c_phone, \n"
                     + "       a.city, a.district, a.ward, a.street\n"
@@ -510,21 +509,74 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     //=============== Data Change ===============
-    public void updateOrderStatus(int orderID, int statusID) {
+    public void updateOrderStatus(int orderID, int statusID) throws Exception {
         PreparedStatement stm = null;
+        ResultSet rs = null;
         try {
             connect.setAutoCommit(false);
-            String sql = "UPDATE dbo.[Order] SET status_id = ? WHERE order_id = ?;";
+
+            // Validate order existence
+            Order o = getOrderByOrderID(orderID);
+            if (o == null) {
+                throw new Exception("Order not found.");
+            }
+
+            int customerId = o.getCustomer().getCus_id();
+            OrderDetailDBContext oddb = new OrderDetailDBContext();
+            List<OrderDetail> orderDetailList = oddb.getDetailsByOrderID(orderID);
+
+            // Check if the order is paid
+            if (!o.isPaid_status()) {
+                throw new Exception("Customer has not paid for the product.");
+            }
+
+            String sql = """
+                     UPDATE dbo.[Order] SET status_id = ?
+                     OUTPUT inserted.status_id
+                     WHERE order_id = ?;
+                     """;
 
             stm = connect.prepareStatement(sql);
-
             stm.setInt(1, statusID);
             stm.setInt(2, orderID);
 
-            stm.executeUpdate();
+            rs = stm.executeQuery();
+            if (rs.next() && rs.getInt("status_id") == 3) { // Assuming 3 = "Cancelled"
+                // Restock to Wallet
+                sql = """
+                  UPDATE w
+                  SET w.total = w.total + ?
+                  FROM Wallet w 
+                  JOIN Customer c ON c.wallet_id = w.wallet_id
+                  WHERE c.cus_id = ?;
+                  """;
+                int total = rs.getInt("total");
+                stm.close(); // Close previous statement
+                stm = connect.prepareStatement(sql);
+                stm.setInt(1, total);
+                stm.setInt(2, customerId);
+                stm.executeUpdate();
 
+                // Restock products
+                for (OrderDetail od : orderDetailList) {
+                    sql = """
+                      UPDATE p
+                      SET p.stock = p.stock + ?
+                      FROM Product p
+                      WHERE p.product_id = ?;
+                      """;
+                    int quantity = od.getQuantity(); // Corrected from getPrice_at_order()
+                    stm.close(); // Close previous statement
+                    stm = connect.prepareStatement(sql);
+                    stm.setInt(1, quantity);
+                    stm.setInt(2, od.getProduct().getProduct_id());
+                    stm.executeUpdate();
+                }
+            }
+
+            // Commit transaction
+            connect.commit();
         } catch (SQLException ex) {
-
             if (connect != null) {
                 try {
                     connect.rollback();
@@ -536,20 +588,20 @@ public class OrderDBContext extends DBContext<Order> {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-
-                if (connect != null) {
-                    connect.setAutoCommit(true);
-                    connect.close();
+                if (rs != null) {
+                    rs.close();
                 }
                 if (stm != null) {
                     stm.close();
                 }
+                connect.setAutoCommit(true);
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
+    // ================== data inserts ====================
     public int insertOrder(int total, int statusID, int cusID, int paymentMethodID, String note, int addressID) {
         PreparedStatement stm = null;
         ResultSet generatedKeys = null;
@@ -646,25 +698,25 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     public static void main(String[] args) {
-            OrderDBContext orderDB = new OrderDBContext();
-            
-            // Gọi hàm insertOrder để chèn một đơn hàng mới
-            int total = 1500000;
-            int statusID = 1; // Đang chờ xử lý
-            int cusID = 1; // ID của khách hàng
-            int paymentMethodID = 1; // ID của phương thức thanh toán
-            String note = "This is a test order";
-            int addressID = 13; // ID của địa chỉ giao hàng
+        OrderDBContext orderDB = new OrderDBContext();
 
-            // Thực hiện chèn đơn hàng
-            int orderId = orderDB.insertOrder(total, statusID, cusID, paymentMethodID, note, addressID);
+        // Gọi hàm insertOrder để chèn một đơn hàng mới
+        int total = 1500000;
+        int statusID = 1; // Đang chờ xử lý
+        int cusID = 1; // ID của khách hàng
+        int paymentMethodID = 1; // ID của phương thức thanh toán
+        String note = "This is a test order";
+        int addressID = 13; // ID của địa chỉ giao hàng
 
-            // Kiểm tra kết quả
-            if (orderId != -1) {
-                System.out.println("Order inserted successfully with ID: " + orderId);
-            } else {
-                System.out.println("Failed to insert order.");
-            }
-        
+        // Thực hiện chèn đơn hàng
+        int orderId = orderDB.insertOrder(total, statusID, cusID, paymentMethodID, note, addressID);
+
+        // Kiểm tra kết quả
+        if (orderId != -1) {
+            System.out.println("Order inserted successfully with ID: " + orderId);
+        } else {
+            System.out.println("Failed to insert order.");
+        }
+
     }
 }

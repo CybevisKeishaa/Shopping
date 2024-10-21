@@ -4,8 +4,10 @@
  */
 package dal;
 
+import dal.combiner.OrderDetailCombiner;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.OrderDetail;
@@ -17,32 +19,30 @@ import model.Product;
  */
 public class OrderDetailDBContext extends DBContext<OrderDetail> {
 
-    public OrderDetail getDetailByOrderID(int orderID) {
-        OrderDetail detail = new OrderDetail();
-        PreparedStatement stm = null;
+    public List<OrderDetail> getDetailsByOrderID(int orderID) {
+        List<OrderDetail> orderDetailList = new ArrayList<OrderDetail>();
 
-        String sql = "SELECT o.order_id, o.created_at AS orderedDate, o.total AS totalCost, so.status, p.name AS productName, o.shipping_method, od.quantity, od.price_at_order\n"
-                + "FROM [dbo].[Order] o\n"
-                + "JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id\n"
-                + "JOIN [dbo].[Product] p ON od.product_id = p.product_id\n"
-                + "JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id\n"
-                + "WHERE o.order_id = ?;";
+        String sql = """
+                        SELECT od.detail_id,od.product_id,od.price_at_order,od.quantity,od.capacity_id,od.order_id
+                        FROM [dbo].[OrderDetail] od
+                        WHERE od.order_id = ?
+                     """;
         try {
             PreparedStatement st = connect.prepareStatement(sql);
 
             st.setInt(1, orderID);
             ResultSet rs = st.executeQuery();
 
-            if (rs.next()) {
-                
+            while (rs.next()) {
+                 orderDetailList.add(OrderDetailCombiner.toElement(rs));
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return detail;
+        return orderDetailList;
     }
-    
+
     public ArrayList<OrderDetail> getListOrderDetailbyEidPid(int eid, int pid, int oid) {
         String sql = "SELECT *\n"
                 + "FROM Employee e \n"
