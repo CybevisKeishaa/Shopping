@@ -11,7 +11,7 @@
                 font-size: 0.85rem !important; /* Điều chỉnh kích thước font */
                 padding: 2px 10px !important; /* Điều chỉnh padding để ô nhỏ hơn */
                 width: auto !important;     /* Điều chỉnh chiều rộng tự động phù hợp với nội dung */
-                margin-top: 12px !important;
+                margin-top: 0px !important;
             }
 
             /* Nếu nice-select đang được áp dụng */
@@ -21,7 +21,7 @@
                 line-height: 35px !important; /* Đảm bảo chữ căn giữa dọc theo chiều cao */
                 padding: 0 8px !important;
                 width: 100px !important; /* Chiều rộng tự động để phù hợp nội dung */
-                margin-top: 12px !important;
+                margin-top: 0px !important;
             }
 
             .form-inline .form-group select.form-control-sm{
@@ -80,20 +80,12 @@
         <meta name='copyright' content=''>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Eshop - My Orders</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nicesellect.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/flex-slider.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl-carousel.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/slicknav.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
+        <jsp:include page="/Demo_Template/BasePage/Header.jsp"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/niceselect.css">
     </head>
 
     <body class="js">
-        <jsp:include page="/Demo_Template/BasePage/Header.jsp"/>
+        
         <!-- Preloader và các thành phần khác của bạn không thay đổi -->
 
         <!-- Start Product Area -->
@@ -236,5 +228,7 @@
         <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
         <script src="${pageContext.request.contextPath}/js/slicknav.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/active.js"></script>
+        <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
+
     </body>
 </html>

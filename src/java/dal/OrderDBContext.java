@@ -5,24 +5,23 @@
 package dal;
 
 import dal.combiner.OrderCombiner;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import dal.sql.OrderSql;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import model.Order;
-import java.sql.*;
-import java.time.temporal.ChronoUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.Date;
-import java.time.LocalDate;
 import model.Address;
 import model.Customer_User;
 import model.Gender;
 import model.Image;
+import model.Order;
 import model.OrderDetail;
 import model.Product;
 import model.Status_Order;
+import model.combiner.Order_StatusTotal;
 
 /**
  *
@@ -31,34 +30,59 @@ import model.Status_Order;
 public class OrderDBContext extends DBContext<Order> {
 
     // ========================== Get Many Orders Section =======================
-    public List<Order> getAllOrder(int pageNumber, int pageSize) {
+    public List<Order> getAllOrder(String search, Date startDate, Date endDate, String sort, boolean desc, int pageNumber, int pageSize) {
 
         ArrayList<Order> orders = new ArrayList<>();
         // Phân trang với OFFSET và FETCH
-        String sql = """
-                    SELECT o.order_id, 
-                           o.created_at AS orderedDate, 
-                           o.total AS totalCost, 
-                           so.status, 
-                           MIN(p.name) AS firstProductName, 
-                           COUNT(od.product_id) AS productCount
-                    FROM [dbo].[Order] o
-                    JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id
-                    JOIN [dbo].[Product] p ON od.product_id = p.product_id
-                    JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id
-                    GROUP BY o.order_id, o.created_at, o.total, so.status
-                    ORDER BY o.created_at DESC
-                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
-                    """;
-
+        String sql = OrderSql.GET_ALL;// lấy tất cả nếu empID == null
+        String whereSQL = "";
+        String orderBySQL = "";
         try {
-            PreparedStatement stm = connect.prepareStatement(sql);
-
-            // Thiết lập các tham số truy vấn
+            PreparedStatement stm;
             int offset = (pageNumber - 1) * pageSize;
-            stm.setInt(1, offset);    // Đặt OFFSET
-            stm.setInt(2, pageSize);  // Đặt FETCH NEXT
+            boolean hasSearch = true;
+            if (startDate != null && endDate != null) {
+                whereSQL = "WHERE o.created_at BETWEEN '" + startDate.toString() + "' AND '" + endDate.toString() + "'";
+            } else if (startDate != null) {
+                whereSQL = "WHERE o.created_at >= '" + startDate.toString() + "'";
+            } else if (endDate != null) {
+                whereSQL = "WHERE o.created_at <= '" + endDate.toString() + "'";
+            } else {
+                hasSearch = false;
+            }
+            if (!search.isEmpty()) {
+                if (hasSearch) {
+                    whereSQL += " AND (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
+                } else {
+                    whereSQL = "WHERE (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
+                }
+            }
+            switch (sort) {
+                case "orderdate":
+                    orderBySQL = "ORDER BY o.created_at ";
+                    break;
+                case "customername":
+                    orderBySQL = "ORDER BY c.name_cus ";
+                    break;
+                case "totalcost":
+                    orderBySQL = "ORDER BY o.total ";
+                    break;
+                case "status":
+                    orderBySQL = "ORDER BY so.status ";
+                    break;
+                default:
+                    orderBySQL = "ORDER BY o.created_at ";
+            }
+            if (desc) {
+                orderBySQL += " DESC";
+            }
+            sql = sql.replace("{where}", whereSQL).replace("{orderBy}", orderBySQL);
 
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, offset);    // Set OFFSET
+            stm.setInt(2, pageSize);  // Set FETCH NEXT
+
+            // Execute the query
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Order o = OrderCombiner.toTableRow(rs);
@@ -69,52 +93,50 @@ public class OrderDBContext extends DBContext<Order> {
         } catch (SQLException ex) {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return orders;
     }
 
-    public ArrayList<Order> myOrders(int customerID, int pageNumber, int pageSize) {
-        ArrayList<Order> orders = new ArrayList<>();
-        // Phân trang với OFFSET và FETCH
-        String sql = """
-                    SELECT o.order_id, 
-                           o.created_at AS orderedDate, 
-                           o.total AS totalCost, 
-                           so.status, 
-                           MIN(p.name) AS firstProductName, 
-                           COUNT(od.product_id) AS productCount
-                    FROM [dbo].[Order] o
-                    JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id
-                    JOIN [dbo].[Product] p ON od.product_id = p.product_id
-                    JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id
-                    WHERE o.cus_id = ?
-                    GROUP BY o.order_id, o.created_at, o.total, so.status
-                    ORDER BY o.created_at DESC
-                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
-                    """;
-
+    public int getTotalOrderCount(String search, Date startDate, Date endDate) {
+        int count = 0;
+        String sql = OrderSql.GET_ALL_COUNT;
+        String whereSQL = "";
         try {
-            PreparedStatement stm = connect.prepareStatement(sql);
+            PreparedStatement stm;
+            boolean hasSearch = true;
+            if (startDate != null && endDate != null) {
+                whereSQL = "WHERE o.created_at BETWEEN '" + startDate.toString() + "' AND '" + endDate.toString() + "'";
+            } else if (startDate != null) {
+                whereSQL = "WHERE o.created_at >= '" + startDate.toString() + "'";
+            } else if (endDate != null) {
+                whereSQL = "WHERE o.created_at <= '" + endDate.toString() + "'";
+            } else {
+                hasSearch = false;
+            }
+            if (!search.isEmpty()) {
+                if (hasSearch) {
+                    whereSQL += " AND (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
+                } else {
+                    whereSQL = "WHERE (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
+                }
+            }
 
-            // Thiết lập các tham số truy vấn
-            stm.setInt(1, customerID);
-            int offset = (pageNumber - 1) * pageSize;
-            stm.setInt(2, offset);    // Đặt OFFSET
-            stm.setInt(3, pageSize);  // Đặt FETCH NEXT
+            sql = sql.replace("{where}", whereSQL);
+
+            stm = connect.prepareStatement(sql);
 
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Order o = OrderCombiner.toTableRow(rs);
-                orders.add(o);
+                count = rs.getInt(1);
             }
             rs.close();
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return orders;
+        return count;
     }
 
-    // ========================== Get Single Orders Section =======================
     public int getTotalOrderByCustomer(int cus_id) {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM [Order] o\n"
@@ -236,33 +258,69 @@ public class OrderDBContext extends DBContext<Order> {
         return orders;
     }
 
-    public Order getOrderByOrderID(int orderID, int cus_id) {
+    public Order getOrderByOrderID(int orderID) {
         Order o = new Order();
         PreparedStatement stm = null;
         try {
-            String sql = "SELECT o.order_id, o.total, o.created_at, o.shipping_method, so.status, \n"
-                    + "       c.name_cus, c.gender, c.email, c.c_phone, \n"
+            String sql = "SELECT o.order_id, o.total, o.created_at, o.shipping_method, o.paid_status, "
+                    + "       so.status_id,so.status, \n"
+                    + "       c.cus_id ,c.name_cus, c.gender, c.email, c.c_phone, \n"
                     + "       a.city, a.district, a.ward, a.street\n"
                     + "FROM [Order] o\n"
                     + "LEFT JOIN Customer c ON c.cus_id = o.cus_id\n"
                     + "LEFT JOIN [db_owner].[Status_Order] so ON so.status_id = o.status_id\n"
                     + "LEFT JOIN Address a ON a.cus_id = c.cus_id\n"
-                    + "WHERE o.order_id = ?  AND c.cus_id = ?";
+                    + "WHERE o.order_id = ? ";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, orderID);
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                o = OrderCombiner.toElement(rs, o);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return o;
+    }
+
+    public Order getOrderByOrderID(int orderID, int cus_id) {
+        Order o = null; // Khởi tạo là null để kiểm tra xem có lấy được kết quả hay không
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT o.order_id, o.note, o.total, o.created_at, o.shipping_method, o.status_id, so.status, \n"
+                    + "       c.name_cus, c.gender, c.email, c.c_phone, \n"
+                    + "       a.city, a.district, a.ward, a.street\n"
+                    + "FROM [Order] o\n"
+                    + "LEFT JOIN Customer c ON c.cus_id = o.cus_id\n"
+                    + "LEFT JOIN [db_owner].[Status_Order] so ON so.status_id = o.status_id\n"
+                    + "LEFT JOIN Address a ON a.a_id = o.addressID\n" // Liên kết qua addressID
+                    + "WHERE o.order_id = ? AND c.cus_id = ?";
 
             stm = connect.prepareStatement(sql);
             stm.setInt(1, orderID);
             stm.setInt(2, cus_id);
-            ResultSet rs = stm.executeQuery();
+            rs = stm.executeQuery();
 
             if (rs.next()) {
+                o = new Order();
                 o.setOrder_id(rs.getInt("order_id"));
                 o.setCreate_at(rs.getTimestamp("created_at"));
                 o.setTotal_price(rs.getInt("total"));
                 Status_Order so = new Status_Order();
+                so.setStatus_id(rs.getInt("status_id"));
                 so.setStatus_name(rs.getString("status"));
 
                 o.setStatus(so);
                 o.setShipping_method(rs.getString("shipping_method"));
+
+                // Lấy thông tin trạng thái
+                Status_Order so = new Status_Order();
+                so.setStatus_id(rs.getInt("status_id"));
+                so.setStatus_name(rs.getString("status"));
+                o.setStatus(so);
 
                 // Lấy thông tin khách hàng
                 Customer_User c = new Customer_User();
@@ -270,21 +328,35 @@ public class OrderDBContext extends DBContext<Order> {
                 c.setGender(rs.getBoolean("gender"));
                 c.setEmail(rs.getString("email"));
                 c.setC_phone(rs.getString("c_phone"));
+                o.setNote(rs.getString("note"));
 
-                // Lấy thông tin địa chỉ
-                ArrayList<Address> addres = new ArrayList<>();
                 Address address = new Address();
                 address.setCity(rs.getString("city"));
                 address.setDistrict(rs.getString("district"));
                 address.setWard(rs.getString("ward"));
                 address.setStreet(rs.getString("street"));
-                addres.add(address);
-                c.setAddress(addres);
-
+                
+                o.setAddress(address);
                 o.setCustomer(c);
             }
         } catch (SQLException ex) {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Đóng các tài nguyên
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return o;
     }
@@ -398,6 +470,27 @@ public class OrderDBContext extends DBContext<Order> {
         return products;
     }
 
+    public List<Order_StatusTotal> getStatusTotal() {
+        PreparedStatement stm = null;
+        ArrayList<Order_StatusTotal> list = new ArrayList<>();
+        String sql = OrderSql.TOTAL_PRICE_ORDER_SQL;
+        try {
+            stm = connect.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                var statusTotal = new Order_StatusTotal();
+                statusTotal.setStatus(rs.getString("status").trim());
+                statusTotal.setTotal(rs.getDouble("total"));
+                list.add(statusTotal);
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
     public List<Integer> getOrderCountByWeek() {
         PreparedStatement stm = null;
         ArrayList<Integer> list = new ArrayList<>();
@@ -438,21 +531,74 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     //=============== Data Change ===============
-    public void updateOrderStatus(int orderID, int statusID) {
+    public void updateOrderStatus(int orderID, int statusID) throws Exception {
         PreparedStatement stm = null;
+        ResultSet rs = null;
         try {
             connect.setAutoCommit(false);
-            String sql = "UPDATE dbo.[Order] SET status_id = ? WHERE order_id = ?;";
+
+            // Validate order existence
+            Order o = getOrderByOrderID(orderID);
+            if (o == null) {
+                throw new Exception("Order not found.");
+            }
+
+            int customerId = o.getCustomer().getCus_id();
+            OrderDetailDBContext oddb = new OrderDetailDBContext();
+            List<OrderDetail> orderDetailList = oddb.getDetailsByOrderID(orderID);
+
+            // Check if the order is paid
+            if (!o.isPaid_status()) {
+                throw new Exception("Customer has not paid for the product.");
+            }
+
+            String sql = """
+                     UPDATE dbo.[Order] SET status_id = ?
+                     OUTPUT inserted.status_id
+                     WHERE order_id = ?;
+                     """;
 
             stm = connect.prepareStatement(sql);
-
             stm.setInt(1, statusID);
             stm.setInt(2, orderID);
 
-            stm.executeUpdate();
+            rs = stm.executeQuery();
+            if (rs.next() && rs.getInt("status_id") == 3) { // Assuming 3 = "Cancelled"
+                // Restock to Wallet
+                sql = """
+                  UPDATE w
+                  SET w.total = w.total + ?
+                  FROM Wallet w 
+                  JOIN Customer c ON c.wallet_id = w.wallet_id
+                  WHERE c.cus_id = ?;
+                  """;
+                int total = rs.getInt("total");
+                stm.close(); // Close previous statement
+                stm = connect.prepareStatement(sql);
+                stm.setInt(1, total);
+                stm.setInt(2, customerId);
+                stm.executeUpdate();
 
+                // Restock products
+                for (OrderDetail od : orderDetailList) {
+                    sql = """
+                      UPDATE p
+                      SET p.stock = p.stock + ?
+                      FROM Product p
+                      WHERE p.product_id = ?;
+                      """;
+                    int quantity = od.getQuantity(); // Corrected from getPrice_at_order()
+                    stm.close(); // Close previous statement
+                    stm = connect.prepareStatement(sql);
+                    stm.setInt(1, quantity);
+                    stm.setInt(2, od.getProduct().getProduct_id());
+                    stm.executeUpdate();
+                }
+            }
+
+            // Commit transaction
+            connect.commit();
         } catch (SQLException ex) {
-
             if (connect != null) {
                 try {
                     connect.rollback();
@@ -464,24 +610,120 @@ public class OrderDBContext extends DBContext<Order> {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-
-                if (connect != null) {
-                    connect.setAutoCommit(true);
-                    connect.close();
+                if (rs != null) {
+                    rs.close();
                 }
                 if (stm != null) {
                     stm.close();
                 }
+                connect.setAutoCommit(true);
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    public static void main(String[] args) {
-        OrderDBContext db = new OrderDBContext();
-        ArrayList<Product> products = db.getProductsByOrderAndCustomer(25, 1);
-        System.out.println(products.size());
+    // ================== data inserts ====================
+    public int insertOrder(int total, int statusID, int cusID, int paymentMethodID, String note, int addressID) {
+        PreparedStatement stm = null;
+        ResultSet generatedKeys = null;
+        int orderId = -1;
+        try {
+            // Sử dụng GETDATE() để tự động lấy thời gian hiện tại từ SQL Server
+            String sql = "INSERT INTO [dbo].[Order]\n"
+                    + "           ([total]\n"
+                    + "           ,[created_at]\n"
+                    + "           ,[status_id]\n"
+                    + "           ,[cus_id]\n"
+                    + "           ,[payment_method_id]\n"
+                    + "           ,[note]\n"
+                    + "           ,[addressID]\n"
+                    + "           ,[paid_status])\n"
+                    + "     VALUES\n"
+                    + "           (?, GETDATE(), ?, ?, ?, ?, ?, 0)";
+
+            stm = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stm.setInt(1, total);
+            stm.setInt(2, statusID);
+            stm.setInt(3, cusID);
+            stm.setInt(4, paymentMethodID);
+            stm.setString(5, note);
+            stm.setInt(6, addressID);
+
+            int affectedRows = stm.executeUpdate();
+
+            if (affectedRows > 0) {
+                generatedKeys = stm.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    orderId = generatedKeys.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (generatedKeys != null) {
+                try {
+                    generatedKeys.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return orderId;  // Trả về orderId
     }
 
+    public void insertOrderDetail(int orderId, ArrayList<OrderDetail> orderDetails) {
+        PreparedStatement stm = null;
+
+        try {
+            String sql = "INSERT INTO [dbo].[OrderDetail]\n"
+                    + "           ([order_id],\n"
+                    + "            [product_id],\n"
+                    + "            [quantity],\n"
+                    + "            [price_at_order],\n"
+                    + "            [capacity_id])\n"
+                    + "     VALUES (?,?,?,?,?)";
+            stm = connect.prepareStatement(sql);
+
+            for (OrderDetail detail : orderDetails) {
+                stm.setInt(1, orderId);
+                stm.setInt(2, detail.getProducts().get(0).getProduct_id());  // Lấy ID của sản phẩm từ danh sách sản phẩm
+                stm.setInt(3, detail.getQuantity());
+                stm.setInt(4, detail.getPrice_at_order());
+                stm.setInt(5, detail.getCapacity().getCapacity_id());
+
+                // Sử dụng executeUpdate để in ra số hàng bị ảnh hưởng
+                stm.executeUpdate();
+
+            }
+
+        } catch (SQLException e) {
+            // In ra lỗi SQL chi tiết
+            System.err.println("SQL Error while inserting OrderDetail: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        OrderDBContext orderDB = new OrderDBContext();
+        Order o = orderDB.getOrderByOrderID(41, 1);
+        System.out.println(o.getNote());
+        
+
+    }
 }

@@ -37,7 +37,7 @@
         <!-- Themify Icons -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/themify-icons.css">
         <!-- Nice Select CSS -->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/niceselect.css">
+        <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/css/niceselect.css">-->
         <!-- Animate CSS -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
         <!-- Flex Slider CSS -->
@@ -236,7 +236,7 @@
         <!-- Countdown JS -->
         <script src="${pageContext.request.contextPath}/js/finalcountdown.min.js"></script>
         <!-- Nice Select JS -->
-        <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
+        <!--<script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>-->
         <!-- Flex Slider JS -->
         <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
         <!-- ScrollUp JS -->

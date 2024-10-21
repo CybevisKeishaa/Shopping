@@ -6,20 +6,16 @@ package controller.dashboard.sale;
 
 import controller.auth.AuthenticationServlet;
 import dal.OrderDBContext;
-import helper.AuthenticationHelper;
-import java.io.IOException;
-import java.io.PrintWriter;
+import helper.RequestHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 import model.Customer_User;
 import model.Order;
-import model.Role;
 
 /**
  *
@@ -28,36 +24,41 @@ import model.Role;
 @WebServlet(name = "SaleDashBoardServlet", urlPatterns = {"/sale"})
 public class SaleDashBoardServlet extends AuthenticationServlet {
 
-    private static final String MAIN_PAGE = "/view/dashboard/html/sale.jsp";
+    private static final String MAIN_PAGE = "/view/ad/order/sale.jsp";
+    private static final String WEB_TITLE = "Sale Dashboard";
 
-    private static final int PAGE_SIZE = 10;//Default = 10
+    private static final int PAGE_SIZE = 3;//Default = 10
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setAttribute("title", WEB_TITLE);
+
         OrderDBContext odb = new OrderDBContext();
-        List<Order> orders = null;
-        int page = getPageIndex(request);
-        if (AuthenticationHelper.isSaler(user)) {
-            orders = odb.myOrders(user.getCus_id(), page, PAGE_SIZE);
-        }
-        if (AuthenticationHelper.isAdmin(user)) {
-            orders = odb.getAllOrder(page, PAGE_SIZE);
-        }
+        //filtering params
+        int page = RequestHelper.getIntParameterWithDefault("page", 1, request);
+        Date startDate = RequestHelper.getDateParameterWithDefault("startdate", null, request);
+        Date endDate = RequestHelper.getDateParameterWithDefault("enddate", null, request);
+        String sort = RequestHelper.getStringParameterWithDefault("sort", "orderdate", request);
+        String search = RequestHelper.getStringParameterWithDefault("search", "", request);
+        boolean desc = RequestHelper.getCheckboxParameterWithDefault("desc", true, request);
+
+        // employee id
+//        if (AuthenticationHelper.isSaler(user)) {
+//            cusID = user.getCus_id();
+//        }
+        List<Order> orders = odb.getAllOrder(search, startDate, endDate, sort, desc, page, PAGE_SIZE);
+        int count = odb.getTotalOrderCount(search, startDate, endDate);
+        var statusTotals = odb.getStatusTotal();
         List<Integer> orderCountByWeek = odb.getOrderCountByWeek();
         request.setAttribute("orders", orders);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalCount", (int) count);
+        request.setAttribute("totalPages", (int) Math.ceil((double) count / PAGE_SIZE));
+        request.setAttribute("statusTotals", statusTotals);
         request.setAttribute("orderCount", orderCountByWeek);
         request.getRequestDispatcher(MAIN_PAGE).forward(request, response);
     }
 
-    private int getPageIndex(HttpServletRequest request) {
-        int page = 1;
-        try {
-            page = Integer.parseInt(request.getParameter("page"));
-        } catch (Exception ex) {
-            //do nothing
-        }
-        return page;
-    }
 }

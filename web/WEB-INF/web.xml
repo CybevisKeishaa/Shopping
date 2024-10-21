@@ -74,7 +74,7 @@
         <servlet-name>HomePageServlet</servlet-name>
         <servlet-class>controller.home.HomePageServlet</servlet-class>
     </servlet>
-     <servlet>
+    <servlet>
         <servlet-name>HomeFeedbackServlet</servlet-name>
         <servlet-class>controller.home.HomeFeedbackServlet</servlet-class>
     </servlet>
@@ -110,10 +110,10 @@
         <servlet-name>deleteItem</servlet-name>
         <servlet-class>controller.cart.deleteItem</servlet-class>
     </servlet>
-	<servlet>
+    <servlet>
         <servlet-name>HomeFeedbackServlet</servlet-name>
         <servlet-class>controller.home.HomeFeedbackServlet</servlet-class>
-    </servlet>    
+    </servlet>
     <servlet>
         <servlet-name>cartListServlet</servlet-name>
         <servlet-class>controller.cart.cartListServlet</servlet-class>
@@ -121,6 +121,10 @@
     <servlet>
         <servlet-name>checkoutServlet</servlet-name>
         <servlet-class>controller.cart.checkoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CancelOrderServlet</servlet-name>
+        <servlet-class>controller.order.CancelOrderServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>productSearch</servlet-name>
@@ -243,10 +247,6 @@
         <url-pattern>/admin/employeedetails</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>HomeFeedbackServlet</servlet-name>
-        <url-pattern>/homepage/feedback</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>MyOrdersServlet</servlet-name>
         <url-pattern>/account/order</url-pattern>
     </servlet-mapping>
@@ -281,6 +281,10 @@
     <servlet-mapping>
         <servlet-name>FeedbackServlet</servlet-name>
         <url-pattern>/account/feedback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CancelOrderServlet</servlet-name>
+        <url-pattern>/account/order/cancel</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>homepage</welcome-file>
