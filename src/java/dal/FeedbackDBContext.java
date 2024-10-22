@@ -73,7 +73,7 @@ public class FeedbackDBContext extends DBContext<Feedback> {
 
                 // Đóng kết nối
                 if (connect != null) {
-                    connect.close();
+                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(FeedbackDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,7 +137,7 @@ public class FeedbackDBContext extends DBContext<Feedback> {
 
                 // Đóng kết nối
                 if (connect != null) {
-                    connect.close();
+                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(FeedbackDBContext.class.getName()).log(Level.SEVERE, null, ex);

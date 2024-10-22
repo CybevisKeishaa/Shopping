@@ -46,4 +46,9 @@ public class Capacity {
         this.products = products;
     }
 
+    @Override
+    public String toString() {
+        return "Capacity{" + "capacity_id=" + capacity_id + ", value=" + value + ", products=" + products + '}';
+    }
+
 }

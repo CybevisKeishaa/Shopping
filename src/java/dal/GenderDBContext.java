@@ -59,7 +59,7 @@ public class GenderDBContext extends DBContext<Gender> {
         } finally {
             try {
                 stm.close();
-                connect.close();
+                
             } catch (SQLException ex) {
                 Logger.getLogger(GenderDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }

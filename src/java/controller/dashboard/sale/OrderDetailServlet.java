@@ -58,7 +58,16 @@ public class OrderDetailServlet extends AuthenticationServlet {
         response.setContentType("text/html;charset=UTF-8");
         String method = request.getParameter("method");
         try {
-            if (method.equals("PUT")) {
+            if (method.equals("POST")) {// update paid status
+                Integer id = RequestHelper.getIntParameterWithDefault("orderId", null, request);
+                if (id == null) {
+                    response.sendError(response.SC_BAD_REQUEST);
+                    return;
+                }
+                OrderDBContext db = new OrderDBContext();
+                db.updatePaidStatus(id);
+            }
+            if (method.equals("PUT")) { // update status
                 Integer id = RequestHelper.getIntParameterWithDefault("orderId", null, request);
                 Integer statusId = RequestHelper.getIntParameterWithDefault("statusId", null, request);
                 if (id == null || statusId == null) {
@@ -67,15 +76,6 @@ public class OrderDetailServlet extends AuthenticationServlet {
                 }
                 OrderDBContext db = new OrderDBContext();
                 db.updateOrderStatus(id, statusId);
-            }
-            if (method.equals("POST")) {
-                Integer id = RequestHelper.getIntParameterWithDefault("orderId", null, request);
-                if (id == null) {
-                    response.sendError(response.SC_BAD_REQUEST);
-                    return;
-                }
-                OrderDBContext db = new OrderDBContext();
-                db.updatePaidStatus(id);
             }
         } catch (MessagingException ex) {
             request.setAttribute("errorMessage", ex.getMessage());

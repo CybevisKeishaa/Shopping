@@ -104,7 +104,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                     stm_query.close();
                 }
                 if (connect != null) {
-                    connect.close();
+                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);

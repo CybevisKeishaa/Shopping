@@ -22,7 +22,7 @@ import model.Order;
 import model.OrderDetail;
 import model.Product;
 import model.Status_Order;
-import model.combiner.Order_StatusTotal;
+import model.dtos.Order_StatusTotalDTO;
 
 /**
  *
@@ -399,17 +399,19 @@ public class OrderDBContext extends DBContext<Order> {
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT p.product_id, p.name AS product_name, g.name AS gender_name, od.quantity, od.price_at_order, \n"
-                    + "       (od.quantity * od.price_at_order) AS total_cost, MIN(img.img_url) AS product_image\n"
-                    + "FROM [OrderDetail] od\n"
-                    + "LEFT JOIN [Product] p ON od.product_id = p.product_id\n"
-                    + "LEFT JOIN Product_Gender pg ON pg.product_id = p.product_id\n"
-                    + "LEFT JOIN Gender g ON g.gender_id = pg.gender_id\n"
-                    + "LEFT JOIN [Order] o ON o.order_id = od.order_id\n"
-                    + "LEFT JOIN Product_Image pi ON pi.product_id = p.product_id\n"
-                    + "LEFT JOIN Image img ON img.img_id = pi.img_id\n"
-                    + "WHERE od.order_id = ? AND o.cus_id = ? \n"
-                    + "GROUP BY p.product_id, p.name, g.name, od.quantity, od.price_at_order";
+            String sql = """
+                            SELECT p.product_id, p.name AS product_name, g.name AS gender_name, od.quantity, od.price_at_order,
+                                   (od.quantity * od.price_at_order) AS total_cost, MIN(img.img_url) AS product_image
+                            FROM [OrderDetail] od
+                            LEFT JOIN [Product] p ON od.product_id = p.product_id
+                            LEFT JOIN Product_Gender pg ON pg.product_id = p.product_id
+                            LEFT JOIN Gender g ON g.gender_id = pg.gender_id
+                            LEFT JOIN [Order] o ON o.order_id = od.order_id
+                            LEFT JOIN Product_Image pi ON pi.product_id = p.product_id
+                            LEFT JOIN Image img ON img.img_id = pi.img_id
+                            WHERE od.order_id = ? AND o.cus_id = ?
+                            GROUP BY p.product_id, p.name, g.name, od.quantity, od.price_at_order;
+                         """;
 
             stm = connect.prepareStatement(sql);
             stm.setInt(1, orderId);
@@ -457,7 +459,7 @@ public class OrderDBContext extends DBContext<Order> {
                     stm.close();
                 }
                 if (connect != null) {
-                    connect.close();
+                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -466,15 +468,15 @@ public class OrderDBContext extends DBContext<Order> {
         return products;
     }
 
-    public List<Order_StatusTotal> getStatusTotal() {
+    public List<Order_StatusTotalDTO> getStatusTotal() {
         PreparedStatement stm = null;
-        ArrayList<Order_StatusTotal> list = new ArrayList<>();
+        ArrayList<Order_StatusTotalDTO> list = new ArrayList<>();
         String sql = OrderSql.TOTAL_PRICE_ORDER_SQL;
         try {
             stm = connect.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                var statusTotal = new Order_StatusTotal();
+                var statusTotal = new Order_StatusTotalDTO();
                 statusTotal.setStatus(rs.getString("status").trim());
                 statusTotal.setTotal(rs.getDouble("total"));
                 list.add(statusTotal);
@@ -594,7 +596,7 @@ public class OrderDBContext extends DBContext<Order> {
                     stm = connect.prepareStatement(sql);
                     stm.setInt(1, quantity);
                     stm.setInt(2, od.getProduct().getProduct_id());
-                    stm.executeUpdate();    
+                    stm.executeUpdate();
                 }
             }
 
@@ -640,7 +642,7 @@ public class OrderDBContext extends DBContext<Order> {
             OrderDetailDBContext oddb = new OrderDetailDBContext();
 
             // Check if the order is paid
-            if (o.isPaidStatus()|| o.getStatus().getStatus_id() == Status_Order.CANCELLED) {
+            if (o.isPaidStatus() || o.getStatus().getStatus_id() == Status_Order.CANCELLED) {
                 throw new MessagingException("Khách hàng Đã trả tiền cho sản phầm.");
             }
 

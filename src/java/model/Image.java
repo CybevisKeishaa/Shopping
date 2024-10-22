@@ -71,5 +71,9 @@ public class Image {
         this.blog = blog;
     }
 
-}
+    @Override
+    public String toString() {
+        return "Image{" + "img_id=" + img_id + ", img_url=" + img_url + ", feedback=" + feedback + ", product=" + product + ", slider=" + slider + ", blog=" + blog + '}';
+    }
 
+}
