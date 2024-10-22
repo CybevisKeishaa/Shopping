@@ -10,8 +10,7 @@ public class Order {
     private int numberOfOtherProducts;
     private Customer_User customer;
     private int total_price;
-    private boolean paid_status;
-    
+
     private Timestamp create_at;
     private String payment_method;
     private Status_Order status;
@@ -21,7 +20,7 @@ public class Order {
     private int successOrders;
     private int cancelledOrders;
     private int pendingOrders;
-    private double totalRevenue;  
+    private double totalRevenue;
     private boolean paidStatus;
     private String note;
     private Address address;
@@ -33,7 +32,7 @@ public class Order {
     public void setAddress(Address address) {
         this.address = address;
     }
-    
+
     public boolean isPaidStatus() {
         return paidStatus;
     }
@@ -49,11 +48,12 @@ public class Order {
     public void setNote(String note) {
         this.note = note;
     }
-    
+
     // Các getter và setter
     public double getTotalRevenue() {
         return totalRevenue;
     }
+
     public void setTotalRevenue(double totalRevenue) {
         this.totalRevenue = totalRevenue;
     }
@@ -171,12 +171,8 @@ public class Order {
         this.payment_method = payment_method;
     }
 
-    public boolean isPaid_status() {
-        return paid_status;
-    }
-
-    public void setPaid_status(boolean paid_status) {
-        this.paid_status = paid_status;
+    public String getPaidStatus_str() {
+        return this.paidStatus ? "Đã Trả Tiền" : "Chưa Trả Tiền";
     }
 
     @Override

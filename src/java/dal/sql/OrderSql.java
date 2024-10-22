@@ -11,20 +11,21 @@ package dal.sql;
 public class OrderSql {
 
     public static final String GET_ALL = """
-                      SELECT o.order_id,
-                             o.created_at AS orderedDate,
-                             o.total AS totalCost,
-                             so.status,
-                             MIN(p.name) AS firstProductName,
-                             COUNT(od.product_id) AS productCount,
-                             c.name_cus
+                    SELECT  o.order_id,
+                            o.created_at AS orderedDate,
+                            o.total AS totalCost,
+                            so.status,
+                            MIN(p.name) AS firstProductName,
+                            COUNT(od.product_id) AS productCount,
+                            c.name_cus,
+                            o.paid_status
                       FROM [dbo].[Order] o
                       JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id
                       JOIN [dbo].[Product] p ON od.product_id = p.product_id
                       JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id
                       JOIN Customer c ON c.cus_id= o.cus_id
                       {where}
-                      GROUP BY o.order_id, o.created_at, o.total, so.status, c.name_cus
+                      GROUP BY o.order_id, o.created_at, o.total, so.status, c.name_cus, o.paid_status
                       {orderBy}
                       OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                      """;

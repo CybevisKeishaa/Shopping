@@ -27,8 +27,8 @@ var lineChartData = {
 };
 var doughnutMap = {
     "Cancelled": {
-        "color": "#FF4C4C",
-        "highlight": "#FF7F7F",
+        "color": "#FF0000",
+        "highlight": "#CC0000",
     },
     "Completed": {
         "color": "#4CAF50",
@@ -45,6 +45,10 @@ var doughnutMap = {
     "Shipping": {
         "color": "#FF9800",
         "highlight": "#FFB74D",
+    },
+    "CancelRequest": {
+        "color": "#FF4C4C",
+        "highlight": "#FF7F7F",
     }
 };
 var statusElem = document.querySelectorAll('.status-display i.fa')
@@ -72,6 +76,6 @@ window.onload = function () {
     window.myDoughnut2 = new Chart(ctx4).Doughnut(ctx4Data, {
         responsive: true,
         showTooltips: true
-        
+
     });
 };

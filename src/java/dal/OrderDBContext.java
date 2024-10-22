@@ -79,7 +79,6 @@ public class OrderDBContext extends DBContext<Order> {
                 orderBySQL += " DESC";
             }
             sql = sql.replace("{where}", whereSQL).replace("{orderBy}", orderBySQL);
-
             stm = connect.prepareStatement(sql);
             stm.setInt(1, offset);    // Set OFFSET
             stm.setInt(2, pageSize);  // Set FETCH NEXT
@@ -545,7 +544,7 @@ public class OrderDBContext extends DBContext<Order> {
             List<OrderDetail> orderDetailList = oddb.getDetailsByOrderID(orderID);
 
             // Check if the order is paid
-            if (!o.isPaid_status()) {
+            if (statusID != Status_Order.CANCELLED && !o.isPaidStatus()) {
                 throw new MessagingException("Khách hàng chưa trả tiền cho sản phầm.");
             }
 
@@ -553,6 +552,7 @@ public class OrderDBContext extends DBContext<Order> {
             if (status.getStatus_name().equals("Cancelled") || status.getStatus_name().equals("Completed") || status.getStatus_id() >= statusID) {
                 throw new MessagingException("Invalid Status Update.");
             }
+            // update status
             String sql = """
                      UPDATE dbo.[Order] SET status_id = ?
                      OUTPUT inserted.status_id
@@ -564,22 +564,23 @@ public class OrderDBContext extends DBContext<Order> {
             stm.setInt(2, orderID);
 
             rs = stm.executeQuery();
-            if (rs.next() && rs.getString("status").trim().equals("Cancelled")) { // Trả Tiền
+            if (rs.next() && statusID == Status_Order.CANCELLED) {
                 // Restock to Wallet
-                sql = """
+                if (o.isPaidStatus()) {// đã trả tiền thì mới hoàn tiền
+                    sql = """
                         UPDATE w
                         SET w.total = w.total + ?
                         FROM Wallet w 
                         JOIN Customer c ON c.wallet_id = w.wallet_id
                         WHERE c.cus_id = ?;
                   """;
-                int total = rs.getInt("total");
-                stm.close(); // Close previous statement
-                stm = connect.prepareStatement(sql);
-                stm.setInt(1, total);
-                stm.setInt(2, customerId);
-                stm.executeUpdate();
-
+                    int total = rs.getInt("total");
+                    stm.close(); // Close previous statement
+                    stm = connect.prepareStatement(sql);
+                    stm.setInt(1, total);
+                    stm.setInt(2, customerId);
+                    stm.executeUpdate();
+                }
                 // Restock products
                 for (OrderDetail od : orderDetailList) {
                     sql = """
@@ -593,7 +594,7 @@ public class OrderDBContext extends DBContext<Order> {
                     stm = connect.prepareStatement(sql);
                     stm.setInt(1, quantity);
                     stm.setInt(2, od.getProduct().getProduct_id());
-                    stm.executeUpdate();
+                    stm.executeUpdate();    
                 }
             }
 
@@ -618,6 +619,52 @@ public class OrderDBContext extends DBContext<Order> {
                     stm.close();
                 }
                 connect.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void updatePaidStatus(int orderID) throws MessagingException {
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+
+            // Validate order existence
+            Order o = getOrderByOrderID(orderID);
+            if (o == null) {
+                throw new MessagingException("Order not found.");
+            }
+            Status_Order status = o.getStatus();
+            int customerId = o.getCustomer().getCus_id();
+            OrderDetailDBContext oddb = new OrderDetailDBContext();
+
+            // Check if the order is paid
+            if (o.isPaidStatus()|| o.getStatus().getStatus_id() == Status_Order.CANCELLED) {
+                throw new MessagingException("Khách hàng Đã trả tiền cho sản phầm.");
+            }
+
+            String sql = """
+                     UPDATE dbo.[Order] SET paid_status = 1
+                     OUTPUT inserted.*
+                     WHERE order_id = ?;
+                     """;
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, orderID);
+
+            rs = stm.executeQuery();
+            // Commit transaction
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }

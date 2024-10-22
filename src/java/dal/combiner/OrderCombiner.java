@@ -24,15 +24,15 @@ public class OrderCombiner {
         o.setOrder_id(rs.getInt("order_id"));
         o.setCreate_at(rs.getTimestamp("orderedDate"));
         o.setTotal_price(rs.getInt("totalCost"));
+        o.setPaidStatus(rs.getBoolean("paid_status"));
+        o.setFirstProductName(rs.getString("firstProductName"));
+        o.setNumberOfOtherProducts(rs.getInt("productCount"));
 
         Status_Order so = new Status_Order();
         so.setStatus_name(rs.getString("status"));
 
         o.setStatus(so);
-
-        o.setFirstProductName(rs.getString("firstProductName"));
-        o.setNumberOfOtherProducts(rs.getInt("productCount"));
-
+        
         Customer_User customer = new Customer_User();
         customer.setName_cus(rs.getString("name_cus").trim());
         o.setCustomer(customer);
@@ -52,6 +52,7 @@ public class OrderCombiner {
 
         o.setStatus(so);
         o.setShipping_method(rs.getString("shipping_method"));
+        o.setPaidStatus(rs.getBoolean("paid_status"));
 
         // Lấy thông tin khách hàng
         Customer_User c = new Customer_User();

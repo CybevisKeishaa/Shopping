@@ -111,7 +111,7 @@
                         </c:if>
                         <c:if test="${role == 'Marketer'}">
                             <li>
-                                <a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a>
+                                <a href="${pageContext.request.contextPath}/markets">Markets</a>
                             </li>
                         </c:if>
                         <c:if test="${role == 'Admin' || role == 'Saler'}">
@@ -122,7 +122,7 @@
 
                         <script>
                             let pathname = location.pathname;
-                            document.querySelector(`a[href*='` + pathname + `'`).classList.add('active');
+                            document.querySelector(`a[href*='` + pathname + `'`)?.classList.add('active');
                         </script>
                     </ul>
                 </div>

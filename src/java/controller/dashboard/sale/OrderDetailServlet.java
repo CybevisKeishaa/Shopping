@@ -16,8 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Customer_User;
 import model.Order;
 import model.Product;
@@ -59,8 +57,8 @@ public class OrderDetailServlet extends AuthenticationServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String method = request.getParameter("method");
-        if (method.equals("PUT")) {
-            try {
+        try {
+            if (method.equals("PUT")) {
                 Integer id = RequestHelper.getIntParameterWithDefault("orderId", null, request);
                 Integer statusId = RequestHelper.getIntParameterWithDefault("statusId", null, request);
                 if (id == null || statusId == null) {
@@ -69,15 +67,21 @@ public class OrderDetailServlet extends AuthenticationServlet {
                 }
                 OrderDBContext db = new OrderDBContext();
                 db.updateOrderStatus(id, statusId);
-            } catch (MessagingException ex) {
-
-                Logger.getLogger(OrderDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
-
-            } finally {
-                doGet(request, response);
             }
+            if (method.equals("POST")) {
+                Integer id = RequestHelper.getIntParameterWithDefault("orderId", null, request);
+                if (id == null) {
+                    response.sendError(response.SC_BAD_REQUEST);
+                    return;
+                }
+                OrderDBContext db = new OrderDBContext();
+                db.updatePaidStatus(id);
+            }
+        } catch (MessagingException ex) {
+            request.setAttribute("errorMessage", ex.getMessage());
+        } finally {
+            doGet(request, response);
         }
-
     }
 
 }

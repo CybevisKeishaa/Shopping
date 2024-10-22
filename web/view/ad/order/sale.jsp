@@ -56,10 +56,10 @@
                     <div class="form-group col-md-2">
                         <label for="sortby">Sort By:</label>
                         <select id="sort" class="form-control" name="sort">
-                            <option value="orderdate" ${param.sort == 'orderdate' ? 'selected':''}>Order Date</option>
-                            <option value="customername" ${param.sort == 'customername' ? 'selected':''}>Customer Name</option>
-                            <option value="totalcost" ${param.sort == 'totalcost' ? 'selected':''}>Total Cost</option>
-                            <option value="status" ${param.sort == 'status' ? 'selected':''}>Status</option>
+                            <option value="orderdate" ${param.sort == 'orderdate' ? 'selected':''}>Ngày Đặt</option>
+                            <option value="customername" ${param.sort == 'customername' ? 'selected':''}>Tên Khách Hàng</option>
+                            <option value="totalcost" ${param.sort == 'totalcost' ? 'selected':''}>Tổng Giá</option>
+                            <option value="status" ${param.sort == 'status' ? 'selected':''}>Trạng Thái</option>
                         </select>
                     </div>
                     <div class="form-group col-md-2">
@@ -83,12 +83,13 @@
                         <thead>
                             <tr>
                                 <th>Order Id</th>
-                                <th>Customer Name</th>
-                                <th>Order Date</th>
-                                <th>Total Cost</th>
-                                <th>Status</th>
-                                <th>Product Count</th>
-                                <th>Actions</th>
+                                <th>Tên Khách Hàng</th>
+                                <th>Tổng Giá</th>
+                                <th>Ngày Đặt</th>
+                                <th>Trạng Thái</th>
+                                <th>Trạng Thái Tiền</th>
+                                <th>Số Sản Phẩm</th>
+                                <th>Hành Động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -96,9 +97,10 @@
                                 <tr>
                                     <td>${order.order_id}</td>
                                     <td>${order.customer.name_cus}</td>
-                                    <td>${order.create_at}</td>
                                     <td>$${order.total_price}</td>
-                                    <td>${order.status.status_name}</td>
+                                    <td>${order.create_at}</td>
+                                    <td>${order.status.status_name} </td>
+                                    <td style="color:${order.paidStatus?"green":'red'};" >${order.paidStatus_str}</td>
                                     <td>${order.numberOfOtherProducts}</td>
                                     <td>
                                         <a href="./sale/orderDetail?orderId=${order.order_id}" class="btn btn-primary btn-sm text-bold">
@@ -111,30 +113,6 @@
                         </tbody>
                     </table>
                     <div class="container">
-<!--                        <div class="pagination-container d-flex justify-content-center">
-                            <div class="pagination">
-                                 Previous Button 
-                                <c:if test="${currentPage > 1}">
-                                    <a href="?page=${currentPage - 1}" class="prev">&lt;</a>
-                                </c:if>
-
-                                 Page Numbers 
-                                <c:forEach var="i" begin="1" end="${totalPages}">
-                                    <c:choose>
-                                        <c:when test="${i == currentPage}">
-                                            <a disabled>${i}</a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="?page=${i}">${i}</a>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
-                                 Next Button 
-                                <c:if test="${currentPage < totalPages}">
-                                    <a href="?page=${currentPage + 1}" class="next">&gt;</a>
-                                </c:if>
-                            </div>
-                        </div>-->
                         <div class="pagination-container dataTables_paginate paging_simple_numbers" id="datatables-example_paginate">
                             <ul class="pagination">
                                 <c:choose >

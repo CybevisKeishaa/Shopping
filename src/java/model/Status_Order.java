@@ -12,6 +12,13 @@ import java.util.ArrayList;
  */
 public class Status_Order {
 
+    public static final int PENDING = 1;
+    public static final int CONFIRMED = 2;
+    public static final int SHIPPING = 3;
+    public static final int COMPLETED = 4;
+    public static final int CANCELLED = 5;
+    public static final int CANCEL_REQUEST = 6;
+    
     private int status_id;
     private String status_name;
     private ArrayList<Order> orders = new ArrayList<>();
@@ -56,4 +63,5 @@ public class Status_Order {
         return "Status_Order{" + "status_id=" + status_id + ", status_name=" + status_name + ", orders=" + orders + '}';
     }
 
+    
 }
