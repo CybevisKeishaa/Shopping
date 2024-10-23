@@ -88,91 +88,59 @@
                     <div class="section-title">
                         <h2>Thông tin đặt hàng</h2> 
                     </div>
-                    <div class="product-info">
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="orders" role="tabpanel">
-                                <div class="tab-single">
-                                    <c:if test="${not empty cart.items}">
-                                        <form id="cartForm" action="list" method="post">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Title</th>
-                                                        <th>Price</th>
-                                                        <th>Quantity</th>
-                                                        <th>Capacity</th> <!-- Thêm cột Capacity -->
-                                                        <th>Total Cost</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <c:set var="totalPrice" value="0"/>
-                                                    <c:forEach var="item" items="${cart.items}">
-                                                        <tr>                        
-                                                            <td>${item.product.name}</td>
-                                                            <td><fmt:formatNumber value="${item.capacity.unit_price}" type="currency" currencySymbol="VND"/></td>
-                                                            <td>
-                                                                <!-- Đặt tên input là mảng itemId[] và quantity[], làm nhỏ ô nhập quantity -->
-                                                                <input type="hidden" name="itemId[]" value="${item.item_id}" />
-                                                                <input type="number" name="quantity[]" value="${item.quantity}" min="1" style="width: 60px;" onchange="updateTotal(${item.item_id}, this.value)" />
-                                                            </td>
-                                                            <td>
-                                                                <!-- Dropdown để chọn capacity -->
-                                                                <select name="capacity[]" class="form-control form-control-sm">
-                                                                    <c:forEach var="capacity" items="${item.product.capacity}">
-                                                                        <option value="${capacity.capacity_id}" 
-                                                                                <c:if test="${capacity.capacity_id == item.capacity.capacity_id}">
-                                                                                    selected="selected"
-                                                                                </c:if>
-                                                                                >
-                                                                            ${capacity.value} ml
-                                                                        </option>
-                                                                    </c:forEach>
-                                                                </select>
+                    <c:if test="${not empty cart.items}">
+                        <form id="cartForm" action="updateCart" method="post">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+
+                                        <th>Title</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total Cost</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:set var="totalPrice" value="0"/>
+                                    <c:forEach var="item" items="${cart.items}">
+                                        <tr>                        
+                                            <td>${item.product.name}</td>
+                                            <td><fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND"/></td>
+                                            <td>
+                                                <input type="number" name="quantity" value="${item.quantity}" min="1" onchange="updateTotal(${item.product.product_id}, this.value)" />
+                                            </td>
 
 
-                                                            </td>
-
-                                                            <td>
-                                                                <span id="total_cost_${item.item_id}">
-                                                                    <fmt:formatNumber value="${item.quantity * item.capacity.unit_price}" type="currency" currencySymbol="VND"/>
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <a href="../cart/item/delete?comm=ck&itemID=${item.item_id}" class="btn btn-danger">
-                                                                    <i class="fa fa-remove"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.capacity.unit_price)}"/>  
-                                                    </c:forEach>
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <td colspan="4" class="text-right"><strong>Total Order Price:</strong></td> <!-- colspan="4" vì thêm cột Capacity -->
-                                                        <td colspan="2">
-                                                            <span id="total_order_price">
-                                                                <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND"/>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                            <div class="text-right">
-                                                <button type="submit" class="btn btn-secondary">Update Cart</button>
-                                                <a href="${pageContext.request.contextPath}/productList" class="btn btn-success">More Products</a>
-                                                <a href="${pageContext.request.contextPath}/cart/checkout" class="btn btn-warning">Check Out</a>
-                                            </div>
-                                        </form>
-
-
-
-                                    </c:if>
-                                    <c:if test="${empty cart.items}">
-                                        <p>Your cart is currently empty.</p>
-                                        <a href="${pageContext.request.contextPath}/productList" class="btn btn-success">Choose Products</a>
-                                    </c:if>
-                                </div>
+                                            <td>
+                                                <span id="total_cost_${item.product.product_id}">
+                                                    <fmt:formatNumber value="${item.quantity * item.product.price}" type="currency" currencySymbol="VND"/>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a href="../cart/item/delete?comm=del&itemID=${item.item_id}" class="btn btn-danger">
+                                                    <i class="fa fa-remove"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.product.price)}"/>  
+                                    </c:forEach>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-right"><strong>Total Order Price:</strong></td>
+                                        <td colspan="3">
+                                            <span id="total_order_price">
+                                                <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-secondary">Update Cart</button>
+                                <a href="${pageContext.request.contextPath}/productList" class="btn btn-success">More Products</a>
+                                <a href="${pageContext.request.contextPath}/cart/checkout" class="btn btn-warning">Check Out</a>
                             </div>
                         </form>
                     </c:if>

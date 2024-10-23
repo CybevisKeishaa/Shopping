@@ -6,13 +6,10 @@ package dal;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Address;
 import model.Customer_User;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Employee;
 import model.Role;
 
@@ -222,8 +219,7 @@ public class employeeDBContext extends DBContext {
         }
         return null;
     }
-
-    public void updateEmployee(String emp_id, String name, String email, String phone, String status) {
+      public void updateEmployee(String emp_id, String name, String email, String phone, String status) {
         String sql = "UPDATE [dbo].[Employee]\n"
                 + "   SET [name_emp] = ?\n"
                 + "      ,[phone] = ?\n"
@@ -242,41 +238,6 @@ public class employeeDBContext extends DBContext {
         } catch (Exception e) {
 
         }
-    }
-
-    public int getFreeEmployee() {
-
-        PreparedStatement stm = null;
-        int empID = -1;
-        try {
-            String sql = "SELECT e.emp_id,  \n"
-                    + "       e.name_emp,  \n"
-                    + "       COUNT(o.order_id) AS number_of_orders\n"
-                    + "FROM Employee e\n"
-                    + "LEFT JOIN [Order] o ON e.emp_id = o.employee_id AND CAST(o.created_at AS DATE) = CAST(GETDATE() AS DATE)\n"
-                    + "LEFT JOIN Role r ON e.role_id = r.role_id\n"
-                    + "WHERE r.role_id = 3 \n"
-                    + "GROUP BY e.emp_id, e.name_emp\n"
-                    + "order by number_of_orders asc";
-
-            stm = connect.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-                empID = rs.getInt("emp_id");
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (stm != null) {
-                try {
-                    stm.close(); // Đảm bảo đóng tài nguyên sau khi sử dụng
-                } catch (SQLException ex) {
-                    Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        return empID;
     }
 
     public static void main(String[] args) {
