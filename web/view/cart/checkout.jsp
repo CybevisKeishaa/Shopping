@@ -150,29 +150,12 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="gender">Gender</label>
-                                            <select name="gender" class="form-control">
-                                                <option value="1" ${user.gender == 1 ? 'selected' : ''}>Male</option>
-                                                <option value="0" ${user.gender == 0 ? 'selected' : ''}>Female</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
                                             <label for="email">Email</label>
                                             <input type="email" name="email" value="${sessionScope.customer.email}" class="form-control" required />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="mobile">Mobile</label>
-                                            <input type="text" name="mobile" value="${sessionScope.customer.c_phone}" class="form-control" required />
-                                        </div>
-                                    </div>
                                 </div>
+
 
                                 <div class="row">
                                     <div class="col-md-12">

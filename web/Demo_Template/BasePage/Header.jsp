@@ -53,7 +53,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
 
 
-        
+
     </head>
     <body class="js">
 
@@ -138,38 +138,59 @@
                                 <div class="sinlge-bar">
                                     <a href="${pageContext.request.contextPath}/customer_profile" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
                                 </div>
+                                <!-- Phần giỏ hàng trong header -->
                                 <div class="sinlge-bar shopping">
-                                    <a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
+                                    <a href="#" class="single-icon"><i class="ti-bag"></i> 
+                                        <span class="total-count">
+                                            <c:choose>
+                                                <c:when test="${sessionScope.cart != null && sessionScope.cart.items.size() >= 5}">
+                                                    5+
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${sessionScope.cart != null ? sessionScope.cart.items.size() : 0}
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </span>
+                                    </a>
+
                                     <!-- Shopping Item -->
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
-                                            <span>2 Sản phẩm</span>
-                                            <a href="#">Xem giỏ hàng</a>
+                                            <span>${sessionScope.cart != null ? sessionScope.cart.items.size() : 0} Sản phẩm</span>
+                                            <a href="${pageContext.request.contextPath}/cart/list">Xem giỏ hàng</a>
                                         </div>
+
                                         <ul class="shopping-list">
-                                            <li>
-                                                <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                                <a class="cart-img" href="#"><img src="${pageContext.request.contextPath}/https://via.placeholder.com/70x70" alt="#"></a>
-                                                <h4><a href="#">Dior Sauvage</a></h4>
-                                                <p class="quantity">1x - <span class="amount">2.800.000 VND</span></p>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                                <a class="cart-img" href="#"><img src="${pageContext.request.contextPath}/https://via.placeholder.com/70x70" alt="#"></a>
-                                                <h4><a href="#">Channel</a></h4>
-                                                <p class="quantity">1x - <span class="amount">2.000.000 VND</span></p>
-                                            </li>
+                                            <c:choose>
+                                                <c:when test="${sessionScope.cart != null && not empty sessionScope.cart.items}">
+                                                    <c:set var="totalPrice" value="0" />
+                                                    <c:forEach var="item" items="${sessionScope.cart.items}">
+                                                        <li>
+                                                            <a href="${pageContext.request.contextPath}/cart/item/delete?comm=del&itemID=${item.item_id}" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
+                                                            <a class="cart-img" href="#"><img src="${pageContext.request.contextPath}/img/${item.product.img[0].img_url}" alt="#"></a>
+                                                            <h4><a href="${pageContext.request.contextPath}/product/detail?product_id=${item.product.product_id}">${item.product.name}</a></h4>
+                                                            <p class="quantity">${item.quantity}x - <span class="amount">${item.product.price} VND</span></p>
+                                                        </li>
+                                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.product.price)}" />
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <li>Giỏ hàng của bạn đang trống</li>
+                                                    </c:otherwise>
+                                                </c:choose>
                                         </ul>
+
                                         <div class="bottom">
                                             <div class="total">
                                                 <span>Tổng hóa đơn</span>
-                                                <span class="total-amount">4.800.000 VND</span>
+                                                <span class="total-amount">${totalPrice} VND</span>
                                             </div>
-                                            <a href="checkout.html" class="btn animate">Checkout</a>
+                                            <a href="${pageContext.request.contextPath}/cart/checkout" class="btn animate">Checkout</a>
                                         </div>
                                     </div>
                                     <!--/ End Shopping Item -->
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -201,7 +222,7 @@
                                                     </li>
 
                                                     <li><a href="${pageContext.request.contextPath}/blogList">Bài viết</a></li>
-                                                   <li><a href="${pageContext.request.contextPath}/homepage/feedback">Đánh giá</a></li>
+                                                    <li><a href="${pageContext.request.contextPath}/homepage/feedback">Đánh giá</a></li>
                                                 </ul>
                                             </div>
                                         </div>

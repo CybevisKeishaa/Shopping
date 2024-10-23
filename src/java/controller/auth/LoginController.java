@@ -1,5 +1,6 @@
 package controller.auth;
 
+import dal.CartDBContext;
 import dal.CustomerDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -7,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import model.Cart;
 import model.Customer_User;
 
 public class LoginController extends HttpServlet {
@@ -29,9 +31,13 @@ public class LoginController extends HttpServlet {
 
         CustomerDBContext db = new CustomerDBContext();
         Customer_User customer = db.getCustomerAccountByEmail(email, password);
-
+        
         if (customer != null) {
             HttpSession session = request.getSession();
+            int customerID = customer.getCus_id();
+            CartDBContext cartDB = new CartDBContext();
+            Cart cart = cartDB.getCartByCustomer(customerID);
+            session.setAttribute("cart", cart);
             session.setAttribute("customer", customer);
             response.sendRedirect("homepage");
         } else {

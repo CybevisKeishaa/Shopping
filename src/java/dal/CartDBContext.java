@@ -34,8 +34,8 @@ public class CartDBContext extends DBContext<Cart> {
                     + "LEFT JOIN Product_Image pi ON p.product_id = pi.product_id \n"
                     + "LEFT JOIN Image img ON pi.img_id = img.img_id \n"
                     + "LEFT JOIN Capacity cap ON i.capacity_id = cap.cap_id \n"
-                    + "WHERE cu.cus_id = ?\n"
-                    + "GROUP BY c.cart_id, i.item_id, cu.cus_id, cu.name_cus, p.product_id, p.name, p.price, i.quanity, i.capacity_id, cap.cap_value;";
+                    + "WHERE cu.cus_id = ? and img_url like 'product%'\n"
+                    + "GROUP BY c.cart_id, i.item_id, cu.cus_id, cu.name_cus, p.product_id, p.name, p.price, i.quanity, i.capacity_id, cap.cap_value";
 
             stm = connect.prepareStatement(sql);
             stm.setInt(1, cusID);
@@ -213,7 +213,7 @@ public class CartDBContext extends DBContext<Cart> {
                 stm = connect.prepareStatement(insertSql);
                 stm.setInt(1, productID);
                 stm.setInt(2, cartID);
-                
+
                 stm.setInt(3, capacityID);
                 stm.executeUpdate();
             }
