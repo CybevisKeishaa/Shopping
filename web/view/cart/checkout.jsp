@@ -120,25 +120,26 @@
                                             <tr>
                                                 <td>${item.product.product_id}</td>
                                                 <td>${item.product.name}</td>
-                                                <td><fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND"/></td>
+                                                <td><fmt:formatNumber value="${item.capacity.unit_price}" type="currency" currencySymbol="VND"/></td>
                                                 <td>${item.quantity}</td>
-                                                <td><fmt:formatNumber value="${item.quantity * item.product.price}" type="currency" currencySymbol="VND"/></td>
+                                                <td><fmt:formatNumber value="${item.quantity * item.capacity.unit_price}" type="currency" currencySymbol="VND"/></td>
 
                                                 <!-- Các trường hidden để lưu thông tin sản phẩm -->
                                         <input type="hidden" name="productID" value="${item.product.product_id}">
                                         <input type="hidden" name="quantity" value="${item.quantity}">
-                                        <input type="hidden" name="unit_price" value="${item.product.price}">
+                                        <input type="hidden" name="unit_price" value="${item.capacity.unit_price}">
                                         <input type="hidden" name="capacity_id" value="${item.capacity.capacity_id}">
+                                        <input type="hidden" name="capacity_stock" value="${item.capacity.stock}">
                                         </tr>
-                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.product.price)}"/>  
+                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.capacity.unit_price)}"/>  
                                     </c:forEach>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colspan="4" class="text-right"><strong>Total Order Price:</strong></td>
                                             <td><fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND"/></td>
-                                            <input type="hidden" name="totalCost" value="${totalPrice}">
-                                        </tr>
+                                    <input type="hidden" name="totalCost" value="${totalPrice}">
+                                    </tr>
                                     </tfoot>
                                 </table>
 
@@ -153,29 +154,12 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="gender">Gender</label>
-                                            <select name="gender" class="form-control">
-                                                <option value="1" ${user.gender == 1 ? 'selected' : ''}>Male</option>
-                                                <option value="0" ${user.gender == 0 ? 'selected' : ''}>Female</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
                                             <label for="email">Email</label>
                                             <input type="email" name="email" value="${sessionScope.customer.email}" class="form-control" required />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="mobile">Mobile</label>
-                                            <input type="text" name="mobile" value="${sessionScope.customer.c_phone}" class="form-control" required />
-                                        </div>
-                                    </div>
                                 </div>
+
 
                                 <div class="row">
                                     <div class="col-md-12">

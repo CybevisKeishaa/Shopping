@@ -342,6 +342,23 @@ public class ProductDBContext extends DBContext<Product> {
         return products;
     }
 
+    public int getStockByProductId(int productId) {
+        PreparedStatement stm = null;
+        int stock = 0;
+        try {
+            String sql = "SELECT stock FROM Product WHERE product_id = ?";
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, productId);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                stock = rs.getInt("stock");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stock;
+    }
+
     public ArrayList<Product> getProductByGender() {
         PreparedStatement stm = null;
         ArrayList<Product> products = new ArrayList<>();

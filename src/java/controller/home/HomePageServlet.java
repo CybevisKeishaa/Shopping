@@ -34,7 +34,8 @@ public class HomePageServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        HttpSession session = request.getSession();
+        try  {
             BlogDBContext blogdb = new BlogDBContext();
             SliderDBContext sliderdb = new SliderDBContext();
             ProductDBContext productdb = new ProductDBContext();
