@@ -141,7 +141,7 @@
                                                     <c:forEach var="item" items="${cart.items}">
                                                         <tr>                        
                                                             <td>${item.product.name}</td>
-                                                            <td><fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND"/></td>
+                                                            <td><fmt:formatNumber value="${item.capacity.unit_price}" type="currency" currencySymbol="VND"/></td>
                                                             <td>
                                                                 <!-- Đặt tên input là mảng itemId[] và quantity[], làm nhỏ ô nhập quantity -->
                                                                 <input type="hidden" name="itemId[]" value="${item.item_id}" />
@@ -166,7 +166,7 @@
 
                                                             <td>
                                                                 <span id="total_cost_${item.item_id}">
-                                                                    <fmt:formatNumber value="${item.quantity * item.product.price}" type="currency" currencySymbol="VND"/>
+                                                                    <fmt:formatNumber value="${item.quantity * item.capacity.unit_price}" type="currency" currencySymbol="VND"/>
                                                                 </span>
                                                             </td>
                                                             <td>
@@ -175,7 +175,7 @@
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.product.price)}"/>  
+                                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.capacity.unit_price)}"/>  
                                                     </c:forEach>
                                                 </tbody>
                                                 <tfoot>

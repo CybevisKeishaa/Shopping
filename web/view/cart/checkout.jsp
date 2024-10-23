@@ -117,25 +117,26 @@
                                             <tr>
                                                 <td>${item.product.product_id}</td>
                                                 <td>${item.product.name}</td>
-                                                <td><fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND"/></td>
+                                                <td><fmt:formatNumber value="${item.capacity.unit_price}" type="currency" currencySymbol="VND"/></td>
                                                 <td>${item.quantity}</td>
-                                                <td><fmt:formatNumber value="${item.quantity * item.product.price}" type="currency" currencySymbol="VND"/></td>
+                                                <td><fmt:formatNumber value="${item.quantity * item.capacity.unit_price}" type="currency" currencySymbol="VND"/></td>
 
                                                 <!-- Các trường hidden để lưu thông tin sản phẩm -->
                                         <input type="hidden" name="productID" value="${item.product.product_id}">
                                         <input type="hidden" name="quantity" value="${item.quantity}">
-                                        <input type="hidden" name="unit_price" value="${item.product.price}">
+                                        <input type="hidden" name="unit_price" value="${item.capacity.unit_price}">
                                         <input type="hidden" name="capacity_id" value="${item.capacity.capacity_id}">
+                                        <input type="hidden" name="capacity_stock" value="${item.capacity.stock}">
                                         </tr>
-                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.product.price)}"/>  
+                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.capacity.unit_price)}"/>  
                                     </c:forEach>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colspan="4" class="text-right"><strong>Total Order Price:</strong></td>
                                             <td><fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND"/></td>
-                                            <input type="hidden" name="totalCost" value="${totalPrice}">
-                                        </tr>
+                                    <input type="hidden" name="totalCost" value="${totalPrice}">
+                                    </tr>
                                     </tfoot>
                                 </table>
 

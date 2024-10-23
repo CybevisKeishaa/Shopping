@@ -169,9 +169,9 @@
                                                             <a href="${pageContext.request.contextPath}/cart/item/delete?comm=del&itemID=${item.item_id}" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
                                                             <a class="cart-img" href="#"><img src="${pageContext.request.contextPath}/img/${item.product.img[0].img_url}" alt="#"></a>
                                                             <h4><a href="${pageContext.request.contextPath}/product/detail?product_id=${item.product.product_id}">${item.product.name}</a></h4>
-                                                            <p class="quantity">${item.quantity}x - <span class="amount">${item.product.price} VND</span></p>
+                                                            <p class="quantity">${item.quantity}x - <span class="amount">${item.capacity.unit_price} VND</span></p>
                                                         </li>
-                                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.product.price)}" />
+                                                        <c:set var="totalPrice" value="${totalPrice + (item.quantity * item.capacity.unit_price)}" />
                                                     </c:forEach>
                                                 </c:when>
                                                 <c:otherwise>
