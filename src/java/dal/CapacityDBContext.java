@@ -91,6 +91,8 @@ public class CapacityDBContext extends DBContext<Capacity> {
                 Capacity c = new Capacity();
                 c.setCapacity_id(rs.getInt(1));
                 c.setValue(rs.getInt(2));
+                c.setUnit_price(rs.getInt("unit_price"));
+                c.setStock(rs.getInt("stock"));
                 list.add(c);
             }
             return list;

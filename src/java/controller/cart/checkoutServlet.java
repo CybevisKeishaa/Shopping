@@ -7,8 +7,11 @@ package controller.cart;
 import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.AddressDBContext;
 import dal.CartDBContext;
+import dal.CustomerDBContext;
+import dal.EmployeeDBContext;
 import dal.OrderDBContext;
 import dal.PaymentDBContext;
+import dal.ProductDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -86,11 +89,13 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
 
             if (productIds.length != quantities.length || productIds.length != unitPrices.length) {
                 response.getWriter().println("Product details are mismatched.");
-                return;
-            }
+                    return;
+                }
 
+            EmployeeDBContext empDB = new EmployeeDBContext();
+            int empID = empDB.getFreeEmployee();
             OrderDBContext orderDB = new OrderDBContext();
-            int orderId = orderDB.insertOrder(totalCost, statusID, cusID, paymentID, note, addressID);
+            int orderId = orderDB.insertOrder(totalCost, statusID, cusID, paymentID, note, addressID, empID);
 
             if (orderId > 0) {
                 ArrayList<OrderDetail> orderDetails = new ArrayList<>();

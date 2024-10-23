@@ -92,7 +92,7 @@
                 <h1>Cảm ơn bạn đã lựa chọn sản phẩm của chúng tôi!</h1>
                 <p>Đơn hàng của bạn sẽ được xử lý trong thời gian ngắn, vui lòng theo dõi trạng thái đơn hàng</p>
 
-                <a href="${pageContext.request.contextPath}/homepage" class="btn-home">Quay về trang chủ</a>
+                <a href="${pageContext.request.contextPath}/account/order" class="btn-home">Quay về trang chủ</a>
                 <div class="footer">
                     <p>&copy; 2024 Cửa hàng KEISHA. Tất cả các quyền được bảo lưu.</p>
                 </div>
