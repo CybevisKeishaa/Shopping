@@ -168,8 +168,14 @@
         label[for]:has( + input:checked){
             background-color:#F7941D;
             color:#fff;
-        }
 
+        }
+        input[type^=radio] {
+            opacity: 0;
+            left: 0;
+            bottom:0;
+            z-index: -9;
+        }
 
     </style>
 
@@ -185,11 +191,11 @@
                 <div class="image-section col-lg-4">
                     <img id="main-image" src="${pageContext.request.contextPath}/img/${data.img[0].img_url}" alt="Product Image"  />
                     <c:catch var="e">
-                        <c:if test="${data.img != null }" >
+                        <c:if test="${data.img != null && fn:length(data.img) gt 1 }" >
                             <div class="img-container">
-                                <c:forEach items="${data.img}" var="img">
+                                <c:forEach items="${data.img}" var="img" varStatus="i">
                                     <div class="col-2 embed-responsive embed-responsive-1by1">
-                                        <img src="${pageContext.request.contextPath}/img/${img.img_url}" class="border-primary" alt="Product Image" />
+                                        <img src="${pageContext.request.contextPath}/img/${img.img_url}" class="${i.index == 0 ? "border" : "" } border-primary" alt="Product Image" />
                                     </div>
                                 </c:forEach> 
                             </div>
@@ -213,52 +219,59 @@
 
                 <!-- Product Info Section -->
                 <div class="product-info col-lg-8">
-                    <h1>${requestScope.data.name}</h1>
-                    <p>SALE OFF: <strong>$${requestScope.data.getDiscount().getAmount()}</strong></p>
-                    <p>PRICE: <strong>$${requestScope.data.price}</strong></p>
-                    <p>Release year: ${requestScope.data.date}</p>
-                    <c:if test="${requestScope.data.status == true}">
-                        <p>Status: In stock</p>
-                    </c:if>
-                    <c:if test="${requestScope.data.status == false}">
-                        <p>Status: Out of stock</p>
-                    </c:if>
-                    <p>Brand: ${requestScope.data.getBrand().getName()}</p>
-                    <div>Capacity: 
-                        <c:forEach var="i" varStatus="v" items="${requestScope.data.getCapacity()}">
-                            ${i}
-                            <label for="capacity${v.index}" class="capacity-box">
-                                ${i.getValue()} ml
-                            </label>
-                            <input type="radio" class="d-none" name="capacity" id="capacity${v.index}"/>
-                        </c:forEach>
-                    </div>
+                    <form action="${pageContext.request.contextPath}/cart/item/add" id="add-to-bag">
+                        <input type="hidden" name="pid" value="${data.product_id}"/>
+                        <input type="hidden" name="cartID" value="${customer.cart.cart_id}"/>
 
-
-
-                    <div class="quantity-selector">
-                        <label for="quantity">Quantity</label>
-                        <div class="quantity-controls">
-                            <input type="number" id="quantity" value="1" min="1" max="10"/>
+                        <h1>${requestScope.data.name}</h1>
+                        <p>SALE OFF: <strong>$${requestScope.data.getDiscount().getAmount()}</strong></p>
+                        <p>PRICE: <strong id="product-price">$${requestScope.data.price}</strong></p>
+                        <p>Release year: ${requestScope.data.date}</p>
+                        <c:if test="${requestScope.data.status == true}">
+                            <p>Status: In stock</p>
+                        </c:if>
+                        <c:if test="${requestScope.data.status == false}">
+                            <p>Status: Out of stock</p>
+                        </c:if>
+                        <p>Brand: ${requestScope.data.getBrand().getName()}</p>
+                        <div>Capacity: 
+                            <span class="position-relative">
+                                <c:forEach var="i" varStatus="v" items="${requestScope.data.getCapacity()}">
+                                    <label for="capacity${v.index}" class="capacity-box" tabindex="0">
+                                        ${i.getValue()} ml
+                                    </label>
+                                    <input type="radio" class="position-absolute" 
+                                           data-max="${i.stock}" data-unit-price="${i.unit_price}"
+                                           name="capacityId" value="${i.capacity_id}" required="" id="capacity${v.index}"/>
+                                </c:forEach>
+                            </span>                        
                         </div>
-                    </div>
 
-                    <!-- Buttons -->
-                    <div class="button-container">
-                        <button class="add-to-bag">ADD TO BAG</button>
-                        <button class="buy-now">BUY NOW</button>
-                    </div>
+                        <div class="quantity-selector">
+                            <label for="quantity">Quantity</label>
+                            <div class="quantity-controls">
+                                <input type="number" name="quantity" value="1" min="1" max="10" required=""/>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="button-container">
+                            <button class="add-to-bag" name="action" value="add-to-bag">ADD TO BAG</button>
+                            <button class="buy-now" name="action" value="buy-now">BUY NOW</button>
+                        </div>
+                    </form>
                 </div>
+
             </div>
             <!-- Other Products Section -->
             <div class="other-products">
                 <h3>Other Products:</h3>
                 <div class="other-products-list">
                     <c:forEach var="i" items="${requestScope.list}">
-                        <div class="other-product-item">
-                            <img src="${pageContext.request.contextPath}/images/test.jpg" alt="Other Product 1" />
+                        <a href="?product_id=${i.product_id}" class="other-product-item">
+                            <img src="${pageContext.request.contextPath}/img/${i.img[0].img_url}" alt="Other Product 1" />
                             <p>${i.price}</p>
-                        </div>
+                        </a>
                     </c:forEach>
 
                 </div>
@@ -292,5 +305,14 @@
             </div>
         </div>
     </div>
-
+    <script>
+        let quantityInput = document.querySelector("[name^='quantity']");
+        let radios = document.querySelectorAll("[name^='capacity']");
+        let priceElem = document.getElementById("product-price");
+        function changeMaxQuantity(e) {
+            quantityInput.max = e.target.dataset.max;
+            priceElem.textContent = '$' + e.target.dataset.unitPrice;
+        }
+        radios.forEach(item => item.addEventListener('change', changeMaxQuantity))
+    </script>
 </t:mainview>
