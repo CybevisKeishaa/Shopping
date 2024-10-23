@@ -4953,6 +4953,7 @@ Version:1.0
     margin-bottom:20px;
 }
 .footer .about .logo img{
+    filter: invert(0.75);
 }
 .footer .about .text{
     color:#fff;
