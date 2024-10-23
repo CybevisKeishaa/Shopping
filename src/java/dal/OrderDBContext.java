@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Date;
 import model.Address;
-import model.Capacity;
 import model.Customer_User;
 import model.Gender;
 import model.Image;
@@ -193,36 +192,32 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     public Order getOrderByOrderID(int orderID, int cus_id) {
-        Order o = null; // Khởi tạo là null để kiểm tra xem có lấy được kết quả hay không
+        Order o = new Order();
         PreparedStatement stm = null;
-        ResultSet rs = null;
         try {
-            String sql = "SELECT o.order_id, o.note, o.total, o.created_at, o.shipping_method, o.status_id, so.status, \n"
+            String sql = "SELECT o.order_id, o.total, o.created_at, o.shipping_method, so.status, \n"
                     + "       c.name_cus, c.gender, c.email, c.c_phone, \n"
                     + "       a.city, a.district, a.ward, a.street\n"
                     + "FROM [Order] o\n"
                     + "LEFT JOIN Customer c ON c.cus_id = o.cus_id\n"
                     + "LEFT JOIN [db_owner].[Status_Order] so ON so.status_id = o.status_id\n"
-                    + "LEFT JOIN Address a ON a.a_id = o.addressID\n" // Liên kết qua addressID
-                    + "WHERE o.order_id = ? AND c.cus_id = ?";
+                    + "LEFT JOIN Address a ON a.cus_id = c.cus_id\n"
+                    + "WHERE o.order_id = ?  AND c.cus_id = ?";
 
             stm = connect.prepareStatement(sql);
             stm.setInt(1, orderID);
             stm.setInt(2, cus_id);
-            rs = stm.executeQuery();
+            ResultSet rs = stm.executeQuery();
 
             if (rs.next()) {
-                o = new Order();
                 o.setOrder_id(rs.getInt("order_id"));
                 o.setCreate_at(rs.getDate("created_at"));
                 o.setTotal_price(rs.getInt("total"));
-                o.setShipping_method(rs.getString("shipping_method"));
-
-                // Lấy thông tin trạng thái
                 Status_Order so = new Status_Order();
-                so.setStatus_id(rs.getInt("status_id"));
                 so.setStatus_name(rs.getString("status"));
+
                 o.setStatus(so);
+                o.setShipping_method(rs.getString("shipping_method"));
 
                 // Lấy thông tin khách hàng
                 Customer_User c = new Customer_User();
@@ -230,35 +225,21 @@ public class OrderDBContext extends DBContext<Order> {
                 c.setGender(rs.getBoolean("gender"));
                 c.setEmail(rs.getString("email"));
                 c.setC_phone(rs.getString("c_phone"));
-                o.setNote(rs.getString("note"));
 
+                // Lấy thông tin địa chỉ
+                ArrayList<Address> addres = new ArrayList<>();
                 Address address = new Address();
                 address.setCity(rs.getString("city"));
                 address.setDistrict(rs.getString("district"));
                 address.setWard(rs.getString("ward"));
                 address.setStreet(rs.getString("street"));
-                
-                o.setAddress(address);
+                addres.add(address);
+                c.setAddress(addres);
+
                 o.setCustomer(c);
             }
         } catch (SQLException ex) {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            // Đóng các tài nguyên
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if (stm != null) {
-                try {
-                    stm.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return o;
     }
@@ -375,107 +356,12 @@ public class OrderDBContext extends DBContext<Order> {
             }
         }
     }
-
-    public int insertOrder(int total, int statusID, int cusID, int paymentMethodID, String note, int addressID) {
-        PreparedStatement stm = null;
-        ResultSet generatedKeys = null;
-        int orderId = -1;
-        try {
-            // Sử dụng GETDATE() để tự động lấy thời gian hiện tại từ SQL Server
-            String sql = "INSERT INTO [dbo].[Order]\n"
-                    + "           ([total]\n"
-                    + "           ,[created_at]\n"
-                    + "           ,[status_id]\n"
-                    + "           ,[cus_id]\n"
-                    + "           ,[payment_method_id]\n"
-                    + "           ,[note]\n"
-                    + "           ,[addressID]\n"
-                    + "           ,[paid_status])\n"
-                    + "     VALUES\n"
-                    + "           (?, GETDATE(), ?, ?, ?, ?, ?, 0)";
-
-            stm = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stm.setInt(1, total);
-            stm.setInt(2, statusID);
-            stm.setInt(3, cusID);
-            stm.setInt(4, paymentMethodID);
-            stm.setString(5, note);
-            stm.setInt(6, addressID);
-
-            int affectedRows = stm.executeUpdate();
-
-            if (affectedRows > 0) {
-                generatedKeys = stm.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    orderId = generatedKeys.getInt(1);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (generatedKeys != null) {
-                try {
-                    generatedKeys.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (stm != null) {
-                try {
-                    stm.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return orderId;  // Trả về orderId
-    }
-
-    public void insertOrderDetail(int orderId, ArrayList<OrderDetail> orderDetails) {
-        PreparedStatement stm = null;
-
-        try {
-            String sql = "INSERT INTO [dbo].[OrderDetail]\n"
-                    + "           ([order_id],\n"
-                    + "            [product_id],\n"
-                    + "            [quantity],\n"
-                    + "            [price_at_order],\n"
-                    + "            [capacity_id])\n"
-                    + "     VALUES (?,?,?,?,?)";
-            stm = connect.prepareStatement(sql);
-
-            for (OrderDetail detail : orderDetails) {
-                stm.setInt(1, orderId);
-                stm.setInt(2, detail.getProducts().get(0).getProduct_id());  // Lấy ID của sản phẩm từ danh sách sản phẩm
-                stm.setInt(3, detail.getQuantity());
-                stm.setInt(4, detail.getPrice_at_order());
-                stm.setInt(5, detail.getCapacity().getCapacity_id());
-
-                // Sử dụng executeUpdate để in ra số hàng bị ảnh hưởng
-                stm.executeUpdate();
-
-            }
-
-        } catch (SQLException e) {
-            // In ra lỗi SQL chi tiết
-            System.err.println("SQL Error while inserting OrderDetail: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            if (stm != null) {
-                try {
-                    stm.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
+    
     public static void main(String[] args) {
-        OrderDBContext orderDB = new OrderDBContext();
-        Order o = orderDB.getOrderByOrderID(41, 1);
-        System.out.println(o.getNote());
-        
-
+        OrderDBContext db = new OrderDBContext();
+        ArrayList<Product> products = db.getProductsByOrderAndCustomer(25, 1);
+        System.out.println(products.size());
     }
+
+
 }
