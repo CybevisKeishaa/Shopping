@@ -350,7 +350,7 @@
                                                     <div class="single-product">
                                                         <div class="product-img">
                                                             <c:forEach var="j" items="${i.img}">
-                                                                <a href="product/detail?product_id=">
+                                                                <a href="product/detail?product_id=${i.product_id}">
                                                                     <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" class="default-img" >
                                                                 <span class="price-dec">${i.discount.amount}% OFF</span>
                                                                 </a>
