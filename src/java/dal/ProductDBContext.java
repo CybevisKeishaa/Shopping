@@ -271,7 +271,7 @@ public class ProductDBContext extends DBContext<Product> {
                 ArrayList<Capacity> cList = cDb.getProductCapacityByProductId(id);
                 p.setCapacity(cList);
 
-                var pidb = new ProductImageDBContext();
+                var pidb = new ImageDBContext();
                 ArrayList<Image> img = pidb.getAllImageByProductId(id);
                 p.setImg(img);
             }
@@ -329,7 +329,7 @@ public class ProductDBContext extends DBContext<Product> {
                 p.setPrice(rs.getInt("price"));
 
                 p.setBrand(b);
-                var pidb = new ProductImageDBContext();
+                var pidb = new ImageDBContext();
                 ArrayList<Image> img = pidb.getAllImageByProductId(p.getProduct_id());
                 p.setImg(img);
                 list.add(p);

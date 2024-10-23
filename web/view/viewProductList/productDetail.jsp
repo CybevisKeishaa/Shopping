@@ -278,15 +278,15 @@
             </div>
         </div>
     </div>
-    <div class="container">
+<!--    <div class="container">
         <div class="pagination-container d-flex justify-content-center">
             <div class="pagination">
-                <!-- Previous Button -->
+                 Previous Button 
                 <c:if test="${currentPage > 1}">
                     <a href="productDetail?page=${currentPage - 1}&id=${requestScope.id}" class="prev">&lt;</a>
                 </c:if>
 
-                <!-- Page Numbers -->
+                 Page Numbers 
                 <c:forEach var="i" begin="1" end="${totalPages}">
                     <c:choose>
                         <c:when test="${i == currentPage}">
@@ -298,13 +298,13 @@
                     </c:choose>
                 </c:forEach>
 
-                <!-- Next Button -->
+                 Next Button 
                 <c:if test="${currentPage < totalPages}">
                     <a href="productDetail?page=${currentPage + 1}&id=${requestScope.id}" class="next">&gt;</a>
                 </c:if>
             </div>
         </div>
-    </div>
+    </div>-->
     <script>
         let quantityInput = document.querySelector("[name^='quantity']");
         let radios = document.querySelectorAll("[name^='capacity']");

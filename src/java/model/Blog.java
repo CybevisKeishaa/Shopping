@@ -82,4 +82,9 @@ public class Blog {
         this.image = image;
     }
 
+    @Override
+    public String toString() {
+        return "Blog{" + "blog_id=" + blog_id + ", title=" + title + ", shortContent=" + shortContent + ", content=" + content + ", date=" + date + ", employee=" + employee + ", status=" + status + ", image=" + image + '}';
+    }
+  
 }
