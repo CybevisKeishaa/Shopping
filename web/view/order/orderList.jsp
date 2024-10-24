@@ -11,7 +11,7 @@
                 font-size: 0.85rem !important; /* Điều chỉnh kích thước font */
                 padding: 2px 10px !important; /* Điều chỉnh padding để ô nhỏ hơn */
                 width: auto !important;     /* Điều chỉnh chiều rộng tự động phù hợp với nội dung */
-                margin-top: 12px !important;
+                margin-top: 0px !important;
             }
 
             /* Nếu nice-select đang được áp dụng */
@@ -21,7 +21,7 @@
                 line-height: 35px !important; /* Đảm bảo chữ căn giữa dọc theo chiều cao */
                 padding: 0 8px !important;
                 width: 100px !important; /* Chiều rộng tự động để phù hợp nội dung */
-                margin-top: 12px !important;
+                margin-top: 0px !important;
             }
 
             .form-inline .form-group select.form-control-sm{

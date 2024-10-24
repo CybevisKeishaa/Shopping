@@ -26,6 +26,7 @@
             }
             
             .btn-primary {
+                background-color: #333 !important;
                 padding: 18.15px 50px !important; /* Padding tùy chỉnh */
             }
             h3 {
