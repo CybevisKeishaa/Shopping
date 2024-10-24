@@ -126,6 +126,10 @@
         <servlet-name>CancelOrderServlet</servlet-name>
         <servlet-class>controller.order.CancelOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CartCompleteServlet</servlet-name>
+        <servlet-class>controller.order.CartCompleteServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>productSearch</servlet-name>
         <url-pattern>/productSearch</url-pattern>
@@ -285,6 +289,10 @@
     <servlet-mapping>
         <servlet-name>CancelOrderServlet</servlet-name>
         <url-pattern>/account/order/cancel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartCompleteServlet</servlet-name>
+        <url-pattern>/cart/complete</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>homepage</welcome-file>

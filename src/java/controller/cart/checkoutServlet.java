@@ -4,27 +4,22 @@
  */
 package controller.cart;
 
+import JavaMail.EmailService;
 import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.AddressDBContext;
 import dal.CartDBContext;
-import dal.CustomerDBContext;
 import dal.EmployeeDBContext;
 import dal.OrderDBContext;
 import dal.PaymentDBContext;
-import dal.ProductDBContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Date;
 import model.Address;
 import model.Cart;
 import model.Customer_User;
 import model.Payment;
-import java.sql.*;
 import model.Capacity;
 import model.Order;
 import model.OrderDetail;
@@ -75,6 +70,7 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
             int cusID = user.getCus_id();
             String note = request.getParameter("notes");
             int addressID = Integer.parseInt(request.getParameter("selectedAddress"));
+            AddressDBContext aDB = new AddressDBContext();
 
             // Lấy danh sách sản phẩm từ giỏ hàng và thông tin chi tiết đơn hàng
             String[] productIds = request.getParameterValues("productID");
@@ -82,15 +78,28 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
             String[] unitPrices = request.getParameterValues("unit_price");
             String[] capacityIds = request.getParameterValues("capacity_id");
 
-            if (productIds == null || quantities == null || unitPrices == null) {
-                response.getWriter().println("Missing product details.");
-                return;
+            CartDBContext db = new CartDBContext();
+            boolean stockError = false;
+            StringBuilder stockErrorMessage = new StringBuilder();
+
+            for (int i = 0; i < productIds.length; i++) {
+                int productId = Integer.parseInt(productIds[i]);
+                int requestedQuantity = Integer.parseInt(quantities[i]);
+                int capacityId = Integer.parseInt(capacityIds[i]);
+
+                int availableStock = db.getStockByProductIDAndCapacity(productId, capacityId);
+                if (requestedQuantity > availableStock) {
+                    stockError = true;
+                    stockErrorMessage.append("Sản phẩm ID ").append(productId)
+                            .append(" không đủ hàng. Số lượng tồn kho hiện tại là: ").append(availableStock).append(".\n");
+                }
             }
 
-            if (productIds.length != quantities.length || productIds.length != unitPrices.length) {
-                response.getWriter().println("Product details are mismatched.");
-                    return;
-                }
+            if (stockError) {
+                request.setAttribute("errorMessage", stockErrorMessage.toString());
+                doGet(request, response, user);
+                return;
+            }
 
             EmployeeDBContext empDB = new EmployeeDBContext();
             int empID = empDB.getFreeEmployee();
@@ -121,10 +130,24 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
 
                     // Thêm chi tiết đơn hàng vào danh sách
                     orderDetails.add(detail);
+                    orderDB.updateStockAfterOrder(Integer.parseInt(productIds[i]), Integer.parseInt(capacityIds[i]), Integer.parseInt(quantities[i]));
+
                 }
 
                 orderDB.insertOrderDetail(orderId, orderDetails);
-                response.sendRedirect(request.getContextPath() + "/view/notice/ThanksForOrder.jsp");
+
+                Address address = aDB.getAddressByOrderID(orderId);
+                ArrayList<Product> products = orderDB.getNewProductsByOrderAndCustomer(orderId, cusID);
+                EmailService emailService = new EmailService();
+                boolean isSent = emailService.sendOrderConfirmation(
+                        user.getEmail(), orderId, user.getName_cus(), products, totalCost, address);
+                if (isSent) {
+                    System.out.println("Order confirmation email sent successfully!");
+                } else {
+                    System.out.println("Failed to send order confirmation email.");
+                }
+
+                response.sendRedirect("complete?orderID=" + orderId);
 
             } else {
                 response.getWriter().println("Failed to create order!");

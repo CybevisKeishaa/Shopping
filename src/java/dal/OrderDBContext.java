@@ -73,6 +73,32 @@ public class OrderDBContext extends DBContext<Order> {
         return orders;
     }
 
+    public void updateStockAfterOrder(int productId, int capacityId, int quantity) {
+        PreparedStatement stm = null;
+
+        try {
+            // Câu truy vấn SQL để giảm số lượng tồn kho
+            String sql = "UPDATE Product_Capacity SET stock = stock - ? WHERE product_id = ? AND cap_id = ?";
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, quantity);
+            stm.setInt(2, productId);
+            stm.setInt(3, capacityId);
+
+            stm.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     public ArrayList<Order> myOrders(int customerID, int pageNumber, int pageSize) {
         ArrayList<Order> orders = new ArrayList<>();
         // Phân trang với OFFSET và FETCH
@@ -238,7 +264,7 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     public Order getOrderByOrderID(int orderID, int cus_id) {
-        Order o = null; // Khởi tạo là null để kiểm tra xem có lấy được kết quả hay không
+        Order o = null; 
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -282,7 +308,8 @@ public class OrderDBContext extends DBContext<Order> {
                 address.setDistrict(rs.getString("district"));
                 address.setWard(rs.getString("ward"));
                 address.setStreet(rs.getString("street"));
-                
+                address.setA_phone(rs.getString("c_phone"));
+
                 o.setAddress(address);
                 o.setCustomer(c);
             }
@@ -394,6 +421,78 @@ public class OrderDBContext extends DBContext<Order> {
                 product.setPrice(rs.getInt("price_at_order"));
 
                 // Thêm sản phẩm vào danh sách
+                products.add(product);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return products;
+    }
+
+    public ArrayList<Product> getNewProductsByOrderAndCustomer(int orderId, int customerId) {
+        ArrayList<Product> products = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT p.product_id, p.name AS product_name, g.name AS gender_name, od.quantity, od.price_at_order, \n"
+                    + "       (od.quantity * od.price_at_order) AS total_cost, MIN(img.img_url) AS product_image, \n"
+                    + "       cap.cap_value, cap.cap_id\n"
+                    + "FROM [OrderDetail] od\n"
+                    + "LEFT JOIN [Product] p ON od.product_id = p.product_id\n"
+                    + "LEFT JOIN Product_Gender pg ON pg.product_id = p.product_id\n"
+                    + "LEFT JOIN Gender g ON g.gender_id = pg.gender_id\n"
+                    + "LEFT JOIN [Order] o ON o.order_id = od.order_id\n"
+                    + "LEFT JOIN Product_Capacity pc ON pc.product_id = p.product_id AND pc.cap_id = od.capacity_id\n"
+                    + "LEFT JOIN Capacity cap ON cap.cap_id = pc.cap_id\n"
+                    + "LEFT JOIN Product_Image pi ON pi.product_id = p.product_id\n"
+                    + "LEFT JOIN Image img ON img.img_id = pi.img_id\n"
+                    + "WHERE od.order_id = ? AND o.cus_id = ?\n"
+                    + "GROUP BY p.product_id, p.name, g.name, od.quantity, od.price_at_order, cap.cap_value, cap.cap_id";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, orderId);
+            stm.setInt(2, customerId);
+
+            rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Product product = new Product();
+
+                product.setProduct_id(rs.getInt("product_id"));
+                product.setName(rs.getString("product_name"));
+
+                ArrayList<Image> imgs = new ArrayList<>();
+                Image i = new Image();
+                i.setImg_url(rs.getString("product_image"));
+                imgs.add(i);
+                product.setImg(imgs);
+
+                ArrayList<Capacity> capacity = new ArrayList<>();
+                Capacity c = new Capacity();
+                c.setCapacity_id(rs.getInt("cap_id"));
+                c.setUnit_price(rs.getInt("price_at_order"));
+                c.setValue(rs.getInt("cap_value"));
+                capacity.add(c);
+
+                product.setStock(rs.getInt("quantity"));
+                product.setCapacity(capacity);
+
                 products.add(product);
             }
 
@@ -596,9 +695,22 @@ public class OrderDBContext extends DBContext<Order> {
 
     public static void main(String[] args) {
         OrderDBContext orderDB = new OrderDBContext();
-        Order o = orderDB.getOrderByOrderID(41, 1);
-        System.out.println(o.getNote());
-        
 
+        int orderId = 60;  // Đặt mã đơn hàng cần kiểm tra
+        int customerId = 1;  // Đặt mã khách hàng cần kiểm tra
+        ArrayList<Product> products = orderDB.getNewProductsByOrderAndCustomer(orderId, customerId);
+
+        // In ra danh sách sản phẩm
+        for (Product product : products) {
+            System.out.println("Product ID: " + product.getProduct_id());
+            System.out.println("Product Name: " + product.getName());
+//            System.out.println("Gender: " + product.getGender().get(0).getName());
+            System.out.println("Capacity: " + product.getCapacity().get(0).getValue());
+            System.out.println("Quantity: " + product.getStock());
+            System.out.println("Price at Order: " + product.getCapacity().get(0).getUnit_price());
+            System.out.println("Image URL: " + product.getImg().get(0).getImg_url());
+            System.out.println("Total Cost: " + (product.getStock() * product.getPrice()));
+            System.out.println("----------------------------------------");
+        }
     }
 }

@@ -43,23 +43,40 @@ public class cartListServlet extends BaseRequiredCustomerAuthenticationControlle
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
 
-        // Lấy danh sách itemId và quantity từ form
         String[] itemIds = request.getParameterValues("itemId[]");
         String[] quantities = request.getParameterValues("quantity[]");
         String[] capacities = request.getParameterValues("capacity[]");
+        String[] productNames = request.getParameterValues("productName[]");
+        String[] productIDs = request.getParameterValues("productID[]");
 
-        // Kiểm tra nếu cả hai không null và có cùng kích thước
         if (itemIds != null && quantities != null && itemIds.length == quantities.length) {
             CartDBContext db = new CartDBContext();
+            boolean stockError = false;
+            StringBuilder errorMessage = new StringBuilder();
 
-            // Lặp qua từng itemId và quantity để cập nhật
             for (int i = 0; i < itemIds.length; i++) {
+                String pName = productNames[i];
+                int productID = Integer.parseInt(productIDs[i]);
                 int itemId = Integer.parseInt(itemIds[i]);
-                int quantity = Integer.parseInt(quantities[i]);
+                int requestedQuantity = Integer.parseInt(quantities[i]);
                 int capacity = Integer.parseInt(capacities[i]);
 
-                // Cập nhật số lượng trong cơ sở dữ liệu
-                db.updateCartQuantity(itemId, quantity, capacity);
+                int availableStock = db.getStockByProductIDAndCapacity(productID, capacity);
+                if (requestedQuantity > availableStock) {
+                    stockError = true;
+                    errorMessage.append("Sản phẩm ").append(pName)
+                            .append(" với dung lượng ").append(capacity)
+                            .append(" không đủ hàng. Số lượng tồn kho hiện tại là: ").append(availableStock).append(".\n");
+                    continue;
+                }
+
+                db.updateCartQuantity(itemId, requestedQuantity, capacity);
+            }
+
+            if (stockError) {
+                request.setAttribute("errorMessage", errorMessage.toString());
+                doGet(request, response, user); 
+                return;
             }
         }
 

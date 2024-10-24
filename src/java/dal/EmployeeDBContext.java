@@ -220,7 +220,6 @@ public class EmployeeDBContext extends DBContext {
     }
 
     public int getFreeEmployee() {
-
         PreparedStatement stm = null;
         int empID = -1;
         try {

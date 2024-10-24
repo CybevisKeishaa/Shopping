@@ -219,12 +219,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <c:if test="${not empty errorMessage}">
+                                <div class="alert alert-danger">
+                                    ${errorMessage}
+                                </div>
+                            </c:if>
 
 
-                            <div class="single-widget get-button text-right">    
-                                <c:forEach var="item" items="${requestScope.cart.items}">
-                                    <!-- Hidden fields for each item -->
-                                </c:forEach>
+
+                            <div class="single-widget get-button text-right">                                    
                                 <button type="submit" form="cartForm" class="btn btn-primary">Proceed to checkout</button>
                             </div>
                         </div>

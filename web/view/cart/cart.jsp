@@ -144,6 +144,8 @@
                                                             <td><fmt:formatNumber value="${item.capacity.unit_price}" type="currency" currencySymbol="VND"/></td>
                                                             <td>
                                                                 <!-- Đặt tên input là mảng itemId[] và quantity[], làm nhỏ ô nhập quantity -->
+                                                                <input type="hidden" name="productID[]" value="${item.product.product_id}">
+                                                                <input type="hidden" name="productName[]" value="${item.product.name}">
                                                                 <input type="hidden" name="itemId[]" value="${item.item_id}" />
                                                                 <input type="number" name="quantity[]" value="${item.quantity}" min="1" style="width: 60px;" onchange="updateTotal(${item.item_id}, this.value)" />
                                                             </td>
@@ -189,6 +191,12 @@
                                                     </tr>
                                                 </tfoot>
                                             </table>
+                                            <c:if test="${not empty errorMessage}">
+                                                <div class="alert alert-danger">
+                                                    ${errorMessage}
+                                                </div>
+                                            </c:if>
+
                                             <div class="text-right">
                                                 <button type="submit" class="btn btn-secondary">Update Cart</button>
                                                 <a href="${pageContext.request.contextPath}/productList" class="btn btn-success">More Products</a>

@@ -107,6 +107,79 @@ public class CartDBContext extends DBContext<Cart> {
         return cart;
     }
 
+    public int getStockByItemIDAndCapacity(int itemId, int capacityId) {
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int stock = 0;
+        try {
+            String sql = "SELECT pc.stock "
+                    + "FROM Product_Capacity pc "
+                    + "JOIN Item i ON i.product_id = pc.product_id AND i.capacity_id = pc.cap_id "
+                    + "WHERE i.item_id = ? AND i.capacity_id = ?";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, itemId);
+            stm.setInt(2, capacityId);
+
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                stock = rs.getInt("stock");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return stock;
+    }
+
+    public int getStockByProductIDAndCapacity(int productId, int capacityId) {
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int stock = 0;
+
+        try {
+            // Câu truy vấn SQL để lấy số lượng tồn kho
+            String sql = "SELECT stock FROM Product_Capacity WHERE product_id = ? AND cap_id = ?";
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, productId);
+            stm.setInt(2, capacityId);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                stock = rs.getInt("stock");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return stock;
+    }
+
     public void minusAQuantity(int itemID) {
         PreparedStatement stm = null;
         try {
