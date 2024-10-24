@@ -27,7 +27,7 @@ public abstract class DBContext<T> {
 
     }
     private final DBConnProfile publicConn = new DBConnProfile("son", "Son@123@", "jdbc:sqlserver://103.252.92.181\\SQLEXPRESS:1433;databaseName=swp-son;encrypt=true;trustservercertificate=true;");
-    private final DBConnProfile khanhConn = new DBConnProfile("Keishaa", "123", "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=finalBackup;encrypt=true;trustservercertificate=true;");
+    private final DBConnProfile khanhConn = new DBConnProfile("Keishaa", "123", "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=SWP391_Iter3;encrypt=true;trustservercertificate=true;");
     private final DBConnProfile khanhConn2 = new DBConnProfile("sa", "123", "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=backup;encrypt=true;trustservercertificate=true;");
 
 }

@@ -12,7 +12,27 @@ public class Capacity {
 
     private int capacity_id;
     private int value;
-    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<Product> products;
+    private int stock;
+    private int unit_price;
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public int getUnit_price() {
+        return unit_price;
+    }
+
+    public void setUnit_price(int unit_price) {
+        this.unit_price = unit_price;
+    }
+    
+    
 
     public Capacity() {
     }
