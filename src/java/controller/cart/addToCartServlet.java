@@ -5,7 +5,6 @@
 
 package controller.cart;
 
-import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.CartDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,16 +12,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Customer_User;
 
 /**
  *
  * @author KEISHA
  */
-public class addToCartServlet extends BaseRequiredCustomerAuthenticationController {
+public class addToCartServlet extends HttpServlet {
    
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         int pid = Integer.parseInt(request.getParameter("pid"));
         int cartID = Integer.parseInt(request.getParameter("cartID"));
@@ -39,7 +37,7 @@ public class addToCartServlet extends BaseRequiredCustomerAuthenticationControll
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
     }

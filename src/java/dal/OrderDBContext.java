@@ -376,7 +376,7 @@ public class OrderDBContext extends DBContext<Order> {
         }
     }
 
-    public int insertOrder(int total, int statusID, int cusID, int paymentMethodID, String note, int addressID, int employeeID) {
+    public int insertOrder(int total, int statusID, int cusID, int paymentMethodID, String note, int addressID) {
         PreparedStatement stm = null;
         ResultSet generatedKeys = null;
         int orderId = -1;
@@ -390,10 +390,9 @@ public class OrderDBContext extends DBContext<Order> {
                     + "           ,[payment_method_id]\n"
                     + "           ,[note]\n"
                     + "           ,[addressID]\n"
-                    + "           ,[paid_status]\n"
-                    + "           ,[employee_id])\n"
+                    + "           ,[paid_status])\n"
                     + "     VALUES\n"
-                    + "           (?, GETDATE(), ?, ?, ?, ?, ?, 0, ?)";
+                    + "           (?, GETDATE(), ?, ?, ?, ?, ?, 0)";
 
             stm = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stm.setInt(1, total);
@@ -402,7 +401,6 @@ public class OrderDBContext extends DBContext<Order> {
             stm.setInt(4, paymentMethodID);
             stm.setString(5, note);
             stm.setInt(6, addressID);
-            stm.setInt(7, employeeID);
 
             int affectedRows = stm.executeUpdate();
 
