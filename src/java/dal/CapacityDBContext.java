@@ -13,8 +13,8 @@ import java.util.List;
  *
  * @author KEISHA
  */
-public class CapacityDBContext extends DBContext<Capacity>{
-    
+public class CapacityDBContext extends DBContext<Capacity> {
+
     public Capacity getCapacityFindById(int cid) {
         String sql = "Select * from Capacity WHERE cap_id=?";
         try {
@@ -51,16 +51,20 @@ public class CapacityDBContext extends DBContext<Capacity>{
     }
 
     public ArrayList<Capacity> getCapacityByProductId(int id) {
-        ArrayList<Capacity> list=new ArrayList<>();
-        String sql = "Select c.cap_id,c.cap_value From Product p inner join Product_Capacity pc on p.product_id=pc.product_id inner join Capacity c on c.cap_id=pc.cap_id where p.product_id=?";
+        ArrayList<Capacity> list = new ArrayList<>();
+        String sql = "Select c.cap_id, c.cap_value, pc.stock, pc.unit_price From Product p \n"
+                + "inner join Product_Capacity pc on p.product_id=pc.product_id \n"
+                + "inner join Capacity c on c.cap_id=pc.cap_id where p.product_id= ?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Capacity c = new Capacity();
                 c.setCapacity_id(rs.getInt(1));
                 c.setValue(rs.getInt(2));
+                c.setUnit_price(rs.getInt("unit_price"));
+                c.setStock(rs.getInt("stock"));
                 list.add(c);
             }
             return list;
@@ -69,13 +73,13 @@ public class CapacityDBContext extends DBContext<Capacity>{
         }
         return null;
     }
-    public static void main(String[] args){
-        CapacityDBContext cd=new CapacityDBContext();
-        List<Capacity> list=cd.getAll();
-        for(Capacity x:list){
-                System.out.println(x.getValue());
+
+    public static void main(String[] args) {
+        CapacityDBContext cd = new CapacityDBContext();
+        List<Capacity> list = cd.getCapacityByProductId(2);
+        for (Capacity x : list) {
+            System.out.println(x.getValue());
         }
     }
-
 
 }
