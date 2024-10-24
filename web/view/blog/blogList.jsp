@@ -6,21 +6,21 @@
             .flex-container {
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: center; /* C?n gi?a các ph?n t? */
+                justify-content: center; /* C?n gi?a cï¿½c ph?n t? */
                 margin: 0 auto; /* C?n gi?a container */
-                max-width: 1200px; /* ??t gi?i h?n chi?u r?ng cho container ?? n?i dung không tr?i r?ng toàn b? màn hình */
-                gap: 20px; /* Kho?ng cách gi?a các ph?n t? */
+                max-width: 1200px; /* ??t gi?i h?n chi?u r?ng cho container ?? n?i dung khï¿½ng tr?i r?ng toï¿½n b? mï¿½n hï¿½nh */
+                gap: 20px; /* Kho?ng cï¿½ch gi?a cï¿½c ph?n t? */
             }
 
             .flex-item {
-                flex: 0 1 calc(48% - 10px); /* M?i ph?n t? chi?m kho?ng 48% chi?u r?ng, tr? kho?ng cách gi?a chúng */
-                box-sizing: border-box; /* ??m b?o padding và margin không ?nh h??ng ??n kích th??c */
-                margin-bottom: 20px; /* Kho?ng cách gi?a các hàng */
+                flex: 0 1 calc(48% - 10px); /* M?i ph?n t? chi?m kho?ng 48% chi?u r?ng, tr? kho?ng cï¿½ch gi?a chï¿½ng */
+                box-sizing: border-box; /* ??m b?o padding vï¿½ margin khï¿½ng ?nh h??ng ??n kï¿½ch th??c */
+                margin-bottom: 20px; /* Kho?ng cï¿½ch gi?a cï¿½c hï¿½ng */
             }
 
             @media (max-width: 768px) {
                 .flex-item {
-                    flex: 0 1 100%; /* Trên màn hình nh? h?n, m?i ph?n t? chi?m 100% chi?u r?ng */
+                    flex: 0 1 100%; /* Trï¿½n mï¿½n hï¿½nh nh? h?n, m?i ph?n t? chi?m 100% chi?u r?ng */
                 }
             }
               .pagination-container {
@@ -64,6 +64,10 @@
         border-color: #ccc;
     }
 
+    .blog-image{
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
         </style>
         <!-- Meta Tag -->
         <meta charset="utf-8">
@@ -292,9 +296,10 @@
                     <section class="blog-single section">
                         <div class="blog-single-main">
                             <div class="image">
-                                <a href="blogDetail?id=${i.blog_id}"> 
-                                    <img src="images/test.jpg" alt="#" />
+                                <a href="blogDetail?id=${i.blog_id}" > 
+                                    <img class="blog-image" src="img/${i.image[0].img_url}" alt="#" />
                                 </a>
+
 
                             </div>
                             <div class="blog-detail">
@@ -424,7 +429,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-12">
                                 <div class="left">
-                                    <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
+                                    <p>Copyright ï¿½ 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-12">
