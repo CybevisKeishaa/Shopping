@@ -4,14 +4,16 @@
  */
 package dal;
 
-import java.sql.*;
 import java.util.ArrayList;
+import model.Blog;
+import java.sql.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Blog;
 import model.Employee;
 import model.Image;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  *
@@ -43,7 +45,7 @@ public class BlogDBContext extends DBContext<Blog> {
                 Image i = new Image();
                 i.setImg_url(rs.getString("img_url"));
                 imgs.add(i);
-
+                
                 b.setImage(imgs);
 
                 blogs.add(b);
@@ -76,10 +78,6 @@ public class BlogDBContext extends DBContext<Blog> {
                 int id = rs.getInt(6);
                 Employee e = eDB.getEmployeeByIdForBlog(id);
                 b.setEmployee(e);
-                
-                ImageDBContext iDB = new ImageDBContext();
-                ArrayList<Image> images = iDB.getAllImageByBlogId(b.getBlog_id());
-                b.setImage(images);
                 list.add(b);
             }
             return list;
@@ -109,11 +107,6 @@ public class BlogDBContext extends DBContext<Blog> {
                 int id = rs.getInt(6);
                 Employee e = eDB.getEmployeeByIdForBlog(id);
                 b.setEmployee(e);
-
-                ImageDBContext iDB = new ImageDBContext();
-                ArrayList<Image> images = iDB.getAllImageByBlogId(b.getBlog_id());
-                b.setImage(images);
-
                 list.add(b);
             }
             return list;
@@ -140,9 +133,7 @@ public class BlogDBContext extends DBContext<Blog> {
                 Employee e = eDB.getEmployeeByIdForBlog(id);
                 b.setEmployee(e);
                 b.setContent(rs.getString(4));
-                ImageDBContext iDB = new ImageDBContext();
-                ArrayList<Image> images = iDB.getAllImageByBlogId(b.getBlog_id());
-                b.setImage(images);
+
             }
         } catch (Exception e) {
             System.out.println(e);
