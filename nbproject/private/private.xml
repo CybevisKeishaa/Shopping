@@ -3,53 +3,98 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-
-
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/BlogDBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/css/bootstrap.css</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/AddressDBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/employeeList.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Customer_User.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/blog/blogDetail.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/controller/admin/homepage.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Status_Order.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Feature.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Item.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Image.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Employee.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/controller/account/RegisterServlet.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/userDetails.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Order.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/blog/blogList.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/OrderDetail.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/CustomerDBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/Homepage.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/controller/admin/userDetails.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/RoleDBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/employeeDetails.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/searchList.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/ProductDBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Address.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/model/Role.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/src/java/dal/DBContext.java</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/WEB-INF/web.xml</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/searchEmployee.jsp</file>
-            <file>file:/D:/SWP391/group06/SWP391_Group6/web/view/ad/userList.jsp</file>
-
-
-            <file>file:/C:/Users/KEISHA/Documents/Git-SWP391/group06/src/java/controller/home/HomePageServlet.java</file>
-
-            <file>file:/C:/Users/KEISHA/Documents/Git-SWP391/group06/src/java/controller/cart/cartListServlet.java</file>
-            <file>file:/C:/Users/KEISHA/Documents/Git-SWP391/group06/web/view/cart/cart.jsp</file>
-
-            <file>file:/C:/Users/KEISHA/Documents/Git-SWP391/group06/web/view/cart/cart.jsp</file>
-            <file>file:/C:/Users/KEISHA/Documents/Git-SWP391/group06/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/KEISHA/Documents/Git-SWP391/group06/web/view/order/orderDetail.jsp</file>
-
-            <file>file:/C:/Users/KEISHA/Documents/Git-SWP391/group06/src/java/dal/CartDBContext.java</file>
-            <file>file:/C:/Users/KEISHA/Documents/Git-SWP391/group06/web/css/bootstrap.css</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Capacity.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/auth/BaseRequiredCustomerAuthenticationController.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/admin/employeeDetails.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/product/ProductDetail.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/auth/LoginController.java</file>
+            <file>file:/D:/SWP391/group06/web/view/viewProductList/productList.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/customer/CustomerProfileController.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Brand.java</file>
+            <file>file:/D:/SWP391/group06/web/view/ad/employeeList.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/order/feedback.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/cart/addToCartServlet.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/DiscountDBContext.java</file>
+            <file>file:/D:/SWP391/group06/web/Demo_Template/BasePage/Footer.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/viewProductList/productDetail.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/maketer/employeeAddProduct.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/OrderDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/ImageDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/product/ProductList.java</file>
+            <file>file:/D:/SWP391/group06/web/view/order/orderList.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/FeedbackDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/cart/checkoutServlet.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/ProductDBContext.java</file>
+            <file>file:/D:/SWP391/group06/web/view/viewProductList/productSearch.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/maketer/employeeUpdateProduct.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/maketer/employeeProductList.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Employee.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/home/HomePageServlet.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/ProductListDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Gender.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Image.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeAddProduct.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Discount.java</file>
+            <file>file:/D:/SWP391/group06/web/Demo_Template/BasePage/Header.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/home/homepage.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/home/HomeFeedbackServlet.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeUpdateProduct.java</file>
+            <file>file:/D:/SWP391/group06/web/WEB-INF/web.xml</file>
+            <file>file:/D:/SWP391/group06/web/view/ad/searchList.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeProductList.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/GenderDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/employeeDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Product.java</file>
+            <file>file:/D:/SWP391/group06/web/META-INF/context.xml</file>
+            <file>file:/D:/SWP391/group06/web/view/ad/userList.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/CustomerDBContext.java</file>
         </group>
-        <group/>
-
+        <group>
+            <file>file:/D:/SWP391/group06/src/java/model/Capacity.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/auth/BaseRequiredCustomerAuthenticationController.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/admin/employeeDetails.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/product/ProductDetail.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/auth/LoginController.java</file>
+            <file>file:/D:/SWP391/group06/web/view/viewProductList/productList.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/customer/CustomerProfileController.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Brand.java</file>
+            <file>file:/D:/SWP391/group06/web/view/ad/employeeList.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/order/feedback.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/cart/addToCartServlet.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/DiscountDBContext.java</file>
+            <file>file:/D:/SWP391/group06/web/Demo_Template/BasePage/Footer.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/viewProductList/productDetail.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/maketer/employeeAddProduct.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/OrderDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/ImageDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/product/ProductList.java</file>
+            <file>file:/D:/SWP391/group06/web/view/order/orderList.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/FeedbackDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/cart/checkoutServlet.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/ProductDBContext.java</file>
+            <file>file:/D:/SWP391/group06/web/view/viewProductList/productSearch.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/maketer/employeeUpdateProduct.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/maketer/employeeProductList.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Employee.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/home/HomePageServlet.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/ProductListDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Gender.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Image.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeAddProduct.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Discount.java</file>
+            <file>file:/D:/SWP391/group06/web/Demo_Template/BasePage/Header.jsp</file>
+            <file>file:/D:/SWP391/group06/web/view/home/homepage.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/home/HomeFeedbackServlet.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeUpdateProduct.java</file>
+            <file>file:/D:/SWP391/group06/web/WEB-INF/web.xml</file>
+            <file>file:/D:/SWP391/group06/web/view/ad/searchList.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeProductList.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/GenderDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/employeeDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Product.java</file>
+            <file>file:/D:/SWP391/group06/web/META-INF/context.xml</file>
+            <file>file:/D:/SWP391/group06/web/view/ad/userList.jsp</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/CustomerDBContext.java</file>
+        </group>
     </open-files>
 </project-private>

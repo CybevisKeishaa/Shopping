@@ -21,34 +21,7 @@ public class Order {
     private int successOrders;
     private int cancelledOrders;
     private int pendingOrders;
-    private double totalRevenue;  
-    private boolean paidStatus;
-    private String note;
-    private Address address;
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-    
-    public boolean isPaidStatus() {
-        return paidStatus;
-    }
-
-    public void setPaidStatus(boolean paidStatus) {
-        this.paidStatus = paidStatus;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
+    private double totalRevenue;  // Thêm thuộc tính này
     
     // Các getter và setter
     public double getTotalRevenue() {
