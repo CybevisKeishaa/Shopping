@@ -22,6 +22,7 @@ import model.Item;
  */
 public class cartListServlet extends BaseRequiredCustomerAuthenticationController {
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
         int userID = user.getCus_id();

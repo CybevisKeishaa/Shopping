@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Address;
+import model.Capacity;
 import model.Customer_User;
 import model.Gender;
 import model.Image;
@@ -124,25 +125,25 @@ public class OrderDBContext extends DBContext<Order> {
         }
     }
 
-    public ArrayList<Order> myOrders(int customerID, int pageNumber, int pageSize) {
-        ArrayList<Order> orders = new ArrayList<>();
-        // Phân trang với OFFSET và FETCH
-        String sql = """
-                    SELECT o.order_id, 
-                           o.created_at AS orderedDate, 
-                           o.total AS totalCost, 
-                           so.status, 
-                           MIN(p.name) AS firstProductName, 
-                           COUNT(od.product_id) AS productCount
-                    FROM [dbo].[Order] o
-                    JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id
-                    JOIN [dbo].[Product] p ON od.product_id = p.product_id
-                    JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id
-                    WHERE o.cus_id = ?
-                    GROUP BY o.order_id, o.created_at, o.total, so.status
-                    ORDER BY o.created_at DESC
-                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
-                    """;
+//    public ArrayList<Order> myOrders(int customerID, int pageNumber, int pageSize) {
+//        ArrayList<Order> orders = new ArrayList<>();
+//        // Phân trang với OFFSET và FETCH
+//        String sql = """
+//                    SELECT o.order_id, 
+//                           o.created_at AS orderedDate, 
+//                           o.total AS totalCost, 
+//                           so.status, 
+//                           MIN(p.name) AS firstProductName, 
+//                           COUNT(od.product_id) AS productCount
+//                    FROM [dbo].[Order] o
+//                    JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id
+//                    JOIN [dbo].[Product] p ON od.product_id = p.product_id
+//                    JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id
+//                    WHERE o.cus_id = ?
+//                    GROUP BY o.order_id, o.created_at, o.total, so.status
+//                    ORDER BY o.created_at DESC
+//                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+//                    """;
 
     public int getTotalOrderCount(String search, Date startDate, Date endDate) {
         int count = 0;
@@ -584,6 +585,8 @@ public class OrderDBContext extends DBContext<Order> {
             }
         }
         return products;
+    }
+    
     public List<Order_StatusTotalDTO> getStatusTotal() {
         PreparedStatement stm = null;
         ArrayList<Order_StatusTotalDTO> list = new ArrayList<>();

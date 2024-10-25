@@ -77,12 +77,9 @@ public class CapacityDBContext extends DBContext<Capacity> {
 
     public ArrayList<Capacity> getCapacityByProductId(int id) {
         ArrayList<Capacity> list = new ArrayList<>();
-        String sql = """
-                        Select c.cap_id,c.cap_value From Product p 
-                        inner join Product_Capacity pc on p.product_id=pc.product_id 
-                        inner join Capacity c on c.cap_id=pc.cap_id 
-                        where p.product_id=?
-                     """;
+        String sql = "Select c.cap_id, c.cap_value, pc.stock, pc.unit_price From Product p \n"
+                + "inner join Product_Capacity pc on p.product_id=pc.product_id \n"
+                + "inner join Capacity c on c.cap_id=pc.cap_id where p.product_id= ?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, id);
@@ -104,9 +101,9 @@ public class CapacityDBContext extends DBContext<Capacity> {
 
     public static void main(String[] args) {
         CapacityDBContext cd = new CapacityDBContext();
-        List<Capacity> list = cd.getProductCapacityByProductId(2);
+        List<Capacity> list = cd.getCapacityByProductId(2);
         for (Capacity x : list) {
-            System.out.println(x);
+            System.out.println(x.getValue());
         }
     }
 

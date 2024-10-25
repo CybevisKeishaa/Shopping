@@ -15,6 +15,10 @@ import model.Image;
 import model.Item;
 import model.Product;
 
+import model.Item;
+
+import model.Cart;
+
 /**
  *
  * @author KEISHA

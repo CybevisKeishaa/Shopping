@@ -27,87 +27,39 @@ public class CustomerDBContext extends DBContext<Customer_User> {
 
     public void insertCustomer(Customer_User customer) throws SQLException {
         PreparedStatement stm_insert = null;
-        PreparedStatement stm_query = null;
         try {
-            // Tắt chế độ tự commit
             connect.setAutoCommit(false);
 
-            // Câu lệnh SQL để lấy cus_id lớn nhất hiện tại
-            String sql_get_max_cus_id = "SELECT MAX(cus_id) AS max_cus_id FROM [dbo].[Customer]";
-            stm_query = connect.prepareStatement(sql_get_max_cus_id);
-            ResultSet rs = stm_query.executeQuery();
-            int new_cus_id = 1;
+            int walletId = insertWallet();
 
-            // Nếu có giá trị cus_id lớn nhất, tăng lên 1 để tạo cus_id mới
-            if (rs.next() && rs.getInt("max_cus_id") > 0) {
-                new_cus_id = rs.getInt("max_cus_id") + 1;
-            }
-            customer.setCus_id(new_cus_id); // Đặt giá trị cus_id mới cho đối tượng customer
+            String sql_insert_cus = "INSERT INTO [dbo].[Customer] "
+                    + "(name_cus, password, email, c_phone, status, role_id, gender, username, birth_date, verification_code, wallet_id) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            // Câu lệnh SQL để chèn thông tin vào bảng Customer
-            String sql_insert_cus = "INSERT INTO [dbo].[Customer]\n"
-                    + "           ([cus_id]\n"
-                    + "           ,[name_cus]\n"
-                    + "           ,[password]\n"
-                    + "           ,[email]\n"
-                    + "           ,[c_phone]\n"
-                    + "           ,[display_name]\n"
-                    + "           ,[status]\n"
-                    + "           ,[role_id]\n"
-                    + "           ,[gender]\n"
-                    + "           ,[username]\n"
-                    + "           ,[birth_date]\n"
-                    + "           ,[verification_code])\n"
-                    + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-            // Chuẩn bị câu lệnh SQL chèn
             stm_insert = connect.prepareStatement(sql_insert_cus);
-            stm_insert.setInt(1, customer.getCus_id()); // cus_id
-            stm_insert.setString(2, customer.getName_cus()); // name_cus
-            stm_insert.setString(3, customer.getPassword()); // password
-            stm_insert.setString(4, customer.getEmail()); // email
-            stm_insert.setString(5, customer.getC_phone()); // c_phone
-            stm_insert.setString(6, customer.getUsername()); // display_name
-            stm_insert.setBoolean(7, false); // status (giả sử là active - true)
-            stm_insert.setInt(8, customer.getRole().getRole_id()); // role_id
-            stm_insert.setInt(9, customer.isGender() ? 1 : 0);
-            stm_insert.setString(10, customer.getUsername());
-            stm_insert.setDate(11, customer.getDob()); // dob (ngày sinh)
-            stm_insert.setString(12, customer.getVerificationCode());
+            stm_insert.setString(1, customer.getName_cus());
+            stm_insert.setString(2, customer.getPassword());
+            stm_insert.setString(3, customer.getEmail());
+            stm_insert.setString(4, customer.getC_phone());
+            stm_insert.setBoolean(5, false);  // Trạng thái mặc định
+            stm_insert.setInt(6, customer.getRole().getRole_id());
+            stm_insert.setInt(7, customer.isGender() ? 1 : 0);
+            stm_insert.setString(8, customer.getUsername());
+            stm_insert.setDate(9, customer.getDob());
+            stm_insert.setString(10, customer.getVerificationCode());
+            stm_insert.setInt(11, walletId);
 
-            // Thực thi câu lệnh chèn
             stm_insert.executeUpdate();
-
-            // Commit các thay đổi
             connect.commit();
         } catch (SQLException ex) {
-            // In ra lỗi chi tiết để dễ dàng debug
-            // System.err.println("SQL Error: " + ex.getMessage());
-
             if (connect != null) {
-                try {
-                    connect.rollback();
-                } catch (SQLException ex1) {
-                    // System.err.println("Rollback Error: " + ex1.getMessage());
-                }
+                connect.rollback();
             }
-
-            // Ném lỗi ra để xử lý ở nơi gọi hàm
             throw ex;
         } finally {
-            try {
-                connect.setAutoCommit(true);
-                if (stm_insert != null) {
-                    stm_insert.close();
-                }
-                if (stm_query != null) {
-                    stm_query.close();
-                }
-                if (connect != null) {
-                    
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            connect.setAutoCommit(true);
+            if (stm_insert != null) {
+                stm_insert.close();
             }
         }
     }
@@ -778,13 +730,13 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 c = rs.getInt(1);
             }
             return c;
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
         return -1;
     }
-    
+
     public List<Customer_User> getAllListByProductidEmployeeIdName(String name, int eid, int pid, int pageNumber,
             int pageSize) {
         String sql = "SELECT *\n"
@@ -805,7 +757,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             st.setString(3, name);
             st.setInt(4, offset);
             st.setInt(5, pageSize);
-            
+
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Customer_User c = new Customer_User();
@@ -817,14 +769,14 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                 c.setOrders(oList);
                 list.add(c);
             }
-            
+
             return list;
         } catch (Exception e) {
             System.out.println(e);
         }
         return null;
     }
-    
+
     public int gettotalByProductidEmployeeIdtotal(float total, int eid, int pid) {
         String sql = "SELECT *\n"
                 + "              FROM Employee e \n"
@@ -840,19 +792,19 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             st.setInt(1, eid);
             st.setInt(2, pid);
             st.setFloat(3, total);
-            
+
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 c = rs.getInt(1);
             }
             return c;
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
         return -1;
     }
-    
+
 //</editor-fold>
     public List<Customer_User> getAllListByProductidEmployeeIdtotal(float total, int eid, int pid, int pageNumber,
             int pageSize) {
@@ -892,6 +844,26 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             System.out.println(e);
         }
         return null;
+    }
+
+    public int insertWallet() throws SQLException {
+        PreparedStatement stm = null;
+        int newWalletId = -1;
+        try {
+            String sql = "INSERT INTO [db_owner].[Wallet] (total) VALUES (0)";
+            stm = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stm.executeUpdate();
+
+            ResultSet generatedKeys = stm.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                newWalletId = generatedKeys.getInt(1);
+            }
+        } finally {
+            if (stm != null) {
+                stm.close(); 
+            }
+        }
+        return newWalletId;
     }
 
 }
