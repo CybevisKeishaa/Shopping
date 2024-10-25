@@ -4,16 +4,14 @@
  */
 package dal;
 
-import java.util.ArrayList;
-import model.Blog;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Blog;
 import model.Employee;
 import model.Image;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 /**
  *
@@ -40,24 +38,17 @@ public class BlogDBContext extends DBContext<Blog> {
                 b.setBlog_id(rs.getInt("blog_id"));
                 b.setTitle(rs.getString("title"));
                 b.setShortContent(rs.getString("shortContent"));
-
                 ArrayList<Image> imgs = new ArrayList<>();
                 Image i = new Image();
                 i.setImg_url(rs.getString("img_url"));
                 imgs.add(i);
-                
                 b.setImage(imgs);
-
                 blogs.add(b);
-
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(BlogDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return blogs;
-
     }
 
     public List<Blog> getBlogTop3Date() {
@@ -78,6 +69,9 @@ public class BlogDBContext extends DBContext<Blog> {
                 int id = rs.getInt(6);
                 Employee e = eDB.getEmployeeByIdForBlog(id);
                 b.setEmployee(e);
+                ImageDBContext iDB = new ImageDBContext();
+                ArrayList<Image> images = iDB.getAllImageByBlogId(b.getBlog_id());
+                b.setImage(images);
                 list.add(b);
             }
             return list;
@@ -107,6 +101,9 @@ public class BlogDBContext extends DBContext<Blog> {
                 int id = rs.getInt(6);
                 Employee e = eDB.getEmployeeByIdForBlog(id);
                 b.setEmployee(e);
+                ImageDBContext iDB = new ImageDBContext();
+                ArrayList<Image> images = iDB.getAllImageByBlogId(b.getBlog_id());
+                b.setImage(images);
                 list.add(b);
             }
             return list;
@@ -114,7 +111,6 @@ public class BlogDBContext extends DBContext<Blog> {
             System.out.println(e);
         }
         return null;
-
     }
 
     public Blog getContentByBlogId(int blogid) {
@@ -133,13 +129,14 @@ public class BlogDBContext extends DBContext<Blog> {
                 Employee e = eDB.getEmployeeByIdForBlog(id);
                 b.setEmployee(e);
                 b.setContent(rs.getString(4));
-
+                ImageDBContext iDB = new ImageDBContext();
+                ArrayList<Image> images = iDB.getAllImageByBlogId(b.getBlog_id());
+                b.setImage(images);
             }
         } catch (Exception e) {
             System.out.println(e);
         }
         return b;
-
     }
 
     public List<Blog> getAllSearchByTittle(String search, int pageNumber, int pageSize) {

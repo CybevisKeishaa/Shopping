@@ -1,11 +1,7 @@
 package model;
 
-
-import model.Status_Order;
-import model.Payment;
-import java.util.ArrayList;
-
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class Order {
 
@@ -14,6 +10,7 @@ public class Order {
     private int numberOfOtherProducts;
     private Customer_User customer;
     private int total_price;
+
     private Timestamp create_at;
     private String payment_method;
     private Status_Order status;
@@ -23,7 +20,7 @@ public class Order {
     private int successOrders;
     private int cancelledOrders;
     private int pendingOrders;
-    private double totalRevenue;  
+    private double totalRevenue;
     private boolean paidStatus;
     private String note;
     private Address address;
@@ -35,7 +32,7 @@ public class Order {
     public void setAddress(Address address) {
         this.address = address;
     }
-    
+
     public boolean isPaidStatus() {
         return paidStatus;
     }
@@ -51,12 +48,12 @@ public class Order {
     public void setNote(String note) {
         this.note = note;
     }
-    
+
     // Các getter và setter
     public double getTotalRevenue() {
         return totalRevenue;
     }
-    
+
     public void setTotalRevenue(double totalRevenue) {
         this.totalRevenue = totalRevenue;
     }
@@ -134,8 +131,6 @@ public class Order {
         this.payment = payment;
     }
 
-    
-
     public String getShipping_method() {
         return shipping_method;
     }
@@ -175,5 +170,14 @@ public class Order {
     public void setPayment_method(String payment_method) {
         this.payment_method = payment_method;
     }
-    
+
+    public String getPaidStatus_str() {
+        return this.paidStatus ? "Đã Trả Tiền" : "Chưa Trả Tiền";
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" + "order_id=" + order_id + ", firstProductName=" + firstProductName + ", numberOfOtherProducts=" + numberOfOtherProducts + ", customer=" + customer + ", total_price=" + total_price + ", create_at=" + create_at + ", payment_method=" + payment_method + ", status=" + status + ", payment=" + payment + ", shipping_method=" + shipping_method + ", orderDetails=" + orderDetails + ", successOrders=" + successOrders + ", cancelledOrders=" + cancelledOrders + ", pendingOrders=" + pendingOrders + ", totalRevenue=" + totalRevenue + '}';
+    }
+
 }

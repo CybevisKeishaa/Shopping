@@ -2,7 +2,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@attribute name="title" required="false" %>
-
 <!DOCTYPE html>
 <html lang="zxx">
     <head>
@@ -224,7 +223,7 @@
 
                                                     <li><a href="#">Đơn hàng<i class="ti-angle-down"></i></a>
                                                         <ul class="dropdown">
-                                                            <li><a href="cart.html">Giỏ hàng</a></li>
+                                                            <li><a href="${pageContext.request.contextPath}/cart/list">Giỏ hàng</a></li>
                                                             <li><a href="${pageContext.request.contextPath}/account/order">Đơn hàng</a></li>
                                                         </ul>
                                                     </li>

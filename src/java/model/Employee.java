@@ -11,7 +11,7 @@ public class Employee {
     private int emp_id;
     private String name_emp;
     private String password;
-    private int phone;
+    private String phone;
     private String email;
     private boolean status;
     private String avatar;
@@ -44,11 +44,11 @@ public class Employee {
         this.password = password;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

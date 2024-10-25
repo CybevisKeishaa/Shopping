@@ -35,7 +35,6 @@ public class BrandDBContext extends DBContext {
 
     }
 
-
     public List<Brand> getAll() {
         List<Brand> list = new ArrayList<>();
         String sql = "Select * from Brand";

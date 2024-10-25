@@ -158,7 +158,6 @@
             });
 
         </script>
-
         <br><br><br>
         <div class="container">
             <div class="row">
@@ -182,7 +181,6 @@
                                                 <option value="${product.product_id}">${product.name}</option>
                                             </c:forEach>
                                         </select>
-
 
 
 

@@ -1,8 +1,6 @@
 package model;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-
 
 /**
  *
@@ -18,6 +16,7 @@ public class OrderDetail {
     private Brand brand;
     private Capacity capacity;
     private Order order;
+    private Product product;
 
     public int getDetail_id() {
         return detail_id;
@@ -35,8 +34,6 @@ public class OrderDetail {
         this.products = products;
     }
 
-    
-
     public int getPrice_at_order() {
         return price_at_order;
     }
@@ -44,8 +41,6 @@ public class OrderDetail {
     public void setPrice_at_order(int price_at_order) {
         this.price_at_order = price_at_order;
     }
-
-    
 
     public int getQuantity() {
         return quantity;
@@ -85,6 +80,14 @@ public class OrderDetail {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
 }

@@ -8,12 +8,11 @@ import JavaMail.EmailService;
 import JavaMail.IJavaMail;
 import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.OrderDBContext;
-import java.io.IOException;
-import java.io.PrintWriter;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import model.Customer_User;
 
 /**
@@ -25,11 +24,16 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        String orderIDRaw = request.getParameter("order_id");
-        int orderID = Integer.parseInt(orderIDRaw);
-        OrderDBContext db = new OrderDBContext();
-        db.updateOrderStatus(orderID, 6);
+        try {
+            String orderIDRaw = request.getParameter("order_id");
+            int orderID = Integer.parseInt(orderIDRaw);
+            OrderDBContext db = new OrderDBContext();
+            db.updateOrderStatus(orderID, 6);
+        } catch (MessagingException ex) {
+            request.setAttribute("errorMessage", ex.getMessage());
+        }
         response.sendRedirect("../order");
+
     }
 
     /**
@@ -43,22 +47,23 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        String orderIDRaw = request.getParameter("order_id");
-        int orderID = Integer.parseInt(orderIDRaw);
-        OrderDBContext db = new OrderDBContext();
-        db.updateOrderStatus(orderID, 4);
-        String email = user.getEmail();
+        try {
+            String orderIDRaw = request.getParameter("order_id");
+            int orderID = Integer.parseInt(orderIDRaw);
+            OrderDBContext db = new OrderDBContext();
+            db.updateOrderStatus(orderID, 4);
+            String email = user.getEmail();
 
-        String contextPath = request.getContextPath(); // Lấy context path của ứng dụng
-        String verificationLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/account/feedback?oid=" + orderIDRaw;
-        IJavaMail mailService = new EmailService();
-        boolean emailSent = mailService.send(email, "Thank you", "Cảm ơn quý khách đã sử dụng sản phẩm của chúng tôi, hãy để lại đánh giá để chúng tôi có thể nâng cao trải nghiệm dịch vụ của bạn cho những lần tiếp theo", verificationLink);
+            String contextPath = request.getContextPath(); // Lấy context path của ứng dụng
+            String verificationLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/account/feedback?oid=" + orderIDRaw;
+            IJavaMail mailService = new EmailService();
+            boolean emailSent = mailService.send(email, "Thank you", "Cảm ơn quý khách đã sử dụng sản phẩm của chúng tôi, hãy để lại đánh giá để chúng tôi có thể nâng cao trải nghiệm dịch vụ của bạn cho những lần tiếp theo", verificationLink);
 
-        if (emailSent) {
-            request.getRequestDispatcher("/view/notice/ThanksForBuy.jsp").forward(request, response);
-        } else {
-            request.getRequestDispatcher("/view/notice/ThanksForBuy.jsp").forward(request, response);
+        } catch (MessagingException ex) {
+            request.setAttribute("errorMessage", ex.getMessage());
         }
+        request.getRequestDispatcher("/view/notice/ThanksForBuy.jsp").forward(request, response);
+
     }
 
     /**

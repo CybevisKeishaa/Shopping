@@ -14,7 +14,7 @@ public abstract class DBContext<T> {
 
     public DBContext() {
         try {
-            connect = khanhConn.getConnection();
+            connect = publicConn.getConnection();
         } catch (SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

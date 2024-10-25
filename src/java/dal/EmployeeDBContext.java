@@ -55,7 +55,7 @@ public class EmployeeDBContext extends DBContext {
                 Employee e = new Employee();
                 e.setEmp_id(rs.getInt(1));
                 e.setName_emp(rs.getString(2));
-                e.setPhone(rs.getInt(4));
+                e.setPhone(rs.getString(4));
                 e.setStatus(rs.getBoolean(5));
                 e.setEmail(rs.getString(8));
 
@@ -87,7 +87,7 @@ public class EmployeeDBContext extends DBContext {
                 Employee e = new Employee();
                 e.setEmp_id(rs.getInt(1));
                 e.setName_emp(rs.getString(2));
-                e.setPhone(rs.getInt(4));
+                e.setPhone(rs.getString(4));
                 e.setStatus(rs.getBoolean(5));
                 e.setEmail(rs.getString(8));
 
@@ -118,7 +118,7 @@ public class EmployeeDBContext extends DBContext {
                 Employee e = new Employee();
                 e.setEmp_id(rs.getInt(1));
                 e.setName_emp(rs.getString(2));
-                e.setPhone(rs.getInt(4));
+                e.setPhone(rs.getString(4));
                 e.setStatus(rs.getBoolean(5));
                 e.setEmail(rs.getString(8));
 
@@ -149,7 +149,7 @@ public class EmployeeDBContext extends DBContext {
                 Employee e = new Employee();
                 e.setEmp_id(rs.getInt(1));
                 e.setName_emp(rs.getString(2));
-                e.setPhone(rs.getInt(4));
+                e.setPhone(rs.getString(4));
                 e.setStatus(rs.getBoolean(5));
                 e.setEmail(rs.getString(8));
 
@@ -179,7 +179,7 @@ public class EmployeeDBContext extends DBContext {
                 e.setEmp_id(rs.getInt(1));
                 e.setName_emp(rs.getString(2));
                 e.setEmail(rs.getString(8));
-                e.setPhone(Integer.parseInt(rs.getString(4)));
+                e.setPhone(rs.getString(4));
 
                 e.setStatus(rs.getBoolean(5));
 
@@ -251,6 +251,53 @@ public class EmployeeDBContext extends DBContext {
             }
         }
         return empID;
+    }
+
+    public Employee getEmployeeAccountByEmail(String email, String password) {
+        PreparedStatement stm = null;
+        Employee employee = null; // Changed from int to Employee
+        try {
+            String sql = """
+                            SELECT e.emp_id, e.name_emp, e.phone, e.status, e.avartar, e.email, r.*
+                            FROM Employee e
+                            JOIN Role r ON r.role_id = e.role_id
+                            WHERE e.email = ? AND e.password = ?
+                         """;
+
+            stm = connect.prepareStatement(sql);
+            // Bind the email and password parameters
+            stm.setString(1, email);
+            stm.setString(2, password);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                employee = new Employee();
+                employee.setEmp_id(rs.getInt("emp_id"));
+                employee.setName_emp(rs.getString("name_emp"));
+                employee.setPhone(rs.getString("phone"));
+                employee.setStatus(rs.getBoolean("status"));
+                employee.setAvatar(rs.getString("avartar"));
+                employee.setEmail(rs.getString("email"));
+
+                // Assuming you have a Role class
+                Role role = new Role();
+                role.setRole_id(rs.getInt("role_id"));
+                role.setRole_name(rs.getString("role_name"));
+                employee.setRole(role);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close(); // Ensure resource is closed
+                } catch (SQLException ex) {
+                    Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return employee; // Return Employee object
     }
 
     public static void main(String[] args) {

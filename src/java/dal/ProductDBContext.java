@@ -4,9 +4,8 @@
  */
 package dal;
 
-import java.util.ArrayList;
-import model.Product;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +14,7 @@ import model.Capacity;
 import model.Discount;
 import model.Gender;
 import model.Image;
+import model.Product;
 
 /**
  *
@@ -193,12 +193,6 @@ public class ProductDBContext extends DBContext<Product> {
         return products;
     }
 
-    public static void main(String[] args) {
-        ProductDBContext db = new ProductDBContext();
-        ArrayList<Product> p = db.getProductByGender();
-        System.out.println(p.size());
-    }
-
     public int getTotalProduct() {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM Product";
@@ -291,9 +285,15 @@ public class ProductDBContext extends DBContext<Product> {
                 Brand b = bDb.getBrandFindById(rs.getInt(7));
                 p.setBrand(b);
                 CapacityDBContext cDb = new CapacityDBContext();
-                ArrayList<Capacity> cList = cDb.getCapacityByProductId(id);
+                ArrayList<Capacity> cList = cDb.getProductCapacityByProductId(id);
                 p.setCapacity(cList);
+
+                var pidb = new ImageDBContext();
+                ArrayList<Image> img = pidb.getAllImageByProductId(id);
+                p.setImg(img);
             }
+            st.close();
+            rs.close();
             return p;
         } catch (Exception e) {
             System.out.println(e);
@@ -346,7 +346,9 @@ public class ProductDBContext extends DBContext<Product> {
                 p.setPrice(rs.getInt("price"));
 
                 p.setBrand(b);
-
+                var pidb = new ProductImageDBContext();
+                ArrayList<Image> img = pidb.getAllImageByProductId(p.getProduct_id());
+                p.setImg(img);
                 list.add(p);
             }
             return list;
@@ -374,4 +376,15 @@ public class ProductDBContext extends DBContext<Product> {
         return -1;
     }
 
+    public static void main(String[] args) {
+        var pdb = new ProductDBContext();
+        Product p = pdb.getByProductId(2);
+        Product p1 = pdb.getByProductId(2);
+        Product p2 = pdb.getByProductId(2);
+
+        System.out.println(p);
+        System.out.println(p1);
+        System.out.println(p2);
+
+    }
 }

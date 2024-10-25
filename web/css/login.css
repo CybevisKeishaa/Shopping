@@ -35,8 +35,9 @@ body {
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 350px;
     text-align: center;
+    min-width: 350px;
+
 }
 
 /* Tiêu đề login */
@@ -61,11 +62,11 @@ body {
 
 /* Đặt kiểu cho input (email, password) */
 .form-group input {
-    width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
+    min-width: 350px;
 }
 
 /* Kiểu cho nút login */
@@ -96,6 +97,11 @@ button[type="submit"]:hover {
 @media (max-width: 480px) {
     .login-container {
         width: 90%;
+        min-width: unset;
         padding: 20px;
+    }
+    .form-group input{
+        min-width: unset;
+        width: 95%;
     }
 }

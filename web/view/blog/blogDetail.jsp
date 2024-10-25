@@ -215,7 +215,8 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="image">
-                                        <img src="images/test.jpg" alt="#">
+                                        <c:set value="${requestScope.data.image[0]}" var="image"></c:set>
+                                        <img class="blog-image" src="${pageContext.request.contextPath}/img/${image.img_url}"  alt="#">
                                     </div>
                                     <div class="blog-detail">
                                         <h2 class="blog-title">${requestScope.data.title}</h2>
@@ -248,19 +249,19 @@
                             <div class="single-widget recent-post">
                                 <h3 class="title">Blog List</h3>
                                 <!-- Single Post -->
-                                <c:forEach var="a" items="${requestScope.l}">
-                                    <div class="single-post">
-                                        <div class="image">
-                                            <img src="images/test.jpg" alt="#">
-                                        </div>
-                                        <div class="content">
-                                            <h5><a href="blogDetail?id=${a.blog_id}">${a.getTitle()}</a></h5>
-                                            <ul class="comment">
-                                                <li><i class="fa fa-calendar" aria-hidden="true"></i>${a.date}</li>
-                                            </ul>
-                                        </div>
+                                <c:forEach var="a" items="${requestScope.l}" begin="0" end="3">
+                                <div class="single-post">
+                                    <div class="image">
+                                        <img src="${pageContext.request.contextPath}/img/${a.image[0].img_url}" alt="#">
                                     </div>
-                                </c:forEach>
+                                    <div class="content">
+                                        <h5><a href="blogDetail?id=${a.blog_id}">${a.getTitle()}</a></h5>
+                                        <ul class="comment">
+                                            <li><i class="fa fa-calendar" aria-hidden="true"></i>${a.date}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </c:forEach>
 
                             </div>
                           
@@ -350,7 +351,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-12">
                                 <div class="left">
-                                    <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
+                                    <p>Copyright ï¿½ 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-12">
