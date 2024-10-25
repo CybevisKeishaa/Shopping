@@ -103,15 +103,15 @@
                                     <li>
                                         <a href="${pageContext.request.contextPath}/admin/employeelist">Employees List</a>
                                     </li>
-                                    <li>
+<!--                                    <li>
                                         <a href="${pageContext.request.contextPath}/bloglist">Blogs List</a>
-                                    </li>
+                                    </li>-->
                                 </ul>
                             </li>
                         </c:if>
-                        <c:if test="${role == 'Marketer'}">
+                        <c:if test="${role == 'Admin' || role == 'Marketer'}">
                             <li>
-                                <a href="${pageContext.request.contextPath}/markets">Markets</a>
+                                <a href="${pageContext.request.contextPath}/market">MKT Dashboard</a>
                             </li>
                         </c:if>
                         <c:if test="${role == 'Admin' || role == 'Saler'}">

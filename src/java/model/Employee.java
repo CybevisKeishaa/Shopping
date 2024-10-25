@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * @author KEISHA
  */
-public class Employee {
+public class Employee extends Customer_User{
 
     private int emp_id;
     private String name_emp;
@@ -108,5 +108,11 @@ public class Employee {
         this.products = products;
     }
 
+    @Override
+    public String toString() {
+        return "Employee{" + "emp_id=" + emp_id + ", name_emp=" + name_emp + ", password=" + password + ", phone=" + phone + ", email=" + email + ", status=" + status + ", avatar=" + avatar + ", role=" + role + ", sliders=" + sliders + ", blogs=" + blogs + ", products=" + products + '}';
+    }
+
+    
 }
 

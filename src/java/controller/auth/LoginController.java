@@ -47,9 +47,9 @@ public class LoginController extends HttpServlet {
                 CartDBContext cartDB = new CartDBContext();
                 Cart cart = cartDB.getCartByCustomer(empID);
                 session.setAttribute("cart", cart);
-                session.setAttribute("employee", employee);
+                session.setAttribute("customer", employee);
 
-                response.sendRedirect("dashboard");
+                response.sendRedirect("../dashboard");
             } else {
                 session.setAttribute("errorMessage", "Invalid email or password");
                 response.sendRedirect(request.getContextPath() + "/login/employee");
