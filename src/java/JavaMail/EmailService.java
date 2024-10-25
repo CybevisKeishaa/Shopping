@@ -69,7 +69,7 @@ public class EmailService implements IJavaMail {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public boolean sendOrderConfirmation(String sendTo, int orderId, String customerName, ArrayList<Product> products, int totalCost, Address address) {
+    public boolean sendOrderConfirmation(String sendTo, int orderId, String customerName, ArrayList<Product> products, int totalCost, Address address, String note) {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.host", EmailProperty.HOST_NAME);
@@ -121,6 +121,7 @@ public class EmailService implements IJavaMail {
             if (address.getDetail() != null && !address.getDetail().isEmpty()) {
                 htmlContent.append("<p><strong>Detail:</strong> ").append(address.getDetail()).append("</p>");
             }
+            htmlContent.append("<p><strong>Note:</strong> ").append(note).append("</p>");
             htmlContent.append("</body></html>");
 
             // Gán nội dung HTML vào email

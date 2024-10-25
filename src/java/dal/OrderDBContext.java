@@ -358,6 +358,7 @@ public class OrderDBContext extends DBContext<Order> {
                 o.setCreate_at(rs.getTimestamp("created_at"));
                 o.setTotal_price(rs.getInt("total"));
                 o.setShipping_method(rs.getString("shipping_method"));
+                ;
 
                 // Lấy thông tin trạng thái
                 Status_Order so = new Status_Order();
@@ -378,6 +379,7 @@ public class OrderDBContext extends DBContext<Order> {
                 address.setDistrict(rs.getString("district"));
                 address.setWard(rs.getString("ward"));
                 address.setStreet(rs.getString("street"));
+                address.setA_phone(rs.getString("c_phone"));
 
                 o.setAddress(address);
                 o.setCustomer(c);

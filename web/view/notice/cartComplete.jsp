@@ -78,7 +78,7 @@
             ul li {
                 margin-bottom: 10px;
             }
-            
+
             h3{
                 margin-bottom: 15px !important;
             }
@@ -91,7 +91,7 @@
         <div class="order-summary">
             <h2>Order Submited</h2>
 
-            
+
             <h3>Thông tin đơn hàng:</h3>
             <div class="order-details">
                 <p><strong>Mã đơn hàng:</strong> ${requestScope.order.order_id}</p>
@@ -115,6 +115,7 @@
                 <p><strong>Tên người nhận:</strong> ${requestScope.order.customer.name_cus}</p>
                 <p><strong>Địa chỉ:</strong> ${requestScope.order.address.street}, ${requestScope.order.address.ward}, ${requestScope.order.address.district}, ${requestScope.order.address.city} - ${requestScope.order.address.a_phone}</p>
                 <p><strong>Ngày đặt hàng:</strong> <fmt:formatDate value="${requestScope.order.create_at}" pattern="dd/MM/yyyy"/></p>
+                <p><strong>Note:</strong> ${requestScope.order.note}</p>
             </div>
 
             <!-- Nút quay lại trang chủ -->
