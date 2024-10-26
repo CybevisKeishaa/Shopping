@@ -271,9 +271,9 @@ public class CustomerDBContext extends DBContext<Customer_User> {
                     customer.setRole(role);
 
                     // Thiết lập Cart
-                    Cart cart = new Cart();
-                    cart.setCart_id(rs.getInt("cart_id"));
-                    customer.setCart(cart);
+//                    Cart cart = new Cart();
+//                    cart.setCart_id(rs.getInt("cart_id"));
+//                    customer.setCart(cart);
 
                     return customer;
                 }
@@ -566,13 +566,22 @@ public class CustomerDBContext extends DBContext<Customer_User> {
     }
 
     public static void main(String[] args) {
-        CustomerDBContext l = new CustomerDBContext();
+        CustomerDBContext customerDB = new CustomerDBContext();
+        int customerId = 1;  // ID của khách hàng cần tìm
+        Customer_User customer = customerDB.getCustomerById(customerId);
 
-        Customer_User c = l.getCustomerAccountByEmail("shamt2004@gmail.com", "thang123");
-        System.out.println(c.getName_cus());
-        // for (Customer_User x : c) {
-        // System.out.println(x.size);
-        // }
+        if (customer != null) {
+            System.out.println("Customer ID: " + customer.getCus_id());
+            System.out.println("Name: " + customer.getName_cus());
+            System.out.println("Email: " + customer.getEmail());
+            System.out.println("Phone: " + customer.getC_phone());
+            System.out.println("Gender: " + (customer.isGender() ? "Male" : "Female"));
+            System.out.println("Status: " + (customer.isStatus() ? "Active" : "Inactive"));
+            System.out.println("Avatar: " + customer.getAvatar());
+            System.out.println("Role ID: " + customer.getRole().getRole_id());
+        } else {
+            System.out.println("Customer not found with ID: " + customerId);
+        }
     }
 
     public List<Customer_User> getAllListByProductidEmployeeIdDate(Date date, int eid, int pid, int pageNumber,
@@ -860,7 +869,7 @@ public class CustomerDBContext extends DBContext<Customer_User> {
             }
         } finally {
             if (stm != null) {
-                stm.close(); 
+                stm.close();
             }
         }
         return newWalletId;

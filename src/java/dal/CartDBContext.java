@@ -347,6 +347,70 @@ public class CartDBContext extends DBContext<Cart> {
         }
     }
 
+    public void addToCartWithDetails(int productID, int cartID, int quantity, int capacityID) {
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int stock = 0; 
+        try {
+ 
+            String stockCheckSql = "SELECT stock FROM Product WHERE product_id = ?";
+            stm = connect.prepareStatement(stockCheckSql);
+            stm.setInt(1, productID);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                stock = rs.getInt("stock"); 
+                if (quantity > stock) {
+                    System.out.println("Không thể thêm sản phẩm. Số lượng yêu cầu vượt quá tồn kho.");
+                    return;
+                }
+            }
+
+            String checkSql = "SELECT quanity FROM Item WHERE product_id = ? AND cart_id = ? AND capacity_id = ?";
+            stm = connect.prepareStatement(checkSql);
+            stm.setInt(1, productID);
+            stm.setInt(2, cartID);
+            stm.setInt(3, capacityID);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                int currentQuantity = rs.getInt("quanity");
+                if (currentQuantity + quantity <= stock) {
+                    String updateSql = "UPDATE Item SET quanity = quanity + ? WHERE product_id = ? AND cart_id = ? AND capacity_id = ?";
+                    stm = connect.prepareStatement(updateSql);
+                    stm.setInt(1, quantity);
+                    stm.setInt(2, productID);
+                    stm.setInt(3, cartID);
+                    stm.setInt(4, capacityID);
+                    stm.executeUpdate();
+                } else {
+                    System.out.println("Không thể thêm sản phẩm. Số lượng yêu cầu vượt quá tồn kho.");
+                }
+            } else {
+                String insertSql = "INSERT INTO Item (product_id, cart_id, quanity, capacity_id) VALUES (?, ?, ?, ?)";
+                stm = connect.prepareStatement(insertSql);
+                stm.setInt(1, productID);
+                stm.setInt(2, cartID);
+                stm.setInt(3, quantity);
+                stm.setInt(4, capacityID);
+                stm.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CartDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CartDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     public void deleteAnItem(int itemID) {
         PreparedStatement stm = null;
         try {
@@ -400,35 +464,21 @@ public class CartDBContext extends DBContext<Cart> {
     }
 
     public static void main(String[] args) {
-        CartDBContext dbContext = new CartDBContext();
-        int customerID = 1; // Thay đổi theo ID của khách hàng mà bạn muốn test
+        CartDBContext cartDb = new CartDBContext();
+        Cart c = cartDb.getCartByCustomer(1);
+        System.out.println(c);
 
-        // Gọi phương thức getCartByCustomer để lấy thông tin giỏ hàng
-        Cart cart = dbContext.getCartByCustomer(customerID);
-
-        // In kết quả ra console để kiểm tra
-        if (cart != null) {
-            System.out.println("Cart ID: " + cart.getCart_id());
-            System.out.println("Customer ID: " + cart.getCustomer().getCus_id());
-            System.out.println("Customer Name: " + cart.getCustomer().getName_cus());
-            System.out.println("Items in Cart:");
-
-            for (Item item : cart.getItems()) {
-                System.out.println("  Item ID: " + item.getItem_id());
-                System.out.println("  Product Name: " + item.getProduct().getName());
-                System.out.println("  Quantity: " + item.getQuantity());
-                System.out.println("  Capacity: " + item.getCapacity().getValue() + "ml");
-                System.out.println("  Unit Price: " + item.getCapacity().getUnit_price());
-                System.out.println("  Total Price: " + (item.getCapacity().getUnit_price() * item.getQuantity()));
-
-                // In URL của hình ảnh (nếu có)
-                if (!item.getProduct().getImg().isEmpty()) {
-                    System.out.println("  Product Image URL: " + item.getProduct().getImg().get(0).getImg_url());
-                }
-            }
-        } else {
-            System.out.println("Cart is empty or not found.");
-        }
+        
+        
+//            int productID = 1; // ID của sản phẩm muốn thêm
+//            int cartID = 7;    // ID của giỏ hàng muốn thêm
+//            int quantity = 3;  // Số lượng muốn thêm
+//            int capacityID = 1; // Dung tích hoặc ID của phiên bản sản phẩm
+//
+//            // Gọi hàm addToCartWithDetails để thêm sản phẩm vào giỏ hàng
+//            cartDb.addToCartWithDetails(productID, cartID, quantity, capacityID);
+//
+//            System.out.println("Hoàn thành kiểm tra thêm sản phẩm vào giỏ hàng.");
     }
 
 }
