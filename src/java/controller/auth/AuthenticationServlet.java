@@ -1,11 +1,12 @@
 package controller.auth;
 
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import model.Customer_User;
+import model.Employee;
 
 public abstract class AuthenticationServlet extends HttpServlet {
 
@@ -15,9 +16,14 @@ public abstract class AuthenticationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Customer_User user = (Customer_User) request.getSession().getAttribute("customer");
+        Employee employee = (Employee) request.getSession().getAttribute("employee");
+
         if (user != null) {
             request.setAttribute("role", user.getRole().getRole_name());
             doGet(request, response, user);
+        } else if(employee != null) {
+            request.setAttribute("role", employee.getRole().getRole_name());
+            doGet(request, response, employee);
         } else {
             request.getSession().setAttribute("errorMessage", "You need to login first.");
             response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -31,9 +37,14 @@ public abstract class AuthenticationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Customer_User user = (Customer_User) request.getSession().getAttribute("customer");
+        Employee employee = (Employee) request.getSession().getAttribute("employee");
+
         if (user != null) {
             request.setAttribute("role", user.getRole().getRole_name());
             doPost(request, response, user);
+        } else if(employee != null) {
+            request.setAttribute("role", employee.getRole().getRole_name());
+            doPost(request, response, employee);
         } else {
             request.getSession().setAttribute("errorMessage", "You need to login first.");
             response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");

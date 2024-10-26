@@ -5,6 +5,7 @@
 package helper;
 
 import model.Customer_User;
+import model.Employee;
 import model.Role;
 
 /**
@@ -20,6 +21,10 @@ public class AuthenticationHelper {
 
     private static boolean isCorrectRole(Role role, String role_name) {
         return role.getRole_name().equals(role_name);
+    }
+
+    public static boolean isEmployee(Customer_User user) {
+        return user instanceof Employee;
     }
 
     public static boolean isAdmin(Customer_User user) {

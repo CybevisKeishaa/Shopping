@@ -22,7 +22,7 @@ public class DashboardServlet extends AuthenticationServlet {
 
     private static final String MAIN_PAGE = "/admin/homepage";
     private static final String SALER_PAGE = "/sale";
-    private static final String MARKETER_PAGE = "/markets";
+    private static final String MARKETER_PAGE = "/market";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)

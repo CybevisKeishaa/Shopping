@@ -10,6 +10,8 @@ public class Image {
 
     private int img_id;
     private String img_url;
+    private String img_name;
+
     private Feedback feedback;
     private ArrayList<Product> product = new ArrayList<>();
     private Slider slider;
@@ -71,6 +73,15 @@ public class Image {
         this.blog = blog;
     }
 
+    public String getImg_name() {
+        return img_name;
+    }
+
+    public void setImg_name(String img_name) {
+        this.img_name = img_name;
+    }
+
+    
     @Override
     public String toString() {
         return "Image{" + "img_id=" + img_id + ", img_url=" + img_url + ", feedback=" + feedback + ", product=" + product + ", slider=" + slider + ", blog=" + blog + '}';

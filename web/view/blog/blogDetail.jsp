@@ -184,7 +184,7 @@
                                                     </li>
                                                     <li><a href="#">Pages</a></li>									
                                                     <li class="active"><a href="blogList">Blog</a>
-                                                        
+
                                                     </li>
                                                     <li><a href="contact.html">Contact Us</a></li>
                                                 </ul>
@@ -203,7 +203,7 @@
         <!--/ End Header -->
 
         <!-- Breadcrumbs -->
-        
+
         <!-- End Breadcrumbs -->
 
         <!-- Start Blog Single -->
@@ -224,12 +224,12 @@
                                             <span class="author"><a href="#"><i class="fa fa-user"></i>${requestScope.data.getEmployee().getName_emp()}</a><a href="#"><i class="fa fa-calendar"></i>${requestScope.data.getDate()}</a></span>
                                         </div>
                                         <div class="content">
+                                            <p> ${requestScope.data.shortContent}</p>
                                             <p> ${requestScope.data.content}</p>
                                         </div>
                                     </div>
-                                    
                                 </div>
-                                		
+
                             </div>
                         </div>
                     </div>
@@ -240,32 +240,32 @@
                                     <form action="blogSearch">
                                         <input name="search" placeholder="Search Blog Here....." type="search">
                                         <button class="btnn"><i class="ti-search"></i></button>
-                                        
+
                                     </form>
                                 </div>
                             </div>
-                          
-                           
+
+
                             <div class="single-widget recent-post">
                                 <h3 class="title">Blog List</h3>
                                 <!-- Single Post -->
                                 <c:forEach var="a" items="${requestScope.l}" begin="0" end="3">
-                                <div class="single-post">
-                                    <div class="image">
-                                        <img src="${pageContext.request.contextPath}/img/${a.image[0].img_url}" alt="#">
+                                    <div class="single-post">
+                                        <div class="image">
+                                            <img src="${pageContext.request.contextPath}/img/${a.image[0].img_url}" alt="#">
+                                        </div>
+                                        <div class="content">
+                                            <h5><a href="blogDetail?id=${a.blog_id}">${a.getTitle()}</a></h5>
+                                            <ul class="comment">
+                                                <li><i class="fa fa-calendar" aria-hidden="true"></i>${a.date}</li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="content">
-                                        <h5><a href="blogDetail?id=${a.blog_id}">${a.getTitle()}</a></h5>
-                                        <ul class="comment">
-                                            <li><i class="fa fa-calendar" aria-hidden="true"></i>${a.date}</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </c:forEach>
+                                </c:forEach>
 
                             </div>
-                          
-                            
+
+
                         </div>
                     </div>
                 </div>

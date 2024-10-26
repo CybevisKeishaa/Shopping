@@ -30,7 +30,7 @@ public class OrderSql {
                       OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                      """;
     public static final String GET_ALL_COUNT = """
-                     select count(o.order_id) from (SELECT o.order_id,
+                     select count(o.order_id) as count from (SELECT o.order_id,
                              o.created_at AS orderedDate,
                              o.total AS totalCost,
                              so.status,

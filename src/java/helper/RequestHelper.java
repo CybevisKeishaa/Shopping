@@ -45,9 +45,14 @@ public class RequestHelper {
         return (value != null && !value.isEmpty()) ? value : defaultValue;
     }
 
-    public static boolean getCheckboxParameterWithDefault(String parameter, boolean defaultValue, HttpServletRequest request) {
+    public static Boolean getCheckboxParameterWithDefault(String parameter, Object defaultValue, HttpServletRequest request) {
         String value = request.getParameter(parameter);
-        return (value != null) ? value.equals("on") : defaultValue;
+        return (value != null) ? value.equals("on") : (Boolean) defaultValue;
+    }
+
+    public static Boolean getBooleanWithDefault(String status, Object defaultValue, HttpServletRequest request) {
+        String value = request.getParameter(status);
+        return (value != null) ? value.equals("true") : (Boolean) defaultValue;
     }
 
 }

@@ -15,8 +15,28 @@ public class Blog {
     private String content;
     private Date date;
     private Employee employee;
-    private String status;
+    private Boolean status;
     private ArrayList<Image> image = new ArrayList<>();
+
+    public Blog() {
+    }
+
+    public Blog(int blog_id, String title, String shortContent, String content, Date date, Employee employee, Boolean status) {
+        this.blog_id = blog_id;
+        this.title = title;
+        this.shortContent = shortContent;
+        this.content = content;
+        this.date = date;
+        this.employee = employee;
+        this.status = status;
+    }
+
+    public Blog(String title, String shortContent, String content, Boolean status) {
+        this.title = title;
+        this.shortContent = shortContent;
+        this.content = content;
+        this.status = status;
+    }
 
     public int getBlog_id() {
         return blog_id;
@@ -66,11 +86,11 @@ public class Blog {
         this.employee = employee;
     }
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
