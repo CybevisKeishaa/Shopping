@@ -45,7 +45,7 @@ public class MKTDashboard extends AuthenticationServlet {
         }
         // Get all filter parameters from the request using RequestHelper
         String title = RequestHelper.getStringParameterWithDefault("search", null, request);
-        String status = RequestHelper.getStringParameterWithDefault("status", "", request);
+        String status = RequestHelper.getStringParameterWithDefault("status", "true", request);
 
         // Parse the startDate and endDate from the request (optional, null if not provided)
         Date startDate = RequestHelper.getDateParameterWithDefault("startDate", null, request);

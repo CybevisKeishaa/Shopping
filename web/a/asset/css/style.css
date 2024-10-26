@@ -20,7 +20,7 @@ a:hover {
   color: #2196F3;
   font-weight: bold;
 }
-#left-menu li :hover{
+#left-menu li a:hover{
   background-color: rgb(63, 76, 107);
 }
 
@@ -1990,7 +1990,6 @@ ul li a:focus {
 }
 
 #left-menu .sub-left-menu a:hover {
-  background: none;
   -webkit-text-decoration: none;
   -moz-text-decoration: none;
   -ms-text-decoration: none;
@@ -2316,7 +2315,7 @@ ul li a:focus {
   border-bottom: 1px solid #23b7e5;
 }
 
-#right-menu .nav-tabs li a:hover {
+#right-menu .nav-tabs li :hover {
   background-color: #fff;
   border: none;
   border-bottom: 1px solid #23b7e5;

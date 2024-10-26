@@ -103,9 +103,9 @@
                                     <li>
                                         <a href="${pageContext.request.contextPath}/admin/employeelist">Employees List</a>
                                     </li>
-<!--                                    <li>
-                                        <a href="${pageContext.request.contextPath}/bloglist">Blogs List</a>
-                                    </li>-->
+                                    <!--                                    <li>
+                                                                            <a href="${pageContext.request.contextPath}/bloglist">Blogs List</a>
+                                                                        </li>-->
                                 </ul>
                             </li>
                         </c:if>
@@ -212,6 +212,8 @@
         <script src="${pageContext.request.contextPath}/a/asset/js/plugins/maps/jquery.vmap.world.js"></script>
         <script src="${pageContext.request.contextPath}/a/asset/js/plugins/jquery.vmap.sampledata.js"></script>
         <script src="${pageContext.request.contextPath}/a/asset/js/plugins/chart.min.js"></script>
+
+        <script src="${pageContext.request.contextPath}/a/asset/js/main.js"></script>
 
     </body>
 </html>

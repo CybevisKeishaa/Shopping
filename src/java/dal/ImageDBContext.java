@@ -13,6 +13,7 @@ import java.util.logging.*;
 import model.Image;
 
 public class ImageDBContext extends DBContext {
+
     public Image getImageById(int igid) throws SQLException {
         String sql = "select * from Image where img_id=?";
         try {
@@ -76,7 +77,7 @@ public class ImageDBContext extends DBContext {
     public ArrayList<Image> getAllImageByBlogId(int id) {
         ArrayList<Image> images = new ArrayList<>();
         String sql = """
-                   select i.img_id,i.img_url from Blog_IMG bi join Image i on i.img_id = bi.img_id
+                   select i.img_id,i.img_url,i.img_name from Blog_IMG bi join Image i on i.img_id = bi.img_id
                    where blog_id = ?
                 """;
         try {
@@ -85,6 +86,7 @@ public class ImageDBContext extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Image i = new Image(rs.getInt("img_id"), rs.getString("img_url"));
+                i.setImg_name(rs.getString("img_name"));
                 images.add(i);
             }
             st.close();

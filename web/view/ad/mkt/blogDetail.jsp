@@ -26,13 +26,16 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-body row">
-                <div class=" col-md-6 col-md-offset-3">
-                    <img class="blog-image img-rounded " width="100%" src="/SWP391_Group6/img/blog1_pic1.jpg" alt="#">
-                </div>  
-            </div>
-            <div class="panel-body panel col-12">
-                <h2 class="blog-title "><b>${blog.title}</b></h2>
+            <c:catch var="e">
+                <div class="panel-body row">
+                    <div class=" col-md-6 col-md-offset-3">
+                        <img class="blog-image img-rounded " width="100%" src="${pageContext.request.contextPath}/img/${blog.image[0].img_url}" alt="${blog.image[0].img_name}">
+                    </div>  
+                </div>
+            </c:catch>
+            ${e}
+            <div class="panel-body ">
+                <h2 class="blog-title"><b>${blog.title}</b></h2>
                 <hr>
                 <div class="panel-body">
                     <div class="blog-meta">
@@ -42,8 +45,11 @@
                         </span>
                     </div>
                     <div class="content">
-                        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+                        <p>${blog.shortContent}</p>
+                        <p>${blog.content}</p>
                     </div>
+                    <a href="/SWP391_Group6/blogDetail?id=${blog.blog_id}" 
+                       class="">Xem tại trang chính${' '}&rarr;</a>
                 </div>
             </div>
         </div>

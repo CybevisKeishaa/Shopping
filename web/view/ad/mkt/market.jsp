@@ -19,6 +19,10 @@
         <div class="panel">
             <div class="panel-heading"><h3>Sales</h3></div>
             <div class="panel-body">
+                <a href="market/blog/create" class="btn btn-secondary mb-3">
+                    <i class="fa fa-plus"></i>
+                    <b>Tạo Bài Viết</b>
+                </a>
                 <c:catch var="e">
                     <form action="market" class="row" method="GET">
                         <div class="form-group col-md-2">
