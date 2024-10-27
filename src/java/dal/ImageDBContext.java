@@ -9,12 +9,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Image;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ImageDBContext extends DBContext<Image> {
-    public ArrayList<Image> getByProductId(int pid){
-        ArrayList<Image> list=new ArrayList<>();
-        String sql="select * from Product p inner join Product_Image pia on p.product_id=pia.product_id inner join Image i on i.img_id=pia.img_id where p.product_id=?";
-           try {
+
+    public ArrayList<Image> getByProductId(int pid) {
+        ArrayList<Image> list = new ArrayList<>();
+        String sql = "select * from Product p inner join Product_Image pia on p.product_id=pia.product_id inner join Image i on i.img_id=pia.img_id where p.product_id=?";
+        try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, pid);
             ResultSet rs = st.executeQuery();
@@ -24,7 +28,7 @@ public class ImageDBContext extends DBContext<Image> {
                 ig.setImg_url(rs.getString("img_url"));
                 ig.setName(rs.getString("img_name"));
                 list.add(ig);
-               
+
             }
             return list;
 
@@ -33,12 +37,14 @@ public class ImageDBContext extends DBContext<Image> {
 
         }
         return null;
-        
+
     }
-    public static void main(String[] args){
-        ImageDBContext id=new ImageDBContext();
+
+    public static void main(String[] args) {
+        ImageDBContext id = new ImageDBContext();
         System.out.println(id.getByProductId(32).size());
     }
+
     public Image getImageById(int igid) throws SQLException {
         String sql = "select * from Image where img_id=?";
         try {

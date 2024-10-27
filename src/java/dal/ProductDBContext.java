@@ -645,15 +645,5 @@ public class ProductDBContext extends DBContext<Product> {
         return -1;
     }
 
-    public static void main(String[] args) {
-        var pdb = new ProductDBContext();
-        Product p = pdb.getByProductId(2);
-        Product p1 = pdb.getByProductId(2);
-        Product p2 = pdb.getByProductId(2);
-
-        System.out.println(p);
-        System.out.println(p1);
-        System.out.println(p2);
-
-    }
+    
 }
