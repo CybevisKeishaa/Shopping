@@ -1,5 +1,6 @@
 package dal;
 
+import com.microsoft.sqlserver.jdbc.StringUtils;
 import dal.combiner.BlogCombiner;
 import dal.sql.BlogSql;
 import helper.ImageHelper;
@@ -21,18 +22,18 @@ import model.Image;
  * @author KEISHA
  */
 public class BlogDBContext extends DBContext<Blog> {
-    
+
     private ImageHelper imageHelper;
-    
+
     public BlogDBContext() {
         super();
     }
-    
+
     public BlogDBContext(HttpServlet servlet) {
         super();
         this.imageHelper = new ImageHelper(servlet);
     }
-    
+
     public ArrayList<Blog> getBlogForHomepage() {
         PreparedStatement stm = null;
         ArrayList<Blog> blogs = new ArrayList<>();
@@ -43,10 +44,10 @@ public class BlogDBContext extends DBContext<Blog> {
                     + "LEFT JOIN dbo.Blog_IMG bi ON b.blog_id = bi.blog_id \n"
                     + "LEFT JOIN dbo.Image i ON bi.img_id = i.img_id \n"
                     + "WHERE bi.img_id = (SELECT TOP 1 img_id FROM dbo.Blog_IMG WHERE blog_id = b.blog_id ORDER BY img_id ASC);";
-            
+
             stm = connect.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
-            
+
             while (rs.next()) {
                 Blog b = new Blog();
                 b.setBlog_id(rs.getInt("blog_id"));
@@ -64,10 +65,10 @@ public class BlogDBContext extends DBContext<Blog> {
         }
         return blogs;
     }
-    
+
     public List<Blog> getBlogTop3Date() {
         List<Blog> list = new ArrayList<>();
-        
+
         String sql = "SELECT TOP  3 * FROM Blog ORDER BY date DESC";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
@@ -94,7 +95,7 @@ public class BlogDBContext extends DBContext<Blog> {
         }
         return null;
     }
-    
+
     public List<Blog> getAll(int pageNumber, int pageSize) {
         List<Blog> list = new ArrayList<>();
         String sql = "SELECT * FROM Blog ORDER BY blog_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
@@ -126,7 +127,7 @@ public class BlogDBContext extends DBContext<Blog> {
         }
         return null;
     }
-    
+
     public List<Blog> getAll(String search, Date startDate, Date endDate, Integer empId, String status, int pageNumber, int pageSize) {
         List<Blog> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder(BlogSql.GET_ALL);
@@ -145,10 +146,10 @@ public class BlogDBContext extends DBContext<Blog> {
         if (empId != null) {
             whereSql.append(" AND b.emp_id = ?");
         }
-        if (status != null && !status.isEmpty()) {
+        if (!StringUtils.isEmpty(status)) {
             if (status.equals("true")) {
                 whereSql.append(" AND b.status = 1");
-            } else {
+            } else if (status.equals("false")) {
                 whereSql.append(" AND b.status = 0");
             }
         }
@@ -166,7 +167,7 @@ public class BlogDBContext extends DBContext<Blog> {
             if (empId != null) {
                 st.setInt(paramIndex++, empId);
             }
-            
+
             int offset = (pageNumber - 1) * pageSize;
             st.setInt(paramIndex++, offset);
             st.setInt(paramIndex++, pageSize);
@@ -179,11 +180,11 @@ public class BlogDBContext extends DBContext<Blog> {
             return list;
         } catch (SQLException e) {
             Logger.getLogger(BlogDBContext.class.getName()).log(Level.SEVERE, null, e);
-            
+
         }
         return null;
     }
-    
+
     public int getAllTotalCount(String search, Date startDate, Date endDate, Integer empId, String status) {
         var count = 0;
         StringBuilder sql = new StringBuilder(BlogSql.GET_ALL_COUNT);
@@ -230,11 +231,11 @@ public class BlogDBContext extends DBContext<Blog> {
             }
         } catch (SQLException e) {
             Logger.getLogger(BlogDBContext.class.getName()).log(Level.SEVERE, null, e);
-            
+
         }
         return count;
     }
-    
+
     public Blog getContentByBlogId(int blogid) {
         String sql = "select * from Blog where blog_id = ?";
         Blog b = new Blog();
@@ -247,7 +248,7 @@ public class BlogDBContext extends DBContext<Blog> {
                 b.setTitle(rs.getString(2));
                 b.setDate(rs.getDate(5));
                 b.setStatus(rs.getBoolean("status"));
-                
+
                 EmployeeDBContext eDB = new EmployeeDBContext();
                 int id = rs.getInt(6);
                 Employee e = eDB.getEmployeeByIdForBlog(id);
@@ -263,7 +264,7 @@ public class BlogDBContext extends DBContext<Blog> {
         }
         return b;
     }
-    
+
     public List<Blog> getAllSearchByTittle(String search, int pageNumber, int pageSize) {
         String sql = "SELECT * \n"
                 + "FROM Blog \n"
@@ -271,7 +272,7 @@ public class BlogDBContext extends DBContext<Blog> {
                 + "ORDER BY blog_id \n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
         List<Blog> list = new ArrayList<>();
-        
+
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             int offset = (pageNumber - 1) * pageSize;
@@ -298,7 +299,7 @@ public class BlogDBContext extends DBContext<Blog> {
         }
         return null;
     }
-    
+
     public int getTotalBlogsBySearch(String search) {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM Blog WHERE title LIKE '%' + ? + '%' ";
@@ -316,13 +317,13 @@ public class BlogDBContext extends DBContext<Blog> {
         }
         return count;
     }
-    
+
     public int getTotalBlogs() {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM Blog";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
-            
+
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);
@@ -368,9 +369,9 @@ public class BlogDBContext extends DBContext<Blog> {
             blogStmt.setString(3, blog.getContent());
             blogStmt.setInt(4, empId);
             blogStmt.setBoolean(5, false);
-            
+
             ResultSet rs = blogStmt.executeQuery();
-            if (!rs.next() || image == null) {
+            if (!rs.next() || image.getSize() <= 0) {
                 return false;
             }
             int blogId = rs.getInt("blog_id");
@@ -378,7 +379,7 @@ public class BlogDBContext extends DBContext<Blog> {
             blogStmt.close();
             // Insert the image association into Blog_IMG table
             PreparedStatement imageStmt = connect.prepareStatement(imageSql);
-            String imageName = String.format("BLOG%04d", blogId);
+            String imageName = String.format("BLOG%04d" + System.currentTimeMillis(), blogId);
             String imageUrl = imageName + imageHelper.getExtensionFromContentType(image.getContentType());
             imageStmt.setString(1, imageUrl);
             imageStmt.setString(2, imageName);
@@ -422,6 +423,11 @@ public class BlogDBContext extends DBContext<Blog> {
     public boolean updateBlog(Blog blog, Integer empId, Part image) {
         String sql = "UPDATE Blog SET title = ?, shortContent = ?, content = ?, date = GETDATE(), emp_id = ? "
                 + "WHERE blog_id = ?";
+        String imageSql = """
+                          update Image 
+                          set img_url = ?, img_name = ?
+                          where img_id = ?
+                          """;
         try {
             connect.setAutoCommit(false);
             PreparedStatement st = connect.prepareStatement(sql);
@@ -433,14 +439,33 @@ public class BlogDBContext extends DBContext<Blog> {
 
             // Execute update and check if the blog was successfully updated
             boolean updated = st.executeUpdate() > 0;
-            if (updated && image != null) {
+            if (updated && image.getSize() > 0) {
                 int blogId = blog.getBlog_id();
-                String imageName = String.format("BLOG%04d", blogId);
-                imageHelper.processImageUpload(image, imageName);
+                PreparedStatement imageStmt = connect.prepareStatement(imageSql);
+                String imageName = String.format("BLOG%04d" + System.currentTimeMillis(), blogId);
+                String imageUrl = imageName + imageHelper.getExtensionFromContentType(image.getContentType());
+                imageStmt.setString(1, imageUrl);
+                imageStmt.setString(2, imageName);
+                imageStmt.setInt(3, blog.getImage().get(0).getImg_id());
+                updated = imageStmt.executeUpdate() > 0;
+                if (updated) {
+                    imageHelper.processImageUpload(image, imageName);
+                    Image currentImage = blog.getImage().get(0);
+                    if (currentImage != null) {
+                        imageHelper.removeImage(currentImage.getImg_url());
+                    }
+                    connect.commit();
+                }
+                imageStmt.close();
             }
             st.close();
             return updated;
         } catch (SQLException | IOException | ServletException ex) {
+            try {
+                connect.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(BlogDBContext.class.getName()).log(Level.SEVERE, null, ex1);
+            }
             Logger.getLogger(BlogDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
@@ -451,7 +476,7 @@ public class BlogDBContext extends DBContext<Blog> {
         }
         return false;
     }
-    
+
     public boolean updateBlogStatus(Integer blogId, Integer empId, boolean status) {
         String sql = "UPDATE Blog SET status = ?, emp_id = ? WHERE blog_id = ?";
         try {
@@ -469,15 +494,15 @@ public class BlogDBContext extends DBContext<Blog> {
         }
         return false;
     }
-    
+
     public static void main(String[] args) {
         BlogDBContext l = new BlogDBContext();
-        
+
         List<Blog> ldb = l.getBlogTop3Date();
         for (Blog x : ldb) {
             System.out.println(x.getBlog_id());
         }
-        
+
     }
-    
+
 }

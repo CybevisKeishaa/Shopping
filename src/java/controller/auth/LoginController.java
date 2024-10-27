@@ -3,7 +3,6 @@ package controller.auth;
 import dal.CartDBContext;
 import dal.CustomerDBContext;
 import dal.EmployeeDBContext;
-import helper.AuthenticationHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,12 +42,7 @@ public class LoginController extends HttpServlet {
             Employee employee = db.getEmployeeAccountByEmail(email, password);
 
             if (employee != null) {
-                int empID = employee.getEmp_id();
-                CartDBContext cartDB = new CartDBContext();
-                Cart cart = cartDB.getCartByCustomer(empID);
-                session.setAttribute("cart", cart);
-                session.setAttribute("customer", employee);
-
+                session.setAttribute("employee", employee);
                 response.sendRedirect("../dashboard");
             } else {
                 session.setAttribute("errorMessage", "Invalid email or password");
@@ -65,11 +59,7 @@ public class LoginController extends HttpServlet {
                 session.setAttribute("cart", cart);
                 session.setAttribute("customer", customer);
 
-                if (AuthenticationHelper.isCustomer(customer)) {
-                    response.sendRedirect("homepage");
-                } else {
-                    response.sendRedirect("dashboard");
-                }
+                response.sendRedirect("homepage");
             } else {
                 session.setAttribute("errorMessage", "Invalid email or password");
                 response.sendRedirect(request.getContextPath() + "/login");

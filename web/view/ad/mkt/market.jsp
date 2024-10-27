@@ -38,7 +38,7 @@
                             <select id="status" class="form-control" name="status">
                                 <option value="true" ${param.status == 'true' ? 'selected':''}>Tồn tại</option>
                                 <option value="false" ${param.status == 'false' ? 'selected':''}>Đã ẩn</option>
-                                <option value="" ${param.status == '' ? 'selected':''}>Tất cả</option>
+                                <option value="all" ${param.status == 'all' ? 'selected':''}>Tất cả</option>
                             </select>
                         </div>
                         <div class="form-group align-items-center col-md-3" >
@@ -55,6 +55,7 @@
                             <thead>
                                 <tr>
                                     <th>Blog Id</th>
+                                    <th>Hình ảnh</th>
                                     <th>Chủ Đề</th>
                                     <th>Content</th>
                                     <th>Ngày Tạo</th>
@@ -67,6 +68,7 @@
                                 <c:forEach var="blog" items="${blogs}">
                                     <tr>
                                         <td>${blog.blog_id}</td>
+                                        <td><img width="100" height="100" src="${pageContext.request.contextPath}/img/${blog.image[0].img_url}" alt="${blog.image[0].img_name}"/></td>
                                         <td>${blog.title}</td>
                                         <td class="line-clamp">${blog.shortContent}</td>
                                         <td>${blog.date}</td>

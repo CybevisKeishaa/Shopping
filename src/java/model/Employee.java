@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * @author KEISHA
  */
-public class Employee extends Customer_User{
+public class Employee  {
 
     private int emp_id;
     private String name_emp;

@@ -65,7 +65,6 @@ public class ImageDBContext extends DBContext {
             }
             st.close();
             rs.close();
-            connect.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(ImageDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,7 +90,6 @@ public class ImageDBContext extends DBContext {
             }
             st.close();
             rs.close();
-            connect.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(ImageDBContext.class.getName()).log(Level.SEVERE, null, ex);

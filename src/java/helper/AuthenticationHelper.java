@@ -4,7 +4,6 @@
  */
 package helper;
 
-import model.Customer_User;
 import model.Employee;
 import model.Role;
 
@@ -23,23 +22,15 @@ public class AuthenticationHelper {
         return role.getRole_name().equals(role_name);
     }
 
-    public static boolean isEmployee(Customer_User user) {
-        return user instanceof Employee;
-    }
-
-    public static boolean isAdmin(Customer_User user) {
+    public static boolean isAdmin(Employee user) {
         return isCorrectRole(user.getRole(), ADMIN_ROLE);
     }
 
-    public static boolean isCustomer(Customer_User user) {
-        return isCorrectRole(user.getRole(), CUSTOMER_ROLE);
-    }
-
-    public static boolean isSaler(Customer_User user) {
+    public static boolean isSaler(Employee user) {
         return isCorrectRole(user.getRole(), SALER_ROLE);
     }
 
-    public static boolean isMarketer(Customer_User user) {
+    public static boolean isMarketer(Employee user) {
         return isCorrectRole(user.getRole(), MARKETER_ROLE);
 
     }

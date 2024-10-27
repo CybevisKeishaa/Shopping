@@ -459,7 +459,7 @@ public class OrderDBContext extends DBContext<Order> {
                     stm.close();
                 }
                 if (connect != null) {
-                    
+
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -529,7 +529,7 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     //=============== Data Change ===============
-    public void updateOrderStatus(int orderID, int statusID) throws MessagingException {
+    public void updateOrderStatus(int orderID, int statusID,boolean isUser) throws MessagingException {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -551,13 +551,13 @@ public class OrderDBContext extends DBContext<Order> {
             }
 
             // Check if status Order is invalid for change 
-            if (status.getStatus_name().equals("Cancelled") || status.getStatus_name().equals("Completed") || status.getStatus_id() >= statusID) {
+            if (!status.canTransition(o.getStatus().getStatus_id(), statusID, isUser)) {
                 throw new MessagingException("Invalid Status Update.");
             }
             // update status
             String sql = """
                      UPDATE dbo.[Order] SET status_id = ?
-                     OUTPUT inserted.status_id
+                     OUTPUT inserted.status_id,inserted.total
                      WHERE order_id = ?;
                      """;
 
@@ -569,14 +569,14 @@ public class OrderDBContext extends DBContext<Order> {
             if (rs.next() && statusID == Status_Order.CANCELLED) {
                 // Restock to Wallet
                 if (o.isPaidStatus()) {// đã trả tiền thì mới hoàn tiền
+                    int total = rs.getInt("total");
                     sql = """
                         UPDATE w
                         SET w.total = w.total + ?
                         FROM Wallet w 
                         JOIN Customer c ON c.wallet_id = w.wallet_id
                         WHERE c.cus_id = ?;
-                  """;
-                    int total = rs.getInt("total");
+                    """;
                     stm.close(); // Close previous statement
                     stm = connect.prepareStatement(sql);
                     stm.setInt(1, total);

@@ -15,13 +15,13 @@ import java.sql.Timestamp;
 public class RequestHelper {
 
     public static Integer getIntParameterWithDefault(String parameter, Integer defaultValue, HttpServletRequest request) {
-        Integer page = defaultValue;
+        Integer value = defaultValue;
         try {
-            page = Integer.parseInt(request.getParameter(parameter));
+            value = Integer.parseInt(request.getParameter(parameter));
         } catch (Exception ex) {
             //do nothing
         }
-        return page;
+        return value;
     }
 
     public static Date getDateParameterWithDefault(String param, Date defaultValue, HttpServletRequest request) {
