@@ -250,7 +250,7 @@
                         <div class="quantity-selector">
                             <label for="quantity">Quantity</label>
                             <div class="quantity-controls">
-                                <input type="number" name="quantity" value="1" min="1" max="10" required=""/>
+                                <input type="number" name="quantity" value="1" min="1" max="100" required=""/>
                             </div>
                         </div>
 

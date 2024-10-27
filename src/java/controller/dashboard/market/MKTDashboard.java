@@ -35,7 +35,7 @@ public class MKTDashboard extends AuthenticationServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setAttribute("title", WEB_TITLE);
         boolean isAdmin = AuthenticationHelper.isAdmin(user);
-        Integer empId = null;
+        Integer empId = user.getEmp_id();
         if (isAdmin) {
             empId = RequestHelper.getIntParameterWithDefault("empId", null, request);
         } 

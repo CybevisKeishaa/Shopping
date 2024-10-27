@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Address;
+import model.Capacity;
 import model.Customer_User;
 import model.Gender;
 import model.Image;
@@ -98,6 +99,51 @@ public class OrderDBContext extends DBContext<Order> {
         return orders;
     }
 
+    public void updateStockAfterOrder(int productId, int capacityId, int quantity) {
+        PreparedStatement stm = null;
+
+        try {
+            // Câu truy vấn SQL để giảm số lượng tồn kho
+            String sql = "UPDATE Product_Capacity SET stock = stock - ? WHERE product_id = ? AND cap_id = ?";
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, quantity);
+            stm.setInt(2, productId);
+            stm.setInt(3, capacityId);
+
+            stm.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+//    public ArrayList<Order> myOrders(int customerID, int pageNumber, int pageSize) {
+//        ArrayList<Order> orders = new ArrayList<>();
+//        // Phân trang với OFFSET và FETCH
+//        String sql = """
+//                    SELECT o.order_id, 
+//                           o.created_at AS orderedDate, 
+//                           o.total AS totalCost, 
+//                           so.status, 
+//                           MIN(p.name) AS firstProductName, 
+//                           COUNT(od.product_id) AS productCount
+//                    FROM [dbo].[Order] o
+//                    JOIN [dbo].[OrderDetail] od ON o.order_id = od.order_id
+//                    JOIN [dbo].[Product] p ON od.product_id = p.product_id
+//                    JOIN [db_owner].[Status_Order] so ON o.status_id = so.status_id
+//                    WHERE o.cus_id = ?
+//                    GROUP BY o.order_id, o.created_at, o.total, so.status
+//                    ORDER BY o.created_at DESC
+//                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+//                    """;
     public int getTotalOrderCount(String search, Date startDate, Date endDate) {
         int count = 0;
         String sql = OrderSql.GET_ALL_COUNT;
@@ -287,7 +333,7 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     public Order getOrderByOrderID(int orderID, int cus_id) {
-        Order o = null; // Khởi tạo là null để kiểm tra xem có lấy được kết quả hay không
+        Order o = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -311,6 +357,7 @@ public class OrderDBContext extends DBContext<Order> {
                 o.setCreate_at(rs.getTimestamp("created_at"));
                 o.setTotal_price(rs.getInt("total"));
                 o.setShipping_method(rs.getString("shipping_method"));
+                ;
 
                 // Lấy thông tin trạng thái
                 Status_Order so = new Status_Order();
@@ -331,6 +378,7 @@ public class OrderDBContext extends DBContext<Order> {
                 address.setDistrict(rs.getString("district"));
                 address.setWard(rs.getString("ward"));
                 address.setStreet(rs.getString("street"));
+                address.setA_phone(rs.getString("c_phone"));
 
                 o.setAddress(address);
                 o.setCustomer(c);
@@ -460,6 +508,78 @@ public class OrderDBContext extends DBContext<Order> {
                 }
                 if (connect != null) {
 
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return products;
+    }
+
+    public ArrayList<Product> getNewProductsByOrderAndCustomer(int orderId, int customerId) {
+        ArrayList<Product> products = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT p.product_id, p.name AS product_name, g.name AS gender_name, od.quantity, od.price_at_order, \n"
+                    + "       (od.quantity * od.price_at_order) AS total_cost, MIN(img.img_url) AS product_image, \n"
+                    + "       cap.cap_value, cap.cap_id\n"
+                    + "FROM [OrderDetail] od\n"
+                    + "LEFT JOIN [Product] p ON od.product_id = p.product_id\n"
+                    + "LEFT JOIN Product_Gender pg ON pg.product_id = p.product_id\n"
+                    + "LEFT JOIN Gender g ON g.gender_id = pg.gender_id\n"
+                    + "LEFT JOIN [Order] o ON o.order_id = od.order_id\n"
+                    + "LEFT JOIN Product_Capacity pc ON pc.product_id = p.product_id AND pc.cap_id = od.capacity_id\n"
+                    + "LEFT JOIN Capacity cap ON cap.cap_id = pc.cap_id\n"
+                    + "LEFT JOIN Product_Image pi ON pi.product_id = p.product_id\n"
+                    + "LEFT JOIN Image img ON img.img_id = pi.img_id\n"
+                    + "WHERE od.order_id = ? AND o.cus_id = ?\n"
+                    + "GROUP BY p.product_id, p.name, g.name, od.quantity, od.price_at_order, cap.cap_value, cap.cap_id";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, orderId);
+            stm.setInt(2, customerId);
+
+            rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Product product = new Product();
+
+                product.setProduct_id(rs.getInt("product_id"));
+                product.setName(rs.getString("product_name"));
+
+                ArrayList<Image> imgs = new ArrayList<>();
+                Image i = new Image();
+                i.setImg_url(rs.getString("product_image"));
+                imgs.add(i);
+                product.setImg(imgs);
+
+                ArrayList<Capacity> capacity = new ArrayList<>();
+                Capacity c = new Capacity();
+                c.setCapacity_id(rs.getInt("cap_id"));
+                c.setUnit_price(rs.getInt("price_at_order"));
+                c.setValue(rs.getInt("cap_value"));
+                capacity.add(c);
+
+                product.setStock(rs.getInt("quantity"));
+                product.setCapacity(capacity);
+
+                products.add(product);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (connect != null) {
+                    connect.close();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -772,8 +892,24 @@ public class OrderDBContext extends DBContext<Order> {
 
     public static void main(String[] args) {
         OrderDBContext orderDB = new OrderDBContext();
-        Order o = orderDB.getOrderByOrderID(41, 1);
-        System.out.println(o.getNote());
+
+        int total = 1500000;
+        int statusID = 1;
+        int cusID = 1;
+        int paymentMethodID = 2;
+        String note = "Đơn hàng mẫu";
+        int addressID = 13;
+        int employeeID = 5;
+
+        // Gọi hàm insertOrder và nhận về orderId
+        int orderId = orderDB.insertOrder(total, statusID, cusID, paymentMethodID, note, addressID, employeeID);
+
+        // Kiểm tra kết quả
+        if (orderId != -1) {
+            System.out.println("Order created successfully with ID: " + orderId);
+        } else {
+            System.out.println("Failed to create order.");
+        }
 
     }
 }

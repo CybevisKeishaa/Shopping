@@ -8,13 +8,12 @@ import model.Brand;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import model.Brand;
 
 /**
  *
- * @author DINH SON
+ * @author KEISHA
  */
-public class BrandDBContext extends DBContext {
+public class BrandDBContext extends DBContext<Brand> {
 
     public Brand getBrandFindById(int bid) {
         String sql = "Select * from Brand WHERE brand_id=?";
@@ -29,26 +28,6 @@ public class BrandDBContext extends DBContext {
                 return b;
             }
         } catch (Exception e) {
-            System.out.println(e);
-        }
-        return null;
-
-    }
-
-    public List<Brand> getAll() {
-        List<Brand> list = new ArrayList<>();
-        String sql = "Select * from Brand";
-        try {
-            PreparedStatement st = connect.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                Brand b = new Brand();
-                b.setBrand_id(rs.getInt(1));
-                b.setName(rs.getString(2));
-                list.add(b);
-            }
-            return list;
-        } catch (SQLException e) {
             System.out.println(e);
         }
         return null;
@@ -73,6 +52,26 @@ public class BrandDBContext extends DBContext {
         }
 
         return brand;
+    }
+
+    public List<Brand> getAll() {
+        List<Brand> list = new ArrayList<>();
+        String sql = "Select * from Brand";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Brand b = new Brand();
+                b.setBrand_id(rs.getInt(1));
+                b.setName(rs.getString(2));
+                list.add(b);
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+
     }
 
     public static void main(String[] args) {

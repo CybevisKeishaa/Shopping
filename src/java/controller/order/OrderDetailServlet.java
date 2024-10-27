@@ -49,7 +49,7 @@ public class OrderDetailServlet extends BaseRequiredCustomerAuthenticationContro
         int orderID = Integer.parseInt(request.getParameter("orderId"));
         OrderDBContext db = new OrderDBContext();
         Order o = db.getOrderByOrderID(orderID, cusID);
-        ArrayList<Product> p = db.getProductsByOrderAndCustomer(orderID, cusID);
+        ArrayList<Product> p = db.getNewProductsByOrderAndCustomer(orderID, cusID);
         
         request.setAttribute("products", p);
         request.setAttribute("order", o);
@@ -67,7 +67,7 @@ public class OrderDetailServlet extends BaseRequiredCustomerAuthenticationContro
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User customer)
     throws ServletException, IOException {
-        super.doPost(request, response);
+        
     }
 
     /** 

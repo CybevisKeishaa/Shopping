@@ -1,7 +1,5 @@
 package model;
 
-import java.math.BigDecimal;
-
 /**
  *
  * @author KEISHA
@@ -22,8 +20,6 @@ public class Item {
         this.capacity = capacity;
     }
 
-    
-    
     public int getItem_id() {
         return item_id;
     }

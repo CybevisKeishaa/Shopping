@@ -166,11 +166,11 @@
                                                 width="100">
                                         </td>
                                         <td>${product.name}</td>
-                                        <td>${product.gender[0].name}</td>
-                                        <td>${product.price} VND</td>
+                                        <td>${product.capacity[0].value}</td>
+                                        <td>${product.capacity[0].unit_price} VND</td>
                                         <td>${product.stock}</td>
                                         <td>
-                                            <c:out value="${product.stock * product.price}" /> VND
+                                            <c:out value="${product.stock * product.capacity[0].unit_price}" /> VND
                                         </td>
                                         <td>
                                             <form action="RebuyProduct" method="post">

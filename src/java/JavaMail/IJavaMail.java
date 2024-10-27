@@ -9,6 +9,6 @@ package JavaMail;
  * @author KEISHA
  */
 public interface IJavaMail {
-    
+
     boolean send(String sendT, String topic, String message, String verificationCode);
 }

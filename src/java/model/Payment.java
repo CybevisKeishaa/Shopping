@@ -9,6 +9,7 @@ package model;
  * @author KEISHA
  */
 public class Payment {
+
     private int paymentID;
     private String paymentName;
 
@@ -27,6 +28,5 @@ public class Payment {
     public void setPaymentName(String paymentName) {
         this.paymentName = paymentName;
     }
-    
-    
+
 }

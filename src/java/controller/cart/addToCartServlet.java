@@ -43,11 +43,14 @@ public class addToCartServlet extends HttpServlet {
             return;
         }
         CartDBContext db = new CartDBContext();
-        db.addToCart(pid, cartID);
 
         if (action == null) {
+            db.addToCart(pid, cartID);
             response.sendRedirect(HOMEPAGE);
         } else if (action.equals("add-to-bag")) {
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            int capacity = Integer.parseInt(request.getParameter("capacityId"));
+            db.addToCartWithDetails(pid, cartID, quantity, capacity);
             response.sendRedirect(request.getContextPath() + PRODUCT_DETAIL_WITH_PRODUCT_ID + pid);
         }
     }

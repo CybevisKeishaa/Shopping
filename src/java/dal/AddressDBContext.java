@@ -9,6 +9,53 @@ import model.Customer_User;
 
 public class AddressDBContext extends DBContext<Address> {
 
+    public Address getAddressByOrderID(int orderID) {
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        Address address = null;
+
+        try {
+            String sql = "SELECT a.a_id, a.street, a.ward, a.district, a.city, a.a_phone\n"
+                    + "FROM [Order] o\n"
+                    + "JOIN [Address] a ON o.addressID = a.a_id\n"
+                    + "WHERE o.order_id = ?;";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, orderID);
+
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                address = new Address();
+                address.setA_id(rs.getInt("a_id"));
+                address.setStreet(rs.getString("street"));
+                address.setWard(rs.getString("ward"));
+                address.setDistrict(rs.getString("district"));
+                address.setCity(rs.getString("city"));
+                address.setA_phone(rs.getString("a_phone"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return address;
+    }
+
     // Lấy danh sách địa chỉ của khách hàng theo ID
     public ArrayList<Address> getAddressByCustomerId(int cus_id) {
         ArrayList<Address> addresses = new ArrayList<>();
@@ -101,7 +148,7 @@ public class AddressDBContext extends DBContext<Address> {
             stm = connect.prepareStatement(sql);
             stm.setInt(1, cusID);
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Address a = new Address();
                 a.setA_id(rs.getInt("a_id"));
                 a.setA_phone(rs.getString("a_phone"));
@@ -113,22 +160,72 @@ public class AddressDBContext extends DBContext<Address> {
                 Customer_User c = new Customer_User();
                 c.setCus_id(rs.getInt("cus_id"));
                 a.setCustomer(c);
-                
+
                 addresss.add(a);
             }
-            
-            
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(AddressDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return addresss;
     }
 
+    public void insertAddressByCustomerID(Address address, int cusID) {
+        PreparedStatement stm = null;
+        String sql = "INSERT INTO [dbo].[Address] "
+                + "([a_phone], [city], [district], [ward], [street], [detail], [cus_id]) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            stm = connect.prepareStatement(sql);
+            stm.setString(1, address.getA_phone());
+            stm.setString(2, address.getCity());
+            stm.setString(3, address.getDistrict());
+            stm.setString(4, address.getWard());
+            stm.setString(5, address.getStreet());
+            if(address.getDetail() != null && address.getDetail().length() != 0){
+               stm.setString(6, address.getDetail()); 
+            }else{
+                stm.setNull(6, java.sql.Types.NVARCHAR);
+            }
+            
+            stm.setInt(7, cusID);
+
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] arr) {
-        AddressDBContext ad = new AddressDBContext();
-        ArrayList<Address> a = ad.getAddressByCustomerId(1);
-        System.out.println(a.size());
+        AddressDBContext addressDB = new AddressDBContext();
+
+        // Giả lập orderID mà bạn muốn kiểm tra
+        int orderID = 61;  // Thay đổi thành một orderID thực tế trong cơ sở dữ liệu của bạn
+
+        // Gọi phương thức getAddressByOrderID và lấy thông tin địa chỉ
+        Address address = addressDB.getAddressByOrderID(orderID);
+
+        // Kiểm tra và in ra thông tin địa chỉ nếu có
+        if (address != null) {
+            System.out.println("Order ID: " + orderID);
+            System.out.println("Street: " + address.getStreet());
+            System.out.println("Ward: " + address.getWard());
+            System.out.println("District: " + address.getDistrict());
+            System.out.println("City: " + address.getCity());
+            System.out.println("Phone: " + address.getA_phone());
+        } else {
+            System.out.println("No address found for Order ID: " + orderID);
+        }
     }
 
 }
