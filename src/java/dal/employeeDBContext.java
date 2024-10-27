@@ -303,7 +303,7 @@ public class EmployeeDBContext extends DBContext {
     public static void main(String[] args) {
         EmployeeDBContext e = new EmployeeDBContext();
 
-        Employee em = e.getDetailsByEmpIds(1);
+        Employee em = e.getEmployeeAccountByEmail("b@gmail.com","aaa123");
         System.out.println(em.getName_emp());
     }
 
