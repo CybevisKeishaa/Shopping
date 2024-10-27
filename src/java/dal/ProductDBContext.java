@@ -102,7 +102,7 @@ public class ProductDBContext extends DBContext<Product> {
         }
     }
 
-    public void updateProduct(String pid, String cidd, String capa, int igid, String name, String price, String stock, String date, String dis, String gender, String brand, String status, String image, String imgename) {
+    public void updateProduct(String pid, String cid, int igid, String name, String price, String stock, String date, String dis, String gender, String brand, String status, String image, String imgename) {
         try {
             connect.setAutoCommit(false);
 
@@ -151,13 +151,13 @@ public class ProductDBContext extends DBContext<Product> {
             updateGenderst.setInt(2, Integer.parseInt(pid));
             updateGenderst.executeUpdate();
             String updateCap = "UPDATE [dbo].[Product_Capacity]\n"
-                    + "   SET [cap_id] = ?\n"
+                    + "   SET [unit_price] = ?\n"
                     + "    \n"
                     + " WHERE product_id=? and cap_id=?";
             PreparedStatement updateCapst = connect.prepareStatement(updateCap, PreparedStatement.RETURN_GENERATED_KEYS);
-            updateCapst.setInt(1, Integer.parseInt(capa));
             updateCapst.setInt(2, Integer.parseInt(pid));
-            updateCapst.setInt(3, Integer.parseInt(cidd));
+            updateCapst.setInt(1, Integer.parseInt(price));
+            updateCapst.setInt(3, Integer.parseInt(cid));
             updateCapst.executeUpdate();
             connect.commit();
             connect.setAutoCommit(true);
@@ -165,7 +165,10 @@ public class ProductDBContext extends DBContext<Product> {
             System.out.println(e);
         }
     }
-
+    public static void main(String[] args){
+        ProductDBContext pd=new ProductDBContext();
+        pd.updateProduct("1", "1", 1, "", "2", "2", "", "", "", "", "", "", "");
+    }
     public void insertProduct(String eid, String name, String price, String stock, String date, String dis, String brand, String image, String imgename) {
         try {
             connect.setAutoCommit(false);
@@ -476,7 +479,48 @@ public class ProductDBContext extends DBContext<Product> {
         }
         return count;
     }
-
+    public Product getByPidCid(int pid,int cid){
+          PreparedStatement stm = null;
+        BrandDBContext br = new BrandDBContext();
+        CapacityDBContext cap = new CapacityDBContext();
+        GenderDBContext gen = new GenderDBContext();
+        ImageDBContext image = new ImageDBContext();
+        String sql="Select p.*,pc.* from Product p inner join Product_Capacity pc on p.product_id=pc.product_id inner join Capacity c on c.cap_id=pc.cap_id where p.product_id=? and c.cap_id=?";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, pid);
+            st.setInt(2, cid);
+            ResultSet rs = st.executeQuery();
+            Product p = new Product();
+            if (rs.next()) {
+                p.setProduct_id(rs.getInt(1));
+                p.setName(rs.getString(2));
+                p.setPrice(rs.getInt(3));
+                p.setDate(rs.getDate(4));
+                p.setStock(rs.getInt(5));
+                DiscountDBContext dDb = new DiscountDBContext();
+                Discount d = dDb.getDiscountById(rs.getInt(6));
+                p.setDiscount(d);
+                boolean status = true;
+                if (rs.getInt(8) != 1) {
+                    status = false;
+                }
+                p.setStatus(status);
+                BrandDBContext bDb = new BrandDBContext();
+                Brand b = bDb.getBrandFindById(rs.getInt(7));
+                p.setBrand(b);
+                CapacityDBContext cDb = new CapacityDBContext();
+                ArrayList<Image> i = image.getByProductId(rs.getInt(1));
+                p.setImg(i);
+                ArrayList<Gender> ge = gen.getGenderFindByPid(rs.getInt(1));
+                p.setGender(ge);
+            }
+            return p;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
     public Product getByProductId(int id) {
         PreparedStatement stm = null;
         BrandDBContext br = new BrandDBContext();

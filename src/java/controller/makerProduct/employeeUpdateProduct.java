@@ -76,14 +76,20 @@ public class employeeUpdateProduct extends HttpServlet {
         if (object != null) {
             e = (Employee) object;
         }
-        String cid=request.getParameter("cid");
         CapacityDBContext cdb=new CapacityDBContext();
         ProductDBContext pdb = new ProductDBContext();
         GenderDBContext ged=new GenderDBContext();
+        String cid=request.getParameter("cid");
+        Product p=null;
+        Capacity c=null;
+        if(cid!=null){
+             c=cdb.getCapPidCid(Integer.parseInt(product_id), Integer.parseInt(cid));
+         
+        }
         List<Gender> l=ged.getAll();
-        Capacity c=cdb.getCapacityFindById(Integer.parseInt(cid));
-        List<Capacity> clist=cdb.getAll();
-        Product p = pdb.getByProductId(Integer.parseInt(product_id));
+                           p = pdb.getByProductId(Integer.parseInt(product_id));
+
+        List<Capacity> clist=cdb.getByListByPid(Integer.parseInt(product_id));
         DiscountDBContext db = new DiscountDBContext();
         List<Discount> dlist = db.getAll();
         BrandDBContext bd = new BrandDBContext();
@@ -126,11 +132,8 @@ public class employeeUpdateProduct extends HttpServlet {
         String dis = request.getParameter("dis");
         String brand = request.getParameter("brand");
         String status = request.getParameter("status");
-        String size = request.getParameter("size");
         String gender=request.getParameter("gender");
-        String cidd=request.getParameter("cidd");
-        String capa=request.getParameter("capa");
-        int arraySize = Integer.parseInt(size);
+        String cid=request.getParameter("cid");
 
          String fileName = null;
     String filePath = null;
@@ -138,18 +141,17 @@ public class employeeUpdateProduct extends HttpServlet {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = now.format(formatter);
         ProductDBContext pdb = new ProductDBContext();
-       for (int i = 0; i < arraySize; i++) {
-    String imgId = request.getParameter("img_id_" + i);  
-    Part filePart = request.getPart("file_" + i);  
+    String imgId = request.getParameter("img_id" );  
+    Part filePart = request.getPart("file" );  
 
     if (filePart != null && filePart.getSize() > 0) {
         fileName = extractFileName(filePart);
         if (fileName != null && !fileName.isEmpty()) {
             filePath = uploadFilePath + File.separator + fileName;
             filePart.write(filePath);
-            pdb.updateProduct(pid, cidd,capa,Integer.parseInt(imgId), name, price, stock, formattedDate, dis,gender, brand, status, filePath, fileName);
+            pdb.updateProduct(pid, cid,Integer.parseInt(imgId), name, price, stock, formattedDate, dis,gender, brand, status, filePath, fileName);
         }
-    }
+    
 }
 
 

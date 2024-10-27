@@ -15,6 +15,7 @@ import model.Capacity;
 import model.Customer_User;
 import model.Gender;
 import model.Image;
+import model.OrderDetail;
 import model.Product;
 import model.Status_Order;
 

@@ -9,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Capacity;
 import model.Customer_User;
 import model.Image;
 import model.Item;
@@ -74,7 +75,7 @@ public class CartDBContext extends DBContext<Cart> {
                 c.setValue(rs.getInt("product_capacity"));
                 c.setUnit_price(rs.getInt("product_price"));
                 c.setStock(rs.getInt("stock"));
-                item.setCapacity(c);
+//                item.setCapacity(c);
 
                 item.setProduct(product);
                 item.setQuantity(rs.getInt("quantity"));
@@ -248,36 +249,36 @@ public class CartDBContext extends DBContext<Cart> {
 
     }
 
-    public static void main(String[] args) {
-        CartDBContext dbContext = new CartDBContext();
-        int customerID = 1; // Thay đổi theo ID của khách hàng mà bạn muốn test
-
-        // Gọi phương thức getCartByCustomer để lấy thông tin giỏ hàng
-        Cart cart = dbContext.getCartByCustomer(customerID);
-
-        // In kết quả ra console để kiểm tra
-        if (cart != null) {
-            System.out.println("Cart ID: " + cart.getCart_id());
-            System.out.println("Customer ID: " + cart.getCustomer().getCus_id());
-            System.out.println("Customer Name: " + cart.getCustomer().getName_cus());
-            System.out.println("Items in Cart:");
-
-            for (Item item : cart.getItems()) {
-                System.out.println("  Item ID: " + item.getItem_id());
-                System.out.println("  Product Name: " + item.getProduct().getName());
-                System.out.println("  Quantity: " + item.getQuantity());
-                System.out.println("  Capacity: " + item.getCapacity().getValue() + "ml");
-                System.out.println("  Unit Price: " + item.getCapacity().getUnit_price());
-                System.out.println("  Total Price: " + (item.getCapacity().getUnit_price() * item.getQuantity()));
-
-                // In URL của hình ảnh (nếu có)
-                if (!item.getProduct().getImg().isEmpty()) {
-                    System.out.println("  Product Image URL: " + item.getProduct().getImg().get(0).getImg_url());
-                }
-            }
-        } else {
-            System.out.println("Cart is empty or not found.");
-        }
-    }
+//    public static void main(String[] args) {
+//        CartDBContext dbContext = new CartDBContext();
+//        int customerID = 1; // Thay đổi theo ID của khách hàng mà bạn muốn test
+//
+//        // Gọi phương thức getCartByCustomer để lấy thông tin giỏ hàng
+//        Cart cart = dbContext.getCartByCustomer(customerID);
+//
+//        // In kết quả ra console để kiểm tra
+//        if (cart != null) {
+//            System.out.println("Cart ID: " + cart.getCart_id());
+//            System.out.println("Customer ID: " + cart.getCustomer().getCus_id());
+//            System.out.println("Customer Name: " + cart.getCustomer().getName_cus());
+//            System.out.println("Items in Cart:");
+//
+//            for (Item item : cart.getItems()) {
+//                System.out.println("  Item ID: " + item.getItem_id());
+//                System.out.println("  Product Name: " + item.getProduct().getName());
+//                System.out.println("  Quantity: " + item.getQuantity());
+//                System.out.println("  Capacity: " + item.getCapacity().getValue() + "ml");
+//                System.out.println("  Unit Price: " + item.getCapacity().getUnit_price());
+//                System.out.println("  Total Price: " + (item.getCapacity().getUnit_price() * item.getQuantity()));
+//
+//                // In URL của hình ảnh (nếu có)
+//                if (!item.getProduct().getImg().isEmpty()) {
+//                    System.out.println("  Product Image URL: " + item.getProduct().getImg().get(0).getImg_url());
+//                }
+//            }
+//        } else {
+//            System.out.println("Cart is empty or not found.");
+//        }
+//    }
 
 }

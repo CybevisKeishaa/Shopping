@@ -59,6 +59,8 @@ public class HomePageServlet extends HttpServlet {
             request.setAttribute("blogs", blogs);
             request.setAttribute("sliders", sliders);
             request.getRequestDispatcher("/view/home/homepage.jsp").forward(request, response);
+        }catch(IOException exception){
+            
         }
     }
 

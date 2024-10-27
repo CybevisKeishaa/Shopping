@@ -266,23 +266,23 @@ public class employeeDBContext extends DBContext {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(employeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (stm != null) {
                 try {
                     stm.close(); // Đảm bảo đóng tài nguyên sau khi sử dụng
                 } catch (SQLException ex) {
-                    Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(employeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return empID;
     }
 
-    public static void main(String[] args) {
-        employeeDBContext e = new employeeDBContext();
-
-        System.out.println(e.getLoginEmployee("b@gmail.com", "aaa123").getEmp_id());
-    }
+//    public static void main(String[] args) {
+//        employeeDBContext e = new employeeDBContext();
+//
+//        System.out.println(e.getLoginEmployee("b@gmail.com", "aaa123").getEmp_id());
+//    }
 
 }

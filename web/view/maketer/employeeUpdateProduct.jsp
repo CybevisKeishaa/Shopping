@@ -23,53 +23,72 @@
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/a/asset/img/logomi.png">
 
         <style>
-            .panel-body form {
+          .panel-body form {
                 margin-top: 20px;
+                display: flex; /* Side-by-side layout */
             }
 
-            .form-group {
-                margin-bottom: 10px; /* Spacing between fields */
-                display: flex; /* Flexbox for alignment */
-                flex-direction: column; /* Stack elements vertically */
+            /* Image section styling */
+            .image-section {
+                width: 40%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-right: 20px;
             }
 
-            .form-group label {
-                font-weight: bold; /* Bold labels */
-                margin-bottom: 3px; /* Space between label and input */
+            .image-section img {
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+                margin-bottom: 10px;
             }
 
-            .panel-body form input[type="text"],
-            .panel-body form select,
-            .panel-body form input[type="file"] {
-                width: 230px; /* Set fixed width for shorter inputs */
-                padding: 5px; /* Smaller padding */
+            /* Form fields section styling */
+            .form-fields {
+                width: 60%;
+            }
+
+            .form-fields .form-group {
+                margin-bottom: 15px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Capacity section styling */
+            .capacity-options {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .capacity-options label {
+                margin-right: 15px;
+                margin-bottom: 10px;
+            }
+
+            .form-fields input[type="text"],
+            .form-fields select {
+                padding: 5px;
                 border: 1px solid #ccc;
                 border-radius: 4px;
-                transition: border-color 0.3s; /* Smooth transition for focus */
-                font-size: 14px; /* Standard font size */
+                font-size: 14px;
             }
 
-            .panel-body form input[type="text"]:focus,
-            .panel-body form select:focus {
-                border-color: #5cb85c; /* Change border color on focus */
-                outline: none; /* Remove default outline */
-            }
-
-            .panel-body form input[type="submit"] {
+            .form-fields input[type="submit"] {
                 background-color: #5cb85c;
                 color: white;
                 border: none;
-                padding: 8px 12px; /* Smaller padding for the button */
+                padding: 8px 12px;
                 border-radius: 4px;
                 cursor: pointer;
-                margin-top: 10px; /* Space above the submit button */
-                transition: background-color 0.3s; /* Smooth transition for hover */
-                width: 100%; /* Full width for button */
-                max-width: 150px; /* Set max width for button */
+                width: 100%;
+                max-width: 150px;
+                transition: background-color 0.3s;
             }
 
-            .panel-body form input[type="submit"]:hover {
+            .form-fields input[type="submit"]:hover {
                 background-color: #4cae4c;
+            }
             }
         </style>
     </head>
@@ -145,26 +164,51 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 top-20 padding-0">
-                    <div class="col-md-12">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h3>Product List</h3>
-                            </div>
-                            <div class="panel-body">
-                                <form action="employeeUpdateProduct" method="post" enctype="multipart/form-data">
-                                    <input type="hidden" name="eid" value="${requestScope.eid}" />
-                                    <input type="hidden" name="pid" value="${requestScope.pid}" />
+                 <div class="container-fluid mimin-wrapper">
+            <div id="content">
+               
 
+                <div class="col-md-12 top-20 padding-0">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3>Product List</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form action="employeeUpdateProduct" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="eid" value="${requestScope.eid}" />
+                                <input type="hidden" name="pid" value="${requestScope.pid}" />
+
+                                <!-- Image Section -->
+                                <div class="image-section">
+                                    <c:forEach var="j" items="${requestScope.p.img}" varStatus="status">
+                                        <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}">
+                                        <label for="file${status.index}">Choose Image:</label>
+                                        <input type="hidden" name="img_id" value="${j.img_id}" />
+                                        <input type="file" name="file" id="file${status.index}" accept="image/*" />
+                                    </c:forEach>
+                                    <input type="hidden" name="size" value="${requestScope.p.img.size()}" />
+                                </div>
+
+                                <!-- Form Fields Section -->
+                                <div class="form-fields">
                                     <div class="form-group">
                                         <label for="name">Name:</label>
                                         <input type="text" name="name" id="name" value="${requestScope.p.name}" required />
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="price">Price:</label>
-                                        <input type="text" name="price" id="price" value="${requestScope.p.price}" required />
-                                    </div>
+                                    <c:if test="${requestScope.c == null}">
+                                        <div class="form-group">
+                                            <label for="price">Price:</label>
+                                            <input type="text" name="price" id="price" value="${requestScope.p.price}" required />
+                                        </div>
+                                    </c:if>
+
+                                    <c:if test="${requestScope.c != null}">
+                                        <div class="form-group">
+                                            <label for="price">Price:</label>
+                                            <input type="text" name="price" id="price" value="${c.unit_price}" required />
+                                        </div>
+                                    </c:if>
 
                                     <div class="form-group">
                                         <label for="stock">Stock:</label>
@@ -177,8 +221,6 @@
                                             <option value="" disabled selected>-- Select discount --</option>
                                             <option value="-1">Không discount</option>
                                             <c:forEach var="i" items="${requestScope.datad}">
-
-
                                                 <option value="${i.discount_id}" 
                                                         <c:if test="${i.discount_id == requestScope.p.discount.discount_id}">
                                                             selected
@@ -201,27 +243,28 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="brand">Gender:</label>
-                                        <select name="gender"  required>
+                                        <label for="gender">Gender:</label>
+                                        <select name="gender" required>
                                             <c:forEach var="j" items="${requestScope.g}">
                                                 <option value="${j.gender_id}">${j.name}</option>
-
                                             </c:forEach>
                                         </select>
-
                                     </div>
+
                                     <div class="form-group">
-                                        <input type="hidden" value="${requestScope.c.capacity_id}" name="cidd">
-                                        <label for="brand">Capacity:</label>
-                                        <select name="capa"  required>
-                                            
+                                        <label for="capacity">Capacity:</label>
+                                        <div class="capacity-options">
                                             <c:forEach var="j" items="${requestScope.listc}">
-                                                <option value="${j.capacity_id}">${j.value}</option>
-
+                                                <label>
+                                                    <input type="checkbox" value="${j.capacity_id}" name="cid"
+                                                           onclick="window.location.href = 'employeeUpdateProduct?product_id=${param.product_id}&cid=${j.capacity_id}'"
+                                                           <c:if test="${param.cid == j.capacity_id}">checked</c:if> >
+                                                    ${j.value}
+                                                </label>
                                             </c:forEach>
-                                        </select>
-
+                                        </div>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="status">Status:</label>
                                         <select name="status" required>
@@ -230,23 +273,14 @@
                                         </select>
                                     </div>
 
-                                    <div class="form-group">
-                                        <c:forEach var="j" items="${requestScope.p.img}" varStatus="status">
-                                            <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" width="100" height="100">
-                                            <label for="file${status.index}">Choose Image:</label>
-                                            <input type="hidden" name="img_id_${status.index}" value="${j.img_id}" />
-                                            <input type="file" name="file_${status.index}" id="file${status.index}" accept="image/*" />
-                                        </c:forEach>
-                                        <input type="hidden" name="size" value="${requestScope.p.img.size()}" />
-                                    </div>
-
                                     <input type="submit" value="Save" />
-                                </form>
-
-                            </div>
+                                </div>
+                            </form>
                         </div>
-                    </div>  
+                    </div>
                 </div>
+            </div>
+        </div>
             </div>
             <!-- end: content -->
 

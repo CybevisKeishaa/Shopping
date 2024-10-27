@@ -258,35 +258,38 @@
                                         </thead>
                                         <tbody>
                                             <c:forEach var="i" items="${requestScope.data}">
-                                                <c:forEach var="b" items="${i.capacity}">
-                                                    <tr>
-                                                        <td>${i.product_id}</td>
-                                                        <td>
-                                                            <c:forEach var="j" items="${i.img}">
-                                                                <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" width="100" height="100">
-                                                            </c:forEach>
-                                                        </td>
-                                                        <td>${i.name}</td>
-                                                        <td>${i.price}</td>
-                                                        <td>${i.stock}</td>
-                                                        <td>${i.discount.amount}</td>
-                                                        <td>
-                                                            <c:forEach var="a" items="${i.gender}">
-                                                                ${a.name}
-                                                            </c:forEach>
-                                                        </td>
-                                                        <td>${b.value}</td> <!-- Hiển thị capacity -->
-                                                        <c:if test="${i.status == 'true'}">
-                                                            <td>Kích hoạt</td>
-                                                        </c:if>
-                                                        <c:if test="${i.status == 'false'}">
-                                                            <td>Chưa kích hoạt</td>
-                                                        </c:if>
-                                                        <td>
-                                                            <a href="employeeUpdateProduct?product_id=${i.product_id}&cid=${b.capacity_id}" class="btn btn-primary btn-sm">Update</a>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
+
+                                                <tr>
+                                                    <td>${i.product_id}</td>
+                                                    <td>
+                                                        <c:forEach var="j" items="${i.img}">
+                                                            <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" width="100" height="100">
+                                                        </c:forEach>
+                                                    </td>
+                                                    <td>${i.name}</td>
+                                                    <td>${i.price}</td>
+                                                    <td>${i.stock}</td>
+                                                    <td>${i.discount.amount}</td>
+                                                    <td>
+                                                        <c:forEach var="a" items="${i.gender}">
+                                                            ${a.name}
+                                                        </c:forEach>
+                                                    </td>
+                                                    <td>
+                                                        <c:forEach var="b" items="${i.capacity}">
+                                                            ${b.value}
+                                                        </c:forEach>
+                                                    </td> 
+                                                    <c:if test="${i.status == 'true'}">
+                                                        <td>Kích hoạt</td>
+                                                    </c:if>
+                                                    <c:if test="${i.status == 'false'}">
+                                                        <td>Chưa kích hoạt</td>
+                                                    </c:if>
+                                                    <td>
+                                                        <a href="employeeUpdateProduct?product_id=${i.product_id}" class="btn btn-primary btn-sm">Update</a>
+                                                    </td>
+                                                </tr>
                                             </c:forEach>
                                         </tbody>
 
