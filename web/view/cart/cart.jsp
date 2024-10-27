@@ -8,39 +8,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Giỏ hàng của bạn</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/select.css"><!-- comment -->
+
         <style>
-
-            .form-inline .form-group select.form-control-sm {
-                height: 28px !important;    /* Điều chỉnh chiều cao */
-                font-size: 0.85rem !important; /* Điều chỉnh kích thước font */
-                padding: 2px 10px !important; /* Điều chỉnh padding để ô nhỏ hơn */
-                width: auto !important;     /* Điều chỉnh chiều rộng tự động phù hợp với nội dung */
-                margin-top: 12px !important;
-            }
-
-            /* Nếu nice-select đang được áp dụng */
-            .nice-select.form-control-sm {
-                height: 35px !important;
-                font-size: 0.85rem !important;
-                line-height: 35px !important; /* Đảm bảo chữ căn giữa dọc theo chiều cao */
-                padding: 0 8px !important;
-                width: 100px !important; /* Chiều rộng tự động để phù hợp nội dung */
-                margin-top: 12px !important;
-            }
-
-            .form-inline .form-group select.form-control-sm{
-                height: 30px !important;    /* Điều chỉnh chiều cao */
-                font-size: 12px !important; /* Điều chỉnh kích thước font */
-                padding: 2px 8px !important; /* Điều chỉnh padding */
-                width: auto !important;     /* Điều chỉnh chiều rộng để phù hợp nội dung */
-            }
-            .form-inline .form-group input.form-control-sm {
-                height: 30px !important;    /* Điều chỉnh chiều cao */
-                font-size: 12px !important; /* Điều chỉnh kích thước font */
-                padding: 2px 8px !important; /* Điều chỉnh padding */
-                width: auto !important;     /* Điều chỉnh chiều rộng để phù hợp nội dung */
-            }
             .btn-secondary {
                 background-color: #333 !important; /* Nền màu đen */
                 color: white !important; /* Màu chữ trắng */
@@ -55,7 +24,7 @@
                 background-color: #e0a800 !important;
                 border-color: #d39e00 !important;
             }
-
+            
             .btn-primary {
                 background-color: #333 !important;
                 padding: 18.15px 50px !important; /* Padding tùy chỉnh */
@@ -100,7 +69,7 @@
                 background-color: #0056b3;
                 margin-bottom: 10px;
             }
-
+            
 
 
         </style>
@@ -213,33 +182,37 @@
                                     </c:if>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </form>
+                    </c:if>
+                    <c:if test="${empty cart.items}">
+                        <p>Your cart is currently empty.</p>
+                        <a href="productsList.jsp" class="btn btn-success">Choose Products</a>
+                    </c:if>
                 </div>
 
                 <!-- Sidebar -->
                 <div class="col-md-4">
-                    <div class="sidebar">
-                        <h3 class="feedback-title">Tìm kiếm sản phẩm</h3>
-                        <form action="${pageContext.request.contextPath}/productSearch">
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="search" placeholder="Tìm kiếm sản phẩm">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
-                        </form>
+                <div class="sidebar">
+                    <h3 class="feedback-title">Tìm kiếm sản phẩm</h3>
+                    <form action="${pageContext.request.contextPath}/productSearch">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="search" placeholder="Tìm kiếm sản phẩm">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
+                    </form>
 
-                        <h3 class="feedback-title">Danh mục sản phẩm</h3>
-                        <ul>
-                            <li><a href="/category/perfume">Nước hoa</a></li>
-                            <li><a href="/category/skincare">Chăm sóc da</a></li>
-                            <li><a href="/category/makeup">Trang điểm</a></li>
-                        </ul>
+                    <h3 class="feedback-title">Danh mục sản phẩm</h3>
+                    <ul>
+                        <li><a href="/category/perfume">Nước hoa</a></li>
+                        <li><a href="/category/skincare">Chăm sóc da</a></li>
+                        <li><a href="/category/makeup">Trang điểm</a></li>
+                    </ul>
 
-                        <h3 class="feedback-title">Liên hệ</h3>
-                        <p>Email: Group6@gmail.com</p>
-                        <p>Điện thoại: 0354995144</p>
-                    </div>
+                    <h3 class="feedback-title">Liên hệ</h3>
+                    <p>Email: Group6@gmail.com</p>
+                    <p>Điện thoại: 0354995144</p>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -247,32 +220,26 @@
         <br><br><br>
 
         <script>
-            function updateTotal(itemId, quantity) {
-                // Tìm hàng chứa sản phẩm đang được thay đổi số lượng
-                const row = document.querySelector(`input[value="${itemId}"]`).closest('tr');
+            function updateTotal(productId, quantity) {
+                console.log("Product ID: ", productId);
+                console.log("Quantity: ", quantity);
 
-                // Lấy giá của sản phẩm từ cột thứ hai (vị trí cột giá)
+                const quantityInput = document.querySelector(`input[name="quantity"]`);
+                const row = quantityInput.closest('tr');
+
                 let priceText = row.querySelector('td:nth-child(2)').innerText;
                 priceText = priceText.replace(/\./g, '').replace(',', '.').replace(/[^0-9.]/g, '');
 
                 const price = parseFloat(priceText);
 
-                // Cập nhật tổng chi phí của sản phẩm (quantity * price)
-                const totalCost = price * quantity;
-
-                // Hiển thị tổng chi phí mới cho sản phẩm
-                row.querySelector(`#total_cost_${itemId}`).innerText = new Intl.NumberFormat('de-DE').format(totalCost) + " VND";
-
-                // Cập nhật tổng giá đơn hàng
                 updateTotalOrderPrice();
             }
 
             function updateTotalOrderPrice() {
                 let totalOrderPrice = 0;
 
-                // Lặp qua tất cả các hàng trong bảng và tính tổng đơn hàng
                 document.querySelectorAll('tr').forEach(function (row) {
-                    const quantityInput = row.querySelector('input[type="number"]');
+                    const quantityInput = row.querySelector('input[type="number"]');                   
                     if (quantityInput) {
                         const quantity = parseFloat(quantityInput.value);
 
@@ -281,19 +248,18 @@
 
                         const price = parseFloat(priceText);
 
-                        // Cộng tổng giá của từng sản phẩm vào tổng đơn hàng
                         totalOrderPrice += price * quantity;
                     }
                 });
 
-                // Hiển thị tổng giá đơn hàng mới
                 document.querySelector('#total_order_price').innerText = new Intl.NumberFormat('de-DE').format(totalOrderPrice) + " VND";
             }
-
         </script>
         <jsp:include page="/Demo_Template/BasePage/Footer.jsp" />
 
-
+        <!-- Include JS files -->
+        <script src="${pageContext.request.contextPath}/a/asset/js/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/a/asset/js/bootstrap.min.js"></script>
 
 
     </body>

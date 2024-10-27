@@ -6,12 +6,14 @@ package controller.order;
 
 import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.OrderDBContext;
+import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Customer_User;
@@ -37,6 +39,7 @@ public class MyOrdersSerlvet extends BaseRequiredCustomerAuthenticationControlle
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
 
     }
 
@@ -64,12 +67,12 @@ public class MyOrdersSerlvet extends BaseRequiredCustomerAuthenticationControlle
 
         try {
             if (startDateStr != null && !startDateStr.isEmpty()) {
-                startDate = Date.valueOf(startDateStr);
+                startDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDateStr);
             }
             if (endDateStr != null && !endDateStr.isEmpty()) {
-                endDate =  Date.valueOf(endDateStr);
+                endDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDateStr);
             }
-        } catch (Exception ex) {
+        } catch (java.text.ParseException ex) {
             Logger.getLogger(MyOrdersSerlvet.class.getName()).log(Level.SEVERE, null, ex);
         }
 

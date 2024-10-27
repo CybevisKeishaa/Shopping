@@ -12,9 +12,18 @@ public class Image {
     private String img_url;
     private String img_name;
 
+    private String name;
     private Feedback feedback;
     private ArrayList<Product> product = new ArrayList<>();
     private Slider slider;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     private ArrayList<Blog> blog = new ArrayList<>();
 
     public Image() {
