@@ -144,7 +144,6 @@ public class OrderDBContext extends DBContext<Order> {
 //                    ORDER BY o.created_at DESC
 //                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
 //                    """;
-
     public int getTotalOrderCount(String search, Date startDate, Date endDate) {
         int count = 0;
         String sql = OrderSql.GET_ALL_COUNT;
@@ -334,7 +333,7 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     public Order getOrderByOrderID(int orderID, int cus_id) {
-        Order o = null; 
+        Order o = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -508,7 +507,7 @@ public class OrderDBContext extends DBContext<Order> {
                     stm.close();
                 }
                 if (connect != null) {
-                    
+
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -588,7 +587,7 @@ public class OrderDBContext extends DBContext<Order> {
         }
         return products;
     }
-    
+
     public List<Order_StatusTotalDTO> getStatusTotal() {
         PreparedStatement stm = null;
         ArrayList<Order_StatusTotalDTO> list = new ArrayList<>();
@@ -893,24 +892,24 @@ public class OrderDBContext extends DBContext<Order> {
 
     public static void main(String[] args) {
         OrderDBContext orderDB = new OrderDBContext();
-        Order o = orderDB.getOrderByOrderID(41, 1);
-        System.out.println(o.getNote());
 
-        int orderId = 60;  // Đặt mã đơn hàng cần kiểm tra
-        int customerId = 1;  // Đặt mã khách hàng cần kiểm tra
-        ArrayList<Product> products = orderDB.getNewProductsByOrderAndCustomer(orderId, customerId);
+        int total = 1500000;
+        int statusID = 1;
+        int cusID = 1;
+        int paymentMethodID = 2;
+        String note = "Đơn hàng mẫu";
+        int addressID = 13;
+        int employeeID = 5;
 
-        // In ra danh sách sản phẩm
-        for (Product product : products) {
-            System.out.println("Product ID: " + product.getProduct_id());
-            System.out.println("Product Name: " + product.getName());
-//            System.out.println("Gender: " + product.getGender().get(0).getName());
-            System.out.println("Capacity: " + product.getCapacity().get(0).getValue());
-            System.out.println("Quantity: " + product.getStock());
-            System.out.println("Price at Order: " + product.getCapacity().get(0).getUnit_price());
-            System.out.println("Image URL: " + product.getImg().get(0).getImg_url());
-            System.out.println("Total Cost: " + (product.getStock() * product.getPrice()));
-            System.out.println("----------------------------------------");
+        // Gọi hàm insertOrder và nhận về orderId
+        int orderId = orderDB.insertOrder(total, statusID, cusID, paymentMethodID, note, addressID, employeeID);
+
+        // Kiểm tra kết quả
+        if (orderId != -1) {
+            System.out.println("Order created successfully with ID: " + orderId);
+        } else {
+            System.out.println("Failed to create order.");
         }
+
     }
 }

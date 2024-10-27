@@ -59,20 +59,12 @@
         <servlet-class>controller.admin.searchEmployee</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>NewServlet</servlet-name>
-        <servlet-class>controller.admin.NewServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>homepage</servlet-name>
         <servlet-class>controller.admin.homepage</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>employeeDetails</servlet-name>
         <servlet-class>controller.admin.employeeDetails</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>HomePageServlet</servlet-name>
-        <servlet-class>controller.home.HomePageServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>HomeFeedbackServlet</servlet-name>
@@ -240,10 +232,6 @@
         <url-pattern>/admin/searchEmployee</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>NewServlet</servlet-name>
-        <url-pattern>/NewServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>homepage</servlet-name>
         <url-pattern>/admin/homepage</url-pattern>
     </servlet-mapping>
@@ -294,6 +282,10 @@
     <servlet-mapping>
         <servlet-name>CartCompleteServlet</servlet-name>
         <url-pattern>/cart/complete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeFeedbackServlet</servlet-name>
+        <url-pattern>/homepage/feedback</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>homepage</welcome-file>

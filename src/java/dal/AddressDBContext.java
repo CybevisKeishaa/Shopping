@@ -170,6 +170,42 @@ public class AddressDBContext extends DBContext<Address> {
         return addresss;
     }
 
+    public void insertAddressByCustomerID(Address address, int cusID) {
+        PreparedStatement stm = null;
+        String sql = "INSERT INTO [dbo].[Address] "
+                + "([a_phone], [city], [district], [ward], [street], [detail], [cus_id]) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            stm = connect.prepareStatement(sql);
+            stm.setString(1, address.getA_phone());
+            stm.setString(2, address.getCity());
+            stm.setString(3, address.getDistrict());
+            stm.setString(4, address.getWard());
+            stm.setString(5, address.getStreet());
+            if(address.getDetail() != null && address.getDetail().length() != 0){
+               stm.setString(6, address.getDetail()); 
+            }else{
+                stm.setNull(6, java.sql.Types.NVARCHAR);
+            }
+            
+            stm.setInt(7, cusID);
+
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] arr) {
         AddressDBContext addressDB = new AddressDBContext();
 
