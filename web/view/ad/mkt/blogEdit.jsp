@@ -63,8 +63,9 @@
                         <label for="image" class="form-label" >Image</label>
                         <input type="file" class="form-control"
                                required
+                               accept="image/*"
                                name="image" required 
-                               value="${blog.title}">
+                               value="${blog.title}"/>
                     </div>
                     <div class="form-group">
                         <label for="shortContent" class="form-label" required >Content</label>
