@@ -18,5 +18,5 @@ public class EmailProperty {
 
     public static final String APP_EMAIL = "shamt2004@gmail.com"; // your email
 
-    public static final String APP_PASSWORD = "qjit yezx bfdn ntnc"; // your password
+    public static final String APP_PASSWORD = "bkig dgmh hgam cimg"; // your password
 }

@@ -37,5 +37,11 @@ public class PaymentDBContext extends DBContext<Payment> {
         }
         return payments;
     }
+    
+    public static void main(String[] args) {
+        PaymentDBContext db = new PaymentDBContext();
+        ArrayList<Payment> p = db.allPaymentMethods();
+        System.out.println(p.size());
+    }
 
 }

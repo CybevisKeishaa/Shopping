@@ -21,6 +21,24 @@
             href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap"
             rel="stylesheet"
             /> 
+        <style>
+            .btn-secondary {
+                background-color: #333 !important; /* Nền màu đen */
+                color: white !important; /* Màu chữ trắng */
+                border: 0px solid #00FF00 !important; /* Viền màu xanh lá cây */
+                padding: 10px 50px !important; /* Padding tùy chỉnh */
+                text-transform: uppercase !important; /* Chữ in hoa */
+                transition: background-color 0.3s, color 0.3s !important;
+                margin-bottom: 12px;
+            }
+
+            .btn-secondary:hover {
+                color: #111 !important;
+                background-color: #e0a800 !important;
+                border-color: #d39e00 !important;
+            }
+
+        </style>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/customerProfile.css" />
     <jsp:include page="/Demo_Template/BasePage/Header.jsp" /> <br><br><br><br>
 </head>
@@ -58,7 +76,7 @@
                 <option value="false" <c:if test="${!customer.gender}">selected</c:if>>Nữ</option>
                 </select>
             </div>
-            <button type="button" class="full-width-button" onclick="location.href = 'change_password'">Thay đổi mật khẩu</button>
+            <button type="button" class="full-width-button btn-secondary" onclick="location.href = 'change_password'">Thay đổi mật khẩu</button>
             <br><br>
             <h2>Địa chỉ</h2>
         <c:forEach items="${addresses}" var="address">
@@ -92,7 +110,9 @@
             </div> 
             <br>
         </c:forEach>
-        <button type="submit">Cập nhật thông tin</button>
+        <button type="submit" class="btn-secondary">Cập nhật thông tin</button>
+        <button type="button" class="full-width-button btn-secondary" onclick="location.href = 'account/address/add'">Thêm địa chỉ</button>
+        
     </form>
     <c:if test="${not empty sessionScope.successMessage}">
         <div class="alert alert-success">${sessionScope.successMessage}</div>

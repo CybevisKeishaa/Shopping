@@ -141,7 +141,7 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
                 Address address = aDB.getAddressByOrderID(orderId);
                 ArrayList<Product> products = orderDB.getNewProductsByOrderAndCustomer(orderId, cusID);
                 EmailService emailService = new EmailService();
-                boolean isSent = emailService.sendOrderConfirmation(
+                    boolean isSent = emailService.sendOrderConfirmation(
                         user.getEmail(), orderId, user.getName_cus(), products, totalCost, address, note);
                 if (isSent) {
                     System.out.println("Order confirmation email sent successfully!");

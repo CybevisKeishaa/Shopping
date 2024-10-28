@@ -209,23 +209,28 @@ public class AddressDBContext extends DBContext<Address> {
     public static void main(String[] arr) {
         AddressDBContext addressDB = new AddressDBContext();
 
-        // Giả lập orderID mà bạn muốn kiểm tra
-        int orderID = 61;  // Thay đổi thành một orderID thực tế trong cơ sở dữ liệu của bạn
-
-        // Gọi phương thức getAddressByOrderID và lấy thông tin địa chỉ
-        Address address = addressDB.getAddressByOrderID(orderID);
-
-        // Kiểm tra và in ra thông tin địa chỉ nếu có
-        if (address != null) {
-            System.out.println("Order ID: " + orderID);
-            System.out.println("Street: " + address.getStreet());
-            System.out.println("Ward: " + address.getWard());
-            System.out.println("District: " + address.getDistrict());
-            System.out.println("City: " + address.getCity());
-            System.out.println("Phone: " + address.getA_phone());
-        } else {
-            System.out.println("No address found for Order ID: " + orderID);
-        }
+//        
+//        int orderID = 44;  // Thay đổi thành một orderID thực tế trong cơ sở dữ liệu của bạn
+//
+//        // Gọi phương thức getAddressByOrderID và lấy thông tin địa chỉ
+//        Address address = addressDB.getAddressByOrderID(orderID);
+//
+//        // Kiểm tra và in ra thông tin địa chỉ nếu có
+//        if (address != null) {
+//            System.out.println("Order ID: " + orderID);
+//            System.out.println("Street: " + address.getStreet());
+//            System.out.println("Ward: " + address.getWard());
+//            System.out.println("District: " + address.getDistrict());
+//            System.out.println("City: " + address.getCity());
+//            System.out.println("Phone: " + address.getA_phone());
+//        } else {
+//            System.out.println("No address found for Order ID: " + orderID);
+//        }
+        
+        
+        int cus = 1;
+        ArrayList<Address> addresses = addressDB.getAddressByCusID(cus);
+        System.out.println(addresses.size());
     }
 
 }
