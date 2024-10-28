@@ -78,6 +78,7 @@
             ul li {
                 margin-bottom: 10px;
             }
+            
 
             h3{
                 margin-bottom: 15px !important;
@@ -91,6 +92,7 @@
         <div class="order-summary">
             <h2>Order Submited</h2>
 
+            
 
             <h3>Thông tin đơn hàng:</h3>
             <div class="order-details">
