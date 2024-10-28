@@ -80,16 +80,9 @@
         <meta name='copyright' content=''>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Eshop - My Orders</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.css">
+
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nicesellect.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/flex-slider.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl-carousel.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/slicknav.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
+   
     </head>
 
     <body class="js">
@@ -228,13 +221,6 @@
 
         <jsp:include page="/Demo_Template/BasePage/Footer.jsp" />
         <!-- JS Files -->
-        <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/scrollup.js"></script>
         <script src="${pageContext.request.contextPath}/js/nicesellect.js"></script>
-        <script src="${pageContext.request.contextPath}/js/owl-carousel.js"></script>
-        <script src="${pageContext.request.contextPath}/js/flex-slider.js"></script>
-        <script src="${pageContext.request.contextPath}/js/slicknav.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/active.js"></script>
     </body>
 </html>
