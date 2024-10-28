@@ -578,9 +578,7 @@ public class OrderDBContext extends DBContext<Order> {
                 if (stm != null) {
                     stm.close();
                 }
-                if (connect != null) {
-                    connect.close();
-                }
+                
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }

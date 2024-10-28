@@ -4,6 +4,9 @@
  */
 package dal;
 
+import helper.ImageHelper;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.Part;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,15 @@ import java.io.InputStream;
  * @author KEISHA
  */
 public class ProductDBContext extends DBContext<Product> {
+
+    private ImageHelper imageHelper;
+
+    public ProductDBContext(HttpServlet servlet) {
+        this.imageHelper = new ImageHelper(servlet);
+    }
+
+    public ProductDBContext() {
+    }
 
     public ArrayList<Product> getAllByEid(int eid, String s) {
         PreparedStatement stm = null;
@@ -102,7 +114,7 @@ public class ProductDBContext extends DBContext<Product> {
         }
     }
 
-    public void updateProduct(String pid, String cid, int igid, String name, String price, String stock, String date, String dis, String gender, String brand, String status, String image, String imgename) {
+    public void updateProduct(String pid, String cid, int igid, String name, String price, String stock, String date, String dis, String gender, String brand, String status, Part image) {
         try {
             connect.setAutoCommit(false);
 
@@ -131,17 +143,55 @@ public class ProductDBContext extends DBContext<Product> {
             updateProductstm.setInt(6, Integer.parseInt(brand));
             updateProductstm.setBoolean(7, Boolean.parseBoolean(status));
             updateProductstm.setInt(8, Integer.parseInt(pid));
-            updateProductstm.executeUpdate();
+            ResultSet rs = updateProductstm.executeQuery();
+            rs.next();
+            String deletePidiD = "DELETE FROM [dbo].[Product_Image]\n"
+                    + "      WHERE img_id=? and product_id=?";
 
-            String insertImageProduct = "UPDATE [dbo].[Image]\n"
-                    + "   SET [img_url] = ?\n"
-                    + "      ,[img_name] = ?\n"
-                    + " WHERE img_id=?";
+            PreparedStatement deletePidiDst = connect.prepareStatement(deletePidiD, PreparedStatement.RETURN_GENERATED_KEYS);
+            deletePidiDst.setInt(1, igid);
+            deletePidiDst.setInt(2, Integer.parseInt(pid));
+            rs = deletePidiDst.executeQuery();
+            rs.next();
+            String DELETEImageProduct = "DELETE FROM [dbo].[Image]\n"
+                    + "      WHERE img_id=?";
+            PreparedStatement DELETEImageProductst = connect.prepareStatement(DELETEImageProduct, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            DELETEImageProductst.setInt(1, igid);
+            rs = DELETEImageProductst.executeQuery();
+            rs.next();
+
+            String insertImage = "INSERT INTO [dbo].[Image]\n"
+                    + "           ([img_url]\n"
+                    + "         ,[img_name])\n"
+                    + " output inserted.img_id"
+                    + "     VALUES\n"
+                    + "           (?,?)";
+            PreparedStatement insertImagest = connect.prepareStatement(insertImage, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            String imageName = String.format("PRODUCT%04d", pid);
+            String imageUrl = imageName + imageHelper.getExtensionFromContentType(image.getContentType());
+            insertImagest.setString(1, imageUrl);
+            insertImagest.setString(2, imageName);
+            rs = insertImagest.executeQuery();
+            imageHelper.processImageUpload(image, imageName);
+
+            ResultSet rs1 = insertImagest.getGeneratedKeys();
+            int imageId = -1;
+            if (rs1.next()) {
+                imageId = rs1.getInt(1);
+            }
+            String insertImageProduct = "INSERT INTO [dbo].[Product_Image]\n"
+                    + "           ([product_id]\n"
+                    + "           ,[img_id])\n"
+                    + "     VALUES\n"
+                    + "           (?\n"
+                    + "           ,?)";
             PreparedStatement insertImageProductst = connect.prepareStatement(insertImageProduct, PreparedStatement.RETURN_GENERATED_KEYS);
-            insertImageProductst.setString(1, image);
-            insertImageProductst.setString(2, imgename);
-            insertImageProductst.setInt(3, igid);
+            insertImageProductst.setInt(1, pid);
+            insertImageProductst.setInt(2, imageId);
             insertImageProductst.executeUpdate();
+
             String updateGender = "UPDATE [dbo].[Product_Gender]\n"
                     + "   SET [gender_id] = ?\n"
                     + "   \n"
@@ -160,16 +210,27 @@ public class ProductDBContext extends DBContext<Product> {
             updateCapst.setInt(3, Integer.parseInt(cid));
             updateCapst.executeUpdate();
             connect.commit();
-            connect.setAutoCommit(true);
+
         } catch (Exception e) {
+            try {
+                connect.rollback();
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.out.println(e);
         }
+        try {
+            connect.setAutoCommit(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    public static void main(String[] args){
-        ProductDBContext pd=new ProductDBContext();
-        pd.updateProduct("1", "1", 1, "", "2", "2", "", "", "", "", "", "", "");
-    }
-    public void insertProduct(String eid, String name, String price, String stock, String date, String dis, String brand, String image, String imgename) {
+
+//    public static void main(String[] args) {
+//        ProductDBContext pd = new ProductDBContext();
+//        pd.updateProduct("1", "1", 1, "", "2", "2", "", "", "", "", "", "", "");
+//    }
+    public void insertProduct(String eid, String name, String cap, String price, String stock, String date, String dis, String brand, Part image) {
         try {
             connect.setAutoCommit(false);
 
@@ -182,6 +243,7 @@ public class ProductDBContext extends DBContext<Product> {
                     + "           ,[brand_id]\n"
                     + "           ,[status]  "
                     + ",[emp_id])\n"
+                    + " output inserted.product_id"
                     + "     VALUES\n"
                     + "           (?\n"
                     + "           ,?\n"
@@ -199,26 +261,34 @@ public class ProductDBContext extends DBContext<Product> {
             insertProductst.setInt(5, Integer.parseInt(dis));
             insertProductst.setInt(6, Integer.parseInt(brand));
             insertProductst.setInt(7, Integer.parseInt(eid));
-            insertProductst.executeUpdate();
 
-// Lấy product_id vừa chèn từ khóa chính tự động tăng
+            ResultSet rs = insertProductst.executeQuery();
+            rs.next();
+
             ResultSet generatedKeys = insertProductst.getGeneratedKeys();
             int productId = -1;
             if (generatedKeys.next()) {
                 productId = generatedKeys.getInt(1);
             }
-
+            if (image.getSize() < 0) {
+                throw new Exception("Image is Required!");
+            }
 // Chèn image vào bảng Image
             String insertImage = "INSERT INTO [dbo].[Image]\n"
                     + "           ([img_url]\n"
                     + "         ,[img_name])\n"
+                    + " output inserted.img_id"
                     + "     VALUES\n"
                     + "           (?,?)";
-
             PreparedStatement insertImagest = connect.prepareStatement(insertImage, PreparedStatement.RETURN_GENERATED_KEYS);
-            insertImagest.setString(1, image);
-            insertImagest.setString(2, imgename);
-            insertImagest.executeUpdate();
+
+            String imageName = String.format("PRODUCT%04d", productId);
+            String imageUrl = imageName + imageHelper.getExtensionFromContentType(image.getContentType());
+            insertImagest.setString(1, imageUrl);
+            insertImagest.setString(2, imageName);
+            rs = insertImagest.executeQuery();
+            imageHelper.processImageUpload(image, imageName);
+
             ResultSet rs1 = insertImagest.getGeneratedKeys();
             int imageId = -1;
             if (rs1.next()) {
@@ -234,11 +304,36 @@ public class ProductDBContext extends DBContext<Product> {
             insertImageProductst.setInt(1, productId);
             insertImageProductst.setInt(2, imageId);
             insertImageProductst.executeUpdate();
+            String insertProCa = "INSERT INTO [dbo].[Product_Capacity]\n"
+                    + "           ([cap_id]\n"
+                    + "           ,[product_id]\n"
+                    + "           ,[unit_price]\n"
+                    + "           ,[stock])\n"
+                    + "     VALUES\n"
+                    + "           (?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?)";
+            PreparedStatement insertProCast = connect.prepareStatement(insertProCa, PreparedStatement.RETURN_GENERATED_KEYS);
+            insertProCast.setInt(1, Integer.parseInt(cap));
+            insertProCast.setInt(2, productId);
+            insertProCast.setInt(3, Integer.parseInt(price));
+            insertProCast.setInt(4, Integer.parseInt(stock));
+            insertProCast.executeUpdate();
             connect.commit();
-            connect.setAutoCommit(true);
 
         } catch (Exception e) {
-            System.out.println(e);
+            Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, e);
+            try {
+                connect.rollback();
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        try {
+            connect.setAutoCommit(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -480,13 +575,13 @@ public class ProductDBContext extends DBContext<Product> {
         return count;
     }
 
-    public Product getByPidCid(int pid,int cid){
-          PreparedStatement stm = null;
+    public Product getByPidCid(int pid, int cid) {
+        PreparedStatement stm = null;
         BrandDBContext br = new BrandDBContext();
         CapacityDBContext cap = new CapacityDBContext();
         GenderDBContext gen = new GenderDBContext();
         ImageDBContext image = new ImageDBContext();
-        String sql="Select p.*,pc.* from Product p inner join Product_Capacity pc on p.product_id=pc.product_id inner join Capacity c on c.cap_id=pc.cap_id where p.product_id=? and c.cap_id=?";
+        String sql = "Select p.*,pc.* from Product p inner join Product_Capacity pc on p.product_id=pc.product_id inner join Capacity c on c.cap_id=pc.cap_id where p.product_id=? and c.cap_id=?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, pid);
@@ -522,7 +617,7 @@ public class ProductDBContext extends DBContext<Product> {
         }
         return null;
     }
-    
+
     public Product getByProductId(int id) {
         PreparedStatement stm = null;
         BrandDBContext br = new BrandDBContext();
@@ -645,5 +740,4 @@ public class ProductDBContext extends DBContext<Product> {
         return -1;
     }
 
-    
 }

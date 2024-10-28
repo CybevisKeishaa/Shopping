@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Employee;
 import model.*;
 
@@ -71,25 +73,25 @@ public class employeeUpdateProduct extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String product_id = request.getParameter("product_id");
-        Object object = request.getSession().getAttribute("employee");
+        Object object = request.getSession().getAttribute("customer");
         Employee e = new Employee();
         if (object != null) {
             e = (Employee) object;
         }
-        CapacityDBContext cdb=new CapacityDBContext();
+        CapacityDBContext cdb = new CapacityDBContext();
         ProductDBContext pdb = new ProductDBContext();
-        GenderDBContext ged=new GenderDBContext();
-        String cid=request.getParameter("cid");
-        Product p=null;
-        Capacity c=null;
-        if(cid!=null){
-             c=cdb.getCapPidCid(Integer.parseInt(product_id), Integer.parseInt(cid));
-         
-        }
-        List<Gender> l=ged.getAll();
-                           p = pdb.getByProductId(Integer.parseInt(product_id));
+        GenderDBContext ged = new GenderDBContext();
+        String cid = request.getParameter("cid");
+        Product p = null;
+        Capacity c = null;
+        if (cid != null) {
+            c = cdb.getCapPidCid(Integer.parseInt(product_id), Integer.parseInt(cid));
 
-        List<Capacity> clist=cdb.getByListByPid(Integer.parseInt(product_id));
+        }
+        List<Gender> l = ged.getAll();
+        p = pdb.getByProductId(Integer.parseInt(product_id));
+
+        List<Capacity> clist = cdb.getByListByPid(Integer.parseInt(product_id));
         DiscountDBContext db = new DiscountDBContext();
         List<Discount> dlist = db.getAll();
         BrandDBContext bd = new BrandDBContext();
@@ -118,55 +120,31 @@ public class employeeUpdateProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String applicationPath = request.getServletContext().getRealPath("");
-        String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
-        File uploadDir = new File(uploadFilePath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
+        try {
+            String eid = request.getParameter("eid");
+            String pid = request.getParameter("pid");
+            String name = request.getParameter("name");
+            String price = request.getParameter("price");
+            String stock = request.getParameter("stock");
+            String dis = request.getParameter("dis");
+            String brand = request.getParameter("brand");
+            String status = request.getParameter("status");
+            String gender = request.getParameter("gender");
+            String cid = request.getParameter("cid");
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = now.format(formatter);
+            ProductDBContext pdb = new ProductDBContext();
+            String imgId = request.getParameter("img_id");
+            Part filePart = request.getPart("file");
+
+            pdb.updateProduct(pid, cid, Integer.parseInt(imgId), name, price, stock, formattedDate, dis, gender, brand, status, filePart);
+
+            response.sendRedirect("employeeProductList");
+        } catch (Exception e) {
+            Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, e);
+
         }
-        String eid = request.getParameter("eid");
-        String pid = request.getParameter("pid");
-        String name = request.getParameter("name");
-        String price = request.getParameter("price");
-        String stock = request.getParameter("stock");
-        String dis = request.getParameter("dis");
-        String brand = request.getParameter("brand");
-        String status = request.getParameter("status");
-        String gender=request.getParameter("gender");
-        String cid=request.getParameter("cid");
-
-         String fileName = null;
-    String filePath = null;
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = now.format(formatter);
-        ProductDBContext pdb = new ProductDBContext();
-    String imgId = request.getParameter("img_id" );  
-    Part filePart = request.getPart("file" );  
-
-    if (filePart != null && filePart.getSize() > 0) {
-        fileName = extractFileName(filePart);
-        if (fileName != null && !fileName.isEmpty()) {
-            filePath = uploadFilePath + File.separator + fileName;
-            filePart.write(filePath);
-            pdb.updateProduct(pid, cid,Integer.parseInt(imgId), name, price, stock, formattedDate, dis,gender, brand, status, filePath, fileName);
-        }
-    
-}
-
-
-        response.sendRedirect("employeeProductList");
-    }
-
-    private String extractFileName(Part part) {
-        String contentDisposition = part.getHeader("content-disposition");
-        String[] items = contentDisposition.split(";");
-        for (String item : items) {
-            if (item.trim().startsWith("filename")) {
-                return item.substring(item.indexOf('=') + 2, item.length() - 1);
-            }
-        }
-        return null;
     }
 
     /**

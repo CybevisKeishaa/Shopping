@@ -49,7 +49,7 @@ public class LoginController extends HttpServlet {
                 session.setAttribute("cart", cart);
                 session.setAttribute("customer", employee);
 
-                response.sendRedirect("../dashboard");
+                response.sendRedirect("../market");
             } else {
                 session.setAttribute("errorMessage", "Invalid email or password");
                 response.sendRedirect(request.getContextPath() + "/login/employee");

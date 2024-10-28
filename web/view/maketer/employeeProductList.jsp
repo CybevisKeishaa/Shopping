@@ -263,7 +263,7 @@
                                                     <td>${i.product_id}</td>
                                                     <td>
                                                         <c:forEach var="j" items="${i.img}">
-                                                            <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}" width="100" height="100">
+                                                            <img src="${pageContext.request.contextPath}/img/${j.img_url}" alt="${j.img_url}" width="100" height="100">
                                                         </c:forEach>
                                                     </td>
                                                     <td>${i.name}</td>

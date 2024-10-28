@@ -33,7 +33,7 @@ public class ProductImageDBContext extends DBContext {
             }
             st.close();
             rs.close();
-            connect.close();
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(ProductImageDBContext.class.getName()).log(Level.SEVERE, null, ex);

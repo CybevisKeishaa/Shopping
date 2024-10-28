@@ -5,8 +5,10 @@
 package controller.makerProduct;
 
 import dal.BrandDBContext;
+import dal.CapacityDBContext;
 import dal.DiscountDBContext;
 import dal.ProductDBContext;
+import helper.ImageHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -26,6 +28,8 @@ import model.Image;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @MultipartConfig
 
@@ -76,7 +80,7 @@ public class employeeAddProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Object object = request.getSession().getAttribute("employee");
+        Object object = request.getSession().getAttribute("customer");
         Employee e = new Employee();
         if (object != null) {
             e = (Employee) object;
@@ -84,7 +88,10 @@ public class employeeAddProduct extends HttpServlet {
         DiscountDBContext db = new DiscountDBContext();
         List<Discount> dlist = db.getAll();
         BrandDBContext bd = new BrandDBContext();
+        CapacityDBContext cdb = new CapacityDBContext();
+        List<Capacity> list = cdb.getAll();
         List<Brand> blist = bd.getAll();
+        request.setAttribute("clist", list);
         request.setAttribute("eid", e.getEmp_id());
         request.setAttribute("datab", blist);
         request.setAttribute("datad", dlist);
@@ -103,47 +110,27 @@ public class employeeAddProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String applicationPath = request.getServletContext().getRealPath("");
-        String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
+        try {
+            String eid = request.getParameter("eid");
+            String name = request.getParameter("name");
+            String stock = request.getParameter("stock");
+            String dis = request.getParameter("dis");
+            String brand = request.getParameter("brand");
+            String cap = request.getParameter("cap");
+            Part image = request.getPart("file");
 
-        File uploadDir = new File(uploadFilePath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
+            LocalDateTime now = LocalDateTime.now();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = now.format(formatter);
+            ProductDBContext pdb = new ProductDBContext(this);
+
+            pdb.insertProduct(eid, name, cap, brand, stock, formattedDate, dis, brand, image);
+            response.sendRedirect("employeeProductList");
+        } catch (Exception e) {
+            Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, e);
+
         }
-        String eid = request.getParameter("eid");
-        String name = request.getParameter("name");
-        String stock = request.getParameter("stock");
-        String dis = request.getParameter("dis");
-        String brand = request.getParameter("brand");
-
-        LocalDateTime now = LocalDateTime.now();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = now.format(formatter);
-        ProductDBContext pdb = new ProductDBContext();
-        String fileName = null;
-        String filePath = null;
-        for (Part part : request.getParts()) {
-            fileName = extractFileName(part);
-            if (fileName != null && !fileName.isEmpty()) {
-                filePath = uploadFilePath + File.separator + fileName;
-                part.write(filePath);
-                pdb.insertProduct(eid, name, brand, stock, formattedDate, dis, brand, filePath,fileName);
-
-            }
-        }
-        response.sendRedirect("employeeProductList");
-    }
-
-    private String extractFileName(Part part) {
-        String contentDisposition = part.getHeader("content-disposition");
-        String[] items = contentDisposition.split(";");
-        for (String item : items) {
-            if (item.trim().startsWith("filename")) {
-                return item.substring(item.indexOf('=') + 2, item.length() - 1);
-            }
-        }
-        return null;
     }
 
     /**

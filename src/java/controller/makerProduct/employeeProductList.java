@@ -56,7 +56,7 @@ public class employeeProductList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        Object object=request.getSession().getAttribute("employee");
+        Object object=request.getSession().getAttribute("customer");
         String search=request.getParameter("search");
         Employee e=new Employee();
         if(object!=null){

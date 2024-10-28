@@ -45,9 +45,7 @@ public class AddressDBContext extends DBContext<Address> {
                 if (stm != null) {
                     stm.close();
                 }
-                if (connect != null) {
-                    connect.close();
-                }
+              
             } catch (SQLException e) {
                 e.printStackTrace();
             }
