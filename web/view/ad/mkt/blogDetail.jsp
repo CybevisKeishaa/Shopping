@@ -9,6 +9,7 @@
         <div class="panel">
             <div class="panel-heading bg-white border-none" style="padding:20px;">
                 <div class="col-md-6 col-sm-6 col-sm-12 text-left">
+                    <a href="${pageContext.request.contextPath}/market" >&Lt;Trở Về</a>
                     <h2 class="text-lg"><b>${blog.title}</b></h2>
                 </div>
                 <div class="col-md-6 col-sm-6 col-sm-12">

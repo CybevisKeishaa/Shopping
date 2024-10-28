@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.IOException;
 import model.Blog;
-import model.Customer_User;
 import model.Employee;
 
 /**
@@ -33,7 +32,7 @@ public class BlogDetailEdit extends AuthenticationServlet {
     private static final String REDIRECT_URL = "/market/blog?blogId="; // Redirect to blog list after save
     private static final String REDIRECT_EDIT_URL = "/market/blog/edit?blogId="; // Redirect to blog list after save
 
-    private Blog processGetEdit(HttpServletRequest request, HttpServletResponse response, Integer blogId, Customer_User user) throws IOException, ServletException {
+    private Blog processGetEdit(HttpServletRequest request, HttpServletResponse response, Integer blogId, Employee user) throws IOException, ServletException {
         if (blogId == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Blog ID");
             return null;
@@ -44,7 +43,7 @@ public class BlogDetailEdit extends AuthenticationServlet {
         Blog b = bdb.getContentByBlogId(blogId);
         boolean isAdmin = AuthenticationHelper.isAdmin(user);
         boolean isMarketter = AuthenticationHelper.isMarketer(user);
-        boolean isOwner = ((Employee) user).getEmp_id() == b.getEmployee().getEmp_id();
+        boolean isOwner = user.getEmp_id() == b.getEmployee().getEmp_id();
         // Allow admin and owner of this blog to edit blog
         if (!isAdmin && (isMarketter && !isOwner)) {
             response.sendRedirect(request.getContextPath() + REDIRECT_URL + blogId);
@@ -58,7 +57,7 @@ public class BlogDetailEdit extends AuthenticationServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
         boolean isEdit = request.getRequestURI().endsWith("edit");
         Blog b = null;
@@ -79,7 +78,7 @@ public class BlogDetailEdit extends AuthenticationServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
         boolean isEdit = request.getRequestURI().endsWith("edit");
         request.setAttribute("isEdit", isEdit);
@@ -94,14 +93,13 @@ public class BlogDetailEdit extends AuthenticationServlet {
         }
     }
 
-    private void processCreate(HttpServletRequest request, HttpServletResponse response, Customer_User user) throws IOException, ServletException {
+    private void processCreate(HttpServletRequest request, HttpServletResponse response, Employee user) throws IOException, ServletException {
         // Retrieve all blog data from the request
         String title = request.getParameter("title");
         String shortContent = request.getParameter("shortContent");
         String content = request.getParameter("content");
         Part image = request.getPart("image");
         Integer empId = RequestHelper.getIntParameterWithDefault("empId", null, request);
-        boolean isEmployee = AuthenticationHelper.isEmployee(user);
         // Validate required fields
         if (title == null || content == null || empId == null) {
             request.setAttribute("errorMessage", "Title, content, and employee ID are required.");
@@ -129,7 +127,7 @@ public class BlogDetailEdit extends AuthenticationServlet {
         }
     }
 
-    private void processEdit(HttpServletRequest request, HttpServletResponse response, Integer blogId, Customer_User user) throws IOException, ServletException {
+    private void processEdit(HttpServletRequest request, HttpServletResponse response, Integer blogId, Employee user) throws IOException, ServletException {
         if (blogId == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Blog ID");
             return;
@@ -170,7 +168,6 @@ public class BlogDetailEdit extends AuthenticationServlet {
 
         // Redirect or show error based on the result
         if (isUpdated) {
-            
             response.sendRedirect(request.getContextPath() + REDIRECT_URL + blogId);  // Redirect to blog list or success page
         } else {
             request.setAttribute("error", "Failed to update the blog.");

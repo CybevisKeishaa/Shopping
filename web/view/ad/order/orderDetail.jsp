@@ -33,8 +33,6 @@
                 <span><strong>Trạng thái:</strong> ${requestScope.order.status.status_name.trim()}</span>
                 <c:set scope="page" var="status" value="${requestScope.order.status}"/>
                 <c:if test="${order.paidStatus}" var="is_paid"></c:if>
-
-
                     <!-- Only show status update options if the order is not 'Completed' or 'Cancelled' -->
                 <c:if test="${status.status_id != COMPLETED and status.status_id != CANCELLED}">
                     <!-- Dropdown to update order status -->

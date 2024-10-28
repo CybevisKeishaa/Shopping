@@ -37,6 +37,8 @@
         <div class="panel">
             <div class="panel-heading">
                 <h3>${isEdit? "Chỉnh sửa Bài Viết" :"Tạo Bài Viết"}</h3>
+                <a href="${pageContext.request.contextPath}/market/blog?blogId=${param.blogId}" class="nav-link" >&Lt;Trở Về</a>
+
             </div>
             <div class="panel-body">
                 <form id="edit-form"  action="${pageContext.request.contextPath}${isEdit? '/market/blog/edit':'/market/blog/create'}"
@@ -48,7 +50,7 @@
                     <c:if test="${isEdit == true}">
                         <input value="${param.blogId}" name="blogId" type="hidden">
                     </c:if>
-                    <input value="${customer.emp_id}" name="empId" type="hidden">
+                    <input value="${sessionScope.employee.emp_id}" name="empId" type="hidden">
 
                     <div class="form-group">
                         <label for="title" class="form-label" required >Title</label>
@@ -61,8 +63,9 @@
                         <label for="image" class="form-label" >Image</label>
                         <input type="file" class="form-control"
                                required
+                               accept="image/*"
                                name="image" required 
-                               value="${blog.title}">
+                               value="${blog.title}"/>
                     </div>
                     <div class="form-group">
                         <label for="shortContent" class="form-label" required >Content</label>

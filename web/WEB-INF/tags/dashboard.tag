@@ -27,7 +27,7 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <c:set var="role" value="${sessionScope.customer.role.role_name}"/>
+    <c:set var="role" value="${sessionScope.employee.role.role_name}"/>
     <body id="mimin" class="dashboard">
         <!-- start: Header -->
         <nav class="navbar navbar-default header navbar-fixed-top">
@@ -55,9 +55,9 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right user-nav">
-                        <li class="user-name"><span>${customer.name_cus}</span></li>
+                        <li class="user-name"><span>${employee.name_emp}</span></li>
                         <li class="dropdown avatar-dropdown">
-                            <img src="${pageContext.request.contextPath}/a/asset/img/avatar.jpg" class="img-circle avatar" alt="user name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"/>
+                            <img src="${pageContext.request.contextPath}/a/asset/img/avatar.jpg" class="img-circle avatar" alt="${employee.name_emp}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"/>
                             <ul class="dropdown-menu user-dropdown">
                                 <li><a href="#"><span class="fa fa-user"></span> My Profile</a></li>
                                 <li><a href="#"><span class="fa fa-calendar"></span> My Calendar</a></li>
@@ -117,6 +117,9 @@
                                 <a href="${pageContext.request.contextPath}/employeeProductList">Product List</a>
                             </li>
                         </c:if>
+                            <li>
+                            <a href="${pageContext.request.contextPath}/market">MKT Dashboard</a>
+                        </li>
                         <c:if test="${role == 'Admin' || role == 'Saler'}">
                             <li>
                                 <a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a>

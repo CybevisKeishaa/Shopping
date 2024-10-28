@@ -14,7 +14,7 @@ public class BlogSql {
                                             SELECT b.* FROM Blog b  
                                             JOIN Employee e on e.emp_id = b.emp_id
                                             {where}  
-                                            order by b.blog_id
+                                            order by b.blog_id DESC
                                             OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                                          """;
     public static final String GET_ALL_COUNT = """

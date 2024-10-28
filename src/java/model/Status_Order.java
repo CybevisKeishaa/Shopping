@@ -5,6 +5,10 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -19,6 +23,19 @@ public class Status_Order {
     public static final int CANCELLED = 5;
     public static final int CANCEL_REQUEST = 6;
     
+    // Map to store allowed transitions
+    private static final Map<Integer, Set<Integer>> statusTransitionMap = new HashMap<>();
+
+    static {
+        // Define transitions for each status
+        statusTransitionMap.put(PENDING, Set.of(CONFIRMED, CANCELLED, CANCEL_REQUEST));
+        statusTransitionMap.put(CONFIRMED, Set.of(SHIPPING, CANCELLED));
+        statusTransitionMap.put(SHIPPING, Set.of(COMPLETED, CANCELLED));
+        statusTransitionMap.put(COMPLETED, Collections.emptySet());  // No transitions allowed
+        statusTransitionMap.put(CANCELLED, Collections.emptySet());  // No transitions allowed
+        statusTransitionMap.put(CANCEL_REQUEST, Set.of(CANCELLED));
+    }
+
     private int status_id;
     private String status_name;
     private ArrayList<Order> orders = new ArrayList<>();
@@ -63,5 +80,18 @@ public class Status_Order {
         return "Status_Order{" + "status_id=" + status_id + ", status_name=" + status_name + ", orders=" + orders + '}';
     }
 
-    
+    // Method to check if a status transition is allowed
+    public static boolean canTransition(int currentStatus, int newStatus, boolean isUser) {
+        // Users can only update to CancelRequest
+        if (isUser && newStatus != CANCEL_REQUEST) {
+            return false;
+        }
+        // Only sellers can update to Cancelled
+        if (!isUser && newStatus == CANCEL_REQUEST) {
+            return false;
+        }
+
+        // Check if the new status is in the allowed transitions for the current status
+        return statusTransitionMap.getOrDefault(currentStatus, Collections.emptySet()).contains(newStatus);
+    }
 }

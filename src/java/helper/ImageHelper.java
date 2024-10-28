@@ -19,30 +19,40 @@ import java.nio.file.*;
 public class ImageHelper {
 
     private final String SAVE_URL = "/img/";
-    private final String PROJECT_PATH ;
-    
-    public ImageHelper(HttpServlet servlet){
+    private final String PROJECT_PATH;
+
+    public ImageHelper(HttpServlet servlet) {
         this.PROJECT_PATH = servlet.getServletContext().getRealPath(SAVE_URL);
     }
 
-    public  String processImageUpload(Part imagePart, String imgName) throws IOException, ServletException {
+    public String processImageUpload(Part imagePart, String imgName) throws IOException, ServletException {
         // Ensure that the image part is not null
         if (imagePart == null) {
             throw new ServletException("Image part is missing");
         }
         // Make sure the directory exists
         File uploadDir = new File(PROJECT_PATH);
+        File uploadProjectDir = new File(PROJECT_PATH.replace("\\build", ""));
+
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
+        }
+        if (!uploadProjectDir.exists()) {
+            uploadProjectDir.mkdirs();
         }
         String contentType = getExtensionFromContentType(imagePart.getContentType());
         // Generate the complete path to save the image
         String imagePath = uploadDir + File.separator + imgName + contentType;
+        String imageProjectPath = uploadProjectDir + File.separator + imgName + contentType;
 
         // Write the image to the directory
         try (InputStream input = imagePart.getInputStream()) {
             Files.copy(input, Paths.get(imagePath), StandardCopyOption.REPLACE_EXISTING);
         }
+        try (InputStream input = imagePart.getInputStream()) {
+            Files.copy(input, Paths.get(imageProjectPath), StandardCopyOption.REPLACE_EXISTING);
+        }
+
         // Return the relative URL path that can be used to access the image
         return imgName + contentType;
     }
@@ -58,5 +68,21 @@ public class ImageHelper {
             default:
                 return "." + contentType.split("/")[1]; // Unsupported type
         }
+    }
+    // remove 2 image from build and real project
+    public boolean removeImage(String imageUrl) {
+        File uploadDir = new File(PROJECT_PATH);
+        File uploadProjectDir = new File(PROJECT_PATH.replace("\\build", ""));
+
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+        if (!uploadProjectDir.exists()) {
+            uploadProjectDir.mkdirs();
+        }
+
+        String imagePath = uploadDir + File.separator + imageUrl;
+        String imageProjectPath = uploadProjectDir + File.separator + imageUrl;
+        return new File(imagePath).delete() && new File(imageProjectPath).delete();
     }
 }

@@ -11,7 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import model.Customer_User;
+import model.Employee;
 
 /**
  *
@@ -25,7 +25,7 @@ public class DashboardServlet extends AuthenticationServlet {
     private static final String MARKETER_PAGE = "/market";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
 
         if (AuthenticationHelper.isAdmin(user)) {

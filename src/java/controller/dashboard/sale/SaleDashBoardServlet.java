@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
-import model.Customer_User;
+import model.Employee;
 import model.Order;
 
 /**
@@ -30,7 +30,7 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
     private static final int PAGE_SIZE = 10;//Default = 10
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
+    public void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setAttribute("title", WEB_TITLE);
@@ -45,9 +45,6 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
         boolean desc = RequestHelper.getCheckboxParameterWithDefault("desc", true, request);
 
         // employee id
-//        if (AuthenticationHelper.isSaler(user)) {
-//            cusID = user.getCus_id();
-//        }
         List<Order> orders = odb.getAllOrder(search, startDate, endDate, sort, desc, page, PAGE_SIZE);
         int count = odb.getTotalOrderCount(search, startDate, endDate); // pagination
         var statusTotals = odb.getStatusTotal();

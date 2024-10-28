@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import model.Blog;
-import model.Customer_User;
 import model.Employee;
 
 /**
@@ -29,7 +28,7 @@ public class BlogDetailServlet extends AuthenticationServlet {
     private static final String WEB_DELETE_URL = "/market/blog";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
         // Retrieve blogId from the request
         Integer blogId = RequestHelper.getIntParameterWithDefault("blogId", null, request);
@@ -62,7 +61,7 @@ public class BlogDetailServlet extends AuthenticationServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
         // Retrieve blogId from the request
         Integer blogId = RequestHelper.getIntParameterWithDefault("blogId", null, request);

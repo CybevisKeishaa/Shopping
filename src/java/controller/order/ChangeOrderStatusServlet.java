@@ -28,12 +28,11 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
             String orderIDRaw = request.getParameter("order_id");
             int orderID = Integer.parseInt(orderIDRaw);
             OrderDBContext db = new OrderDBContext();
-            db.updateOrderStatus(orderID, 6);
+            db.updateOrderStatus(orderID, 6, true);// always user
         } catch (MessagingException ex) {
             request.setAttribute("errorMessage", ex.getMessage());
         }
         response.sendRedirect("../order");
-
     }
 
     /**
@@ -51,7 +50,7 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
             String orderIDRaw = request.getParameter("order_id");
             int orderID = Integer.parseInt(orderIDRaw);
             OrderDBContext db = new OrderDBContext();
-            db.updateOrderStatus(orderID, 4);
+            db.updateOrderStatus(orderID, 4, true);// always user
             String email = user.getEmail();
 
             String contextPath = request.getContextPath(); // Lấy context path của ứng dụng

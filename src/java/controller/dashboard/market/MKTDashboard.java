@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 import model.Blog;
-import model.Customer_User;
 import model.Employee;
 
 /**
@@ -28,21 +27,18 @@ public class MKTDashboard extends AuthenticationServlet {
 
     private static final String WEB_TITLE = "Marketing Dashboard";
     private static final String WEB_URL = "/view/ad/mkt/market.jsp";
-    private static final int PAGE_SIZE = 8;// Default 8;
+    private static final int PAGE_SIZE = 3;// Default 8;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setAttribute("title", WEB_TITLE);
-        boolean isEmployee = AuthenticationHelper.isEmployee(user);
         boolean isAdmin = AuthenticationHelper.isAdmin(user);
-        Integer empId = null;
+        Integer empId = user.getEmp_id();
         if (isAdmin) {
             empId = RequestHelper.getIntParameterWithDefault("empId", null, request);
-        } else if (isEmployee) {
-            empId = ((Employee) user).getEmp_id();
-        }
+        } 
         // Get all filter parameters from the request using RequestHelper
         String title = RequestHelper.getStringParameterWithDefault("search", null, request);
         String status = RequestHelper.getStringParameterWithDefault("status", "true", request);

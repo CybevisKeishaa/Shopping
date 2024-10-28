@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import model.Customer_User;
 import model.Employee;
 
 public abstract class AuthenticationServlet extends HttpServlet {
@@ -15,13 +14,8 @@ public abstract class AuthenticationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Customer_User user = (Customer_User) request.getSession().getAttribute("customer");
         Employee employee = (Employee) request.getSession().getAttribute("employee");
-
-        if (user != null) {
-            request.setAttribute("role", user.getRole().getRole_name());
-            doGet(request, response, user);
-        } else if(employee != null) {
+        if (employee != null) {
             request.setAttribute("role", employee.getRole().getRole_name());
             doGet(request, response, employee);
         } else {
@@ -36,13 +30,9 @@ public abstract class AuthenticationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Customer_User user = (Customer_User) request.getSession().getAttribute("customer");
         Employee employee = (Employee) request.getSession().getAttribute("employee");
 
-        if (user != null) {
-            request.setAttribute("role", user.getRole().getRole_name());
-            doPost(request, response, user);
-        } else if(employee != null) {
+        if (employee != null) {
             request.setAttribute("role", employee.getRole().getRole_name());
             doPost(request, response, employee);
         } else {
@@ -54,12 +44,12 @@ public abstract class AuthenticationServlet extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User customer)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee customer)
             throws ServletException, IOException {
         super.doGet(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User customer)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Employee customer)
             throws ServletException, IOException {
         super.doPost(request, response);
     }

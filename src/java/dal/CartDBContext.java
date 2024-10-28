@@ -4,7 +4,6 @@
  */
 package dal;
 
-import model.Cart;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -14,9 +13,7 @@ import model.Customer_User;
 import model.Image;
 import model.Item;
 import model.Product;
-
 import model.Item;
-
 import model.Cart;
 
 /**
@@ -350,16 +347,16 @@ public class CartDBContext extends DBContext<Cart> {
     public void addToCartWithDetails(int productID, int cartID, int quantity, int capacityID) {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        int stock = 0; 
+        int stock = 0;
         try {
- 
+
             String stockCheckSql = "SELECT stock FROM Product WHERE product_id = ?";
             stm = connect.prepareStatement(stockCheckSql);
             stm.setInt(1, productID);
             rs = stm.executeQuery();
 
             if (rs.next()) {
-                stock = rs.getInt("stock"); 
+                stock = rs.getInt("stock");
                 if (quantity > stock) {
                     System.out.println("Không thể thêm sản phẩm. Số lượng yêu cầu vượt quá tồn kho.");
                     return;
@@ -466,19 +463,17 @@ public class CartDBContext extends DBContext<Cart> {
     public static void main(String[] args) {
         CartDBContext cartDb = new CartDBContext();
         Cart c = cartDb.getCartByCustomer(1);
-        System.out.println(c);
+        System.out.println(c.getCart_id());
 
-        
-        
-//            int productID = 1; // ID của sản phẩm muốn thêm
-//            int cartID = 7;    // ID của giỏ hàng muốn thêm
-//            int quantity = 3;  // Số lượng muốn thêm
-//            int capacityID = 1; // Dung tích hoặc ID của phiên bản sản phẩm
-//
-//            // Gọi hàm addToCartWithDetails để thêm sản phẩm vào giỏ hàng
-//            cartDb.addToCartWithDetails(productID, cartID, quantity, capacityID);
-//
-//            System.out.println("Hoàn thành kiểm tra thêm sản phẩm vào giỏ hàng.");
+            int productID = 1; // ID của sản phẩm muốn thêm
+            int cartID = 7;    // ID của giỏ hàng muốn thêm
+            int quantity = 3;  // Số lượng muốn thêm
+            int capacityID = 1; // Dung tích hoặc ID của phiên bản sản phẩm
+
+            // Gọi hàm addToCartWithDetails để thêm sản phẩm vào giỏ hàng
+            cartDb.addToCartWithDetails(productID, cartID, quantity, capacityID);
+
+            
     }
 
 }
