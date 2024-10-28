@@ -29,9 +29,12 @@ public class deleteItem extends BaseRequiredCustomerAuthenticationController{
         CartDBContext db = new CartDBContext();
         if(comm.equalsIgnoreCase("del")){
             db.deleteAnItem(itemID);
+            response.sendRedirect(request.getContextPath() + "/homepage");
+        }else if(comm.equalsIgnoreCase("ck")){
+            db.deleteAnItem(itemID);
+            response.sendRedirect(request.getContextPath() + "/cart/list");
         }
-        
-        response.sendRedirect("../../homepage");
+               
     } 
 
     /** 
