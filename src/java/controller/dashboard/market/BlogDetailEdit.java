@@ -170,7 +170,7 @@ public class BlogDetailEdit extends AuthenticationServlet {
         if (isUpdated) {
             response.sendRedirect(request.getContextPath() + REDIRECT_URL + blogId);  // Redirect to blog list or success page
         } else {
-            request.setAttribute("error", "Failed to update the blog.");
+            request.setAttribute("errorMessage", "Failed to update the blog.");
             request.setAttribute("blog", blog);
             request.setAttribute("title", blog.getTitle());
 

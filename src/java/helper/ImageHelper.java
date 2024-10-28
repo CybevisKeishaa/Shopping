@@ -27,18 +27,20 @@ public class ImageHelper {
 
     public String processImageUpload(Part imagePart, String imgName) throws IOException, ServletException {
         // Ensure that the image part is not null
-        if (imagePart == null) {
+        if (imagePart == null || imagePart.getSize() < 10) {
             throw new ServletException("Image part is missing");
         }
         // Make sure the directory exists
-        File uploadDir = new File(PROJECT_PATH);
+        // 1 build
+        // 1 project
+        File uploadDir = new File(PROJECT_PATH);//build
         File uploadProjectDir = new File(PROJECT_PATH.replace("\\build", ""));
 
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
         if (!uploadProjectDir.exists()) {
-            uploadProjectDir.mkdirs();
+            uploadProjectDir.mkdirs(); // img
         }
         String contentType = getExtensionFromContentType(imagePart.getContentType());
         // Generate the complete path to save the image
@@ -66,9 +68,10 @@ public class ImageHelper {
             case "image/gif":
                 return ".gif";
             default:
-                return "." + contentType.split("/")[1]; // Unsupported type
+                return "." + contentType.split("/")[1]; // Unsupported type image/webp => .webp
         }
     }
+
     // remove 2 image from build and real project
     public boolean removeImage(String imageUrl) {
         File uploadDir = new File(PROJECT_PATH);
@@ -83,6 +86,8 @@ public class ImageHelper {
 
         String imagePath = uploadDir + File.separator + imageUrl;
         String imageProjectPath = uploadProjectDir + File.separator + imageUrl;
-        return new File(imagePath).delete() && new File(imageProjectPath).delete();
+        return new File(imagePath).delete()//build
+                && new File(imageProjectPath).delete();//project
+
     }
 }

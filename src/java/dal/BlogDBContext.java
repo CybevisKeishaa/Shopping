@@ -380,7 +380,7 @@ public class BlogDBContext extends DBContext<Blog> {
             // Insert the image association into Blog_IMG table
             PreparedStatement imageStmt = connect.prepareStatement(imageSql);
             String imageName = String.format("BLOG%04d" + System.currentTimeMillis(), blogId);
-            String imageUrl = imageName + imageHelper.getExtensionFromContentType(image.getContentType());
+            String imageUrl = imageName + imageHelper.getExtensionFromContentType(image.getContentType()); // .png , .jpg, .webp
             imageStmt.setString(1, imageUrl);
             imageStmt.setString(2, imageName);
             rs = imageStmt.executeQuery();
