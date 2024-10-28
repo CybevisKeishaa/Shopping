@@ -145,53 +145,21 @@ public class ProductDBContext extends DBContext<Product> {
             updateProductstm.setInt(8, Integer.parseInt(pid));
             ResultSet rs = updateProductstm.executeQuery();
             rs.next();
-            String deletePidiD = "DELETE FROM [dbo].[Product_Image]\n"
-                    + "      WHERE img_id=? and product_id=?";
+            String upIgid = "UPDATE [dbo].[Image]\n"
+                    + "   SET [img_url] = ?\n"
+                    + "      ,[img_name] = ?\n"
+                    + " WHERE img_id=?";
+            
+            PreparedStatement upIgidst = connect.prepareStatement(upIgid, PreparedStatement.RETURN_GENERATED_KEYS);
+                String imageName = String.format("BLOG%04d" + System.currentTimeMillis(), Integer.parseInt(pid));
+                String imageUrl = imageName + imageHelper.getExtensionFromContentType(image.getContentType());
+                upIgidst.setString(1, imageUrl);
+                upIgidst.setString(2, imageName);
+                upIgidst.setInt(3, igid);
+                    imageHelper.processImageUpload(image, imageName);
 
-            PreparedStatement deletePidiDst = connect.prepareStatement(deletePidiD, PreparedStatement.RETURN_GENERATED_KEYS);
-            deletePidiDst.setInt(1, igid);
-            deletePidiDst.setInt(2, Integer.parseInt(pid));
-            rs = deletePidiDst.executeQuery();
-            rs.next();
-            String DELETEImageProduct = "DELETE FROM [dbo].[Image]\n"
-                    + "      WHERE img_id=?";
-            PreparedStatement DELETEImageProductst = connect.prepareStatement(DELETEImageProduct, PreparedStatement.RETURN_GENERATED_KEYS);
-
-            DELETEImageProductst.setInt(1, igid);
-            rs = DELETEImageProductst.executeQuery();
-            rs.next();
-
-            String insertImage = "INSERT INTO [dbo].[Image]\n"
-                    + "           ([img_url]\n"
-                    + "         ,[img_name])\n"
-                    + " output inserted.img_id"
-                    + "     VALUES\n"
-                    + "           (?,?)";
-            PreparedStatement insertImagest = connect.prepareStatement(insertImage, PreparedStatement.RETURN_GENERATED_KEYS);
-
-            String imageName = String.format("PRODUCT%04d", pid);
-            String imageUrl = imageName + imageHelper.getExtensionFromContentType(image.getContentType());
-            insertImagest.setString(1, imageUrl);
-            insertImagest.setString(2, imageName);
-            rs = insertImagest.executeQuery();
-            imageHelper.processImageUpload(image, imageName);
-
-            ResultSet rs1 = insertImagest.getGeneratedKeys();
-            int imageId = -1;
-            if (rs1.next()) {
-                imageId = rs1.getInt(1);
-            }
-            String insertImageProduct = "INSERT INTO [dbo].[Product_Image]\n"
-                    + "           ([product_id]\n"
-                    + "           ,[img_id])\n"
-                    + "     VALUES\n"
-                    + "           (?\n"
-                    + "           ,?)";
-            PreparedStatement insertImageProductst = connect.prepareStatement(insertImageProduct, PreparedStatement.RETURN_GENERATED_KEYS);
-//            insertImageProductst.setInt(1, pid);
-            insertImageProductst.setInt(2, imageId);
-            insertImageProductst.executeUpdate();
-
+                        imageHelper.removeImage(imageUrl);
+                    
             String updateGender = "UPDATE [dbo].[Product_Gender]\n"
                     + "   SET [gender_id] = ?\n"
                     + "   \n"
