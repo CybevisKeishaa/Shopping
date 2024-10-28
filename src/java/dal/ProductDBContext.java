@@ -188,7 +188,7 @@ public class ProductDBContext extends DBContext<Product> {
                     + "           (?\n"
                     + "           ,?)";
             PreparedStatement insertImageProductst = connect.prepareStatement(insertImageProduct, PreparedStatement.RETURN_GENERATED_KEYS);
-            insertImageProductst.setInt(1, pid);
+//            insertImageProductst.setInt(1, pid);
             insertImageProductst.setInt(2, imageId);
             insertImageProductst.executeUpdate();
 
