@@ -7,6 +7,7 @@ package controller.makerProduct;
 import dal.BrandDBContext;
 import dal.CapacityDBContext;
 import dal.DiscountDBContext;
+import dal.GenderDBContext;
 import dal.ProductDBContext;
 import helper.ImageHelper;
 import java.io.IOException;
@@ -91,10 +92,13 @@ public class employeeAddProduct extends HttpServlet {
         CapacityDBContext cdb = new CapacityDBContext();
         List<Capacity> list = cdb.getAll();
         List<Brand> blist = bd.getAll();
+        GenderDBContext gender = new GenderDBContext();
+        List<Gender> glist = gender.getAll();
         request.setAttribute("clist", list);
         request.setAttribute("eid", e.getEmp_id());
         request.setAttribute("datab", blist);
         request.setAttribute("datad", dlist);
+        request.setAttribute("datag", glist);
         request.getRequestDispatcher("view/maketer/employeeAddProduct.jsp").forward(request, response);
 
     }
@@ -118,6 +122,7 @@ public class employeeAddProduct extends HttpServlet {
             String brand = request.getParameter("brand");
             String cap = request.getParameter("cap");
             Part image = request.getPart("file");
+            String gen = request.getParameter("gid");
 
             LocalDateTime now = LocalDateTime.now();
 
@@ -125,7 +130,7 @@ public class employeeAddProduct extends HttpServlet {
             String formattedDate = now.format(formatter);
             ProductDBContext pdb = new ProductDBContext(this);
 
-            pdb.insertProduct(eid, name, cap, brand, stock, formattedDate, dis, brand, image);
+            pdb.insertProduct(eid, name, cap,gen, brand, stock, formattedDate, dis, brand, image);
             response.sendRedirect("employeeProductList");
         } catch (Exception e) {
             Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, e);

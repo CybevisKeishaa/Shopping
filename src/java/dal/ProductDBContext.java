@@ -203,7 +203,7 @@ public class ProductDBContext extends DBContext<Product> {
 //        ProductDBContext pd = new ProductDBContext();
 //        pd.updateProduct("1", "1", 1, "", "2", "2", "", "", "", "", "", "", "");
 //    }
-    public void insertProduct(String eid, String name, String cap, String price, String stock, String date, String dis, String brand, Part image) {
+    public void insertProduct(String eid, String name, String cap, String gid, String price, String stock, String date, String dis, String brand, Part image) {
         try {
             connect.setAutoCommit(false);
 
@@ -293,6 +293,16 @@ public class ProductDBContext extends DBContext<Product> {
             insertProCast.setInt(3, Integer.parseInt(price));
             insertProCast.setInt(4, Integer.parseInt(stock));
             insertProCast.executeUpdate();
+            String insertGender = "INSERT INTO [dbo].[Product_Gender]\n"
+                    + "           ([gender_id]\n"
+                    + "           ,[product_id])\n"
+                    + "     VALUES\n"
+                    + "           (?\n"
+                    + "           ,?)";
+            PreparedStatement insertGenst = connect.prepareStatement(insertGender, PreparedStatement.RETURN_GENERATED_KEYS);
+            insertGenst.setInt(1, Integer.parseInt(gid));
+            insertGenst.setInt(2, productId);
+            insertGenst.executeUpdate();            
             connect.commit();
 
         } catch (Exception e) {
