@@ -83,6 +83,7 @@ public class ImageHelper {
 
         String imagePath = uploadDir + File.separator + imageUrl;
         String imageProjectPath = uploadProjectDir + File.separator + imageUrl;
+        
         return new File(imagePath).delete() && new File(imageProjectPath).delete();
     }
 }

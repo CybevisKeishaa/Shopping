@@ -24,26 +24,28 @@
             <file>file:/D:/SWP391/group06/web/view/customer/insertAddress.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/controller/home/HomeFeedbackServlet.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/product/ProductSearch.java</file>
+            <file>file:/D:/SWP391/group06/src/java/controller/dashboard/market/BlogDetailServlet.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeUpdateProduct.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/blog/BlogDetail.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/GenderDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/makerProduct/employeeProductList.java</file>
-            <file>file:/D:/SWP391/group06/src/java/dal/employeeDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/model/Capacity.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/PaymentDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/model/Order.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/product/ProductDetail.java</file>
             <file>file:/D:/SWP391/group06/src/java/controller/auth/LoginController.java</file>
             <file>file:/D:/SWP391/group06/src/java/helper/AuthenticationHelper.java</file>
+            <file>file:/D:/SWP391/group06/src/java/dal/EmployeeDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/BrandDBContext.java</file>
             <file>file:/D:/SWP391/group06/web/view/maketer/employeeAddProduct.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/dal/OrderDBContext.java</file>
             <file>file:/D:/SWP391/group06/web/WEB-INF/tags/mainview.tag</file>
-            <file>file:/D:/SWP391/group06/src/java/dal/paymentDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/DBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/model/Item.java</file>
             <file>file:/D:/SWP391/group06/web/view/viewProductList/productSearch.jsp</file>
             <file>file:/D:/SWP391/group06/src/java/controller/home/HomePageServlet.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/CapacityDBContext.java</file>
+            <file>file:/D:/SWP391/group06/src/java/model/Blog.java</file>
             <file>file:/D:/SWP391/group06/src/java/model/Image.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/ProductImageDBContext.java</file>
             <file>file:/D:/SWP391/group06/src/java/dal/CartDBContext.java</file>

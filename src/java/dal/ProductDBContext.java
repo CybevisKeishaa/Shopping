@@ -7,6 +7,7 @@ package dal;
 import helper.ImageHelper;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.Part;
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +115,9 @@ public class ProductDBContext extends DBContext<Product> {
         }
     }
 
-    public void updateProduct(String pid, String cid, int igid, String name, String price, String stock, String date, String dis, String gender, String brand, String status, Part image) {
+    public void updateProduct(String pid, String cid, int igid, String name, String price,
+            String stock, String date, String dis, String gender, String brand, String status,
+            Part image, String oldImageUrl) {
         try {
             connect.setAutoCommit(false);
 
@@ -149,17 +152,19 @@ public class ProductDBContext extends DBContext<Product> {
                     + "   SET [img_url] = ?\n"
                     + "      ,[img_name] = ?\n"
                     + " WHERE img_id=?";
-            
-            PreparedStatement upIgidst = connect.prepareStatement(upIgid, PreparedStatement.RETURN_GENERATED_KEYS);
-                String imageName = String.format("BLOG%04d" + System.currentTimeMillis(), Integer.parseInt(pid));
-                String imageUrl = imageName + imageHelper.getExtensionFromContentType(image.getContentType());
-                upIgidst.setString(1, imageUrl);
-                upIgidst.setString(2, imageName);
-                upIgidst.setInt(3, igid);
-                    imageHelper.processImageUpload(image, imageName);
 
-                        imageHelper.removeImage(imageUrl);
-                    
+            PreparedStatement upIgidst = connect.prepareStatement(upIgid, PreparedStatement.RETURN_GENERATED_KEYS);
+            String imageName = String.format("PRODUCT%04d" + System.currentTimeMillis(), Integer.parseInt(pid));
+            String imageUrl = imageName + imageHelper.getExtensionFromContentType(image.getContentType());
+            upIgidst.setString(1, imageUrl);
+            upIgidst.setString(2, imageName);
+            upIgidst.setInt(3, igid);
+            imageHelper.processImageUpload(image, imageName);
+            // check file có tồn tại hay k
+            if (new File(oldImageUrl).exists()) {
+                imageHelper.removeImage(oldImageUrl);
+            }
+            
             String updateGender = "UPDATE [dbo].[Product_Gender]\n"
                     + "   SET [gender_id] = ?\n"
                     + "   \n"
@@ -185,7 +190,7 @@ public class ProductDBContext extends DBContext<Product> {
             } catch (SQLException ex) {
                 Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println(e);
+            Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, e);
         }
         try {
             connect.setAutoCommit(true);

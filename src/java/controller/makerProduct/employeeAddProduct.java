@@ -80,7 +80,7 @@ public class employeeAddProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Object object = request.getSession().getAttribute("customer");
+        Object object = request.getSession().getAttribute("employee");
         Employee e = new Employee();
         if (object != null) {
             e = (Employee) object;

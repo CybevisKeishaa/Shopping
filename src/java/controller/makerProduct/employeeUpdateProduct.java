@@ -73,7 +73,7 @@ public class employeeUpdateProduct extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String product_id = request.getParameter("product_id");
-        Object object = request.getSession().getAttribute("customer");
+        Object object = request.getSession().getAttribute("employee");
         Employee e = new Employee();
         if (object != null) {
             e = (Employee) object;
@@ -134,11 +134,13 @@ public class employeeUpdateProduct extends HttpServlet {
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedDate = now.format(formatter);
-            ProductDBContext pdb = new ProductDBContext();
+            ProductDBContext pdb = new ProductDBContext(this);
             String imgId = request.getParameter("img_id");
             Part filePart = request.getPart("file");
-
-            pdb.updateProduct(pid, cid, Integer.parseInt(imgId), name, price, stock, formattedDate, dis, gender, brand, status, filePart);
+            Product p = pdb.getByProductId(Integer.parseInt(pid));
+            if (p != null) {
+                pdb.updateProduct(pid, cid, Integer.parseInt(imgId), name, price, stock, formattedDate, dis, gender, brand, status, filePart,p.getImg().get(0).getImg_url());
+            }
 
             response.sendRedirect("employeeProductList");
         } catch (Exception e) {
