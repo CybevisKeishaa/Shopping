@@ -113,10 +113,11 @@
                             <li>
                                 <a href="${pageContext.request.contextPath}/market">MKT Dashboard</a>
                             </li>
-                        </c:if>
                             <li>
-                            <a href="${pageContext.request.contextPath}/market">MKT Dashboard</a>
-                        </li>
+                                <a href="${pageContext.request.contextPath}/employeeProductList">Product List</a>
+                            </li>
+                        </c:if>
+                       
                         <c:if test="${role == 'Admin' || role == 'Saler'}">
                             <li>
                                 <a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a>

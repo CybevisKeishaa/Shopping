@@ -23,7 +23,7 @@
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/a/asset/img/logomi.png">
 
         <style>
-          .panel-body form {
+            .panel-body form {
                 margin-top: 20px;
                 display: flex; /* Side-by-side layout */
             }
@@ -89,7 +89,7 @@
             .form-fields input[type="submit"]:hover {
                 background-color: #4cae4c;
             }
-            
+
         </style>
     </head>
 
@@ -163,146 +163,144 @@
                         </div>
                     </div>
                 </div>
+                <div class="container-fluid mimin-wrapper">
 
-                 <div class="container-fluid mimin-wrapper">
-            <div id="content">
-               
 
-                <div class="col-md-12 top-20 padding-0">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h3>Product List</h3>
-                        </div>
-                        <div class="panel-body">
-                            <form action="employeeUpdateProduct" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="eid" value="${requestScope.eid}" />
-                                <input type="hidden" name="pid" value="${requestScope.pid}" />
+                    <div class="col-md-12 top-20 padding-0">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3>Product List</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form action="employeeUpdateProduct" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="eid" value="${requestScope.eid}" />
+                                    <input type="hidden" name="pid" value="${requestScope.pid}" />
 
-                                <!-- Image Section -->
-                                <div class="image-section">
-                                    <c:forEach var="j" items="${requestScope.p.img}" varStatus="status">
-                                        <img src="${pageContext.request.contextPath}/img/${j.name}" alt="${j.name}">
-                                        <label for="file${status.index}">Choose Image:</label>
-                                        <input type="hidden" name="img_id" value="${j.img_id}" />
-                                        <input type="file" name="file" id="file${status.index}" accept="image/*" />
-                                    </c:forEach>
-                                    <input type="hidden" name="size" value="${requestScope.p.img.size()}" />
-                                </div>
-
-                                <!-- Form Fields Section -->
-                                <div class="form-fields">
-                                    <div class="form-group">
-                                        <label for="name">Name:</label>
-                                        <input type="text" name="name" id="name" value="${requestScope.p.name}" required />
+                                    <!-- Image Section -->
+                                    <div class="image-section">
+                                        <c:forEach var="j" items="${requestScope.p.img}" varStatus="status">
+                                            <img src="${pageContext.request.contextPath}/img/${j.img_url}" alt="${j.img_url}">
+                                            <label for="file${status.index}">Choose Image:${j.name}</label>
+                                            <input type="hidden" name="img_id" value="${j.img_id}" />
+                                        <input type="file" name="file" id="file" accept="image/*" required />
+                                        </c:forEach>
+                                        <input type="hidden" name="size" value="${requestScope.p.img.size()}" />
                                     </div>
 
-                                    <c:if test="${requestScope.c == null}">
+                                    <!-- Form Fields Section -->
+                                    <div class="form-fields">
                                         <div class="form-group">
-                                            <label for="price">Price:</label>
-                                            <input type="text" name="price" id="price" value="${requestScope.p.price}" required />
+                                            <label for="name">Name:</label>
+                                            <input type="text" name="name" id="name" value="${requestScope.p.name}" required />
                                         </div>
-                                    </c:if>
 
-                                    <c:if test="${requestScope.c != null}">
+                                        <c:if test="${requestScope.c == null}">
+                                            <div class="form-group">
+                                                <label for="price">Price:</label>
+                                                <input type="text" name="price" id="price" value="${requestScope.p.price}" required />
+                                            </div>
+                                        </c:if>
+
+                                        <c:if test="${requestScope.c != null}">
+                                            <div class="form-group">
+                                                <label for="price">Price:</label>
+                                                <input type="text" name="price" id="price" value="${c.unit_price}" required />
+                                            </div>
+                                        </c:if>
+
                                         <div class="form-group">
-                                            <label for="price">Price:</label>
-                                            <input type="text" name="price" id="price" value="${c.unit_price}" required />
+                                            <label for="stock">Stock:</label>
+                                            <input type="text" name="stock" id="stock" value="${requestScope.p.stock}" required />
                                         </div>
-                                    </c:if>
 
-                                    <div class="form-group">
-                                        <label for="stock">Stock:</label>
-                                        <input type="text" name="stock" id="stock" value="${requestScope.p.stock}" required />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="dis">Discount:</label>
-                                        <select name="dis" id="dis" required>
-                                            <option value="" disabled selected>-- Select discount --</option>
-                                            <option value="-1">Không discount</option>
-                                            <c:forEach var="i" items="${requestScope.datad}">
-                                                <option value="${i.discount_id}" 
-                                                        <c:if test="${i.discount_id == requestScope.p.discount.discount_id}">
-                                                            selected
-                                                        </c:if>
-                                                        >${i.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="brand">Brand:</label>
-                                        <select name="brand" id="brand" required>
-                                            <c:forEach var="i" items="${requestScope.datab}">
-                                                <option value="${i.brand_id}" 
-                                                        ${i.brand_id == requestScope.p.brand.brand_id ? 'selected' : ''}>
-                                                    ${i.name}
-                                                </option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="gender">Gender:</label>
-                                        <select name="gender" required>
-                                            <c:forEach var="j" items="${requestScope.g}">
-                                                <option value="${j.gender_id}">${j.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="capacity">Capacity:</label>
-                                        <div class="capacity-options">
-                                            <c:forEach var="j" items="${requestScope.listc}">
-                                                <label>
-                                                    <input type="checkbox" value="${j.capacity_id}" name="cid"
-                                                           onclick="window.location.href = 'employeeUpdateProduct?product_id=${param.product_id}&cid=${j.capacity_id}'"
-                                                           <c:if test="${param.cid == j.capacity_id}">checked</c:if> >
-                                                    ${j.value}
-                                                </label>
-                                            </c:forEach>
+                                        <div class="form-group">
+                                            <label for="dis">Discount:</label>
+                                            <select name="dis" id="dis" required>
+                                                <option value="" disabled selected>-- Select discount --</option>
+                                                <option value="-1">Không discount</option>
+                                                <c:forEach var="i" items="${requestScope.datad}">
+                                                    <option value="${i.discount_id}" 
+                                                            <c:if test="${i.discount_id == requestScope.p.discount.discount_id}">
+                                                                selected
+                                                            </c:if>
+                                                            >${i.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label for="status">Status:</label>
-                                        <select name="status" required>
-                                            <option value="true" ${requestScope.p.status == 'true' ? 'selected' : ''}>Kích Hoạt</option>
-                                            <option value="false" ${requestScope.p.status == 'false' ? 'selected' : ''}>Chưa kích Hoạt</option>
-                                        </select>
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="brand">Brand:</label>
+                                            <select name="brand" id="brand" required>
+                                                <c:forEach var="i" items="${requestScope.datab}">
+                                                    <option value="${i.brand_id}" 
+                                                            ${i.brand_id == requestScope.p.brand.brand_id ? 'selected' : ''}>
+                                                        ${i.name}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
 
-                                    <input type="submit" value="Save" />
-                                </div>
-                            </form>
+                                        <div class="form-group">
+                                            <label for="gender">Gender:</label>
+                                            <select name="gender" required>
+                                                <c:forEach var="j" items="${requestScope.g}">
+                                                    <option value="${j.gender_id}">${j.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="capacity">Capacity:</label>
+                                            <div class="capacity-options">
+                                                <c:forEach var="j" items="${requestScope.listc}">
+                                                    <label>
+                                                        <input type="checkbox" value="${j.capacity_id}" name="cid"
+                                                               onclick="window.location.href = 'employeeUpdateProduct?product_id=${param.product_id}&cid=${j.capacity_id}'"
+                                                               <c:if test="${param.cid == j.capacity_id}">checked</c:if> >
+                                                        ${j.value}
+                                                    </label>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="status">Status:</label>
+                                            <select name="status" required>
+                                                <option value="true" ${requestScope.p.status == 'true' ? 'selected' : ''}>Kích Hoạt</option>
+                                                <option value="false" ${requestScope.p.status == 'false' ? 'selected' : ''}>Chưa kích Hoạt</option>
+                                            </select>
+                                        </div>
+
+                                        <input type="submit" value="Save" />
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-            </div>
-            <!-- end: content -->
+        <!-- end: content -->
 
-        </div>
+    </div>
 
-        <!-- start: Mobile -->
-        <button id="mimin-mobile-menu-opener" class="animated rubberBand btn btn-circle btn-danger">
-            <span class="fa fa-bars"></span>
-        </button>
-        <!-- end: Mobile -->
+    <!-- start: Mobile -->
+    <button id="mimin-mobile-menu-opener" class="animated rubberBand btn btn-circle btn-danger">
+        <span class="fa fa-bars"></span>
+    </button>
+    <!-- end: Mobile -->
 
-        <!-- start: Javascript -->
-        <script src="${pageContext.request.contextPath}/a/asset/js/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/a/asset/js/jquery.ui.min.js"></script>
-        <script src="${pageContext.request.contextPath}/a/asset/js/bootstrap.min.js"></script>
-        <!-- plugins -->
-        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/moment.min.js"></script>
-        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/jquery.datatables.min.js"></script>
-        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/datatables.bootstrap.min.js"></script>
-        <script src="${pageContext.request.contextPath}/a/asset/js/plugins/jquery.nicescroll.js"></script>
-        <script src="${pageContext.request.contextPath}/a/asset/js/main.js"></script>
-        <!-- end: Javascript -->
+    <!-- start: Javascript -->
+    <script src="${pageContext.request.contextPath}/a/asset/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/a/asset/js/jquery.ui.min.js"></script>
+    <script src="${pageContext.request.contextPath}/a/asset/js/bootstrap.min.js"></script>
+    <!-- plugins -->
+    <script src="${pageContext.request.contextPath}/a/asset/js/plugins/moment.min.js"></script>
+    <script src="${pageContext.request.contextPath}/a/asset/js/plugins/jquery.datatables.min.js"></script>
+    <script src="${pageContext.request.contextPath}/a/asset/js/plugins/datatables.bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/a/asset/js/plugins/jquery.nicescroll.js"></script>
+    <script src="${pageContext.request.contextPath}/a/asset/js/main.js"></script>
+    <!-- end: Javascript -->
 
-    </body>
+</body>
 </html>

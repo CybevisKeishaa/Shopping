@@ -88,6 +88,5 @@ public class ImageHelper {
         String imageProjectPath = uploadProjectDir + File.separator + imageUrl;
         return new File(imagePath).delete()//build
                 && new File(imageProjectPath).delete();//project
-
     }
 }
