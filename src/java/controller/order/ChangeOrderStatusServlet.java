@@ -24,14 +24,12 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        try {
-            String orderIDRaw = request.getParameter("order_id");
-            int orderID = Integer.parseInt(orderIDRaw);
-            OrderDBContext db = new OrderDBContext();
-            db.updateOrderStatus(orderID, 6);
-        } catch (MessagingException ex) {
-            request.setAttribute("errorMessage", ex.getMessage());
-        }
+
+        String orderIDRaw = request.getParameter("order_id");
+        int orderID = Integer.parseInt(orderIDRaw);
+        OrderDBContext db = new OrderDBContext();
+        db.updateToCancel(orderID, 6);
+
         response.sendRedirect("../order");
 
     }
@@ -47,21 +45,18 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        try {
-            String orderIDRaw = request.getParameter("order_id");
-            int orderID = Integer.parseInt(orderIDRaw);
-            OrderDBContext db = new OrderDBContext();
-            db.updateOrderStatus(orderID, 4);
-            String email = user.getEmail();
 
-            String contextPath = request.getContextPath(); // Lấy context path của ứng dụng
-            String verificationLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/account/feedback?oid=" + orderIDRaw;
-            IJavaMail mailService = new EmailService();
-            boolean emailSent = mailService.send(email, "Thank you", "Cảm ơn quý khách đã sử dụng sản phẩm của chúng tôi, hãy để lại đánh giá để chúng tôi có thể nâng cao trải nghiệm dịch vụ của bạn cho những lần tiếp theo", verificationLink);
+        String orderIDRaw = request.getParameter("order_id");
+        int orderID = Integer.parseInt(orderIDRaw);
+        OrderDBContext db = new OrderDBContext();
+        db.updateToComplete(orderID, 4);
+        String email = user.getEmail();
 
-        } catch (MessagingException ex) {
-            request.setAttribute("errorMessage", ex.getMessage());
-        }
+        String contextPath = request.getContextPath(); // Lấy context path của ứng dụng
+        String verificationLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/account/feedback?oid=" + orderIDRaw;
+        IJavaMail mailService = new EmailService();
+        boolean emailSent = mailService.send(email, "Thank you", "Cảm ơn quý khách đã sử dụng sản phẩm của chúng tôi, hãy để lại đánh giá để chúng tôi có thể nâng cao trải nghiệm dịch vụ của bạn cho những lần tiếp theo", verificationLink);
+
         request.getRequestDispatcher("/view/notice/ThanksForBuy.jsp").forward(request, response);
 
     }

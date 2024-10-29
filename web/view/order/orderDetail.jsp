@@ -112,7 +112,7 @@
 
                         <!-- Buttons for updating or canceling the order -->
                         <div class="order-actions">
-                            <c:if test="${requestScope.order.status.status_id != 1}">
+                            <c:if test="${requestScope.order.status.status_id != 1 && requestScope.order.status.status_id != 6}">
                                 <form action="update" method="post" onsubmit="return confirmReceived();">
                                     <input type="hidden" name="order_id" value="${order.order_id}">
                                     <button type="submit" class="btn btn-primary">Giao hàng thành công</button>
@@ -122,7 +122,7 @@
                                 <input type="hidden" name="order_id" value="${order.order_id}">
                                 <!-- Nút hủy đơn hàng sẽ bị mờ nếu trạng thái là 'shipping' hoặc 'completed' -->
                                 <button type="submit" class="btn btn-danger" <c:if
-                                    test="${requestScope.order.status.status_id == 3 || requestScope.order.status.status_id == 4}">disabled
+                                    test="${requestScope.order.status.status_id == 3 || requestScope.order.status.status_id == 4 || requestScope.order.status.status_id == 6}">disabled
                                     </c:if>>Hủy đơn hàng</button>
                             </form>
                         </div>

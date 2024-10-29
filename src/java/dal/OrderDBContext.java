@@ -649,7 +649,7 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     //=============== Data Change ===============
-    public void updateOrderStatus(int orderID, int statusID) throws MessagingException {
+    public void updateOrderStatus(int orderID, int statusID, boolean isUser) throws MessagingException {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -671,13 +671,12 @@ public class OrderDBContext extends DBContext<Order> {
             }
 
             // Check if status Order is invalid for change 
-            if (status.getStatus_name().equals("Cancelled") || status.getStatus_name().equals("Completed") || status.getStatus_id() >= statusID) {
-                throw new MessagingException("Invalid Status Update.");
-            }
-            // update status
+//            if (!status.canTransition(o.getStatus().getStatus_id(), statusID, isUser)) {
+//                throw new MessagingException("Invalid Status Update.");
+//            }
             String sql = """
                      UPDATE dbo.[Order] SET status_id = ?
-                     OUTPUT inserted.status_id
+                     OUTPUT inserted.status_id,inserted.total
                      WHERE order_id = ?;
                      """;
 
@@ -689,14 +688,14 @@ public class OrderDBContext extends DBContext<Order> {
             if (rs.next() && statusID == Status_Order.CANCELLED) {
                 // Restock to Wallet
                 if (o.isPaidStatus()) {// đã trả tiền thì mới hoàn tiền
+                    int total = rs.getInt("total");
                     sql = """
                         UPDATE w
                         SET w.total = w.total + ?
                         FROM Wallet w 
                         JOIN Customer c ON c.wallet_id = w.wallet_id
                         WHERE c.cus_id = ?;
-                  """;
-                    int total = rs.getInt("total");
+                    """;
                     stm.close(); // Close previous statement
                     stm = connect.prepareStatement(sql);
                     stm.setInt(1, total);
@@ -850,6 +849,41 @@ public class OrderDBContext extends DBContext<Order> {
         return orderId;  // Trả về orderId
     }
 
+    public void updateToComplete(int orderID, int statusID) {
+
+        PreparedStatement stm = null;
+        try {
+            String sql = "UPDATE dbo.[Order] SET status_id = ? WHERE order_id = ?";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, statusID);
+            stm.setInt(2, orderID);
+            stm.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    
+    public void updateToCancel(int orderID, int statusID) {
+
+        PreparedStatement stm = null;
+        try {
+            String sql = "UPDATE dbo.[Order] SET status_id = ? WHERE order_id = ?";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, statusID);
+            stm.setInt(2, orderID);
+            stm.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    
+
     public void insertOrderDetail(int orderId, ArrayList<OrderDetail> orderDetails) {
         PreparedStatement stm = null;
 
@@ -890,26 +924,4 @@ public class OrderDBContext extends DBContext<Order> {
         }
     }
 
-    public static void main(String[] args) {
-        OrderDBContext orderDB = new OrderDBContext();
-
-        int total = 1500000;
-        int statusID = 1;
-        int cusID = 1;
-        int paymentMethodID = 2;
-        String note = "Đơn hàng mẫu";
-        int addressID = 13;
-        int employeeID = 5;
-
-        // Gọi hàm insertOrder và nhận về orderId
-        int orderId = orderDB.insertOrder(total, statusID, cusID, paymentMethodID, note, addressID, employeeID);
-
-        // Kiểm tra kết quả
-        if (orderId != -1) {
-            System.out.println("Order created successfully with ID: " + orderId);
-        } else {
-            System.out.println("Failed to create order.");
-        }
-
-    }
 }
