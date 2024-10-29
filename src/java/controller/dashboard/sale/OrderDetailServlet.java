@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Employee;
+import model.Customer_User;
 import model.Order;
 import model.Product;
 import model.Status_Order;
@@ -31,7 +31,7 @@ public class OrderDetailServlet extends AuthenticationServlet {
     private static final String WEB_TITLE = "Order Detail";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         Integer id = RequestHelper.getIntParameterWithDefault("orderId", null, request);
@@ -54,7 +54,7 @@ public class OrderDetailServlet extends AuthenticationServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, Employee user) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String method = request.getParameter("method");
         try {
@@ -75,7 +75,7 @@ public class OrderDetailServlet extends AuthenticationServlet {
                     return;
                 }
                 OrderDBContext db = new OrderDBContext();
-                db.updateOrderStatus(id, statusId, false);// always employee or admin
+                db.updateOrderStatus(id, statusId, false);
             }
         } catch (MessagingException ex) {
             request.setAttribute("errorMessage", ex.getMessage());

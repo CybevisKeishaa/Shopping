@@ -5,6 +5,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,13 +17,17 @@ import java.util.Set;
  */
 public class Status_Order {
 
+    /**
+     *
+     * @author KEISHA
+     */
     public static final int PENDING = 1;
     public static final int CONFIRMED = 2;
     public static final int SHIPPING = 3;
     public static final int COMPLETED = 4;
     public static final int CANCELLED = 5;
     public static final int CANCEL_REQUEST = 6;
-    
+
     // Map to store allowed transitions
     private static final Map<Integer, Set<Integer>> statusTransitionMap = new HashMap<>();
 
@@ -95,3 +100,5 @@ public class Status_Order {
         return statusTransitionMap.getOrDefault(currentStatus, Collections.emptySet()).contains(newStatus);
     }
 }
+
+
