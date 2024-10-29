@@ -134,7 +134,14 @@ public class BlogDBContext extends DBContext<Blog> {
         StringBuilder whereSql = new StringBuilder("Where 1=1");
         // where
         if (search != null && !search.isEmpty()) {
-            whereSql.append(" AND (b.title LIKE %" + search + "% OR b.blog_id = " + search + " Or e.name_emp LIKE %" + search + "%) ");
+            whereSql.append(" AND (b.title LIKE '%" + search + "%' Or e.name_emp LIKE '%" + search + "%'");
+            try {
+                Integer.parseInt(search);
+                whereSql.append(" or b.blog_id = '" + search + "'");
+            } catch (Exception e) {
+                //do nothing
+            }
+            whereSql.append(") ");
         }
         if (startDate != null && endDate != null) {
             whereSql.append(" AND b.date BETWEEN ? AND ?");
@@ -191,7 +198,14 @@ public class BlogDBContext extends DBContext<Blog> {
         StringBuilder whereSql = new StringBuilder("Where 1=1");
         // where
         if (search != null && !search.isEmpty()) {
-            whereSql.append(" AND (title LIKE %" + search + "% OR blog_id = " + search + " Or e.name_emp LIKE %" + search + "%) ");
+            whereSql.append(" AND (b.title LIKE '%" + search + "%' Or e.name_emp LIKE '%" + search + "%'");
+            try {
+                Integer.parseInt(search);
+                whereSql.append(" or b.blog_id = '" + search + "'");
+            } catch (Exception e) {
+                //do nothing
+            }
+            whereSql.append(") ");
         }
         if (startDate != null && endDate != null) {
             whereSql.append(" AND b.date BETWEEN ? AND ?");
