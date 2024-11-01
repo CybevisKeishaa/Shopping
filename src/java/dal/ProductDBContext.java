@@ -12,12 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Brand;
-import model.Capacity;
-import model.Discount;
-import model.Gender;
-import model.Image;
-import model.Product;
+
+import model.*;
 
 /**
  *
@@ -32,6 +28,87 @@ public class ProductDBContext extends DBContext<Product> {
     }
 
     public ProductDBContext() {
+    }
+
+    public ArrayList<Product> getByHid(int hid) {
+        BrandDBContext br = new BrandDBContext();
+        CapacityDBContext cap = new CapacityDBContext();
+        GenderDBContext gen = new GenderDBContext();
+        ImageDBContext image = new ImageDBContext();
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "  SELECT p.* FROM Product p inner join Product_History ph on p.product_id=ph.product_id inner join History h on h.HistoryId=ph.HistoryId where h.HistoryId=?";
+        try {
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setInt(1, hid);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                 Product p = new Product();
+                p.setProduct_id(rs.getInt(1));
+                p.setName(rs.getString(2));
+                p.setPrice(rs.getInt(3));
+                p.setDate(rs.getDate(4));
+                p.setStock(rs.getInt(5));
+                DiscountDBContext db = new DiscountDBContext();
+                Discount d = db.getDiscountById(rs.getInt(6));
+                p.setDiscount(d);
+                BrandDBContext bd = new BrandDBContext();
+                Brand b = bd.getBrandFindById(rs.getInt(7));
+                p.setBrand(b);
+                p.setStatus(rs.getBoolean(8));
+                ArrayList<Capacity> c = cap.getCapacityByProductId(rs.getInt(1));
+                p.setCapacity(c);
+                ArrayList<Image> i = image.getByProductId(rs.getInt(1));
+                ArrayList<Gender> ge = gen.getGenderFindByPid(rs.getInt(1));
+                p.setGender(ge);
+                p.setImg(i);
+                list.add(p);
+            }
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public int getPidCid(String pid, String cid) {
+        String sql = "Select * from Product_Capacity where product_id=? and cap_id=?";
+        int n = -1;
+        try {
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setInt(1, Integer.parseInt(pid));
+            stm.setInt(2, Integer.parseInt(cid));
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("unit_price");
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return n;
+    }
+
+    public int getStoPidCid(String pid, String cid) {
+        String sql = "Select * from Product_Capacity where product_id=? and cap_id=?";
+        int n = -1;
+        try {
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setInt(1, Integer.parseInt(pid));
+            stm.setInt(2, Integer.parseInt(cid));
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("stock");
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return n;
+    }
+
+    public static void main(String[] args) {
+        ProductDBContext pdb = new ProductDBContext();
+        System.out.println(pdb.getByHid(1).size());
     }
 
     public ArrayList<Product> getAllByEid(int eid, String s) {
@@ -302,7 +379,7 @@ public class ProductDBContext extends DBContext<Product> {
             PreparedStatement insertGenst = connect.prepareStatement(insertGender, PreparedStatement.RETURN_GENERATED_KEYS);
             insertGenst.setInt(1, Integer.parseInt(gid));
             insertGenst.setInt(2, productId);
-            insertGenst.executeUpdate();            
+            insertGenst.executeUpdate();
             connect.commit();
 
         } catch (Exception e) {
@@ -321,7 +398,6 @@ public class ProductDBContext extends DBContext<Product> {
     }
 
     public ArrayList<Product> getDiscountProductForHomepage() {
-
         ArrayList<Product> products = new ArrayList<>();
         PreparedStatement stm = null;
         try {

@@ -164,7 +164,9 @@
                                     <a href="employeeAddProduct" class="btn btn-success btn-create">
                                         <b>Create</b>
                                     </a>
-
+                                     <a href="employeeViewHistory" class="btn btn-success btn-create">
+                                        <b>View history</b>
+                                    </a>
                                     <!-- Phần Filter ở giữa -->
 <!--                                    <form id="filterForm" method="get" action="productList" class="filter-form">
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -288,6 +290,9 @@
                                                     </c:if>
                                                     <td>
                                                         <a href="employeeUpdateProduct?product_id=${i.product_id}" class="btn btn-primary btn-sm">Update</a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="employeeImportGoods?product_id=${i.product_id}" class="btn btn-primary btn-sm">Nhap Hang</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

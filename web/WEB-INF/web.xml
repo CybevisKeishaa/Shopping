@@ -142,6 +142,14 @@
         <servlet-name>insertAddressServlet</servlet-name>
         <servlet-class>controller.customer.insertAddressServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>employeeImportGoods</servlet-name>
+        <servlet-class>controller.makerProduct.employeeImportGoods</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>employeeViewHistory</servlet-name>
+        <servlet-class>controller.makerProduct.employeeViewHistory</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>productSearch</servlet-name>
         <url-pattern>/productSearch</url-pattern>
@@ -322,6 +330,14 @@
     <servlet-mapping>
         <servlet-name>insertAddressServlet</servlet-name>
         <url-pattern>/account/address/add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>employeeImportGoods</servlet-name>
+        <url-pattern>/employeeImportGoods</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>employeeViewHistory</servlet-name>
+        <url-pattern>/employeeViewHistory</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>homepage</welcome-file>

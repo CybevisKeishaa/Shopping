@@ -382,7 +382,7 @@
                                                         <h3><a href="product-details.html">${product.name}</a></h3>
                                                         <div class="product-price">
                                                             <span>${product.price}</span>
-
+                                                           
                                                         </div>
                                                         <div class="product-gender">
                                                             <span>${product.gender[0].name}</span>

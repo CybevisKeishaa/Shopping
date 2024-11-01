@@ -173,7 +173,7 @@
                                             <c:out value="${product.stock * product.capacity[0].unit_price}" /> VND
                                         </td>
                                         <td>
-                                            <form action="RebuyProduct" method="post">
+                                            <form action="../../product/detail" method="get">
                                                 <input type="hidden" name="product_id" value="${product.product_id}">
                                                 <button type="submit" class="btn btn-primary btn-sm">Mua thêm</button>
                                             </form>
