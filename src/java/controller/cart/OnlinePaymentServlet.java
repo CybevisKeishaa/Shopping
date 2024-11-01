@@ -2,53 +2,38 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.order;
+package controller.cart;
 
+import com.vnpay.common.Config;
 import controller.auth.BaseRequiredCustomerAuthenticationController;
-import dal.CartDBContext;
 import dal.OrderDBContext;
-import dal.OrderDetailDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import model.Customer_User;
-import model.Order;
-import model.OrderDetail;
-import model.Product;
 
 /**
  *
  * @author KEISHA
  */
-public class CartCompleteServlet extends BaseRequiredCustomerAuthenticationController {
-    
+public class OnlinePaymentServlet extends BaseRequiredCustomerAuthenticationController {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        
-        String vnPay = request.getParameter("orderID");
-        
-        int orderID;
-        if (vnPay != null) {          
-            orderID = Integer.parseInt(vnPay);
-        } else {
-            orderID = Integer.parseInt(request.getParameter("orderID"));
-        }
-        
-        
-        OrderDBContext orderDB = new OrderDBContext();
-        Order o = orderDB.getOrderByOrderID(orderID, user.getCus_id());
-        ArrayList<Product> p = orderDB.getNewProductsByOrderAndCustomer(orderID, user.getCus_id());
-        
-        request.setAttribute("order", o);
-        request.setAttribute("product", p);
-        
-        request.getRequestDispatcher("../view/notice/cartComplete.jsp").forward(request, response);
+        int cusID = user.getCus_id();
+        OrderDBContext db = new OrderDBContext();
+        int orderID = db.getEarliestOrderIDByCustomer(cusID);
+        db.updateOrderPaidStatus(orderID);
+
+        request.getRequestDispatcher("cart/complete?orderID=" + orderID).forward(request, response);
     }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -60,7 +45,7 @@ public class CartCompleteServlet extends BaseRequiredCustomerAuthenticationContr
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        
+        doGet(request, response);
     }
 
     /**

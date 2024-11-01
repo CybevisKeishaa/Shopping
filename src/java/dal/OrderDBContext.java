@@ -99,6 +99,24 @@ public class OrderDBContext extends DBContext<Order> {
         return orders;
     }
 
+    public int getEarliestOrderIDByCustomer(int cus_id) {
+        int orderID = 0;
+        String sql = "SELECT TOP 1 order_id FROM [Order] WHERE cus_id = ? ORDER BY created_at DESC";
+
+        try (PreparedStatement stmt = connect.prepareStatement(sql)) {
+            stmt.setInt(1, cus_id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    orderID = rs.getInt("order_id");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Thêm xử lý ngoại lệ phù hợp tại đây
+        }
+
+        return orderID;
+    }
+
     public void updateStockAfterOrder(int productId, int capacityId, int quantity) {
         PreparedStatement stm = null;
 
@@ -792,6 +810,17 @@ public class OrderDBContext extends DBContext<Order> {
         }
     }
 
+    public void updateOrderPaidStatus(int orderId) {
+        String sql = "UPDATE [Order] SET paid_status = ? WHERE order_id = ?";
+        try (PreparedStatement stm = connect.prepareStatement(sql)) {
+            stm.setBoolean(1, true);
+            stm.setInt(2, orderId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public int insertOrder(int total, int statusID, int cusID, int paymentMethodID, String note, int addressID, int employeeID) {
         PreparedStatement stm = null;
         ResultSet generatedKeys = null;
@@ -864,8 +893,7 @@ public class OrderDBContext extends DBContext<Order> {
         }
 
     }
-    
-    
+
     public void updateToCancel(int orderID, int statusID) {
 
         PreparedStatement stm = null;
@@ -881,8 +909,6 @@ public class OrderDBContext extends DBContext<Order> {
         }
 
     }
-    
-    
 
     public void insertOrderDetail(int orderId, ArrayList<OrderDetail> orderDetails) {
         PreparedStatement stm = null;

@@ -223,15 +223,18 @@ public class EmployeeDBContext extends DBContext {
         PreparedStatement stm = null;
         int empID = -1;
         try {
-            String sql = "SELECT e.emp_id,  \n"
+            String sql = "SELECT e.emp_id, \n"
                     + "       e.name_emp,  \n"
                     + "       COUNT(o.order_id) AS number_of_orders\n"
                     + "FROM Employee e\n"
-                    + "LEFT JOIN [Order] o ON e.emp_id = o.employee_id AND CAST(o.created_at AS DATE) = CAST(GETDATE() AS DATE)\n"
+                    + "LEFT JOIN [Order] o \n"
+                    + "       ON e.emp_id = o.employee_id \n"
+                    + "       AND CAST(o.created_at AS DATE) = CAST(GETDATE() AS DATE)\n"
+                    + "       AND o.status_id = 1  \n"
                     + "LEFT JOIN Role r ON e.role_id = r.role_id\n"
                     + "WHERE r.role_id = 3 \n"
                     + "GROUP BY e.emp_id, e.name_emp\n"
-                    + "order by number_of_orders asc";
+                    + "ORDER BY number_of_orders ASC;";
 
             stm = connect.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
