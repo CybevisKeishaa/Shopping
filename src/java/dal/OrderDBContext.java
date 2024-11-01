@@ -578,7 +578,7 @@ public class OrderDBContext extends DBContext<Order> {
                 if (stm != null) {
                     stm.close();
                 }
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -647,7 +647,7 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     //=============== Data Change ===============
-    public void updateOrderStatus(int orderID, int statusID,boolean isUser) throws MessagingException {
+    public void updateOrderStatus(int orderID, int statusID, boolean isUser) throws MessagingException {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {

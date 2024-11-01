@@ -44,8 +44,8 @@ public class MKTDashboard extends AuthenticationServlet {
         String status = RequestHelper.getStringParameterWithDefault("status", "true", request);
 
         // Parse the startDate and endDate from the request (optional, null if not provided)
-        Date startDate = RequestHelper.getDateParameterWithDefault("startDate", null, request);
-        Date endDate = RequestHelper.getDateParameterWithDefault("endDate", null, request);
+        Date startDate = RequestHelper.getDateParameterWithDefault("startdate", null, request);
+        Date endDate = RequestHelper.getDateParameterWithDefault("enddate", null, request);
 
         // Page number and page size for pagination (default values if not provided)
         int page = RequestHelper.getIntParameterWithDefault("page", 1, request);
