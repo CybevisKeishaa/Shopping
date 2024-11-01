@@ -4,11 +4,13 @@
  */
 package dal.combiner;
 
+import dal.EmployeeDBContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Address;
 import model.Customer_User;
+import model.Employee;
 import model.Order;
 import model.Status_Order;
 
@@ -17,28 +19,30 @@ import model.Status_Order;
  * @author Anonymous
  */
 public class OrderCombiner {
-
+    
     public static Order toTableRow(ResultSet rs) throws SQLException {
         Order o = new Order();
-
+        EmployeeDBContext edb = new EmployeeDBContext();
+        
         o.setOrder_id(rs.getInt("order_id"));
         o.setCreate_at(rs.getTimestamp("orderedDate"));
         o.setTotal_price(rs.getInt("totalCost"));
         o.setPaidStatus(rs.getBoolean("paid_status"));
         o.setFirstProductName(rs.getString("firstProductName"));
         o.setNumberOfOtherProducts(rs.getInt("productCount"));
-
+        
         Status_Order so = new Status_Order();
         so.setStatus_name(rs.getString("status"));
-
-        o.setStatus(so);
         
+        o.setStatus(so);
         Customer_User customer = new Customer_User();
         customer.setName_cus(rs.getString("name_cus").trim());
         o.setCustomer(customer);
+        Employee e = edb.getEmployeeByIdForBlog(rs.getInt("emp_id"));
+        o.setEmployee(e);
         return o;
     }
-
+    
     public static Order toElement(ResultSet rs, Order o) throws SQLException {
         if (o == null) {
             o = new Order();
@@ -49,7 +53,7 @@ public class OrderCombiner {
         Status_Order so = new Status_Order();
         so.setStatus_id(rs.getInt("status_id"));
         so.setStatus_name(rs.getString("status"));
-
+        
         o.setStatus(so);
         o.setShipping_method(rs.getString("shipping_method"));
         o.setPaidStatus(rs.getBoolean("paid_status"));
