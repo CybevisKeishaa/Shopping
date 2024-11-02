@@ -163,13 +163,22 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="address">Select Address:</label>
-                                            <select name="selectedAddress" class="form-control" required>
+                                            <select name="selectedAddress" class="form-control" required onchange="moreAddress(this)">
                                                 <c:forEach var="address" items="${requestScope.address}">
                                                     <option value="${address.a_id}">
                                                         ${address.street}, ${address.ward}, ${address.district}, ${address.city} - Phone: ${address.a_phone}
                                                     </option>
                                                 </c:forEach>
+                                                    <option value="link">Thêm địa chỉ</option>
                                             </select>
+                                            <script>  
+                                            function moreAddress(select){
+                                                if(select.value === "link"){
+                                                    window.location.href = "../account/address/add"
+                                                }
+                                            }
+                                            </script>
+                                            
                                         </div>
                                     </div>
                                 </div>

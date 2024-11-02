@@ -137,7 +137,7 @@
                 <div class="sidebar">
                     <h3>Điều Hướng</h3>
                     <ul>
-                        <li><a href="${pageContext.request.contextPath}/profile">Hồ Sơ Cá Nhân</a></li>
+                        <li><a href="${pageContext.request.contextPath}/customer_profile">Hồ Sơ Cá Nhân</a></li>
                         <li><a href="${pageContext.request.contextPath}/account/order">Đơn Hàng</a></li>
                         <li><a href="${pageContext.request.contextPath}/cart/list">Giỏ Hàng</a></li>
                     </ul>
