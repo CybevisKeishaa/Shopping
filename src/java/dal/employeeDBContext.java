@@ -308,7 +308,7 @@ public class EmployeeDBContext extends DBContext {
                             SELECT e.emp_id, e.name_emp, e.phone, e.status, e.avartar, e.email, r.*
                             FROM Employee e
                             JOIN Role r ON r.role_id = e.role_id
-                            WHERE r.role_name = ?
+                            WHERE r.role_name = ? and e.status = 1
                          """;
             stm = connect.prepareStatement(sql);
             // Bind the email and password parameters

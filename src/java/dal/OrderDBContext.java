@@ -118,7 +118,7 @@ public class OrderDBContext extends DBContext<Order> {
         // Phân trang với OFFSET và FETCH
         String sql = OrderSql.GET_ALL;
         String whereSQL = "AND o.employee_id is null";
-        String orderBySQL = "Order by o.order_id DESC";
+        String orderBySQL = "Order by o.order_id ASC";
         try {
             PreparedStatement stm;
 
@@ -181,7 +181,7 @@ public class OrderDBContext extends DBContext<Order> {
             }
             sql = sql.replace("{where}", whereSQL);
             stm = connect.prepareStatement(sql);
-            int paramIndex = 0;
+            int paramIndex = 1;
             if (startDate != null) {
                 stm.setDate(paramIndex++, new Date(startDate.getTime()));
             }
@@ -692,6 +692,32 @@ public class OrderDBContext extends DBContext<Order> {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public boolean updateOrderEmployeeID(int orderId, int empId) {
+        Order o = getOrderByOrderID(orderId);
+        if (o.getEmployee() == null) {
+            PreparedStatement stm = null;
+            try {
+                // Câu truy vấn SQL để giảm số lượng tồn kho
+                String sql = "UPDATE [Order] SET employee_id = ? where order_id = ?";
+                stm = connect.prepareStatement(sql);
+                stm.setInt(1, empId);
+                stm.setInt(2, orderId);
+                return stm.executeUpdate() > 0;
+            } catch (SQLException ex) {
+                Logger.getLogger("Update order employeeId " + orderId + "-" + empId).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (stm != null) {
+                        stm.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return false;
     }
 
     public void updateOrderStatus(int orderID, int statusID, boolean isUser) throws MessagingException {

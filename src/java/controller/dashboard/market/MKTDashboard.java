@@ -7,6 +7,8 @@ package controller.dashboard.market;
 import controller.auth.AuthenticationServlet;
 import dal.BlogDBContext;
 import helper.AuthenticationHelper;
+import static helper.AuthenticationHelper.MARKETER_ROLE;
+import static helper.AuthenticationHelper.isAllowedRole;
 import helper.RequestHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,11 +36,16 @@ public class MKTDashboard extends AuthenticationServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setAttribute("title", WEB_TITLE);
+        boolean isAllowRole = isAllowedRole(user, new String[]{MARKETER_ROLE});
+        if (!isAllowRole) {
+            response.sendError(response.SC_FORBIDDEN);
+            return;
+        }
         boolean isAdmin = AuthenticationHelper.isAdmin(user);
         Integer empId = user.getEmp_id();
         if (isAdmin) {
             empId = RequestHelper.getIntParameterWithDefault("empId", null, request);
-        } 
+        }
         // Get all filter parameters from the request using RequestHelper
         String title = RequestHelper.getStringParameterWithDefault("search", null, request);
         String status = RequestHelper.getStringParameterWithDefault("status", "true", request);
