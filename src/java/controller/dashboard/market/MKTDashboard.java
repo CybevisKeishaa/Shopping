@@ -29,7 +29,7 @@ public class MKTDashboard extends AuthenticationServlet {
 
     private static final String WEB_TITLE = "Marketing Dashboard";
     private static final String WEB_URL = "/view/ad/mkt/market.jsp";
-    private static final int PAGE_SIZE = 3;// Default 8;
+    private static final int PAGE_SIZE = 5;// Default 8;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
@@ -63,6 +63,7 @@ public class MKTDashboard extends AuthenticationServlet {
         // Fetch the filtered blog list with pagination
         List<Blog> blogs = bdb.getAll(title, startDate, endDate, empId, status, page, PAGE_SIZE);
         int count = bdb.getAllTotalCount(title, startDate, endDate, empId, status);
+        System.out.println("couint:" + count);
         // Set the blog list as an attribute in the request
         request.setAttribute("blogs", blogs);
         request.setAttribute("totalCount", count);
