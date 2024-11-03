@@ -74,6 +74,15 @@
                 max-height: 200px;
                 overflow-y: auto;
             }
+            .action-buttons {
+                white-space: nowrap; /* Giữ các nút trên cùng một dòng */
+            }
+
+            .action-buttons a {
+                display: inline-block;
+                margin-right: 5px;
+                vertical-align: middle; /* Giữ nút ngang hàng */
+            }
         </style>
     </head>
 
@@ -120,17 +129,52 @@
             <div id="left-menu">
                 <div class="sub-left-menu scroll">
                     <ul class="nav nav-list">
-                        <li><div class="left-bg"></div></li>
-                        <li class="active ripple">
-                            <a href="homepage" class="tree-toggle nav-header"><span class="fa-home fa"></span> Dashboard 
-                            </a>
+                        <li>
+                            <div class="left-bg"></div>
                         </li>
-                        <li class="ripple"><a class="tree-toggle nav-header"><span class="fa fa-table"></span> Tables  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
-                            <ul class="nav nav-list tree">
-                                <li><a href="userlist">User List</a></li>
-                                <li><a href="employeelist">Products List</a></li>
-                            </ul>
-                        </li>
+                        <c:if test="${role == 'Admin'}">
+                            <li class="ripple">
+                                <a href="${pageContext.request.contextPath}/admin/homepage" class="tree-toggle nav-header">
+                                    <span class="fa-home fa"></span> Dashboard
+                                </a>
+                            </li>
+                            <li class="ripple">
+                                <a class="tree-toggle nav-header">
+                                    <span class="fa fa-table"></span> Tables
+                                    <span class="fa-angle-right fa right-arrow text-right"></span>
+                                </a>
+                                <ul class="nav nav-list tree">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/admin/userlist">User List</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/admin/employeelist">Employees List</a>
+                                    </li>
+                                    <!--                                    <li>
+                                                                            <a href="${pageContext.request.contextPath}/bloglist">Blogs List</a>
+                                                                        </li>-->
+                                </ul>
+                            </li>
+                        </c:if>
+                        <c:if test="${role == 'Admin' || role == 'Marketer'}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/market">MKT Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/employeeProductList">Product List</a>
+                            </li>
+                        </c:if>
+                       
+                        <c:if test="${role == 'Admin' || role == 'Saler'}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a>
+                            </li>
+                        </c:if>
+
+                        <script>
+                            let pathname = location.pathname;
+                            document.querySelector(`a[href*='` + pathname + `'`)?.classList.add('active');
+                        </script>
                     </ul>
                 </div>
             </div>
@@ -164,75 +208,11 @@
                                     <a href="employeeAddProduct" class="btn btn-success btn-create">
                                         <b>Create</b>
                                     </a>
-                                     <a href="employeeViewHistory" class="btn btn-success btn-create">
+                                    <a href="employeeViewHistory" class="btn btn-success btn-create">
                                         <b>View history</b>
                                     </a>
                                     <!-- Phần Filter ở giữa -->
-<!--                                    <form id="filterForm" method="get" action="productList" class="filter-form">
-                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                             Dropdown for Brand 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                                    Brand 
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <c:forEach var="i" items="${requestScope.listBrand}">
-                                                        <div class="dropdown-item">
-                                                            <input type="checkbox" name="brandid" value="${i.brand_id}" id="brand${i.brand_id}">
-                                                            <label for="brand${i.brand_id}">${i.name}</label>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
-                                            </li>
 
-                                             Dropdown for Capacity 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                                    Capacity
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <c:forEach var="i" items="${requestScope.listCapacity}">
-                                                        <div class="dropdown-item">
-                                                            <input type="checkbox" name="capacityid" value="${i.capacity_id}" id="capacity${i.capacity_id}">
-                                                            <label for="capacity${i.capacity_id}">${i.value}</label>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
-                                            </li>
-
-                                             Dropdown for Gender 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                                    Gender 
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <c:forEach var="i" items="${requestScope.genderList}">
-                                                        <div class="dropdown-item">
-                                                            <input type="checkbox" name="genderid" value="${i.gender_id}" id="gender${i.gender_id}">
-                                                            <label for="gender${i.gender_id}">${i.name}</label>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
-                                            </li>
-
-                                             Dropdown for Price 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                                    Price
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <c:forEach var="i" items="${requestScope.priceRanges}">
-                                                        <div class="dropdown-item">
-                                                            <input type="checkbox" name="priceid" value="${i.id}" id="price${i.id}">
-                                                            <label for="price${i.id}">${i.min} - ${i.max} VND</label>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                         Nút Filter 
-                                        <button type="submit" class="btn btn-primary ml-3">Filter</button>
-                                    </form>-->
 
                                     <!-- Phần Search ở bên phải -->
                                     <form action="employeeProductList" method="GET" class="d-flex align-items-center">
@@ -250,17 +230,17 @@
                                                 <th>Image</th>
                                                 <th>Full Name</th>
                                                 <th>Price</th>
-                                                <th>Stock</th>
+                                                
                                                 <th>Discount</th>
                                                 <th>Gender</th>
                                                 <th>Capacity</th>
                                                 <th>Status</th>
                                                 <th>Actions</th> 
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <c:forEach var="i" items="${requestScope.data}">
-
                                                 <tr>
                                                     <td>${i.product_id}</td>
                                                     <td>
@@ -270,7 +250,7 @@
                                                     </td>
                                                     <td>${i.name}</td>
                                                     <td>${i.price}</td>
-                                                    <td>${i.stock}</td>
+                                                    
                                                     <td>${i.discount.amount}</td>
                                                     <td>
                                                         <c:forEach var="a" items="${i.gender}">
@@ -288,15 +268,15 @@
                                                     <c:if test="${i.status == 'false'}">
                                                         <td>Chưa kích hoạt</td>
                                                     </c:if>
-                                                    <td>
+                                                    <td class="action-buttons">
                                                         <a href="employeeUpdateProduct?product_id=${i.product_id}" class="btn btn-primary btn-sm">Update</a>
+                                                        <a href="employeeImportGoods?product_id=${i.product_id}" class="btn btn-primary btn-sm">Nhập Hàng</a>
                                                     </td>
-                                                    <td>
-                                                        <a href="employeeImportGoods?product_id=${i.product_id}" class="btn btn-primary btn-sm">Nhap Hang</a>
-                                                    </td>
+
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
+
 
                                     </table>
                                 </div>

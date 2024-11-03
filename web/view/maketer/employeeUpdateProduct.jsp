@@ -5,7 +5,6 @@
 <html lang="vi">
     <head>
         <meta charset="utf-8">
-
         <meta name="description" content="Miminium Admin Template v.1">
         <meta name="author" content="Isna Nur Azis">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -138,15 +137,12 @@
                     <ul class="nav nav-list">
                         <li><div class="left-bg"></div></li>
                         <li class="active ripple">
-                            <a href="homepage" class="tree-toggle nav-header"><span class="fa-home fa"></span> HomePage 
+                            <a href="market" class="tree-toggle nav-header">MKT Dashboard 
                             </a>
                         </li>
-                        <li class="ripple">
-                            <a class="tree-toggle nav-header"><span class="fa fa-table"></span> Tables <span class="fa-angle-right fa right-arrow text-right"></span></a>
-                            <ul class="nav nav-list tree">
-                                <li><a href="userlist">User List</a></li>
-                                <li><a href="employeelist">Products List</a></li>
-                            </ul>
+                        <li class="active ripple">
+                            <a href="employeeProductList" class="tree-toggle nav-header"></span>Product List 
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -182,7 +178,7 @@
                                             <img src="${pageContext.request.contextPath}/img/${j.img_url}" alt="${j.img_url}">
                                             <label for="file${status.index}">Choose Image:${j.name}</label>
                                             <input type="hidden" name="img_id" value="${j.img_id}" />
-                                        <input type="file" name="file" id="file" accept="image/*" required />
+                                            <input type="file" name="file" id="file" accept="image/*" required />
                                         </c:forEach>
                                         <input type="hidden" name="size" value="${requestScope.p.img.size()}" />
                                     </div>
@@ -194,24 +190,33 @@
                                             <input type="text" name="name" id="name" value="${requestScope.p.name}" required />
                                         </div>
 
-                                        <c:if test="${requestScope.c == null}">
+                                        <c:if test="${prams.cid != null}">
                                             <div class="form-group">
                                                 <label for="price">Price:</label>
-                                                <input type="text" name="price" id="price" value="${requestScope.p.price}" required />
+                                                <input type="text" name="price" id="price" value="${requestScope.p.price}" readonly />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="stock">Stock:</label>
+                                                <input type="text" name="stock" id="stock" value="${requestScope.p.stock}" readonly />
                                             </div>
                                         </c:if>
 
                                         <c:if test="${requestScope.c != null}">
                                             <div class="form-group">
                                                 <label for="price">Price:</label>
-                                                <input type="text" name="price" id="price" value="${c.unit_price}" required />
+                                                <input type="text" name="price" id="price" value="${c.unit_price}" readonly />
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${requestScope.c != null}">
+
+                                            <div class="form-group">
+                                                <label for="stock">Stock:</label>
+                                                <input type="text" name="stock" id="stock" value="${requestScope.p.stock}" readonly />
                                             </div>
                                         </c:if>
 
-                                        <div class="form-group">
-                                            <label for="stock">Stock:</label>
-                                            <input type="text" name="stock" id="stock" value="${requestScope.p.stock}" required />
-                                        </div>
+
+
 
                                         <div class="form-group">
                                             <label for="dis">Discount:</label>
@@ -270,7 +275,7 @@
                                                 <option value="false" ${requestScope.p.status == 'false' ? 'selected' : ''}>Chưa kích Hoạt</option>
                                             </select>
                                         </div>
-
+                                        <a href="employeeProductList" class="btn btn-secondary">Quay về danh sách sản phẩm</a>
                                         <input type="submit" value="Save" />
                                     </div>
                                 </form>
