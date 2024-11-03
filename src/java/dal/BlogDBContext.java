@@ -39,11 +39,11 @@ public class BlogDBContext extends DBContext<Blog> {
         ArrayList<Blog> blogs = new ArrayList<>();
         try {
             String sql = "SELECT TOP 3 b.blog_id, b.title, b.shortContent, b.content, b.date, e.name_emp, i.img_url \n"
-                    + "FROM dbo.Blog b \n"
+                    + "FROM dbo.Blog b "
                     + "JOIN dbo.Employee e ON b.emp_id = e.emp_id \n"
                     + "LEFT JOIN dbo.Blog_IMG bi ON b.blog_id = bi.blog_id \n"
                     + "LEFT JOIN dbo.Image i ON bi.img_id = i.img_id \n"
-                    + "WHERE bi.img_id = (SELECT TOP 1 img_id FROM dbo.Blog_IMG WHERE blog_id = b.blog_id ORDER BY img_id ASC);";
+                    + "WHERE bi.img_id = (SELECT TOP 1 img_id FROM dbo.Blog_IMG WHERE blog_id = b.blog_id ORDER BY img_id ASC) and status = 1";
             
             stm = connect.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -69,7 +69,9 @@ public class BlogDBContext extends DBContext<Blog> {
     public List<Blog> getBlogTop3Date() {
         List<Blog> list = new ArrayList<>();
         
-        String sql = "SELECT TOP  3 * FROM Blog ORDER BY date DESC";
+        String sql = "SELECT TOP 3 * FROM Blog"
+                + " where status = 1"
+                + " ORDER BY date DESC";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -281,6 +283,7 @@ public class BlogDBContext extends DBContext<Blog> {
         String sql = "SELECT * \n"
                 + "FROM Blog \n"
                 + "WHERE title LIKE '%' + ? + '%' \n"
+//                and status = 1
                 + "ORDER BY blog_id \n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
         List<Blog> list = new ArrayList<>();
