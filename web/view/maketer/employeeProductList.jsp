@@ -118,23 +118,6 @@
         <div class="container-fluid mimin-wrapper">
 
             <!-- start:Left Menu -->
-            <div id="left-menu2">
-                <div class="sub-left-menu scroll">
-                    <ul class="nav nav-list">
-                        <li><div class="left-bg"></div></li>
-                        <li class="active ripple">
-                            <a href="homepage" class="tree-toggle nav-header"><span class="fa-home fa"></span> Dashboard 
-                            </a>
-                        </li>
-                        <li class="ripple"><a class="tree-toggle nav-header"><span class="fa fa-table"></span> Tables  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
-                            <ul class="nav nav-list tree">
-                                <li><a href="userlist">User List</a></li>
-                                <li><a href="employeelist">Products List</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
             <t:leftmenu></t:leftmenu>
             <!-- end: Left Menu -->
 

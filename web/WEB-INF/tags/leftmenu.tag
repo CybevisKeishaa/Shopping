@@ -5,7 +5,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="put the tag description here" pageEncoding="UTF-8"%>
-
+<c:set var="role" value="${sessionScope.employee.role.role_name}"/>
 <div id="left-menu">
     <div class="sub-left-menu scroll">
         <ul class="nav nav-list">
