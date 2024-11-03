@@ -19,8 +19,10 @@ public class BlogSql {
                                          """;
     public static final String GET_ALL_COUNT = """
                                                 select count(b.blog_id) as count from 
-                                                (SELECT b.* FROM Blog b  
-                                                    JOIN Employee e on e.emp_id = b.emp_id
-                                                    {where}) as b
+                                                (
+                                                SELECT b.* FROM Blog b  
+                                                JOIN Employee e on e.emp_id = b.emp_id
+                                                {where}
+                                               ) as b
                                               """;
 }

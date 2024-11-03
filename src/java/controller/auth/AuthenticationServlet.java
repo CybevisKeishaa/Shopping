@@ -9,7 +9,7 @@ import model.Employee;
 
 public abstract class AuthenticationServlet extends HttpServlet {
 
-    private static final String LOGIN_PAGE = "/login";
+    private static final String LOGIN_PAGE = "/login/employee";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

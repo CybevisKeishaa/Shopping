@@ -43,15 +43,15 @@
     </servlet>
     <servlet>
         <servlet-name>blogDetail</servlet-name>
-        <servlet-class>controller.blog.blogDetail</servlet-class>
+        <servlet-class>controller.blog.BlogDetail</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>blogList</servlet-name>
-        <servlet-class>controller.blog.blogList</servlet-class>
+        <servlet-class>controller.blog.BlogList</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>blogSearch</servlet-name>
-        <servlet-class>controller.blog.blogSearch</servlet-class>
+        <servlet-class>controller.blog.BlogSearch</servlet-class>
     </servlet>
     <!-- Servlets from second section -->
     <servlet>

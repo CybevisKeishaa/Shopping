@@ -7,6 +7,8 @@ package controller.dashboard.market;
 import controller.auth.AuthenticationServlet;
 import dal.BlogDBContext;
 import helper.AuthenticationHelper;
+import static helper.AuthenticationHelper.MARKETER_ROLE;
+import static helper.AuthenticationHelper.isAllowedRole;
 import helper.RequestHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -59,6 +61,11 @@ public class BlogDetailEdit extends AuthenticationServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
+        boolean isAllowRole = isAllowedRole(user, new String[]{MARKETER_ROLE});
+        if (!isAllowRole) {
+            response.sendError(response.SC_FORBIDDEN);
+            return;
+        }
         boolean isEdit = request.getRequestURI().endsWith("edit");
         Blog b = null;
         request.setAttribute("isEdit", isEdit);
@@ -80,6 +87,11 @@ public class BlogDetailEdit extends AuthenticationServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
+        boolean isAllowRole = isAllowedRole(user, new String[]{MARKETER_ROLE});
+        if (!isAllowRole) {
+            response.sendError(response.SC_FORBIDDEN);
+            return;
+        }
         boolean isEdit = request.getRequestURI().endsWith("edit");
         request.setAttribute("isEdit", isEdit);
 
@@ -170,7 +182,7 @@ public class BlogDetailEdit extends AuthenticationServlet {
         if (isUpdated) {
             response.sendRedirect(request.getContextPath() + REDIRECT_URL + blogId);  // Redirect to blog list or success page
         } else {
-            request.setAttribute("error", "Failed to update the blog.");
+            request.setAttribute("errorMessage", "Failed to update the blog.");
             request.setAttribute("blog", blog);
             request.setAttribute("title", blog.getTitle());
 

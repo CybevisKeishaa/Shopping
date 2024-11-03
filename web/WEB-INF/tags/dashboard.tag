@@ -113,10 +113,15 @@
                             <li>
                                 <a href="${pageContext.request.contextPath}/market">MKT Dashboard</a>
                             </li>
-                        </c:if>
                             <li>
-                            <a href="${pageContext.request.contextPath}/market">MKT Dashboard</a>
-                        </li>
+                                <a href="${pageContext.request.contextPath}/employeeProductList">Product List</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${role == 'Admin' || role == 'SaleManager'}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/saleManagement">Sale Management</a>
+                            </li>
+                        </c:if>
                         <c:if test="${role == 'Admin' || role == 'Saler'}">
                             <li>
                                 <a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a>
@@ -135,7 +140,6 @@
             <!-- start: content -->
             <div id="content">
                 <div class="col-md-12" style="padding:20px;">
-
                     <jsp:doBody/>
                 </div>
             </div>

@@ -7,6 +7,8 @@ package controller.dashboard.sale;
 import controller.auth.AuthenticationServlet;
 import dal.OrderDBContext;
 import dal.OrderStatusDBContext;
+import static helper.AuthenticationHelper.SALER_ROLE;
+import static helper.AuthenticationHelper.isAllowedRole;
 import helper.RequestHelper;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
@@ -34,6 +36,11 @@ public class OrderDetailServlet extends AuthenticationServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        boolean isAllowRole = isAllowedRole(user, new String[]{SALER_ROLE});
+        if (!isAllowRole) {
+            response.sendError(response.SC_FORBIDDEN);
+            return;
+        }
         Integer id = RequestHelper.getIntParameterWithDefault("orderId", null, request);
         if (id == null) {
             response.sendError(response.SC_BAD_REQUEST);

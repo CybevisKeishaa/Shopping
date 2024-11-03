@@ -121,7 +121,6 @@ public class ImageDBContext extends DBContext<Image> {
             }
             st.close();
             rs.close();
-
         } catch (SQLException ex) {
             Logger.getLogger(ImageDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

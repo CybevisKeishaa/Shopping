@@ -303,6 +303,50 @@ public class EmployeeDBContext extends DBContext {
         return employee; // Return Employee object
     }
 
+    public List<Employee> getAllByRole(String roleName) {
+        PreparedStatement stm = null;
+        List<Employee> employees = new ArrayList<>();
+        try {
+            String sql = """
+                            SELECT e.emp_id, e.name_emp, e.phone, e.status, e.avartar, e.email, r.*
+                            FROM Employee e
+                            JOIN Role r ON r.role_id = e.role_id
+                            WHERE r.role_name = ? and e.status = 1
+                         """;
+            stm = connect.prepareStatement(sql);
+            // Bind the email and password parameters
+            stm.setString(1, roleName);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                var employee = new Employee();
+                employee.setEmp_id(rs.getInt("emp_id"));
+                employee.setName_emp(rs.getString("name_emp"));
+                employee.setPhone(rs.getString("phone"));
+                employee.setStatus(rs.getBoolean("status"));
+                employee.setAvatar(rs.getString("avartar"));
+                employee.setEmail(rs.getString("email"));
+
+                // Assuming you have a Role class
+                Role role = new Role();
+                role.setRole_id(rs.getInt("role_id"));
+                role.setRole_name(rs.getString("role_name"));
+                employee.setRole(role);
+                employees.add(employee);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close(); // Ensure resource is closed
+                } catch (SQLException ex) {
+                    Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return employees; // Return Employee object
+    }
+
     public static void main(String[] args) {
         EmployeeDBContext e = new EmployeeDBContext();
 
