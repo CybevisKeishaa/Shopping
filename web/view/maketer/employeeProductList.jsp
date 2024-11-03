@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -117,7 +118,7 @@
         <div class="container-fluid mimin-wrapper">
 
             <!-- start:Left Menu -->
-            <div id="left-menu">
+            <div id="left-menu2">
                 <div class="sub-left-menu scroll">
                     <ul class="nav nav-list">
                         <li><div class="left-bg"></div></li>
@@ -134,6 +135,7 @@
                     </ul>
                 </div>
             </div>
+            <t:leftmenu></t:leftmenu>
             <!-- end: Left Menu -->
 
             <!-- start: Content -->

@@ -283,7 +283,7 @@ public class BlogDBContext extends DBContext<Blog> {
         String sql = "SELECT * \n"
                 + "FROM Blog \n"
                 + "WHERE title LIKE '%' + ? + '%' \n"
-//                and status = 1
+                +" and status = 1"
                 + "ORDER BY blog_id \n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
         List<Blog> list = new ArrayList<>();
