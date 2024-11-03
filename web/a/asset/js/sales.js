@@ -52,7 +52,6 @@ var doughnutMap = {
     }
 };
 var statusElem = document.querySelectorAll('.status-display i.fa')
-console.log([...statusElem].map(elem => elem.dataset.status));
 statusElem.forEach(elem => elem.style.color = doughnutMap[elem.dataset.status].color)
 window.onload = function () {
     var ctx2 = $(".line-chart")[0].getContext("2d");

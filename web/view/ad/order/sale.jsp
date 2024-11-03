@@ -4,7 +4,7 @@
 
 <t:dashboard>
     <!-- Order revenues by week -->
-    <div class="col-md-6">
+<!--    <div class="col-md-6">
         <div class="panel">
             <div class="panel-heading bg-white border-none" style="padding:20px;">
                 <div class="col-md-6 col-sm-6 col-sm-12 text-left">
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <!-- Order Totals chart -->
+     Order Totals chart 
     <div class="col-md-6">
         <div class="panel">
             <div class="panel-heading bg-white border-none" style="padding:20px;">
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="col-md-12">
         <div class="panel">
             <div class="panel-heading"><h3>Sales</h3></div>
@@ -177,8 +177,8 @@
     <!-- start script --> 
 
     <script async="">
-        var orderBoughtData = ${orderCount}.reverse();
-        var statusTotals = ${statusTotals};
+//        var orderBoughtData = ${orderCount}.reverse();
+//        var statusTotals = ${statusTotals};
 
         document.addEventListener("DOMContentLoaded", function () {
             let container = document.querySelector('body');

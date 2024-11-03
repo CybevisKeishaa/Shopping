@@ -66,6 +66,10 @@ public class SaleDashBoardServlet extends AuthenticationServlet {
         int count = odb.getTotalOrderCount(search, startDate, endDate, empId); // pagination
         var statusTotals = odb.getStatusTotal();
         List<Integer> orderCountByWeek = odb.getOrderCountByWeek();
+
+        System.out.println(statusTotals);
+        System.out.println(orderCountByWeek);
+
         request.setAttribute("orders", orders);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalCount", (int) count);
