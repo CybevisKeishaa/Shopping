@@ -779,8 +779,11 @@ public class OrderDBContext extends DBContext<Order> {
             OrderDetailDBContext oddb = new OrderDetailDBContext();
 
             // Check if the order is paid
-            if (o.isPaidStatus() || o.getStatus().getStatus_id() == Status_Order.CANCELLED) {
+            if (o.isPaidStatus()) {
                 throw new MessagingException("Khách hàng Đã trả tiền cho sản phầm.");
+            }
+            if (o.getStatus().getStatus_id() == Status_Order.CANCELLED) {
+                throw new MessagingException("Đơn hàng đã bị huỷ.");
             }
 
             String sql = """

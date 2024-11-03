@@ -5,6 +5,7 @@
 package controller.dashboard.sale;
 
 import controller.auth.AuthenticationServlet;
+import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.OrderDBContext;
 import dal.OrderStatusDBContext;
 import static helper.AuthenticationHelper.SALER_ROLE;
@@ -18,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Customer_User;
 import model.Employee;
 import model.Order;
 import model.Product;

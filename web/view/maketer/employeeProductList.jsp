@@ -164,11 +164,13 @@
                                     <a href="employeeAddProduct" class="btn btn-success btn-create">
                                         <b>Create</b>
                                     </a>
-
+                                     <a href="employeeViewHistory" class="btn btn-success btn-create">
+                                        <b>View history</b>
+                                    </a>
                                     <!-- Phần Filter ở giữa -->
-                                    <form id="filterForm" method="get" action="productList" class="filter-form">
+<!--                                    <form id="filterForm" method="get" action="productList" class="filter-form">
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                            <!-- Dropdown for Brand -->
+                                             Dropdown for Brand 
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                                     Brand 
@@ -183,7 +185,7 @@
                                                 </div>
                                             </li>
 
-                                            <!-- Dropdown for Capacity -->
+                                             Dropdown for Capacity 
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                                     Capacity
@@ -198,7 +200,7 @@
                                                 </div>
                                             </li>
 
-                                            <!-- Dropdown for Gender -->
+                                             Dropdown for Gender 
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                                     Gender 
@@ -213,7 +215,7 @@
                                                 </div>
                                             </li>
 
-                                            <!-- Dropdown for Price -->
+                                             Dropdown for Price 
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                                     Price
@@ -228,9 +230,9 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                        <!-- Nút Filter -->
+                                         Nút Filter 
                                         <button type="submit" class="btn btn-primary ml-3">Filter</button>
-                                    </form>
+                                    </form>-->
 
                                     <!-- Phần Search ở bên phải -->
                                     <form action="employeeProductList" method="GET" class="d-flex align-items-center">
@@ -288,6 +290,9 @@
                                                     </c:if>
                                                     <td>
                                                         <a href="employeeUpdateProduct?product_id=${i.product_id}" class="btn btn-primary btn-sm">Update</a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="employeeImportGoods?product_id=${i.product_id}" class="btn btn-primary btn-sm">Nhap Hang</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

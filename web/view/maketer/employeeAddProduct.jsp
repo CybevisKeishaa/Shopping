@@ -165,6 +165,14 @@
                                         <input type="text" name="price" id="price" required />
                                     </div>
                                     <div class="form-group">
+                                        <label for="brand">Gender:</label>
+                                        <select name="gid" id="gid" required>
+                                            <c:forEach var="i" items="${requestScope.datag}">
+                                                <option value="${i.gender_id}">${i.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="stock">Capacity:</label>
                                         <select name="cap">
                                             <c:forEach var="i" items="${requestScope.clist}">

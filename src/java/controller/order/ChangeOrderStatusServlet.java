@@ -31,6 +31,7 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
         db.updateToCancel(orderID, 6);
 
         response.sendRedirect("../order");
+
     }
 
     /**

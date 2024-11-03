@@ -27,6 +27,7 @@ public class Status_Order {
     public static final int COMPLETED = 4;
     public static final int CANCELLED = 5;
     public static final int CANCEL_REQUEST = 6;
+
     // Map to store allowed transitions
     private static final Map<Integer, Set<Integer>> statusTransitionMap = new HashMap<>();
 

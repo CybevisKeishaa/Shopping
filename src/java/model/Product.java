@@ -21,6 +21,7 @@ public class Product {
     private ArrayList<Feedback> fb = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<OrderDetail> orders = new ArrayList<>();
+        private ArrayList<History> history = new ArrayList<>();
 
     public int getProduct_id() {
         return product_id;
@@ -149,7 +150,13 @@ public class Product {
     public void setOrders(ArrayList<OrderDetail> orders) {
         this.orders = orders;
     }
+     public ArrayList<History> getHistory() {
+        return history;
+    }
 
+    public void setHistory(ArrayList<History> history) {
+        this.history = history;
+    }
     @Override
     public String toString() {
         return "Product{" +
@@ -171,4 +178,6 @@ public class Product {
                 ", orders=" + orders +
                 '}';
     }
+
+   
 }
