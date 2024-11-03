@@ -40,7 +40,7 @@ public class AuthenticationHelper {
     }
 
     // if user.role not in roles return false
-public static boolean isAllowedRole(Employee user, String... roles) {
+    public static boolean isAllowedRole(Employee user, String... roles) {
         if (isCorrectRole(user.getRole(), ADMIN_ROLE)) {
             return true;
         }
@@ -48,10 +48,10 @@ public static boolean isAllowedRole(Employee user, String... roles) {
             return false;
         }
         for (String role : roles) {
-            if (!isCorrectRole(user.getRole(), role)) {
-                return false;
+            if (isCorrectRole(user.getRole(), role)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }

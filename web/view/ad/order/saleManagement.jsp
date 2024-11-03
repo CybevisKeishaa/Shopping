@@ -100,7 +100,7 @@
                             <tbody>
                                 <c:forEach var="order" items="${orders}">
                                     <tr>
-                                        <td>${order.order_id}</td>
+                                        <td><a href="./sale/orderDetail?orderId=${order.order_id}">${order.order_id}</a></td>
                                         <td>${order.customer.name_cus}</td>
                                         <td>$${order.total_price}</td>
                                         <td>${order.create_at}</td>
