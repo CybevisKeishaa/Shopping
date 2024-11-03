@@ -178,6 +178,8 @@
     <servlet>
         <servlet-name>OnlinePaymentServlet</servlet-name>
         <servlet-class>controller.cart.OnlinePaymentServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>employeeImportGoods</servlet-name>
         <servlet-class>controller.makerProduct.employeeImportGoods</servlet-class>
     </servlet>
