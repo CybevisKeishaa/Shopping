@@ -15,7 +15,7 @@ import model.Employee;
 
 /**
  *
- * 
+ *
  */
 @WebServlet(name = "DashboardServlet", urlPatterns = {"/dashboard"})
 public class DashboardServlet extends AuthenticationServlet {
@@ -23,21 +23,22 @@ public class DashboardServlet extends AuthenticationServlet {
     private static final String MAIN_PAGE = "/admin/homepage";
     private static final String SALER_PAGE = "/sale";
     private static final String MARKETER_PAGE = "/market";
-
+    private static final String SALER_MANAGER_PAGE = "/saleManagement";
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
-
         if (AuthenticationHelper.isAdmin(user)) {
             response.sendRedirect(request.getContextPath() + MAIN_PAGE);
         } else if (AuthenticationHelper.isSaler(user)) {
             response.sendRedirect(request.getContextPath() + SALER_PAGE);
         } else if (AuthenticationHelper.isMarketer(user)) {
             response.sendRedirect(request.getContextPath() + MARKETER_PAGE);
+        } else if (AuthenticationHelper.isSaleManager(user)) {
+            response.sendRedirect(request.getContextPath() + SALER_MANAGER_PAGE);
         } else {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
-        
+
     }
 
 }

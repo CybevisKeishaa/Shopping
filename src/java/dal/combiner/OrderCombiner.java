@@ -4,11 +4,13 @@
  */
 package dal.combiner;
 
+import dal.EmployeeDBContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Address;
 import model.Customer_User;
+import model.Employee;
 import model.Order;
 import model.Status_Order;
 
@@ -20,6 +22,7 @@ public class OrderCombiner {
 
     public static Order toTableRow(ResultSet rs) throws SQLException {
         Order o = new Order();
+        EmployeeDBContext edb = new EmployeeDBContext();
 
         o.setOrder_id(rs.getInt("order_id"));
         o.setCreate_at(rs.getTimestamp("orderedDate"));
@@ -32,10 +35,14 @@ public class OrderCombiner {
         so.setStatus_name(rs.getString("status"));
 
         o.setStatus(so);
-        
         Customer_User customer = new Customer_User();
         customer.setName_cus(rs.getString("name_cus").trim());
         o.setCustomer(customer);
+        final Integer empId = rs.getInt("emp_id");
+        if (empId != null) {
+            Employee e = edb.getEmployeeByIdForBlog(empId);
+            o.setEmployee(e);
+        }
         return o;
     }
 

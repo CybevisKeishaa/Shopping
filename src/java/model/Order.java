@@ -24,7 +24,7 @@ public class Order {
     private boolean paidStatus;
     private String note;
     private Address address;
-
+    private Employee employee;
     public Address getAddress() {
         return address;
     }
@@ -175,6 +175,14 @@ public class Order {
         return this.paidStatus ? "Đã Trả Tiền" : "Chưa Trả Tiền";
     }
 
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    
     @Override
     public String toString() {
         return "Order{" + "order_id=" + order_id + ", firstProductName=" + firstProductName + ", numberOfOtherProducts=" + numberOfOtherProducts + ", customer=" + customer + ", total_price=" + total_price + ", create_at=" + create_at + ", payment_method=" + payment_method + ", status=" + status + ", payment=" + payment + ", shipping_method=" + shipping_method + ", orderDetails=" + orderDetails + ", successOrders=" + successOrders + ", cancelledOrders=" + cancelledOrders + ", pendingOrders=" + pendingOrders + ", totalRevenue=" + totalRevenue + '}';

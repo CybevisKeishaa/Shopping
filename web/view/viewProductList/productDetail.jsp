@@ -222,7 +222,7 @@
                     <form action="${pageContext.request.contextPath}/cart/item/add" id="add-to-bag">
                         <input type="hidden" name="pid" value="${data.product_id}"/>
                         <input type="hidden" name="cartID" value="${customer.cart.cart_id}"/>
-
+                        <input type="hidden" name="price" value="${requestScope.data.price}">
                         <h1>${requestScope.data.name}</h1>
                         <p>SALE OFF: <strong>$${requestScope.data.getDiscount().getAmount()}</strong></p>
                         <p>PRICE: <strong id="product-price">$${requestScope.data.price}</strong></p>

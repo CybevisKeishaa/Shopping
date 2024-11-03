@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -126,58 +127,7 @@
         <div class="container-fluid mimin-wrapper">
 
             <!-- start:Left Menu -->
-            <div id="left-menu">
-                <div class="sub-left-menu scroll">
-                    <ul class="nav nav-list">
-                        <li>
-                            <div class="left-bg"></div>
-                        </li>
-                        <c:if test="${role == 'Admin'}">
-                            <li class="ripple">
-                                <a href="${pageContext.request.contextPath}/admin/homepage" class="tree-toggle nav-header">
-                                    <span class="fa-home fa"></span> Dashboard
-                                </a>
-                            </li>
-                            <li class="ripple">
-                                <a class="tree-toggle nav-header">
-                                    <span class="fa fa-table"></span> Tables
-                                    <span class="fa-angle-right fa right-arrow text-right"></span>
-                                </a>
-                                <ul class="nav nav-list tree">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/admin/userlist">User List</a>
-                                    </li>
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/admin/employeelist">Employees List</a>
-                                    </li>
-                                    <!--                                    <li>
-                                                                            <a href="${pageContext.request.contextPath}/bloglist">Blogs List</a>
-                                                                        </li>-->
-                                </ul>
-                            </li>
-                        </c:if>
-                        <c:if test="${role == 'Admin' || role == 'Marketer'}">
-                            <li>
-                                <a href="${pageContext.request.contextPath}/market">MKT Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="${pageContext.request.contextPath}/employeeProductList">Product List</a>
-                            </li>
-                        </c:if>
-                       
-                        <c:if test="${role == 'Admin' || role == 'Saler'}">
-                            <li>
-                                <a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a>
-                            </li>
-                        </c:if>
-
-                        <script>
-                            let pathname = location.pathname;
-                            document.querySelector(`a[href*='` + pathname + `'`)?.classList.add('active');
-                        </script>
-                    </ul>
-                </div>
-            </div>
+            <t:leftmenu></t:leftmenu>
             <!-- end: Left Menu -->
 
             <!-- start: Content -->

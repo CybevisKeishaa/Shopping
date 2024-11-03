@@ -408,7 +408,7 @@ public class ProductDBContext extends DBContext<Product> {
                     + "LEFT JOIN dbo.Discount d ON d.discount_id = p.discount_id\n"
                     + "JOIN dbo.Product_Image pi ON pi.product_id = p.product_id\n"
                     + "JOIN dbo.Image i ON i.img_id = pi.img_id\n"
-                    + "WHERE img_url like 'product%' and p.status = 1\n"
+                    + "WHERE p.status = 1\n"
                     + "GROUP BY p.product_id, p.name, p.price, g.name, d.name, d.discount_amount\n"
                     + "ORDER BY d.discount_amount DESC;";
 
@@ -460,7 +460,7 @@ public class ProductDBContext extends DBContext<Product> {
                     + "JOIN dbo.Discount d ON d.discount_id = p.discount_id\n"
                     + "JOIN dbo.Product_Image pi ON pi.product_id = p.product_id\n"
                     + "JOIN dbo.Image i ON i.img_id = pi.img_id\n"
-                    + "WHERE img_url like 'product%' and p.status = 1\n"
+                    + "WHERE p.status = 1\n"
                     + "GROUP BY p.product_id, p.name, p.price, p.date, g.name, d.name, d.discount_amount\n"
                     + "ORDER BY p.date DESC;";
 

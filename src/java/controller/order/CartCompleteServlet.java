@@ -29,7 +29,17 @@ public class CartCompleteServlet extends BaseRequiredCustomerAuthenticationContr
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-        int orderID = Integer.parseInt(request.getParameter("orderID"));
+        
+        String vnPay = request.getParameter("orderID");
+        
+        int orderID;
+        if (vnPay != null) {          
+            orderID = Integer.parseInt(vnPay);
+        } else {
+            orderID = Integer.parseInt(request.getParameter("orderID"));
+        }
+        
+        
         OrderDBContext orderDB = new OrderDBContext();
         Order o = orderDB.getOrderByOrderID(orderID, user.getCus_id());
         ArrayList<Product> p = orderDB.getNewProductsByOrderAndCustomer(orderID, user.getCus_id());

@@ -32,34 +32,30 @@ import model.dtos.Order_StatusTotalDTO;
 public class OrderDBContext extends DBContext<Order> {
 
     // ========================== Get Many Orders Section =======================
-    public List<Order> getAllOrder(String search, Date startDate, Date endDate, String sort, boolean desc, int pageNumber, int pageSize) {
-
+    public List<Order> getAllOrder(String search, Date startDate, Date endDate, Integer employeeId, String sort, boolean desc, int pageNumber, int pageSize) {
         ArrayList<Order> orders = new ArrayList<>();
         // Phân trang với OFFSET và FETCH
-        String sql = OrderSql.GET_ALL;// lấy tất cả nếu empID == null
+        String sql = OrderSql.GET_ALL;
         String whereSQL = "";
         String orderBySQL = "";
         try {
             PreparedStatement stm;
             int offset = (pageNumber - 1) * pageSize;
-            boolean hasSearch = true;
             if (startDate != null && endDate != null) {
-                whereSQL = "WHERE o.created_at BETWEEN '" + startDate.toString() + "' AND '" + endDate.toString() + "'";
+                whereSQL = " AND o.created_at BETWEEN ? AND ?";
             } else if (startDate != null) {
-                whereSQL = "WHERE o.created_at >= '" + startDate.toString() + "'";
+                whereSQL = " AND o.created_at >= ?";
             } else if (endDate != null) {
-                whereSQL = "WHERE o.created_at <= '" + endDate.toString() + "'";
-            } else {
-                hasSearch = false;
+                whereSQL = " AND o.created_at <= ?";
             }
             if (!search.isEmpty()) {
-                if (hasSearch) {
-                    whereSQL += " AND (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
-                } else {
-                    whereSQL = "WHERE (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
-                }
+                whereSQL += " AND (c.name_cus LIKE ? OR o.order_id LIKE ?)";
             }
-            //sort
+            // lấy tất cả nếu employeeId == null
+            if (employeeId != null) {
+                whereSQL += " AND o.employee_id = ?";
+            } 
+            // Sort
             switch (sort) {
                 case "orderdate":
                     orderBySQL = "ORDER BY o.created_at ";
@@ -81,9 +77,23 @@ public class OrderDBContext extends DBContext<Order> {
             }
             sql = sql.replace("{where}", whereSQL).replace("{orderBy}", orderBySQL);
             stm = connect.prepareStatement(sql);
-            stm.setInt(1, offset);    // Set OFFSET
-            stm.setInt(2, pageSize);  // Set FETCH NEXT
-
+            // Set parameters for PreparedStatement
+            int paramIndex = 1;
+            if (startDate != null) {
+                stm.setDate(paramIndex++, new Date(startDate.getTime()));
+            }
+            if (endDate != null) {
+                stm.setDate(paramIndex++, new Date(endDate.getTime()));
+            }
+            if (!search.isEmpty()) {
+                stm.setString(paramIndex++, "%" + search + "%");
+                stm.setString(paramIndex++, "%" + search + "%");
+            }
+            if (employeeId != null) {
+                stm.setInt(paramIndex++, employeeId);
+            }
+            stm.setInt(paramIndex++, offset);    // Set OFFSET
+            stm.setInt(paramIndex++, pageSize);  // Set FETCH NEXT
             // Execute the query
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -99,30 +109,48 @@ public class OrderDBContext extends DBContext<Order> {
         return orders;
     }
 
-    public void updateStockAfterOrder(int productId, int capacityId, int quantity) {
-        PreparedStatement stm = null;
+//    public List<Order> getAllNoEmployeeOrder() {
+//        ArrayList<Order> orders = new ArrayList<>();
+//        // Phân trang với OFFSET và FETCH
+//        String sql = OrderSql.GET_ALL;
+//        String whereSQL = "AND o.employee_id is null";
+//        String orderBySQL = "Order by o.order_id ASC";
+//        try {
+//            PreparedStatement stm;
+//
+//            sql = sql.replace("{where}", whereSQL).replace("{orderBy}", orderBySQL).replace("OFFSET ? ROWS FETCH NEXT ? ROWS ONLY", "");
+//            stm = connect.prepareStatement(sql);
+//            // Execute the query
+//            ResultSet rs = stm.executeQuery();
+//            while (rs.next()) {
+//                Order o = OrderCombiner.toTableRow(rs);
+//                orders.add(o);
+//            }
+//            rs.close();
+//            stm.close();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        return orders;
+//    }
 
-        try {
-            // Câu truy vấn SQL để giảm số lượng tồn kho
-            String sql = "UPDATE Product_Capacity SET stock = stock - ? WHERE product_id = ? AND cap_id = ?";
-            stm = connect.prepareStatement(sql);
-            stm.setInt(1, quantity);
-            stm.setInt(2, productId);
-            stm.setInt(3, capacityId);
+    public int getEarliestOrderIDByCustomer(int cus_id) {
+        int orderID = 0;
+        String sql = "SELECT TOP 1 order_id FROM [Order] WHERE cus_id = ? ORDER BY created_at DESC";
 
-            stm.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (stm != null) {
-                    stm.close();
+        try (PreparedStatement stmt = connect.prepareStatement(sql)) {
+            stmt.setInt(1, cus_id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    orderID = rs.getInt("order_id");
                 }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
             }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Thêm xử lý ngoại lệ phù hợp tại đây
         }
+
+        return orderID;
     }
 
 //    public ArrayList<Order> myOrders(int customerID, int pageNumber, int pageSize) {
@@ -144,34 +172,41 @@ public class OrderDBContext extends DBContext<Order> {
 //                    ORDER BY o.created_at DESC
 //                    OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
 //                    """;
-    public int getTotalOrderCount(String search, Date startDate, Date endDate) {
+    public int getTotalOrderCount(String search, Date startDate, Date endDate, Integer employeeId) {
         int count = 0;
         String sql = OrderSql.GET_ALL_COUNT;
         String whereSQL = "";
         try {
             PreparedStatement stm;
-            boolean hasSearch = true;
             if (startDate != null && endDate != null) {
-                whereSQL = "WHERE o.created_at BETWEEN '" + startDate.toString() + "' AND '" + endDate.toString() + "'";
+                whereSQL = "AND o.created_at BETWEEN ? AND ?";
             } else if (startDate != null) {
-                whereSQL = "WHERE o.created_at >= '" + startDate.toString() + "'";
+                whereSQL = "AND o.created_at >= ?";
             } else if (endDate != null) {
-                whereSQL = "WHERE o.created_at <= '" + endDate.toString() + "'";
-            } else {
-                hasSearch = false;
+                whereSQL = "AND o.created_at <= ?";
             }
             if (!search.isEmpty()) {
-                if (hasSearch) {
-                    whereSQL += " AND (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
-                } else {
-                    whereSQL = "WHERE (c.name_cus LIKE '%" + search + "%' OR o.order_id LIKE '%" + search + "%')";
-                }
+                whereSQL += " AND (c.name_cus LIKE ? OR o.order_id LIKE ?)";
             }
-
+            if (employeeId != null) {
+                whereSQL += " AND o.employee_id = ?";
+            } 
             sql = sql.replace("{where}", whereSQL);
-
             stm = connect.prepareStatement(sql);
-
+            int paramIndex = 1;
+            if (startDate != null) {
+                stm.setDate(paramIndex++, new Date(startDate.getTime()));
+            }
+            if (endDate != null) {
+                stm.setDate(paramIndex++, new Date(endDate.getTime()));
+            }
+            if (!search.isEmpty()) {
+                stm.setString(paramIndex++, "%" + search + "%");
+                stm.setString(paramIndex++, "%" + search + "%");
+            }
+            if (employeeId != null) {
+                stm.setInt(paramIndex++, employeeId);
+            }
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 count = rs.getInt(1);
@@ -578,9 +613,7 @@ public class OrderDBContext extends DBContext<Order> {
                 if (stm != null) {
                     stm.close();
                 }
-                if (connect != null) {
-                    connect.close();
-                }
+                
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -649,6 +682,56 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     //=============== Data Change ===============
+    public void updateStockAfterOrder(int productId, int capacityId, int quantity) {
+        PreparedStatement stm = null;
+        
+        try {
+            // Câu truy vấn SQL để giảm số lượng tồn kho
+            String sql = "UPDATE Product_Capacity SET stock = stock - ? WHERE product_id = ? AND cap_id = ?";
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, quantity);
+            stm.setInt(2, productId);
+            stm.setInt(3, capacityId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public boolean updateOrderEmployeeID(int orderId, int empId) {
+        Order o = getOrderByOrderID(orderId);
+        if (o.getEmployee() == null) {
+            PreparedStatement stm = null;
+            try {
+                // Câu truy vấn SQL để giảm số lượng tồn kho
+                String sql = "UPDATE [Order] SET employee_id = ? where order_id = ?";
+                stm = connect.prepareStatement(sql);
+                stm.setInt(1, empId);
+                stm.setInt(2, orderId);
+                return stm.executeUpdate() > 0;
+            } catch (SQLException ex) {
+                Logger.getLogger("Update order employeeId " + orderId + "-" + empId).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (stm != null) {
+                        stm.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+    
     public void updateOrderStatus(int orderID, int statusID, boolean isUser) throws MessagingException {
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -671,9 +754,10 @@ public class OrderDBContext extends DBContext<Order> {
             }
 
             // Check if status Order is invalid for change 
-//            if (!status.canTransition(o.getStatus().getStatus_id(), statusID, isUser)) {
-//                throw new MessagingException("Invalid Status Update.");
-//            }
+            if (!status.canTransition(o.getStatus().getStatus_id(), statusID, isUser)) {
+                throw new MessagingException("Invalid Status Update.");
+            }
+            // update status
             String sql = """
                      UPDATE dbo.[Order] SET status_id = ?
                      OUTPUT inserted.status_id,inserted.total
@@ -792,6 +876,17 @@ public class OrderDBContext extends DBContext<Order> {
             } catch (SQLException ex) {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    public void updateOrderPaidStatus(int orderId) {
+        String sql = "UPDATE [Order] SET paid_status = ? WHERE order_id = ?";
+        try (PreparedStatement stm = connect.prepareStatement(sql)) {
+            stm.setBoolean(1, true);
+            stm.setInt(2, orderId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

@@ -4,7 +4,7 @@
 
 <t:dashboard>
     <!-- Order revenues by week -->
-    <div class="col-md-6">
+<!--    <div class="col-md-6">
         <div class="panel">
             <div class="panel-heading bg-white border-none" style="padding:20px;">
                 <div class="col-md-6 col-sm-6 col-sm-12 text-left">
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <!-- Order Totals chart -->
+     Order Totals chart 
     <div class="col-md-6">
         <div class="panel">
             <div class="panel-heading bg-white border-none" style="padding:20px;">
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="col-md-12">
         <div class="panel">
             <div class="panel-heading"><h3>Sales</h3></div>
@@ -61,16 +61,27 @@
                             <option value="totalcost" ${param.sort == 'totalcost' ? 'selected':''}>Tổng Giá</option>
                             <option value="status" ${param.sort == 'status' ? 'selected':''}>Trạng Thái</option>
                         </select>
-                    </div>
-                    <div class="form-group col-md-2">
+                        <p></p>
                         <label for='desc' >Thứ tự</label>
                         <select id="desc" class="form-control" name="desc">
                             <option value="on" ${param.desc == 'on' ? 'selected':''}>Giảm Dần</option>
                             <option value="off" ${param.desc == 'off' ? 'selected':''}>Tăng Dần</option>
                         </select>
                     </div>
+                    <c:if test="${role == 'Admin'}">
+                        <div class="form-group align-items-center col-md-2" >
+                            <label for="employeeid">Nhân Viên</label>
+                            <select id="empid" class="form-control" name="employeeId">
+                                <option value="" ${param.employeeId == null ? 'selected':''}>--Chọn Nhân Viên--</option>
+                                <c:forEach items="${emps}" var="e">
+                                    <option value="${e.emp_id}" ${e.emp_id == param.employeeId ? 'selected':''}>${e.name_emp}</option>
+                                </c:forEach>
+
+                            </select>
+                        </div>
+                    </c:if>
                     <div class="form-group align-items-center col-md-3" >
-                        <label for="startdate">Search:</label>
+                        <label for="search">Search:</label>
                         <input type="text" id="custom-search" class="form-control " value="${param.search}" placeholder="Search..." name="search"/>
                     </div>
                     <div class="form-group col-md">
@@ -88,6 +99,7 @@
                                 <th>Ngày Đặt</th>
                                 <th>Trạng Thái</th>
                                 <th>Trạng Thái Tiền</th>
+                                <th>Nhân Viên</th>
                                 <th>Số Sản Phẩm</th>
                                 <th>Hành Động</th>
                             </tr>
@@ -101,6 +113,7 @@
                                     <td>${order.create_at}</td>
                                     <td>${order.status.status_name} </td>
                                     <td style="color:${order.paidStatus?"green":'red'};" >${order.paidStatus_str}</td>
+                                    <td>${order.employee.name_emp}</td>
                                     <td>${order.numberOfOtherProducts}</td>
                                     <td>
                                         <a href="./sale/orderDetail?orderId=${order.order_id}" class="btn btn-primary btn-sm text-bold">
@@ -164,8 +177,8 @@
     <!-- start script --> 
 
     <script async="">
-        var orderBoughtData = ${orderCount}.reverse();
-        var statusTotals = ${statusTotals};
+//        var orderBoughtData = ${orderCount}.reverse();
+//        var statusTotals = ${statusTotals};
 
         document.addEventListener("DOMContentLoaded", function () {
             let container = document.querySelector('body');

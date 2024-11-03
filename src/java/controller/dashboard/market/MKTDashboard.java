@@ -7,6 +7,8 @@ package controller.dashboard.market;
 import controller.auth.AuthenticationServlet;
 import dal.BlogDBContext;
 import helper.AuthenticationHelper;
+import static helper.AuthenticationHelper.MARKETER_ROLE;
+import static helper.AuthenticationHelper.isAllowedRole;
 import helper.RequestHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -27,25 +29,30 @@ public class MKTDashboard extends AuthenticationServlet {
 
     private static final String WEB_TITLE = "Marketing Dashboard";
     private static final String WEB_URL = "/view/ad/mkt/market.jsp";
-    private static final int PAGE_SIZE = 3;// Default 8;
+    private static final int PAGE_SIZE = 5;// Default 8;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setAttribute("title", WEB_TITLE);
+        boolean isAllowRole = isAllowedRole(user, new String[]{MARKETER_ROLE});
+        if (!isAllowRole) {
+            response.sendError(response.SC_FORBIDDEN);
+            return;
+        }
         boolean isAdmin = AuthenticationHelper.isAdmin(user);
         Integer empId = user.getEmp_id();
         if (isAdmin) {
             empId = RequestHelper.getIntParameterWithDefault("empId", null, request);
-        } 
+        }
         // Get all filter parameters from the request using RequestHelper
         String title = RequestHelper.getStringParameterWithDefault("search", null, request);
         String status = RequestHelper.getStringParameterWithDefault("status", "true", request);
 
         // Parse the startDate and endDate from the request (optional, null if not provided)
-        Date startDate = RequestHelper.getDateParameterWithDefault("startDate", null, request);
-        Date endDate = RequestHelper.getDateParameterWithDefault("endDate", null, request);
+        Date startDate = RequestHelper.getDateParameterWithDefault("startdate", null, request);
+        Date endDate = RequestHelper.getDateParameterWithDefault("enddate", null, request);
 
         // Page number and page size for pagination (default values if not provided)
         int page = RequestHelper.getIntParameterWithDefault("page", 1, request);
@@ -56,6 +63,7 @@ public class MKTDashboard extends AuthenticationServlet {
         // Fetch the filtered blog list with pagination
         List<Blog> blogs = bdb.getAll(title, startDate, endDate, empId, status, page, PAGE_SIZE);
         int count = bdb.getAllTotalCount(title, startDate, endDate, empId, status);
+        System.out.println("couint:" + count);
         // Set the blog list as an attribute in the request
         request.setAttribute("blogs", blogs);
         request.setAttribute("totalCount", count);

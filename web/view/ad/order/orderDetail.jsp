@@ -25,59 +25,62 @@
 
         <div class="order-info">
             <h2>Thông tin đơn hàng</h2>
-            <a href="${pageContext.request.contextPath}/sale" class="nav-link" >&Lt;Trở Về</a>
+            <a href="${pageContext.request.contextPath}/sale${role == 'SaleManager' ? 'Management':''}" class="nav-link" >&Lt;Trở Về</a>
             <p><strong>Mã đơn:</strong> ${requestScope.order.order_id}</p>
             <p><strong>Ngày tạo:</strong> ${requestScope.order.create_at}</p>
             <p><strong>Tổng tiền:</strong> ${requestScope.order.total_price} VND</p>
             <span>
                 <span><strong>Trạng thái:</strong> ${requestScope.order.status.status_name.trim()}</span>
-                <c:set scope="page" var="status" value="${requestScope.order.status}"/>
-                <c:if test="${order.paidStatus}" var="is_paid"></c:if>
+                <c:if test="${role == 'Admin' || role == 'Saler'}">
+                    <c:set scope="page" var="status" value="${requestScope.order.status}"/>
                     <!-- Only show status update options if the order is not 'Completed' or 'Cancelled' -->
-                <c:if test="${status.status_id != COMPLETED and status.status_id != CANCELLED}">
-                    <!-- Dropdown to update order status -->
-                    <select class="input-sm" name="statusId" form="update-status">
-                        <!-- Pending can be updated to Confirmed or Cancelled -->
-                        <c:if test="${status.status_id == PENDING}">
-                            <option value="${CONFIRMED}">Confirmed</option>
-                            <option value="${CANCELLED}">Cancelled</option>
-                        </c:if>
-                        <!-- Confirmed can be updated to Shipping or Cancelled -->
-                        <c:if test="${status.status_id == CONFIRMED}">
-                            <option value="${SHIPPING}">Shipping</option>
-                            <option value="${CANCELLED}">Cancelled</option>
-                        </c:if>
-                        <!-- Shipping can be updated to Completed or Cancelled -->
-                        <c:if test="${status.status_id == SHIPPING}">
-                            <option value="${COMPLETED}">Completed</option>
-                            <option value="${CANCELLED}">Cancelled</option>
-                        </c:if>
-                        <!-- CancelRequest can only be updated to Cancelled -->
-                        <c:if test="${status.status_id == CANCEL_REQUEST}">
-                            <option value="${CANCELLED}">Cancelled</option>
-                        </c:if>
-                    </select>
-                    <!-- Update button -->
-                    <button class="btn btn-primary" form="update-status">Cập nhật</button>
-                    <!-- Hidden form to handle the status update with POST method -->
-                    <form id="update-status" method="post" action="?orderId=${param.orderId}" onsubmit="return confirm('Thay đổi trạng thái của sản phẩm này?')">
-                        <input type="hidden" name="method" value="PUT">
-                    </form>
+                    <c:if test="${status.status_id != COMPLETED and status.status_id != CANCELLED}">
+                        <!-- Dropdown to update order status -->
+                        <select class="input-sm" name="statusId" form="update-status">
+                            <!-- Pending can be updated to Confirmed or Cancelled -->
+                            <c:if test="${status.status_id == PENDING}">
+                                <option value="${CONFIRMED}">Confirmed</option>
+                                <option value="${CANCELLED}">Cancelled</option>
+                            </c:if>
+                            <!-- Confirmed can be updated to Shipping or Cancelled -->
+                            <c:if test="${status.status_id == CONFIRMED}">
+                                <option value="${SHIPPING}">Shipping</option>
+                                <option value="${CANCELLED}">Cancelled</option>
+                            </c:if>
+                            <!-- Shipping can be updated to Completed or Cancelled -->
+                            <c:if test="${status.status_id == SHIPPING}">
+                                <option value="${COMPLETED}">Completed</option>
+                                <option value="${CANCELLED}">Cancelled</option>
+                            </c:if>
+                            <!-- CancelRequest can only be updated to Cancelled -->
+                            <c:if test="${status.status_id == CANCEL_REQUEST}">
+                                <option value="${CANCELLED}">Cancelled</option>
+                            </c:if>
+                        </select>
+                        <!-- Update button -->
+                        <button class="btn btn-primary" form="update-status">Cập nhật</button>
+                        <!-- Hidden form to handle the status update with POST method -->
+                        <form id="update-status" method="post" action="?orderId=${param.orderId}" onsubmit="return confirm('Thay đổi trạng thái của sản phẩm này?')">
+                            <input type="hidden" name="method" value="PUT">
+                        </form>
 
+                    </c:if>
                 </c:if>
                 <p></p>
             </span>
             <div style="color:red">${errorMessage}</div>
             <span><strong>Đã trả tiền:</strong> 
                 <span style="color:${is_paid?'green':'red'}">${is_paid ? "Đã Trả️":"️Chưa Trả"}
-                    <c:if test="${not is_paid}">
-                        <button class="btn btn-warning" form="update-paid-status">Đã Thanh Toán</button>
-
-                        <form id="update-paid-status" method="post" action="?orderId=${param.orderId}" onsubmit="return confirm('Thay đổi trạng thái của sản phẩm này?')">
-                            <input type="hidden" name="method" value="POST">
-                        </form>
+                    <c:if test="${role == 'Admin' || role == 'Saler'}">
+                        <c:if test="${not is_paid}">
+                            <button class="btn btn-warning" form="update-paid-status">Đã Thanh Toán</button>
+                            <form id="update-paid-status" method="post" action="?orderId=${param.orderId}" onsubmit="return confirm('Thay đổi trạng thái của sản phẩm này?')">
+                                <input type="hidden" name="method" value="POST">
+                            </form>
+                        </c:if>
                     </c:if>
                 </span> 
+
                 <p></p>
             </span>
             <c:if test="${requestScope.order.status.status_name.trim() == 'Shipping' || requestScope.order.status.status_name.trim() == 'Completed'}">

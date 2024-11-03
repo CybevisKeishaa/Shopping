@@ -5,6 +5,9 @@
 package controller.cart;
 
 import JavaMail.EmailService;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.vnpay.common.Config;
 import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.AddressDBContext;
 import dal.CartDBContext;
@@ -15,7 +18,13 @@ import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.*;
 import java.util.ArrayList;
 import model.Address;
@@ -138,23 +147,64 @@ public class checkoutServlet extends BaseRequiredCustomerAuthenticationControlle
 
                 orderDB.insertOrderDetail(orderId, orderDetails);
 
-                Address address = aDB.getAddressByOrderID(orderId);
-                ArrayList<Product> products = orderDB.getNewProductsByOrderAndCustomer(orderId, cusID);
-                EmailService emailService = new EmailService();
-                    boolean isSent = emailService.sendOrderConfirmation(
-                        user.getEmail(), orderId, user.getName_cus(), products, totalCost, address, note);
-                if (isSent) {
-                    System.out.println("Order confirmation email sent successfully!");
+                if (paymentID == 2) {
+                    URL url = new URL(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/vnpayajax");
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+                    String returnUrlWithOrderId = Config.vnp_ReturnUrl + "?orderId=" + orderId;
+                    String postData = "amount=" + totalCost + "&bankCode=VNBANK&language=vn&orderId=" + orderId + "&vnp_ReturnUrl=" + URLEncoder.encode(returnUrlWithOrderId, "UTF-8");
+
+                    try (OutputStream os = connection.getOutputStream()) {
+                        os.write(postData.getBytes("utf-8"));
+                    }
+
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        // Đọc phản hồi từ vnpayajax
+                        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+                            StringBuilder responseString = new StringBuilder();
+                            String line;
+                            while ((line = br.readLine()) != null) {
+                                responseString.append(line.trim());
+                            }
+
+                            // Phân tích JSON phản hồi
+                            JsonObject jsonResponse = new Gson().fromJson(responseString.toString(), JsonObject.class);
+                            if ("00".equals(jsonResponse.get("code").getAsString())) {
+                                String paymentUrl = jsonResponse.get("data").getAsString();
+                                response.sendRedirect(paymentUrl);  // Chuyển đến trang thanh toán VNPay
+                                return;
+                            } else {
+                                response.getWriter().println("Lỗi: " + jsonResponse.get("message").getAsString());
+                                return;
+                            }
+                        }
+                    } else {
+                        response.getWriter().println("Kết nối đến VNPay thất bại. Mã phản hồi: " + responseCode);
+                        return;
+                    }
                 } else {
-                    System.out.println("Failed to send order confirmation email.");
+
+                    Address address = aDB.getAddressByOrderID(orderId);
+                    ArrayList<Product> products = orderDB.getNewProductsByOrderAndCustomer(orderId, cusID);
+                    EmailService emailService = new EmailService();
+                    boolean isSent = emailService.sendOrderConfirmation(
+                            user.getEmail(), orderId, user.getName_cus(), products, totalCost, address, note);
+                    if (isSent) {
+                        System.out.println("Order confirmation email sent successfully!");
+                    } else {
+                        System.out.println("Failed to send order confirmation email.");
+                    }
+
+                    response.sendRedirect("complete?orderID=" + orderId);
                 }
-
-                response.sendRedirect("complete?orderID=" + orderId);
-
-            } else {
-                response.getWriter().println("Failed to create order!");
+//                }else {
+//                    response.getWriter().println("Failed to create order!");
+//                }
             }
-
         } catch (Exception e) {
             // Xử lý các lỗi ngoại lệ khác
             response.getWriter().println("An error occurred while processing your request.");

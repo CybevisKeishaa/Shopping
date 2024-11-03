@@ -5,9 +5,11 @@
 package controller.dashboard.sale;
 
 import controller.auth.AuthenticationServlet;
-import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.OrderDBContext;
 import dal.OrderStatusDBContext;
+import static helper.AuthenticationHelper.SALER_MANAGER_ROLE;
+import static helper.AuthenticationHelper.SALER_ROLE;
+import static helper.AuthenticationHelper.isAllowedRole;
 import helper.RequestHelper;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
@@ -17,7 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Customer_User;
 import model.Employee;
 import model.Order;
 import model.Product;
@@ -36,6 +37,11 @@ public class OrderDetailServlet extends AuthenticationServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Employee user)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        boolean isAllowRole = isAllowedRole(user, new String[]{SALER_ROLE, SALER_MANAGER_ROLE});
+        if (!isAllowRole) {
+            response.sendRedirect(request.getContextPath() + "/login/employee");
+            return;
+        }
         Integer id = RequestHelper.getIntParameterWithDefault("orderId", null, request);
         if (id == null) {
             response.sendError(response.SC_BAD_REQUEST);
@@ -58,6 +64,11 @@ public class OrderDetailServlet extends AuthenticationServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Employee user) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        boolean isAllowRole = isAllowedRole(user, new String[]{SALER_ROLE, SALER_MANAGER_ROLE});
+        if (!isAllowRole) {
+            response.sendRedirect(request.getContextPath() + "/login/employee");
+            return;
+        }
         String method = request.getParameter("method");
         try {
             if (method.equals("POST")) {// update paid status
