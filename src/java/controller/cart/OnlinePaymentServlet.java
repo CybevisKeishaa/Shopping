@@ -1,36 +1,37 @@
-package controller.order;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-import JavaMail.EmailService;
-import JavaMail.IJavaMail;
+package controller.cart;
+
+import com.vnpay.common.Config;
 import controller.auth.BaseRequiredCustomerAuthenticationController;
 import dal.OrderDBContext;
-import jakarta.mail.MessagingException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import model.Customer_User;
 
 /**
  *
  * @author KEISHA
  */
-public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthenticationController {
+public class OnlinePaymentServlet extends BaseRequiredCustomerAuthenticationController {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-
-        String orderIDRaw = request.getParameter("order_id");
-        int orderID = Integer.parseInt(orderIDRaw);
+        int cusID = user.getCus_id();
         OrderDBContext db = new OrderDBContext();
-        db.updateToCancel(orderID, 6);
+        int orderID = db.getEarliestOrderIDByCustomer(cusID);
+        db.updateOrderPaidStatus(orderID);
 
-        response.sendRedirect("../order");
+        request.getRequestDispatcher("cart/complete?orderID=" + orderID).forward(request, response);
     }
 
     /**
@@ -44,20 +45,7 @@ public class ChangeOrderStatusServlet extends BaseRequiredCustomerAuthentication
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
-
-        String orderIDRaw = request.getParameter("order_id");
-        int orderID = Integer.parseInt(orderIDRaw);
-        OrderDBContext db = new OrderDBContext();
-        db.updateToComplete(orderID, 4);
-        String email = user.getEmail();
-
-        String contextPath = request.getContextPath(); // Lấy context path của ứng dụng
-        String verificationLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/account/feedback?oid=" + orderIDRaw;
-        IJavaMail mailService = new EmailService();
-        boolean emailSent = mailService.send(email, "Thank you", "Cảm ơn quý khách đã sử dụng sản phẩm của chúng tôi, hãy để lại đánh giá để chúng tôi có thể nâng cao trải nghiệm dịch vụ của bạn cho những lần tiếp theo", verificationLink);
-
-        request.getRequestDispatcher("/view/notice/ThanksForBuy.jsp").forward(request, response);
-
+        doGet(request, response);
     }
 
     /**

@@ -5,37 +5,58 @@
 package controller.cart;
 
 import controller.auth.BaseRequiredCustomerAuthenticationController;
+import dal.AddressDBContext;
 import dal.CartDBContext;
+import dal.PaymentDBContext;
 import helper.RequestHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import model.Address;
+import model.Capacity;
 import model.Customer_User;
+import model.Item;
+import model.Payment;
+import model.Product;
 
 /**
  *
  * @author KEISHA
  */
-public class addToCartServlet extends HttpServlet {
+public class addToCartServlet extends BaseRequiredCustomerAuthenticationController {
 
     private static final String CARTCHECKOUT = "/cart/checkout";
     private static final String HOMEPAGE = "../../homepage";
     private static final String PRODUCT_DETAIL_WITH_PRODUCT_ID = "/product/detail?product_id=";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
         int pid = Integer.parseInt(request.getParameter("pid"));
         Integer cartID = RequestHelper.getIntParameterWithDefault("cartID", null, request);
         String action = request.getParameter("action");
         if (action != null && action.equals("buy-now")) {
-            doBuyNow(request, response);
-            // nếu người dùng chưa đăng nhập thì không thêm vào cart
-            if (cartID == null) {
-                return;
-            }
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            int capacity = Integer.parseInt(request.getParameter("capacityId"));
+            int price = Integer.parseInt(request.getParameter("price"));
+
+            Item item = new Item();
+            item.setQuantity(quantity);
+
+            Product p = new Product();
+            p.setProduct_id(pid);
+            item.setProduct(p);
+
+            Capacity c = new Capacity();
+            c.setCapacity_id(capacity);
+            c.setUnit_price(price);
+            item.setCapacity(c);
+
+            doBuyNow(request, response, item, user);
+
         }
         if (cartID == null) {
             request.getSession().setAttribute("errorMessage", "Hãy Đăng nhập trước khi thêm vào giỏ hàng");
@@ -55,8 +76,19 @@ public class addToCartServlet extends HttpServlet {
         }
     }
 
-    private void doBuyNow(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.getRequestDispatcher(CARTCHECKOUT).forward(request, response);
+    private void doBuyNow(HttpServletRequest request, HttpServletResponse response, Item item, Customer_User user) throws IOException, ServletException {
+
+        int cusID = user.getCus_id();
+        PaymentDBContext paymentDB = new PaymentDBContext();
+        AddressDBContext aDB = new AddressDBContext();
+
+        ArrayList<Address> addresses = aDB.getAddressByCusID(cusID);
+        ArrayList<Payment> payments = paymentDB.allPaymentMethods();
+
+        request.setAttribute("item", item);
+        request.setAttribute("payments", payments);
+        request.setAttribute("address", addresses);
+        request.getRequestDispatcher(CARTCHECKOUT + ".jsp").forward(request, response);
     }
 
     /**
@@ -68,7 +100,7 @@ public class addToCartServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Customer_User user)
             throws ServletException, IOException {
 
     }

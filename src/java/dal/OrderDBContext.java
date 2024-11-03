@@ -99,6 +99,24 @@ public class OrderDBContext extends DBContext<Order> {
         return orders;
     }
 
+    public int getEarliestOrderIDByCustomer(int cus_id) {
+        int orderID = 0;
+        String sql = "SELECT TOP 1 order_id FROM [Order] WHERE cus_id = ? ORDER BY created_at DESC";
+
+        try (PreparedStatement stmt = connect.prepareStatement(sql)) {
+            stmt.setInt(1, cus_id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    orderID = rs.getInt("order_id");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Thêm xử lý ngoại lệ phù hợp tại đây
+        }
+
+        return orderID;
+    }
+
     public void updateStockAfterOrder(int productId, int capacityId, int quantity) {
         PreparedStatement stm = null;
 
@@ -649,7 +667,7 @@ public class OrderDBContext extends DBContext<Order> {
     }
 
     //=============== Data Change ===============
-    public void updateOrderStatus(int orderID, int statusID,boolean isUser) throws MessagingException {
+    public void updateOrderStatus(int orderID, int statusID, boolean isUser) throws MessagingException {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -671,10 +689,9 @@ public class OrderDBContext extends DBContext<Order> {
             }
 
             // Check if status Order is invalid for change 
-            if (!status.canTransition(o.getStatus().getStatus_id(), statusID, isUser)) {
-                throw new MessagingException("Invalid Status Update.");
-            }
-            // update status
+//            if (!status.canTransition(o.getStatus().getStatus_id(), statusID, isUser)) {
+//                throw new MessagingException("Invalid Status Update.");
+//            }
             String sql = """
                      UPDATE dbo.[Order] SET status_id = ?
                      OUTPUT inserted.status_id,inserted.total
@@ -793,6 +810,17 @@ public class OrderDBContext extends DBContext<Order> {
         }
     }
 
+    public void updateOrderPaidStatus(int orderId) {
+        String sql = "UPDATE [Order] SET paid_status = ? WHERE order_id = ?";
+        try (PreparedStatement stm = connect.prepareStatement(sql)) {
+            stm.setBoolean(1, true);
+            stm.setInt(2, orderId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public int insertOrder(int total, int statusID, int cusID, int paymentMethodID, String note, int addressID, int employeeID) {
         PreparedStatement stm = null;
         ResultSet generatedKeys = null;
@@ -850,6 +878,38 @@ public class OrderDBContext extends DBContext<Order> {
         return orderId;  // Trả về orderId
     }
 
+    public void updateToComplete(int orderID, int statusID) {
+
+        PreparedStatement stm = null;
+        try {
+            String sql = "UPDATE dbo.[Order] SET status_id = ? WHERE order_id = ?";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, statusID);
+            stm.setInt(2, orderID);
+            stm.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void updateToCancel(int orderID, int statusID) {
+
+        PreparedStatement stm = null;
+        try {
+            String sql = "UPDATE dbo.[Order] SET status_id = ? WHERE order_id = ?";
+
+            stm = connect.prepareStatement(sql);
+            stm.setInt(1, statusID);
+            stm.setInt(2, orderID);
+            stm.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     public void insertOrderDetail(int orderId, ArrayList<OrderDetail> orderDetails) {
         PreparedStatement stm = null;
 
@@ -890,26 +950,4 @@ public class OrderDBContext extends DBContext<Order> {
         }
     }
 
-    public static void main(String[] args) {
-        OrderDBContext orderDB = new OrderDBContext();
-
-        int total = 1500000;
-        int statusID = 1;
-        int cusID = 1;
-        int paymentMethodID = 2;
-        String note = "Đơn hàng mẫu";
-        int addressID = 13;
-        int employeeID = 5;
-
-        // Gọi hàm insertOrder và nhận về orderId
-        int orderId = orderDB.insertOrder(total, statusID, cusID, paymentMethodID, note, addressID, employeeID);
-
-        // Kiểm tra kết quả
-        if (orderId != -1) {
-            System.out.println("Order created successfully with ID: " + orderId);
-        } else {
-            System.out.println("Failed to create order.");
-        }
-
-    }
 }

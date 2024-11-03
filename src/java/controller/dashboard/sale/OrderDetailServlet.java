@@ -75,7 +75,7 @@ public class OrderDetailServlet extends AuthenticationServlet {
                     return;
                 }
                 OrderDBContext db = new OrderDBContext();
-                db.updateOrderStatus(id, statusId, false);// always employee or admin
+                db.updateOrderStatus(id, statusId, false);
             }
         } catch (MessagingException ex) {
             request.setAttribute("errorMessage", ex.getMessage());
