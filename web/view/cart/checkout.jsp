@@ -174,7 +174,7 @@
                                             <script>  
                                             function moreAddress(select){
                                                 if(select.value === "link"){
-                                                    window.location.href = "../account/address/add"
+                                                    window.location.href = "../account/address/add";
                                                 }
                                             }
                                             </script>
