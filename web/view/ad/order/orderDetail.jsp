@@ -31,6 +31,7 @@
             <p><strong>Tổng tiền:</strong> ${requestScope.order.total_price} VND</p>
             <span>
                 <span><strong>Trạng thái:</strong> ${requestScope.order.status.status_name_vn}</span>
+                <c:set value="${order.paidStatus}" var="is_paid"></c:set>
                 <c:if test="${role == 'Admin' || role == 'Saler'}">
                     <c:set scope="page" var="status" value="${requestScope.order.status}"/>
                     <!-- Only show status update options if the order is not 'Completed' or 'Cancelled' -->
@@ -70,13 +71,16 @@
             </span>
             <div style="color:red">${errorMessage}</div>
             <span><strong>Đã trả tiền:</strong> 
+
                 <span style="color:${is_paid?'green':'red'}">${is_paid ? "Đã Trả️":"️Chưa Trả"}
-                    <c:if test="${role == 'Admin' || role == 'Saler'}">
-                        <c:if test="${not is_paid}">
-                            <button class="btn btn-warning" form="update-paid-status">Đã Thanh Toán</button>
-                            <form id="update-paid-status" method="post" action="?orderId=${param.orderId}" onsubmit="return confirm('Thay đổi trạng thái của sản phẩm này?')">
-                                <input type="hidden" name="method" value="POST">
-                            </form>
+                    <c:if test="${status.status_id != COMPLETED and status.status_id != CANCELLED}">
+                        <c:if test="${role == 'Admin' || role == 'Saler'}">
+                            <c:if test="${not is_paid}">
+                                <button class="btn btn-warning" form="update-paid-status">Đã Thanh Toán</button>
+                                <form id="update-paid-status" method="post" action="?orderId=${param.orderId}" onsubmit="return confirm('Thay đổi trạng thái của sản phẩm này?')">
+                                    <input type="hidden" name="method" value="POST">
+                                </form>
+                            </c:if>
                         </c:if>
                     </c:if>
                 </span> 

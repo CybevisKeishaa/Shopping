@@ -108,14 +108,17 @@
                                         <td style="color:${order.paidStatus?"green":'red'};" >${order.paidStatus_str}</td>
                                         <td>${order.numberOfOtherProducts}</td>
                                         <td>
-                                            <div class="order-count-list">
-                                                <input class="form-check" form="form" name="change" type="checkbox" value="${order.order_id}" />
-                                                <select class="form-control" name="order${order.order_id}" form="form">
-                                                    <c:forEach var="employee" items="${employees}">
-                                                        <option value="${employee.emp_id}" ${order.employee.emp_id == employee.emp_id ?'selected' : ''}>${employee.name_emp}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
+                                            <c:if test="${order.status.status_name != 'Cancelled' && order.status.status_name != 'Completed'}">
+                                                <div class="order-count-list">
+                                                    <input class="form-check" form="form" name="change" type="checkbox" value="${order.order_id}" />
+                                                    <!-- order61 -->
+                                                    <select class="form-control" name="order${order.order_id}" form="form">
+                                                        <c:forEach var="employee" items="${employees}">
+                                                            <option value="${employee.emp_id}" ${order.employee.emp_id == employee.emp_id ?'selected' : ''}>${employee.name_emp}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </c:if>
                                         </td>
                                     </tr>
                                 </c:forEach>

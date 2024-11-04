@@ -30,7 +30,7 @@ public class OrderSql {
                       GROUP BY o.order_id, o.created_at, o.total, so.status, c.name_cus, o.paid_status,e.emp_id
                       {orderBy}
                       OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
-                     """;
+                     """;//skip ? rows nhận ? row
     public static final String GET_ALL_COUNT = """
                      select count(o.order_id) as count from (SELECT  o.order_id,
                                                  o.created_at AS orderedDate,

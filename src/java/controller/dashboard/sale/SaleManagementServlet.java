@@ -38,13 +38,12 @@ public class SaleManagementServlet extends AuthenticationServlet {
         request.setAttribute("title", WEB_TITLE);
         OrderDBContext odb = new OrderDBContext();
         EmployeeDBContext edb = new EmployeeDBContext();
-
         boolean isAllowRole = isAllowedRole(user, new String[]{SALER_MANAGER_ROLE});
         if (!isAllowRole) {
-            response.sendError(response.SC_FORBIDDEN);
+            response.sendRedirect(request.getContextPath() + "/login/employee");
             return;
         }
-        //filtering params
+        // filtering params
         int page = RequestHelper.getIntParameterWithDefault("page", 1, request);
         Integer empId = RequestHelper.getIntParameterWithDefault("employeeId", null, request);
         Date startDate = RequestHelper.getDateParameterWithDefault("startdate", null, request);
@@ -54,7 +53,7 @@ public class SaleManagementServlet extends AuthenticationServlet {
         boolean desc = RequestHelper.getCheckboxParameterWithDefault("desc", true, request);
         // get data
         List<Order> orders = odb.getAllOrder(search, startDate, endDate, empId, sort, desc, page, PAGE_SIZE);
-        int count = odb.getTotalOrderCount(search, startDate, endDate, empId); // paginationList<Employee> employees = edb.getAllByRole(SALER_ROLE);
+        int count = odb.getTotalOrderCount(search, startDate, endDate, empId); 
         List<Employee> employees = edb.getAllByRole(SALER_ROLE);
         List<Integer> orderCounts = new ArrayList<Integer>();
         for (Employee employee : employees) {
@@ -83,12 +82,12 @@ public class SaleManagementServlet extends AuthenticationServlet {
             response.sendError(response.SC_FORBIDDEN);
             return;
         }
-        String[] changes = request.getParameterValues("change");
+        String[] changes = request.getParameterValues("change"); // orderId = 61,60
         if (changes != null) {
             for (String change : changes) {
                 try {
                     int orderId = Integer.parseInt(change);
-                    Integer employeeId = RequestHelper.getIntParameterWithDefault("order" + orderId, null, request);
+                    Integer employeeId = RequestHelper.getIntParameterWithDefault("order" + orderId, null, request);//order61
                     if (employeeId != null) {
                         odb.updateOrderEmployeeID(orderId, employeeId);
                     }

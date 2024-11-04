@@ -80,7 +80,7 @@ public class OrderDBContext extends DBContext<Order> {
             // Set parameters for PreparedStatement
             int paramIndex = 1;
             if (startDate != null) {
-                stm.setDate(paramIndex++, new Date(startDate.getTime()));
+                stm.setDate(paramIndex++, new Date(startDate.getTime())); 
             }
             if (endDate != null) {
                 stm.setDate(paramIndex++, new Date(endDate.getTime()));
@@ -716,7 +716,7 @@ public class OrderDBContext extends DBContext<Order> {
                 stm = connect.prepareStatement(sql);
                 stm.setInt(1, empId);
                 stm.setInt(2, orderId);
-                return stm.executeUpdate() > 0;
+                return stm.executeUpdate() > 0; // row affected > 0
             } catch (SQLException ex) {
                 Logger.getLogger("Update order employeeId " + orderId + "-" + empId).log(Level.SEVERE, null, ex);
             } finally {

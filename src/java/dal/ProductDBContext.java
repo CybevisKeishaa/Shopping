@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import model.*;
 
 /**
@@ -41,8 +40,8 @@ public class ProductDBContext extends DBContext<Product> {
             PreparedStatement stm = connect.prepareStatement(sql);
             stm.setInt(1, hid);
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
-                 Product p = new Product();
+            while (rs.next()) {
+                Product p = new Product();
                 p.setProduct_id(rs.getInt(1));
                 p.setName(rs.getString(2));
                 p.setPrice(rs.getInt(3));
@@ -111,7 +110,7 @@ public class ProductDBContext extends DBContext<Product> {
         System.out.println(pdb.getByHid(1).size());
     }
 
-    public ArrayList<Product> getAllByEid(int eid, String s) {
+    public ArrayList<Product> getAllByEid(Integer eid, String s) {
         PreparedStatement stm = null;
         BrandDBContext br = new BrandDBContext();
         CapacityDBContext cap = new CapacityDBContext();
@@ -127,15 +126,22 @@ public class ProductDBContext extends DBContext<Product> {
                 + "      ,[brand_id]\n"
                 + "      ,[status]\n"
                 + "      ,[emp_id]\n"
-                + "  FROM [swp-son].[dbo].[Product] where emp_id=?";
+                + "  FROM [Product] where 1=1 ";
+        if (eid != null) {
+            sql += " and emp_id = ?";
+        }
         if (s != null) {
             sql += " and name like '%'+?+'%'";
         }
+
         try {
             stm = connect.prepareStatement(sql);
-            stm.setInt(1, eid);
+            int paramIndex = 1;
+            if (eid != null) {
+                stm.setInt(paramIndex++, eid);
+            }
             if (s != null) {
-                stm.setString(2, s);
+                stm.setString(paramIndex++, s);
             }
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
