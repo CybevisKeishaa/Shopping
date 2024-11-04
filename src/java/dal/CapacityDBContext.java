@@ -4,7 +4,6 @@
  */
 package dal;
 
-import model.Capacity;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +35,16 @@ public class CapacityDBContext extends DBContext<Capacity> {
     }
 
     public Capacity getCapPidCid(int pid, int cid) {
-        String sql = "Select pc.* from Product p inner join Product_Capacity pc on p.product_id=pc.product_id inner join Capacity c on c.cap_id=pc.cap_id where p.product_id=? and c.cap_id=?";
+        String sql = "Select pc.*,c.* from Product p inner join Product_Capacity pc on p.product_id=pc.product_id inner join Capacity c on c.cap_id=pc.cap_id where p.product_id=? and c.cap_id=?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, pid);
             st.setInt(2, cid);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Capacity c = new Capacity();
-                c.setUnit_price(rs.getInt(3));
-                c.setStock(rs.getInt(4));
+                Capacity c = new Capacity(rs.getInt("cap_id"), rs.getInt("cap_value"));
+                c.setUnit_price(rs.getInt("unit_price"));
+                c.setStock(rs.getInt("stock"));
                 return c;
             }
         } catch (Exception e) {
@@ -80,7 +79,7 @@ public class CapacityDBContext extends DBContext<Capacity> {
             st.setInt(1, pid);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Capacity c = new Capacity(rs.getInt(1), rs.getInt(2));
+                Capacity c = new Capacity(rs.getInt("cap_id"), rs.getInt("cap_value"));
                 c.setUnit_price(rs.getInt("unit_price"));
                 c.setStock(rs.getInt("stock"));
                 list.add(c);

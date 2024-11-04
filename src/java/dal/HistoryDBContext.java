@@ -75,7 +75,7 @@ public class HistoryDBContext extends DBContext<History> {
     }
 
     public List<History> getAll() {
-        String sql = "Select * from History";
+        String sql = "Select * from [db_owner].History";
         List<History> list = new ArrayList<>();
         ProductDBContext pdb = new ProductDBContext();
         try {

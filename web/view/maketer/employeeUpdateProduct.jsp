@@ -191,18 +191,14 @@
                                             <label for="name">Name:</label>
                                             <input type="text" name="name" id="name" value="${requestScope.p.name}" required />
                                         </div>
-                                        <!--
-                                        <c:if test="${prams.cid != null}">
-                                            <div class="form-group">
-                                                <label for="price">Price:</label>
-                                                <input type="text" name="price" id="price" value="${requestScope.p.price}"  />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="stock">Stock:</label>
-                                                <input type="text" name="stock" id="stock" value="${requestScope.c.stock}" readonly />
-                                            </div>
-                                        </c:if>
-                                        -->
+<!--                                        <div class="form-group">
+                                            <label for="price">Price:</label>
+                                            <input type="text" name="price" id="price" value="${requestScope.p.price}"  />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="stock">Stock:</label>
+                                            <input type="text" name="stock" id="stock" value="${requestScope.p.stock}" readonly />
+                                        </div>-->
                                         <c:if test="${requestScope.c != null}">
                                             <div class="form-group">
                                                 <label for="price">Price:</label>
@@ -259,7 +255,7 @@
 
                                         <div class="capacity-container form-group">
                                             <label for="capacity">Capacity:</label>
-                                           <!-- cid = 40 price40 -->
+                                            <!-- cid = 40 price40 -->
                                             <c:forEach var="j" items="${requestScope.listc}">
                                                 <div class="capacity-options">
                                                     <div class="">

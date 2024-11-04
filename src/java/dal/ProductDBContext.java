@@ -7,14 +7,8 @@ package dal;
 import helper.ImageHelper;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.Part;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +35,7 @@ public class ProductDBContext extends DBContext<Product> {
         GenderDBContext gen = new GenderDBContext();
         ImageDBContext image = new ImageDBContext();
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "  SELECT p.* FROM Product p inner join Product_History ph on p.product_id=ph.product_id inner join History h on h.HistoryId=ph.HistoryId where h.HistoryId=?";
+        String sql = "  SELECT p.* FROM Product p inner join [db_owner].Product_History ph on p.product_id=ph.product_id inner join History h on h.HistoryId=ph.HistoryId where h.HistoryId=?";
         try {
             PreparedStatement stm = connect.prepareStatement(sql);
             stm.setInt(1, hid);
@@ -134,7 +128,6 @@ public class ProductDBContext extends DBContext<Product> {
         if (s != null) {
             sql += " and name like '%'+?+'%'";
         }
-
         try {
             stm = connect.prepareStatement(sql);
             int paramIndex = 1;
@@ -205,29 +198,22 @@ public class ProductDBContext extends DBContext<Product> {
 
             String updateProduct = "UPDATE [dbo].[Product]\n"
                     + "   SET [name] = ?\n"
-                    + "      ,[price] = ?\n"
                     + "      ,[date] = ?\n"
-                    + "      ,[stock] = ?\n"
                     + "      ,[discount_id] = ?\n"
                     + "      ,[brand_id] = ?\n"
                     + "      ,[status] = ?\n"
                     + " WHERE product_id=?";
             PreparedStatement updateProductstm = connect.prepareStatement(updateProduct, PreparedStatement.RETURN_GENERATED_KEYS);
             updateProductstm.setString(1, name);
-            updateProductstm.setInt(2, Integer.parseInt(price));
-            updateProductstm.setDate(3, Date.valueOf(date));
-            updateProductstm.setInt(4, Integer.parseInt(stock));
+            updateProductstm.setDate(2, Date.valueOf(date));
             if (Integer.parseInt(dis) == -1) {
-                updateProductstm.setNull(5, java.sql.Types.INTEGER);
-
+                updateProductstm.setNull(3, java.sql.Types.INTEGER);
             } else {
-
-                updateProductstm.setInt(5, Integer.parseInt(dis));
-
+                updateProductstm.setInt(3, Integer.parseInt(dis));
             }
-            updateProductstm.setInt(6, Integer.parseInt(brand));
-            updateProductstm.setBoolean(7, Boolean.parseBoolean(status));
-            updateProductstm.setInt(8, Integer.parseInt(pid));
+            updateProductstm.setInt(4, Integer.parseInt(brand));
+            updateProductstm.setBoolean(5, Boolean.parseBoolean(status));
+            updateProductstm.setInt(6, Integer.parseInt(pid));
             ResultSet rs = updateProductstm.executeQuery();
             rs.next();
             String upIgid = "UPDATE [dbo].[Image]\n"
