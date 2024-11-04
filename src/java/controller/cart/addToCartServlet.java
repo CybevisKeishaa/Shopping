@@ -88,7 +88,7 @@ public class addToCartServlet extends BaseRequiredCustomerAuthenticationControll
         request.setAttribute("item", item);
         request.setAttribute("payments", payments);
         request.setAttribute("address", addresses);
-        request.getRequestDispatcher(CARTCHECKOUT + ".jsp").forward(request, response);
+        request.getRequestDispatcher("../../view/cart/checkout.jsp").forward(request, response);
     }
 
     /**

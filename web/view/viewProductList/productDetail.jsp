@@ -204,13 +204,13 @@
                                 let mainImage = document.getElementById("main-image");
                                 let currentImage = null;
                                 images.forEach(image => image.addEventListener("click", (e) => {
-                                        mainImage.src = e.target.src
+                                        mainImage.src = e.target.src;
                                         if (currentImage) {
-                                            currentImage.classList.remove("border")
+                                            currentImage.classList.remove("border");
                                         }
                                         currentImage = e.target;
                                         currentImage.classList.add("border");
-                                    }))
+                                    }));
                             </script> 
                         </c:if>
                     </c:catch>
@@ -257,7 +257,7 @@
                         <!-- Buttons -->
                         <div class="button-container">
                             <button class="add-to-bag" name="action" value="add-to-bag">ADD TO BAG</button>
-                            <button class="buy-now" name="action" value="buy-now">BUY NOW</button>
+                            <!--<button class="buy-now" name="action" value="buy-now">BUY NOW</button>-->
                         </div>
                     </form>
                 </div>

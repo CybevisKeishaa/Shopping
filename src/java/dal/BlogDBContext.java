@@ -43,7 +43,7 @@ public class BlogDBContext extends DBContext<Blog> {
                     + "JOIN dbo.Employee e ON b.emp_id = e.emp_id \n"
                     + "LEFT JOIN dbo.Blog_IMG bi ON b.blog_id = bi.blog_id \n"
                     + "LEFT JOIN dbo.Image i ON bi.img_id = i.img_id \n"
-                    + "WHERE b.status = 1 and bi.img_id = (SELECT TOP 1 img_id FROM dbo.Blog_IMG WHERE blog_id = b.blog_id ORDER BY img_id ASC) ";
+                    + "WHERE bi.img_id = (SELECT TOP 1 img_id FROM dbo.Blog_IMG WHERE blog_id = b.blog_id ORDER BY img_id ASC) and b.status = 1";
 
             stm = connect.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
