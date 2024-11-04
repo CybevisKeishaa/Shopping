@@ -75,6 +75,17 @@
                 max-height: 200px;
                 overflow-y: auto;
             }
+
+            .action-buttons {
+                display: flex;
+                flex-direction: column; /* Xếp các nút theo cột */
+                gap: 10px; /* Khoảng cách giữa các nút */
+            }
+
+            .action-buttons a {
+                width: 100%; /* Giúp nút chiếm toàn bộ chiều rộng */
+                text-align: center; /* Canh giữa nội dung nút */
+            }
         </style>
     </head>
 
@@ -149,75 +160,11 @@
                                     <a href="employeeAddProduct" class="btn btn-success btn-create">
                                         <b>Create</b>
                                     </a>
-                                     <a href="employeeViewHistory" class="btn btn-success btn-create">
+                                    <a href="employeeViewHistory" class="btn btn-success btn-create">
                                         <b>View history</b>
                                     </a>
                                     <!-- Phần Filter ở giữa -->
-<!--                                    <form id="filterForm" method="get" action="productList" class="filter-form">
-                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                             Dropdown for Brand 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                                    Brand 
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <c:forEach var="i" items="${requestScope.listBrand}">
-                                                        <div class="dropdown-item">
-                                                            <input type="checkbox" name="brandid" value="${i.brand_id}" id="brand${i.brand_id}">
-                                                            <label for="brand${i.brand_id}">${i.name}</label>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
-                                            </li>
 
-                                             Dropdown for Capacity 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                                    Capacity
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <c:forEach var="i" items="${requestScope.listCapacity}">
-                                                        <div class="dropdown-item">
-                                                            <input type="checkbox" name="capacityid" value="${i.capacity_id}" id="capacity${i.capacity_id}">
-                                                            <label for="capacity${i.capacity_id}">${i.value}</label>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
-                                            </li>
-
-                                             Dropdown for Gender 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                                    Gender 
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <c:forEach var="i" items="${requestScope.genderList}">
-                                                        <div class="dropdown-item">
-                                                            <input type="checkbox" name="genderid" value="${i.gender_id}" id="gender${i.gender_id}">
-                                                            <label for="gender${i.gender_id}">${i.name}</label>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
-                                            </li>
-
-                                             Dropdown for Price 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                                    Price
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <c:forEach var="i" items="${requestScope.priceRanges}">
-                                                        <div class="dropdown-item">
-                                                            <input type="checkbox" name="priceid" value="${i.id}" id="price${i.id}">
-                                                            <label for="price${i.id}">${i.min} - ${i.max} VND</label>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                         Nút Filter 
-                                        <button type="submit" class="btn btn-primary ml-3">Filter</button>
-                                    </form>-->
 
                                     <!-- Phần Search ở bên phải -->
                                     <form action="employeeProductList" method="GET" class="d-flex align-items-center">
@@ -234,8 +181,7 @@
                                                 <th>ID</th>
                                                 <th>Image</th>
                                                 <th>Full Name</th>
-                                                <th>Price</th>
-                                                <th>Stock</th>
+                                                
                                                 <th>Discount</th>
                                                 <th>Gender</th>
                                                 <th>Capacity</th>
@@ -245,7 +191,6 @@
                                         </thead>
                                         <tbody>
                                             <c:forEach var="i" items="${requestScope.data}">
-
                                                 <tr>
                                                     <td>${i.product_id}</td>
                                                     <td>
@@ -254,8 +199,7 @@
                                                         </c:forEach>
                                                     </td>
                                                     <td>${i.name}</td>
-                                                    <td>${i.price}</td>
-                                                    <td>${i.stock}</td>
+                                                    
                                                     <td>${i.discount.amount}</td>
                                                     <td>
                                                         <c:forEach var="a" items="${i.gender}">
@@ -273,16 +217,14 @@
                                                     <c:if test="${i.status == 'false'}">
                                                         <td>Chưa kích hoạt</td>
                                                     </c:if>
-                                                    <td>
+                                                    <td class="action-buttons">
                                                         <a href="employeeUpdateProduct?product_id=${i.product_id}" class="btn btn-primary btn-sm">Update</a>
-                                                    </td>
-                                                    <td>
-                                                        <a href="employeeImportGoods?product_id=${i.product_id}" class="btn btn-primary btn-sm">Nhap Hang</a>
+                                                        <a href="employeeImportGoods?product_id=${i.product_id}" class="btn btn-primary btn-sm">Nhập Hàng</a>
+                                                        <a href="employeeUnitPrice?product_id=${i.product_id}" class="btn btn-primary btn-sm">Nhập giá</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
-
                                     </table>
                                 </div>
 
@@ -314,18 +256,17 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 var table = $('#datatables-example').DataTable({
-
-                    "searching": false, // Tắt tìm kiếm mặc định
-                    "paging": true, // Bật phân trang
-                    "pageLength": 6, // Số hàng trên mỗi trang
-                    "lengthChange": false   // Tắt "Show ... entries"
+                    "searching": false,
+                    "paging": true,
+                    "pageLength": 6,
+                    "lengthChange": false
                 });
-                // Tìm kiếm theo Full Name
+
                 $('#custom-search').on('keyup', function () {
                     var searchTerm = this.value.toLowerCase();
                     table.rows().every(function (rowIdx, tableLoop, rowLoop) {
                         var data = this.data();
-                        var fullName = data[1].toLowerCase(); // Full Name
+                        var fullName = data[1].toLowerCase();
                         if (fullName.includes(searchTerm)) {
                             this.show();
                         } else {

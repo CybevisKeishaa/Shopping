@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -117,53 +117,84 @@
             <div id="left-menu">
                 <div class="sub-left-menu scroll">
                     <ul class="nav nav-list">
-                        <li><div class="left-bg"></div></li>
-                        <li class="active ripple">
-                            <a href="homepage" class="tree-toggle nav-header"><span class="fa-home fa"></span> HomePage 
-                            </a>
+                        <li>
+                            <div class="left-bg"></div>
                         </li>
-                        <li class="ripple">
-                            <a class="tree-toggle nav-header"><span class="fa fa-table"></span> Tables <span class="fa-angle-right fa right-arrow text-right"></span></a>
-                            <ul class="nav nav-list tree">
-                                <li><a href="userlist">User List</a></li>
-                                <li><a href="employeelist">Products List</a></li>
-                            </ul>
-                        </li>
+                        <c:if test="${role == 'Admin'}">
+                            <li class="ripple">
+                                <a href="${pageContext.request.contextPath}/admin/homepage" class="tree-toggle nav-header">
+                                    <span class="fa-home fa"></span> Dashboard
+                                </a>
+                            </li>
+                            <li class="ripple">
+                                <a class="tree-toggle nav-header">
+                                    <span class="fa fa-table"></span> Tables
+                                    <span class="fa-angle-right fa right-arrow text-right"></span>
+                                </a>
+                                <ul class="nav nav-list tree">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/admin/userlist">User List</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/admin/employeelist">Employees List</a>
+                                    </li>
+                                    <!--                                    <li>
+                                                                            <a href="${pageContext.request.contextPath}/bloglist">Blogs List</a>
+                                                                        </li>-->
+                                </ul>
+                            </li>
+                        </c:if>
+                        <c:if test="${role == 'Admin' || role == 'Marketer'}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/market">MKT Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/employeeProductList">Product List</a>
+                            </li>
+                        </c:if>
+
+                        <c:if test="${role == 'Admin' || role == 'Saler'}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/sale">Sale Dashboard</a>
+                            </li>
+                        </c:if>
+
+                        <script>
+                            let pathname = location.pathname;
+                            document.querySelector(`a[href*='` + pathname + `'`)?.classList.add('active');
+                        </script>
                     </ul>
                 </div>
             </div>
             <!-- end: Left Menu -->
-
-            <!-- start: Content -->
-            <div id="content">
-                <div class="panel box-shadow-none content-header">
-                    <div class="panel-body">
-                        <div class="col-md-12">
-                            <h3 class="animated fadeInLeft">Product List</h3>
-                            <p class="animated fadeInDown">Table <span class="fa-angle-right fa"></span> Data Tables</p>
+            <t:leftmenu></t:leftmenu>
+                <!-- start: Content -->
+                <div id="content">
+                    <div class="panel box-shadow-none content-header">
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                <h3 class="animated fadeInLeft">Product List</h3>
+                                <p class="animated fadeInDown">Table <span class="fa-angle-right fa"></span> Data Tables</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 top-20 padding-0">
-                    <div class="col-md-12">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h3>Product List</h3>
-                            </div>
-                            <div class="panel-body">
-                                <form action="employeeAddProduct" method="post" enctype="multipart/form-data">
-                                    <input type="hidden" name="eid" value="${requestScope.eid}"/>
+                    <div class="col-md-12 top-20 padding-0">
+                        <div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3>Product List</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <form action="employeeAddProduct" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="eid" value="${requestScope.eid}"/>
 
                                     <div class="form-group">
                                         <label for="name">Name:</label>
                                         <input type="text" name="name" id="name" required />
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="price">Price:</label>
-                                        <input type="text" name="price" id="price" required />
-                                    </div>
+                                    
                                     <div class="form-group">
                                         <label for="brand">Gender:</label>
                                         <select name="gid" id="gid" required>
@@ -174,16 +205,17 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="stock">Capacity:</label>
-                                        <select name="cap">
-                                            <c:forEach var="i" items="${requestScope.clist}">
-                                                <option value="${i.capacity_id}">${i.value}</option>
-                                            </c:forEach>
-                                        </select>
+                                        <c:forEach var="i" items="${requestScope.clist}">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="cap[]" value="${i.capacity_id}" /> ${i.value}
+                                                </label>
+                                            </div>
+                                        </c:forEach>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="stock">Stock:</label>
-                                        <input type="text" name="stock" id="stock" required />
-                                    </div>
+
+
+                                   
 
                                     <div class="form-group">
                                         <label for="dis">Discount:</label>

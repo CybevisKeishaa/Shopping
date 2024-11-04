@@ -7,8 +7,14 @@ package dal;
 import helper.ImageHelper;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -103,11 +109,6 @@ public class ProductDBContext extends DBContext<Product> {
             System.out.println(e);
         }
         return n;
-    }
-
-    public static void main(String[] args) {
-        ProductDBContext pdb = new ProductDBContext();
-        System.out.println(pdb.getByHid(1).size());
     }
 
     public ArrayList<Product> getAllByEid(Integer eid, String s) {
@@ -282,28 +283,22 @@ public class ProductDBContext extends DBContext<Product> {
         }
     }
 
-//    public static void main(String[] args) {
-//        ProductDBContext pd = new ProductDBContext();
-//        pd.updateProduct("1", "1", 1, "", "2", "2", "", "", "", "", "", "", "");
-//    }
-    public void insertProduct(String eid, String name, String cap, String gid, String price, String stock, String date, String dis, String brand, Part image) {
+
+    public void insertProduct(String eid, String name, String[] caps, String gid, String date, String dis, String brand, Part image) {
         try {
             connect.setAutoCommit(false);
 
             String insertProduct = "INSERT INTO [dbo].[Product]\n"
-                    + "           ([name]\n"
-                    + "           ,[price]\n"
+                    + "           ([name]\n , price,stock"
+                    
                     + "           ,[date]\n"
-                    + "           ,[stock]\n"
                     + "           ,[discount_id]\n"
                     + "           ,[brand_id]\n"
                     + "           ,[status]  "
                     + ",[emp_id])\n"
                     + " output inserted.product_id"
                     + "     VALUES\n"
-                    + "           (?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
+                    + "           (?,10000,1\n"
                     + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?\n"
@@ -311,12 +306,10 @@ public class ProductDBContext extends DBContext<Product> {
 
             PreparedStatement insertProductst = connect.prepareStatement(insertProduct, PreparedStatement.RETURN_GENERATED_KEYS);
             insertProductst.setString(1, name);
-            insertProductst.setInt(2, Integer.parseInt(price));
-            insertProductst.setDate(3, Date.valueOf(date));
-            insertProductst.setInt(4, Integer.parseInt(stock));
-            insertProductst.setInt(5, Integer.parseInt(dis));
-            insertProductst.setInt(6, Integer.parseInt(brand));
-            insertProductst.setInt(7, Integer.parseInt(eid));
+            insertProductst.setDate(2, Date.valueOf(date));
+            insertProductst.setInt(3, Integer.parseInt(dis));
+            insertProductst.setInt(4, Integer.parseInt(brand));
+            insertProductst.setInt(5, Integer.parseInt(eid));
 
             ResultSet rs = insertProductst.executeQuery();
             rs.next();
@@ -360,22 +353,16 @@ public class ProductDBContext extends DBContext<Product> {
             insertImageProductst.setInt(1, productId);
             insertImageProductst.setInt(2, imageId);
             insertImageProductst.executeUpdate();
-            String insertProCa = "INSERT INTO [dbo].[Product_Capacity]\n"
-                    + "           ([cap_id]\n"
-                    + "           ,[product_id]\n"
-                    + "           ,[unit_price]\n"
-                    + "           ,[stock])\n"
-                    + "     VALUES\n"
-                    + "           (?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
-                    + "           ,?)";
-            PreparedStatement insertProCast = connect.prepareStatement(insertProCa, PreparedStatement.RETURN_GENERATED_KEYS);
-            insertProCast.setInt(1, Integer.parseInt(cap));
-            insertProCast.setInt(2, productId);
-            insertProCast.setInt(3, Integer.parseInt(price));
-            insertProCast.setInt(4, Integer.parseInt(stock));
-            insertProCast.executeUpdate();
+            for (String cap : caps) {
+                String insertProCa = "INSERT INTO [dbo].[Product_Capacity]\n"
+                        + "           ([cap_id], [product_id])\n"
+                        + "     VALUES (?, ?)";
+                PreparedStatement insertProCast = connect.prepareStatement(insertProCa);
+                insertProCast.setInt(1, Integer.parseInt(cap));
+                insertProCast.setInt(2, productId);
+
+                insertProCast.executeUpdate();
+            }
             String insertGender = "INSERT INTO [dbo].[Product_Gender]\n"
                     + "           ([gender_id]\n"
                     + "           ,[product_id])\n"
@@ -387,6 +374,7 @@ public class ProductDBContext extends DBContext<Product> {
             insertGenst.setInt(2, productId);
             insertGenst.executeUpdate();
             connect.commit();
+                        connect.setAutoCommit(true);
 
         } catch (Exception e) {
             Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, e);
