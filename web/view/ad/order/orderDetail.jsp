@@ -30,31 +30,31 @@
             <p><strong>Ngày tạo:</strong> ${requestScope.order.create_at}</p>
             <p><strong>Tổng tiền:</strong> ${requestScope.order.total_price} VND</p>
             <span>
-                <span><strong>Trạng thái:</strong> ${requestScope.order.status.status_name.trim()}</span>
+                <span><strong>Trạng thái:</strong> ${requestScope.order.status.status_name_vn}</span>
                 <c:if test="${role == 'Admin' || role == 'Saler'}">
                     <c:set scope="page" var="status" value="${requestScope.order.status}"/>
                     <!-- Only show status update options if the order is not 'Completed' or 'Cancelled' -->
                     <c:if test="${status.status_id != COMPLETED and status.status_id != CANCELLED}">
                         <!-- Dropdown to update order status -->
                         <select class="input-sm" name="statusId" form="update-status">
-                            <!-- Pending can be updated to Confirmed or Cancelled -->
+                            <!-- Đang Chờ có thể cập nhật thành Đã Xác Nhận hoặc Đã Huỷ -->
                             <c:if test="${status.status_id == PENDING}">
-                                <option value="${CONFIRMED}">Confirmed</option>
-                                <option value="${CANCELLED}">Cancelled</option>
+                                <option value="${CONFIRMED}">Đã Xác Nhận</option>
+                                <option value="${CANCELLED}">Đã Huỷ</option>
                             </c:if>
-                            <!-- Confirmed can be updated to Shipping or Cancelled -->
+                            <!-- Đã Xác Nhận có thể cập nhật thành Đang Vận Chuyển hoặc Đã Huỷ -->
                             <c:if test="${status.status_id == CONFIRMED}">
-                                <option value="${SHIPPING}">Shipping</option>
-                                <option value="${CANCELLED}">Cancelled</option>
+                                <option value="${SHIPPING}">Đang Vận Chuyển</option>
+                                <option value="${CANCELLED}">Đã Huỷ</option>
                             </c:if>
-                            <!-- Shipping can be updated to Completed or Cancelled -->
+                            <!-- Đang Vận Chuyển có thể cập nhật thành Hoàn Thành hoặc Đã Huỷ -->
                             <c:if test="${status.status_id == SHIPPING}">
-                                <option value="${COMPLETED}">Completed</option>
-                                <option value="${CANCELLED}">Cancelled</option>
+                                <option value="${COMPLETED}">Hoàn Thành</option>
+                                <option value="${CANCELLED}">Đã Huỷ</option>
                             </c:if>
-                            <!-- CancelRequest can only be updated to Cancelled -->
+                            <!-- Yêu Cầu Huỷ chỉ có thể cập nhật thành Đã Huỷ -->
                             <c:if test="${status.status_id == CANCEL_REQUEST}">
-                                <option value="${CANCELLED}">Cancelled</option>
+                                <option value="${CANCELLED}">Đã Huỷ</option>
                             </c:if>
                         </select>
                         <!-- Update button -->

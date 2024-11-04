@@ -104,7 +104,7 @@
                                         <td>${order.customer.name_cus}</td>
                                         <td>$${order.total_price}</td>
                                         <td>${order.create_at}</td>
-                                        <td>${order.status.status_name} </td>
+                                        <td>${order.status.status_name_vn} </td>
                                         <td style="color:${order.paidStatus?"green":'red'};" >${order.paidStatus_str}</td>
                                         <td>${order.numberOfOtherProducts}</td>
                                         <td>

@@ -5,7 +5,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +67,27 @@ public class Status_Order {
         return status_name;
     }
 
+    public String getStatus_name_vn() {
+        if (status_name == null) {
+            return null;
+        }
+        switch (status_name.trim()) {
+            case "Pending":
+                return "Đang Chờ...";
+            case "Cancelled":
+                return "Đã Huỷ";
+            case "CancelRequest":
+                return "Yêu Cầu Huỷ";
+            case "Completed":
+                return "Hoàn Thành";
+            case "Shipping":
+                return "Đang Vận Chuyển";
+            case "Confirmed":
+                return "Đã Xác Nhận";
+        }
+        return status_name.trim();
+    }
+
     public void setStatus_name(String status_name) {
         this.status_name = status_name;
     }
@@ -100,5 +120,3 @@ public class Status_Order {
         return statusTransitionMap.getOrDefault(currentStatus, Collections.emptySet()).contains(newStatus);
     }
 }
-
-

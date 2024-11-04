@@ -195,7 +195,7 @@
 
 
         <!-- Start Footer Area -->
-            <jsp:include page="/Demo_Template/BasePage/Footer.jsp"/> <br>
+        <jsp:include page="/Demo_Template/BasePage/Footer.jsp"/> <br>
 
         <!-- /End Footer Area -->
 
