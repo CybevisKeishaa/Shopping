@@ -9,6 +9,7 @@ import dal.CapacityDBContext;
 import dal.DiscountDBContext;
 import dal.GenderDBContext;
 import dal.ProductDBContext;
+import helper.RequestHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,15 +80,8 @@ public class employeeUpdateProduct extends HttpServlet {
         CapacityDBContext cdb = new CapacityDBContext();
         ProductDBContext pdb = new ProductDBContext();
         GenderDBContext ged = new GenderDBContext();
-        String cid = request.getParameter("cid");
-        Product p = null;
-        Capacity c = null;
-        if (cid != null) {
-            c = cdb.getCapPidCid(Integer.parseInt(product_id), Integer.parseInt(cid));
-
-        }
         List<Gender> l = ged.getAll();
-        p = pdb.getByProductId(Integer.parseInt(product_id));
+        Product p = pdb.getByProductId(Integer.parseInt(product_id));
 
         List<Capacity> clist = cdb.getByListByPid(Integer.parseInt(product_id));
         DiscountDBContext db = new DiscountDBContext();
@@ -99,7 +94,6 @@ public class employeeUpdateProduct extends HttpServlet {
         request.setAttribute("pid", product_id);
         request.setAttribute("eid", e.getEmp_id());
         request.setAttribute("g", l);
-        request.setAttribute("c", c);
         request.setAttribute("listc", clist);
         request.getRequestDispatcher("view/maketer/employeeUpdateProduct.jsp").forward(request, response);
     }
@@ -125,7 +119,7 @@ public class employeeUpdateProduct extends HttpServlet {
             String brand = request.getParameter("brand");
             String status = request.getParameter("status");
             String gender = request.getParameter("gender");
-            String cid = request.getParameter("cid");
+            String[] cids = request.getParameterValues("cid");
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedDate = now.format(formatter);
@@ -133,11 +127,33 @@ public class employeeUpdateProduct extends HttpServlet {
             String imgId = request.getParameter("img_id");
             Part filePart = request.getPart("file");
             Product p = pdb.getByProductId(Integer.parseInt(pid));
+            //Capacity
+            CapacityDBContext cdb = new CapacityDBContext();
+            ArrayList<Capacity> cList = new ArrayList<>();
+            if (cids != null) {
+                for (String cid : cids) {
+                    final int capId = Integer.parseInt(cid);
+                    Integer unitPrice = RequestHelper.getIntParameterWithDefault("price" + cid, null, request);
+                    if (unitPrice == null) {
+                        request.setAttribute("errorMessage", "Please add price and stock");
+                        break;
+                    }
+                    Capacity c = cdb.getCapPidCid(Integer.parseInt(pid), capId);
+                    c.setUnit_price(unitPrice);
+                    cList.add(c);
+                }
+            }
+            System.out.println(cList);
             if (p != null) {
-                pdb.updateProduct(pid, cid, Integer.parseInt(imgId), name, price, stock, formattedDate, dis, gender, brand, status, filePart,p.getImg().get(0).getImg_url());
+                boolean result = pdb.updateProduct(pid, cList, Integer.parseInt(imgId), name, price, stock, formattedDate, dis, gender, brand, status, filePart, p.getImg().get(0).getImg_url());
+                if (result) {
+                    response.sendRedirect("employeeProductList");
+                    return;
+                } else {
+                    response.sendRedirect("employeeUpdateProduct?product_id=" + pid);
+                }
             }
 
-            response.sendRedirect("employeeProductList");
         } catch (Exception e) {
             Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, e);
 

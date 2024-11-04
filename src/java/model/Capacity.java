@@ -73,7 +73,7 @@ public class Capacity {
 
     @Override
     public String toString() {
-        return "Capacity{" + "capacity_id=" + capacity_id + ", value=" + value + ", products=" + products + '}';
+        return "Capacity{" + "capacity_id=" + capacity_id + ", value=" + value + ", products=" + products + ", stock=" + stock + ", unit_price=" + unit_price + '}';
     }
 
 }

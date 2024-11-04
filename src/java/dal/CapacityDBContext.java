@@ -17,19 +17,19 @@ import model.ProductCapacity;
  */
 public class CapacityDBContext extends DBContext<Capacity> {
 
-    public void updatePricebycidpid(String price,String pid, String cid) {
+    public void updatePricebycidpid(String price, String pid, String cid) {
         String sql = "       UPDATE [dbo].[Product_Capacity]\n"
                 + "   SET \n"
                 + "      [unit_price] = ?\n"
                 + " WHERE cap_id=? and product_id=?";
-        try{
+        try {
             PreparedStatement st = connect.prepareStatement(sql);
-                        st.setInt(1, Integer.parseInt(price));
+            st.setInt(1, Integer.parseInt(price));
 
             st.setInt(2, Integer.parseInt(cid));
             st.setInt(3, Integer.parseInt(pid));
             st.executeUpdate();
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
 
@@ -74,13 +74,15 @@ public class CapacityDBContext extends DBContext<Capacity> {
     public List<Capacity> getByListByPid(int pid) {
         List<Capacity> list = new ArrayList<>();
 
-        String sql = "Select c.* from Product p inner join Product_Capacity pc on p.product_id=pc.product_id inner join Capacity c on c.cap_id=pc.cap_id where p.product_id=?";
+        String sql = "Select c.*,pc.* from Product p inner join Product_Capacity pc on p.product_id=pc.product_id inner join Capacity c on c.cap_id=pc.cap_id where p.product_id=?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, pid);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Capacity c = new Capacity(rs.getInt(1), rs.getInt(2));
+                c.setUnit_price(rs.getInt("unit_price"));
+                c.setStock(rs.getInt("stock"));
                 list.add(c);
             }
             return list;
@@ -156,7 +158,7 @@ public class CapacityDBContext extends DBContext<Capacity> {
 
     public static void main(String[] args) {
         CapacityDBContext cd = new CapacityDBContext();
-        Capacity c = cd.getCapPidCid(1,1);
+        Capacity c = cd.getCapPidCid(1, 1);
         System.out.println(c.getStock());
     }
 

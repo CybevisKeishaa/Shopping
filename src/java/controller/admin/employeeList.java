@@ -62,6 +62,7 @@ public class employeeList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         EmployeeDBContext e = new EmployeeDBContext();
         String pageStr = request.getParameter("page");
         int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
