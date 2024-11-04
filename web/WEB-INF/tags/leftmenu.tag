@@ -1,8 +1,4 @@
-<%-- 
-    Document   : leftmenu.tag
-    Created on : Nov 3, 2024, 9:06:26 PM
-    Author     : Thanh Binh
---%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="put the tag description here" pageEncoding="UTF-8"%>
 <c:set var="role" value="${sessionScope.employee.role.role_name}"/>

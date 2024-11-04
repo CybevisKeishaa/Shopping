@@ -15,13 +15,13 @@ import model.*;
  * @author DINH SON
  */
 public class HistoryDBContext extends DBContext<History> {
-  
-    public void addHistory(String pid, String stock, String name, String cid, String formattedDate) {
+
+    public void addHistory(String pid, String stock, String name, String cid, String formattedDate, String i) {
         try {
             connect.setAutoCommit(false);
             ProductDBContext pdb = new ProductDBContext();
             int price = pdb.getPidCid(pid, cid);
-            int total = price * Integer.parseInt(stock);
+            int total = Integer.parseInt(i) * Integer.parseInt(stock);
             int stockNew = pdb.getStoPidCid(pid, cid) + Integer.parseInt(stock);
             String updateStock = "UPDATE [dbo].[Product_Capacity]\n"
                     + "   SET \n"
@@ -36,9 +36,11 @@ public class HistoryDBContext extends DBContext<History> {
                     + "           ([Name]\n"
                     + "           ,[Date]\n"
                     + "           ,[Stock]\n"
-                    + "           ,[TotalPrice])\n"
+                    + "           ,[TotalPrice]\n"
+                    + "           ,[ImportPrice])\n"
                     + "     VALUES\n"
                     + "           (?\n"
+                    + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?)";
@@ -47,6 +49,7 @@ public class HistoryDBContext extends DBContext<History> {
             st1.setDate(2, Date.valueOf(formattedDate));
             st1.setInt(3, Integer.parseInt(stock));
             st1.setInt(4, total);
+            st1.setInt(5, Integer.parseInt(i));
             st1.executeUpdate();
             ResultSet generatedKeys = st1.getGeneratedKeys();
             int hid = -1;
@@ -70,33 +73,36 @@ public class HistoryDBContext extends DBContext<History> {
             System.out.println(e);
         }
     }
-    public List<History> getAll(){
-        String sql="Select * from History";
-        List<History> list=new ArrayList<>();
-        ProductDBContext pdb=new ProductDBContext();
-        try{
-                        PreparedStatement st = connect.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+    public List<History> getAll() {
+        String sql = "Select * from History";
+        List<History> list = new ArrayList<>();
+        ProductDBContext pdb = new ProductDBContext();
+        try {
+            PreparedStatement st = connect.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                History h=new History();
+            while (rs.next()) {
+                History h = new History();
                 h.setHistoryId(rs.getInt("HistoryId"));
                 h.setName(rs.getString("name"));
                 h.setDate(rs.getDate("Date"));
                 h.setStock(rs.getInt("stock"));
                 h.setTotalPrice(rs.getInt("TotalPrice"));
-                ArrayList<Product> l=pdb.getByHid(rs.getInt("HistoryId"));
+                ArrayList<Product> l = pdb.getByHid(rs.getInt("HistoryId"));
                 h.setProducts(l);
+                h.setImportPrice(rs.getInt(6));
                 list.add(h);
             }
             return list;
 
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return null;
     }
-    public static void main(String[] args){
-        HistoryDBContext hdb=new HistoryDBContext();
-        System.out.println(hdb.getAll().get(0).getProducts().size());
+
+    public static void main(String[] args) {
+        HistoryDBContext hdb = new HistoryDBContext();
+        System.out.println(hdb.getAll().get(0).getImportPrice());
     }
 }

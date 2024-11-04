@@ -75,14 +75,16 @@
                 max-height: 200px;
                 overflow-y: auto;
             }
+
             .action-buttons {
-                white-space: nowrap; /* Giữ các nút trên cùng một dòng */
+                display: flex;
+                flex-direction: column; /* Xếp các nút theo cột */
+                gap: 10px; /* Khoảng cách giữa các nút */
             }
 
             .action-buttons a {
-                display: inline-block;
-                margin-right: 5px;
-                vertical-align: middle; /* Giữ nút ngang hàng */
+                width: 100%; /* Giúp nút chiếm toàn bộ chiều rộng */
+                text-align: center; /* Canh giữa nội dung nút */
             }
         </style>
     </head>
@@ -179,14 +181,12 @@
                                                 <th>ID</th>
                                                 <th>Image</th>
                                                 <th>Full Name</th>
-                                                <th>Price</th>
                                                 
                                                 <th>Discount</th>
                                                 <th>Gender</th>
                                                 <th>Capacity</th>
                                                 <th>Status</th>
                                                 <th>Actions</th> 
-
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -199,7 +199,6 @@
                                                         </c:forEach>
                                                     </td>
                                                     <td>${i.name}</td>
-                                                    <td>${i.price}</td>
                                                     
                                                     <td>${i.discount.amount}</td>
                                                     <td>
@@ -221,13 +220,11 @@
                                                     <td class="action-buttons">
                                                         <a href="employeeUpdateProduct?product_id=${i.product_id}" class="btn btn-primary btn-sm">Update</a>
                                                         <a href="employeeImportGoods?product_id=${i.product_id}" class="btn btn-primary btn-sm">Nhập Hàng</a>
+                                                        <a href="employeeUnitPrice?product_id=${i.product_id}" class="btn btn-primary btn-sm">Nhập giá</a>
                                                     </td>
-
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
-
-
                                     </table>
                                 </div>
 
@@ -259,18 +256,17 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 var table = $('#datatables-example').DataTable({
-
-                    "searching": false, // Tắt tìm kiếm mặc định
-                    "paging": true, // Bật phân trang
-                    "pageLength": 6, // Số hàng trên mỗi trang
-                    "lengthChange": false   // Tắt "Show ... entries"
+                    "searching": false,
+                    "paging": true,
+                    "pageLength": 6,
+                    "lengthChange": false
                 });
-                // Tìm kiếm theo Full Name
+
                 $('#custom-search').on('keyup', function () {
                     var searchTerm = this.value.toLowerCase();
                     table.rows().every(function (rowIdx, tableLoop, rowLoop) {
                         var data = this.data();
-                        var fullName = data[1].toLowerCase(); // Full Name
+                        var fullName = data[1].toLowerCase();
                         if (fullName.includes(searchTerm)) {
                             this.show();
                         } else {

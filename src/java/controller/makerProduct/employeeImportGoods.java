@@ -52,12 +52,13 @@ public class employeeImportGoods extends HttpServlet {
         String name = request.getParameter("name"); // nhập tên của hàng nhập vào
         String stock = request.getParameter("stock");
         String cid = request.getParameter("cid");
+        String i=request.getParameter("i");
         HistoryDBContext hdb = new HistoryDBContext();
         LocalDateTime now = LocalDateTime.now();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = now.format(formatter);
-        hdb.addHistory(product_id, stock, name, cid, formattedDate);
+        hdb.addHistory(product_id, stock, name, cid, formattedDate,i);
         response.sendRedirect("employeeProductList");
     }
 

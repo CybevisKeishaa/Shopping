@@ -165,7 +165,7 @@
             aspect-ratio: 1;
             object-fit: cover;
         }
-        label[for]:has( + input:checked){
+        label[for]:has( + input : checked){
             background-color:#F7941D;
             color:#fff;
 

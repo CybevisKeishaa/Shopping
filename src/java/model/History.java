@@ -18,6 +18,7 @@ public class History {
     private Date date;
     private int stock;
     private int TotalPrice;
+    private int importPrice;
     private ArrayList<Product> products = new ArrayList<>();
     
     public History() {
@@ -51,6 +52,14 @@ public class History {
         return date;
     }
 
+    public int getImportPrice() {
+        return importPrice;
+    }
+
+    public void setImportPrice(int importPrice) {
+        this.importPrice = importPrice;
+    }
+    
     public void setDate(Date date) {
         this.date = date;
     }

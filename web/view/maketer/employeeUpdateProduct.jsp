@@ -193,11 +193,11 @@
                                         <c:if test="${prams.cid != null}">
                                             <div class="form-group">
                                                 <label for="price">Price:</label>
-                                                <input type="text" name="price" id="price" value="${requestScope.p.price}" readonly />
+                                                <input type="text" name="price" id="price" value="${requestScope.p.price}"  />
                                             </div>
                                             <div class="form-group">
                                                 <label for="stock">Stock:</label>
-                                                <input type="text" name="stock" id="stock" value="${requestScope.p.stock}" readonly />
+                                                <input type="text" name="stock" id="stock" value="${requestScope.c.stock}" readonly />
                                             </div>
                                         </c:if>
 
@@ -211,7 +211,7 @@
 
                                             <div class="form-group">
                                                 <label for="stock">Stock:</label>
-                                                <input type="text" name="stock" id="stock" value="${requestScope.p.stock}" readonly />
+                                                <input type="text" name="stock" id="stock" value="${requestScope.c.stock}" readonly />
                                             </div>
                                         </c:if>
 

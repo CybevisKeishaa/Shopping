@@ -81,21 +81,7 @@
         </script>
     </head>
     <body>
-        <div id="left-menu">
-                <div class="sub-left-menu scroll">
-                    <ul class="nav nav-list">
-                        <li><div class="left-bg"></div></li>
-                        <li class="active ripple">
-                            <a href="market" class="tree-toggle nav-header">MKT Dashboard 
-                            </a>
-                        </li>
-                        <li class="active ripple">
-                            <a href="employeeProductList" class="tree-toggle nav-header"></span>Product List 
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+       
         <t:dashboard>
             <h2>Import Product</h2>
             <form action="employeeImportGoods" method="post" onsubmit="return validateForm()">
@@ -106,7 +92,8 @@
                 <label for="stock">Số lượng:</label>
                 <input type="number" id="stock" name="stock" placeholder="Enter stock amount" min="0"/>
                 <span id="errorMessage" class="error">Số lượng không thể là số âm!</span>
-                
+                <label for="stock">Gía:</label>
+                <input type="number" name="i" placeholder="Enter price"/>
                 <label for="cid">Dung tích:</label>
                 <select id="cid" name="cid">
                     <c:forEach var="i" items="${requestScope.clist}">
@@ -115,7 +102,9 @@
                 </select>
                 
                 <input type="submit" value="Save"/>
+                <a href="employeeProductList" class="btn btn-secondary">Quay về danh sách sản phẩm</a>
             </form>
+                
         </t:dashboard>
     </body>
 </html>

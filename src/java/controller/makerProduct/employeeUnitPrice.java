@@ -4,12 +4,8 @@
  */
 package controller.makerProduct;
 
-import dal.BrandDBContext;
 import dal.CapacityDBContext;
-import dal.DiscountDBContext;
-import dal.GenderDBContext;
 import dal.ProductDBContext;
-import helper.ImageHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,30 +13,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.*;
-import jakarta.servlet.http.Part;
-import jakarta.servlet.annotation.MultipartConfig;
-import java.io.File;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-import model.Image;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.sql.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-@MultipartConfig
+import model.Capacity;
+import model.Product;
 
 /**
  *
  * @author DINH SON
  */
-public class employeeAddProduct extends HttpServlet {
-
-    private static final String UPLOAD_DIR = "img";
+public class employeeUnitPrice extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -59,13 +39,12 @@ public class employeeAddProduct extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet employeeAddProduct</title>");
+            out.println("<title>Servlet employeeUnitPrice</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet employeeAddProduct at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet employeeUnitPrice at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-
         }
     }
 
@@ -81,26 +60,19 @@ public class employeeAddProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Object object = request.getSession().getAttribute("employee");
-        Employee e = new Employee();
-        if (object != null) {
-            e = (Employee) object;
-        }
-        DiscountDBContext db = new DiscountDBContext();
-        List<Discount> dlist = db.getAll();
-        BrandDBContext bd = new BrandDBContext();
-        CapacityDBContext cdb = new CapacityDBContext();
-        List<Capacity> list = cdb.getAll();
-        List<Brand> blist = bd.getAll();
-        GenderDBContext gender = new GenderDBContext();
-        List<Gender> glist = gender.getAll();
-        request.setAttribute("clist", list);
-        request.setAttribute("eid", e.getEmp_id());
-        request.setAttribute("datab", blist);
-        request.setAttribute("datad", dlist);
-        request.setAttribute("datag", glist);
-        request.getRequestDispatcher("view/maketer/employeeAddProduct.jsp").forward(request, response);
+        String pid = request.getParameter("product_id");
+        CapacityDBContext cp = new CapacityDBContext();
+        List<Capacity> l = cp.getByListByPid(Integer.parseInt(pid));
+        request.setAttribute("l", l);
+        request.setAttribute("p", pid);
+        ProductDBContext pd = new ProductDBContext();
+        Product p = null;
+        p = pd.getByProductId(Integer.parseInt(pid));
+        request.setAttribute("p", p);
+        request.setAttribute("imagesProduct", p.getImg());
 
+        request.getRequestDispatcher("view/maketer/employeeUnitPrice.jsp").forward(request, response);
+        
     }
 
     /**
@@ -114,26 +86,19 @@ public class employeeAddProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-        String eid = request.getParameter("eid");
-        String name = request.getParameter("name");
-        String dis = request.getParameter("dis");
-        String brand = request.getParameter("brand");
-        String[] caps = request.getParameterValues("cap[]"); // Lấy danh sách capacity
-        Part image = request.getPart("file");
-        String gen = request.getParameter("gid");
-
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = now.format(formatter);
-
-        ProductDBContext pdb = new ProductDBContext(this);
-       pdb.insertProduct(eid, name, caps, gen, formattedDate, dis, brand, image);
-       
-       response.sendRedirect("employeeProductList");
-    } catch (Exception e) {
-        Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, e);
-    }
+        String[] capacityIds = request.getParameterValues("capacity_id");
+        String p = request.getParameter("p");
+        CapacityDBContext cp = new CapacityDBContext();
+        
+        if (capacityIds != null) {
+            for (String capacityId : capacityIds) {
+                String price = request.getParameter("price_" + capacityId);
+                
+                cp.updatePricebycidpid(price, p, capacityId);
+                
+            }
+        }
+        response.sendRedirect("employeeProductList");
     }
 
     /**
