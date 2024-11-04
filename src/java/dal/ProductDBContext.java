@@ -197,7 +197,7 @@ public class ProductDBContext extends DBContext<Product> {
         }
     }
 
-    public void updateProduct(String pid, String cid, int igid, String name, String price,
+    public boolean updateProduct(String pid, List<Capacity> cList, int igid, String name, String price,
             String stock, String date, String dis, String gender, String brand, String status,
             Part image, String oldImageUrl) {
         try {
@@ -249,6 +249,7 @@ public class ProductDBContext extends DBContext<Product> {
                     imageHelper.removeImage(oldImageUrl);
                 }
             }
+            //Gender
             String updateGender = "UPDATE [dbo].[Product_Gender]\n"
                     + "   SET [gender_id] = ?\n"
                     + "   \n"
@@ -257,17 +258,19 @@ public class ProductDBContext extends DBContext<Product> {
             updateGenderst.setInt(1, Integer.parseInt(gender));
             updateGenderst.setInt(2, Integer.parseInt(pid));
             updateGenderst.executeUpdate();
+            //Capacity
             String updateCap = "UPDATE [dbo].[Product_Capacity]\n"
-                    + "   SET [unit_price] = ?\n"
-                    + "    \n"
+                    + "   SET [unit_price] = ?"
                     + " WHERE product_id=? and cap_id=?";
-            PreparedStatement updateCapst = connect.prepareStatement(updateCap, PreparedStatement.RETURN_GENERATED_KEYS);
-            updateCapst.setInt(2, Integer.parseInt(pid));
-            updateCapst.setInt(1, Integer.parseInt(price));
-            updateCapst.setInt(3, Integer.parseInt(cid));
-            updateCapst.executeUpdate();
+            for (Capacity capacity : cList) {
+                PreparedStatement updateCapst = connect.prepareStatement(updateCap, PreparedStatement.RETURN_GENERATED_KEYS);
+                updateCapst.setInt(2, Integer.parseInt(pid));
+                updateCapst.setInt(1, capacity.getUnit_price());
+                updateCapst.setInt(3, capacity.getCapacity_id());
+                updateCapst.executeUpdate();
+            }
             connect.commit();
-
+            return true;
         } catch (Exception e) {
             try {
                 connect.rollback();
@@ -281,8 +284,8 @@ public class ProductDBContext extends DBContext<Product> {
         } catch (SQLException ex) {
             Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
-
 
     public void insertProduct(String eid, String name, String[] caps, String gid, String date, String dis, String brand, Part image) {
         try {
@@ -290,7 +293,6 @@ public class ProductDBContext extends DBContext<Product> {
 
             String insertProduct = "INSERT INTO [dbo].[Product]\n"
                     + "           ([name]\n , price,stock"
-                    
                     + "           ,[date]\n"
                     + "           ,[discount_id]\n"
                     + "           ,[brand_id]\n"
@@ -374,7 +376,7 @@ public class ProductDBContext extends DBContext<Product> {
             insertGenst.setInt(2, productId);
             insertGenst.executeUpdate();
             connect.commit();
-                        connect.setAutoCommit(true);
+            connect.setAutoCommit(true);
 
         } catch (Exception e) {
             Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, e);

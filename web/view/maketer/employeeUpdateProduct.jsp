@@ -58,11 +58,13 @@
             .capacity-options {
                 display: flex;
                 flex-wrap: wrap;
+                gap:10px;
             }
 
             .capacity-options label {
                 margin-right: 15px;
                 margin-bottom: 10px;
+
             }
 
             .form-fields input[type="text"],
@@ -178,7 +180,7 @@
                                             <img src="${pageContext.request.contextPath}/img/${j.img_url}" alt="${j.img_url}">
                                             <label for="file${status.index}">Choose Image:${j.name}</label>
                                             <input type="hidden" name="img_id" value="${j.img_id}" />
-                                            <input type="file" name="file" id="file" accept="image/*" required />
+                                            <input type="file" name="file" id="file" accept="image/*" />
                                         </c:forEach>
                                         <input type="hidden" name="size" value="${requestScope.p.img.size()}" />
                                     </div>
@@ -189,7 +191,7 @@
                                             <label for="name">Name:</label>
                                             <input type="text" name="name" id="name" value="${requestScope.p.name}" required />
                                         </div>
-
+                                        <!--
                                         <c:if test="${prams.cid != null}">
                                             <div class="form-group">
                                                 <label for="price">Price:</label>
@@ -200,7 +202,7 @@
                                                 <input type="text" name="stock" id="stock" value="${requestScope.c.stock}" readonly />
                                             </div>
                                         </c:if>
-
+                                        -->
                                         <c:if test="${requestScope.c != null}">
                                             <div class="form-group">
                                                 <label for="price">Price:</label>
@@ -254,18 +256,31 @@
                                             </select>
                                         </div>
 
-                                        <div class="form-group">
+
+                                        <div class="capacity-container form-group">
                                             <label for="capacity">Capacity:</label>
-                                            <div class="capacity-options">
-                                                <c:forEach var="j" items="${requestScope.listc}">
-                                                    <label>
+                                           <!-- cid = 40 price40 -->
+                                            <c:forEach var="j" items="${requestScope.listc}">
+                                                <div class="capacity-options">
+                                                    <div class="">
                                                         <input type="checkbox" value="${j.capacity_id}" name="cid"
-                                                               onclick="window.location.href = 'employeeUpdateProduct?product_id=${param.product_id}&cid=${j.capacity_id}'"
-                                                               <c:if test="${param.cid == j.capacity_id}">checked</c:if> >
-                                                        ${j.value}
-                                                    </label>
-                                                </c:forEach>
-                                            </div>
+                                                               ${param.cid == j.capacity_id ? 'checked':''}>
+                                                        <label for="cid">
+                                                            ${j.value}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="price${j.capacity_id}">Price:</label>
+                                                        <input class="form-input" type="text" name="price${j.capacity_id}" id="price${j.capacity_id}" 
+                                                               value="${j.unit_price}"  />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="stock${j.capacity_id}">Stock:</label>
+                                                        <input class="form-input" type="text" name="stock${j.capacity_id}" id="stock{j.capacity_id}" 
+                                                               value="${j.stock}" disabled="" />
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
                                         </div>
 
                                         <div class="form-group">

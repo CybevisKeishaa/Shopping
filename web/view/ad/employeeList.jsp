@@ -8,7 +8,7 @@
             <!-- end: Left Menu -->
 
             <!-- start: Content -->
-            <div id="content">
+            <div id="">
                 <div class="panel box-shadow-none content-header">
                     <div class="panel-body">
                         <div class="col-md-12">
